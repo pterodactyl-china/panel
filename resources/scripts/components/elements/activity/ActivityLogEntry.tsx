@@ -88,7 +88,7 @@ export default ({ activity, children }: Props) => {
                                 <span className={'text-gray-400'}>&nbsp;|&nbsp;</span>
                             </span>
                         )}
-                        <Tooltip placement={'right'} content={format(activity.timestamp, 'MMM do, yyyy H:mm:ss')}>
+                        <Tooltip placement={'right'} content={format(activity.timestamp, 'yyyy年M月d日 HH:mm:ss')}>
                             <span>
                                 {formatDistanceToNowStrict(activity.timestamp, { addSuffix: true, locale: zhCN })}
                             </span>

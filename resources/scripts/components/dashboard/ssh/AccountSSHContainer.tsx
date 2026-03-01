@@ -47,7 +47,7 @@ export default () => {
                                     <p css={tw`text-xs mt-1 font-mono truncate`}>SHA256:{key.fingerprint}</p>
                                     <p css={tw`text-xs mt-1 text-neutral-300 uppercase`}>
                                         添加于:&nbsp;
-                                        {format(key.createdAt, 'MMM do, yyyy HH:mm')}
+                                        {format(key.createdAt, 'yyyy年M月d日 HH:mm')}
                                     </p>
                                 </div>
                                 <DeleteSSHKeyButton name={key.name} fingerprint={key.fingerprint} />
