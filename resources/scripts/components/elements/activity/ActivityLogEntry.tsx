@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Tooltip from '@/components/elements/tooltip/Tooltip';
 import Translate from '@/components/elements/Translate';
 import { format, formatDistanceToNowStrict } from 'date-fns';
+import { zhCN } from 'date-fns/locale';
 import { ActivityLog } from '@definitions/user';
 import ActivityLogMetaButton from '@/components/elements/activity/ActivityLogMetaButton';
 import { FolderOpenIcon, TerminalIcon } from '@heroicons/react/solid';
@@ -88,7 +89,7 @@ export default ({ activity, children }: Props) => {
                             </span>
                         )}
                         <Tooltip placement={'right'} content={format(activity.timestamp, 'MMM do, yyyy H:mm:ss')}>
-                            <span>{formatDistanceToNowStrict(activity.timestamp, { addSuffix: true })}</span>
+                            <span>{formatDistanceToNowStrict(activity.timestamp, { addSuffix: true, locale: zhCN })}</span>
                         </Tooltip>
                     </div>
                 </div>

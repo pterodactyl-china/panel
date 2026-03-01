@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAlt, faFileArchive, faFileImport, faFolder } from '@fortawesome/free-solid-svg-icons';
 import { encodePathSegments } from '@/helpers';
 import { differenceInHours, format, formatDistanceToNow } from 'date-fns';
+import { zhCN } from 'date-fns/locale';
 import React, { memo } from 'react';
 import { FileObject } from '@/api/server/files/loadDirectory';
 import FileDropdownMenu from '@/components/server/files/FileDropdownMenu';
@@ -59,7 +60,7 @@ const FileObjectRow = ({ file }: { file: FileObject }) => (
             <div css={tw`w-1/5 text-right mr-4 hidden md:block`} title={file.modifiedAt.toString()}>
                 {Math.abs(differenceInHours(file.modifiedAt, new Date())) > 48
                     ? format(file.modifiedAt, 'MMM do, yyyy h:mma')
-                    : formatDistanceToNow(file.modifiedAt, { addSuffix: true })}
+                    : formatDistanceToNow(file.modifiedAt, { addSuffix: true, locale: zhCN })}
             </div>
         </Clickable>
         <FileDropdownMenu file={file} />
