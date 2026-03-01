@@ -59,6 +59,7 @@ class Permission extends Model
     public const ACTION_STARTUP_READ = 'startup.read';
     public const ACTION_STARTUP_UPDATE = 'startup.update';
     public const ACTION_STARTUP_DOCKER_IMAGE = 'startup.docker-image';
+    public const ACTION_STARTUP_EGG_CHANGE = 'startup.egg-change';
 
     public const ACTION_SETTINGS_RENAME = 'settings.rename';
     public const ACTION_SETTINGS_REINSTALL = 'settings.reinstall';
@@ -168,6 +169,7 @@ class Permission extends Model
                 'read' => '允许用户查看服务器的启动变量。',
                 'update' => '允许用户修改服务器的启动变量。',
                 'docker-image' => '允许用户修改运行服务器时使用的 Docker 镜像。',
+                'egg-change' => '允许用户切换服务器当前使用的预设（预设组/预设）。',
             ],
         ],
 

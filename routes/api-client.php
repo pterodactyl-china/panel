@@ -141,6 +141,7 @@ Route::group([
     Route::group(['prefix' => '/startup'], function () {
         Route::get('/', [Client\Servers\StartupController::class, 'index']);
         Route::put('/variable', [Client\Servers\StartupController::class, 'update']);
+        Route::put('/egg', [Client\Servers\StartupController::class, 'updateEgg']);
     });
 
     Route::group(['prefix' => '/settings'], function () {

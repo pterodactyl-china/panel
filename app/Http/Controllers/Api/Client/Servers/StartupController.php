@@ -2,6 +2,8 @@
 
 namespace Pterodactyl\Http\Controllers\Api\Client\Servers;
 
+use Pterodactyl\Models\Egg;
+use Pterodactyl\Models\Nest;
 use Pterodactyl\Models\Server;
 use Pterodactyl\Facades\Activity;
 use Pterodactyl\Services\Servers\StartupCommandService;
@@ -10,6 +12,7 @@ use Pterodactyl\Transformers\Api\Client\EggVariableTransformer;
 use Pterodactyl\Http\Controllers\Api\Client\ClientApiController;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Pterodactyl\Http\Requests\Api\Client\Servers\Startup\GetStartupRequest;
+use Pterodactyl\Http\Requests\Api\Client\Servers\Startup\UpdateEggRequest;
 use Pterodactyl\Http\Requests\Api\Client\Servers\Startup\UpdateStartupVariableRequest;
 
 class StartupController extends ClientApiController
@@ -31,15 +34,29 @@ class StartupController extends ClientApiController
     {
         $startup = $this->startupCommandService->handle($server);
 
+        $meta = [
+            'startup_command' => $startup,
+            'docker_images' => $server->egg->docker_images,
+            'raw_startup_command' => $server->startup,
+        ];
+
+        // Include nests and eggs for switching if the global feature is enabled
+        // and the user has the egg-change permission.
+        if (
+            config('pterodactyl.client_features.egg_change.enabled')
+            && $request->user()->can('startup.egg-change', $server)
+        ) {
+            $meta['egg_change_allowed'] = true;
+            $meta['nests'] = $this->buildNestsList();
+            $meta['current_egg_id'] = $server->egg_id;
+            $meta['current_nest_id'] = $server->nest_id;
+        }
+
         return $this->fractal->collection(
             $server->variables()->where('user_viewable', true)->get()
         )
             ->transformWith($this->getTransformer(EggVariableTransformer::class))
-            ->addMeta([
-                'startup_command' => $startup,
-                'docker_images' => $server->egg->docker_images,
-                'raw_startup_command' => $server->startup,
-            ])
+            ->addMeta($meta)
             ->toArray();
     }
 
@@ -95,5 +112,71 @@ class StartupController extends ClientApiController
                 'raw_startup_command' => $server->startup,
             ])
             ->toArray();
+    }
+
+    /**
+     * Changes the egg (preset) for a server.
+     *
+     * @throws \Throwable
+     */
+    public function updateEgg(UpdateEggRequest $request, Server $server): array
+    {
+        if (!config('pterodactyl.client_features.egg_change.enabled')) {
+            throw new BadRequestHttpException('此面板未启用前台切换预设功能。');
+        }
+
+        /** @var Egg $egg */
+        $egg = Egg::query()->findOrFail($request->input('egg_id'));
+
+        $originalEggId = $server->egg_id;
+
+        $server->forceFill([
+            'egg_id' => $egg->id,
+            'nest_id' => $egg->nest_id,
+            'startup' => $egg->startup,
+        ])->saveOrFail();
+
+        if ($originalEggId !== $egg->id) {
+            Activity::event('server:startup.egg-change')
+                ->property(['old' => $originalEggId, 'new' => $egg->id])
+                ->log();
+        }
+
+        // Reload the egg relationship after updating
+        $server->load('egg');
+
+        $startup = $this->startupCommandService->handle($server);
+
+        return $this->fractal->collection(
+            $server->variables()->where('user_viewable', true)->get()
+        )
+            ->transformWith($this->getTransformer(EggVariableTransformer::class))
+            ->addMeta([
+                'startup_command' => $startup,
+                'docker_images' => $server->egg->docker_images,
+                'raw_startup_command' => $server->startup,
+                'egg_change_allowed' => true,
+                'nests' => $this->buildNestsList(),
+                'current_egg_id' => $server->egg_id,
+                'current_nest_id' => $server->nest_id,
+            ])
+            ->toArray();
+    }
+
+    /**
+     * Build the list of nests and their eggs for the egg-change feature.
+     */
+    private function buildNestsList(): array
+    {
+        return Nest::query()->with('eggs:id,nest_id,name')->get(['id', 'name'])
+            ->map(function (Nest $nest) {
+                return [
+                    'id' => $nest->id,
+                    'name' => $nest->name,
+                    'eggs' => $nest->eggs->map(function (Egg $egg) {
+                        return ['id' => $egg->id, 'name' => $egg->name];
+                    })->values()->toArray(),
+                ];
+            })->values()->toArray();
     }
 }
