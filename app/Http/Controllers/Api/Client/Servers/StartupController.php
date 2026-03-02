@@ -11,8 +11,8 @@ use Pterodactyl\Repositories\Eloquent\ServerVariableRepository;
 use Pterodactyl\Transformers\Api\Client\EggVariableTransformer;
 use Pterodactyl\Http\Controllers\Api\Client\ClientApiController;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Pterodactyl\Http\Requests\Api\Client\Servers\Startup\GetStartupRequest;
 use Pterodactyl\Http\Requests\Api\Client\Servers\Startup\UpdateEggRequest;
+use Pterodactyl\Http\Requests\Api\Client\Servers\Startup\GetStartupRequest;
 use Pterodactyl\Http\Requests\Api\Client\Servers\Startup\UpdateStartupVariableRequest;
 
 class StartupController extends ClientApiController
