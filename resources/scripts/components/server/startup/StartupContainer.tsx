@@ -144,7 +144,7 @@ const StartupContainer = () => {
     );
 
     const eggChangeMode = data?.eggChangeMode;
-    const showNestDropdown = eggChangeMode === 'nest_only' || eggChangeMode === 'both';
+    const showNestDropdown = eggChangeMode === 'both';
     const showEggDropdown = eggChangeMode === 'egg_only' || eggChangeMode === 'both';
     const showEggChangeSection = canChangeEgg && eggChangeMode && data?.nests;
 

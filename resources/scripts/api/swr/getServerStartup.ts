@@ -4,9 +4,9 @@ import { rawDataToServerEggVariable } from '@/api/transformers';
 import { ServerEggVariable } from '@/api/server/types';
 
 // 'disabled' is intentionally excluded: undefined represents the disabled state in the frontend.
-export type EggChangeMode = 'egg_only' | 'nest_only' | 'both';
+export type EggChangeMode = 'egg_only' | 'both';
 
-const VALID_EGG_CHANGE_MODES: readonly string[] = ['egg_only', 'nest_only', 'both'];
+const VALID_EGG_CHANGE_MODES: readonly string[] = ['egg_only', 'both'];
 
 function toEggChangeMode(value: unknown): EggChangeMode | undefined {
     if (typeof value === 'string' && VALID_EGG_CHANGE_MODES.includes(value)) {
