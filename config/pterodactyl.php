@@ -121,7 +121,8 @@ return [
         ],
 
         'egg_change' => [
-            'enabled' => env('PTERODACTYL_CLIENT_EGG_CHANGE_ENABLED', false),
+            // Allowed values: disabled, egg_only, nest_only, both
+            'mode' => env('PTERODACTYL_CLIENT_EGG_CHANGE_MODE', 'disabled'),
         ],
     ],
 

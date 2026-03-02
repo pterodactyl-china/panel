@@ -42,11 +42,12 @@ class StartupController extends ClientApiController
 
         // Include nests and eggs for switching if the global feature is enabled
         // and the user has the egg-change permission.
+        $eggChangeMode = config('pterodactyl.client_features.egg_change.mode', 'disabled');
         if (
-            config('pterodactyl.client_features.egg_change.enabled')
+            $eggChangeMode !== 'disabled'
             && $request->user()->can('startup.egg-change', $server)
         ) {
-            $meta['egg_change_allowed'] = true;
+            $meta['egg_change_mode'] = $eggChangeMode;
             $meta['nests'] = $this->buildNestsList();
             $meta['current_egg_id'] = $server->egg_id;
             $meta['current_nest_id'] = $server->nest_id;
@@ -121,7 +122,7 @@ class StartupController extends ClientApiController
      */
     public function updateEgg(UpdateEggRequest $request, Server $server): array
     {
-        if (!config('pterodactyl.client_features.egg_change.enabled')) {
+        if (config('pterodactyl.client_features.egg_change.mode', 'disabled') === 'disabled') {
             throw new BadRequestHttpException('此面板未启用前台切换预设功能。');
         }
 
@@ -155,7 +156,7 @@ class StartupController extends ClientApiController
                 'startup_command' => $startup,
                 'docker_images' => $server->egg->docker_images,
                 'raw_startup_command' => $server->startup,
-                'egg_change_allowed' => true,
+                'egg_change_mode' => config('pterodactyl.client_features.egg_change.mode', 'disabled'),
                 'nests' => $this->buildNestsList(),
                 'current_egg_id' => $server->egg_id,
                 'current_nest_id' => $server->nest_id,

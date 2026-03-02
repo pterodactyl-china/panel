@@ -154,14 +154,21 @@
                     </div>
                     <div class="box-body">
                         <div class="row">
-                            <div class="form-group col-md-4">
-                                <label class="control-label">状态</label>
+                            <div class="form-group col-md-6">
+                                <label class="control-label">模式</label>
                                 <div>
-                                    <select class="form-control" name="pterodactyl:client_features:egg_change:enabled">
-                                        <option value="false">禁用</option>
-                                        <option value="true" @if(old('pterodactyl:client_features:egg_change:enabled', config('pterodactyl.client_features.egg_change.enabled'))) selected @endif>启用</option>
+                                    <select class="form-control" name="pterodactyl:client_features:egg_change:mode">
+                                        <option value="disabled" @if(old('pterodactyl:client_features:egg_change:mode', config('pterodactyl.client_features.egg_change.mode')) === 'disabled') selected @endif>禁用</option>
+                                        <option value="egg_only" @if(old('pterodactyl:client_features:egg_change:mode', config('pterodactyl.client_features.egg_change.mode')) === 'egg_only') selected @endif>只允许切换预设</option>
+                                        <option value="nest_only" @if(old('pterodactyl:client_features:egg_change:mode', config('pterodactyl.client_features.egg_change.mode')) === 'nest_only') selected @endif>只允许切换预设组</option>
+                                        <option value="both" @if(old('pterodactyl:client_features:egg_change:mode', config('pterodactyl.client_features.egg_change.mode')) === 'both') selected @endif>允许切换预设和预设组</option>
                                     </select>
-                                    <p class="text-muted small">如果启用，拥有相应权限的用户将可以在服务器启动设置页面切换服务器所使用的预设（预设组/预设）。</p>
+                                    <p class="text-muted small">
+                                        控制拥有相应权限的用户在服务器启动设置页面中可执行的切换操作：<br>
+                                        <strong>只允许切换预设</strong>：显示预设组（仅作为过滤器）和预设下拉框，手动选择预设后应用；<br>
+                                        <strong>只允许切换预设组</strong>：仅显示预设组下拉框，切换预设组后自动应用该预设组中的第一个预设；<br>
+                                        <strong>允许切换预设和预设组</strong>：同时显示两个下拉框，切换预设组时自动应用第一个预设，也可手动切换预设。
+                                    </p>
                                 </div>
                             </div>
                         </div>

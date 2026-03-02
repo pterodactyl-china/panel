@@ -34,7 +34,7 @@ class AdvancedSettingsFormRequest extends AdminFormRequest
                 'between:1024,65535',
                 'gt:pterodactyl:client_features:allocations:range_start',
             ],
-            'pterodactyl:client_features:egg_change:enabled' => 'required|in:true,false',
+            'pterodactyl:client_features:egg_change:mode' => 'required|in:disabled,egg_only,nest_only,both',
         ];
     }
 
@@ -52,7 +52,7 @@ class AdvancedSettingsFormRequest extends AdminFormRequest
             'pterodactyl:client_features:allocations:enabled' => 'Auto Create Allocations Enabled',
             'pterodactyl:client_features:allocations:range_start' => 'Starting Port',
             'pterodactyl:client_features:allocations:range_end' => 'Ending Port',
-            'pterodactyl:client_features:egg_change:enabled' => 'Allow Egg Change Enabled',
+            'pterodactyl:client_features:egg_change:mode' => 'Allow Egg Change Mode',
         ];
     }
 }

@@ -49,9 +49,9 @@ const StartupContainer = () => {
 
     const [canChangeEgg] = usePermissions(['startup.egg-change']);
 
-    // Sync selectedNestId with data.currentNestId when data changes
+    // Sync selectedNestId with data.currentNestId on first load only (when selectedNestId is undefined)
     useEffect(() => {
-        if (data?.currentNestId && selectedNestId === undefined) {
+        if (data?.currentNestId !== undefined && selectedNestId === undefined) {
             setSelectedNestId(data.currentNestId);
         }
     }, [data?.currentNestId, selectedNestId]);
@@ -97,20 +97,29 @@ const StartupContainer = () => {
 
             updateStartupEgg(uuid, eggId)
                 .then((response) => {
+                    // Pick first docker image from the new egg as the current image
+                    const firstDockerImage = Object.values(response.dockerImages)[0] || variables.dockerImage;
+
                     setSelectedNestId(response.currentNestId);
                     mutate(
                         () => ({
                             invocation: response.invocation,
                             variables: response.variables,
                             dockerImages: response.dockerImages,
-                            eggChangeAllowed: true,
+                            eggChangeMode: response.eggChangeMode,
                             nests: response.nests,
                             currentEggId: response.currentEggId,
                             currentNestId: response.currentNestId,
                         }),
                         false
                     );
-                    setServerFromState((s) => ({ ...s, invocation: response.invocation, variables: response.variables }));
+                    // Fix: also update dockerImage so the Docker image section reflects the new egg
+                    setServerFromState((s) => ({
+                        ...s,
+                        invocation: response.invocation,
+                        variables: response.variables,
+                        dockerImage: firstDockerImage,
+                    }));
                 })
                 .catch((error) => {
                     console.error(error);
@@ -120,6 +129,24 @@ const StartupContainer = () => {
         },
         [uuid]
     );
+
+    // Handle nest group change:
+    // - In all modes that show the nest dropdown, switching nest auto-applies the first egg.
+    const handleNestChange = useCallback(
+        (nestId: number) => {
+            setSelectedNestId(nestId);
+            const nest = data?.nests?.find((n) => n.id === nestId);
+            if (nest && nest.eggs.length > 0) {
+                handleEggChange(nest.eggs[0].id);
+            }
+        },
+        [data, handleEggChange]
+    );
+
+    const eggChangeMode = data?.eggChangeMode;
+    const showNestDropdown = eggChangeMode === 'nest_only' || eggChangeMode === 'both';
+    const showEggDropdown = eggChangeMode === 'egg_only' || eggChangeMode === 'both';
+    const showEggChangeSection = canChangeEgg && eggChangeMode && data?.nests;
 
     const currentNest = data?.nests?.find((n) => n.id === selectedNestId);
 
@@ -145,7 +172,7 @@ const StartupContainer = () => {
                                 <Select
                                     disabled={Object.keys(data.dockerImages).length < 2}
                                     onChange={updateSelectedDockerImage}
-                                    defaultValue={variables.dockerImage}
+                                    value={variables.dockerImage}
                                 >
                                     {Object.keys(data.dockerImages).map((key) => (
                                         <option key={data.dockerImages[key]} value={data.dockerImages[key]}>
@@ -170,42 +197,43 @@ const StartupContainer = () => {
                     )}
                 </TitledGreyBox>
             </div>
-            {data.eggChangeAllowed && canChangeEgg && data.nests && (
+            {showEggChangeSection && (
                 <div css={tw`mt-8`}>
                     <TitledGreyBox title={'切换预设'}>
                         <InputSpinner visible={eggLoading}>
                             <div css={tw`md:flex md:gap-4`}>
-                                <div css={tw`flex-1`}>
-                                    <label css={tw`block text-xs text-neutral-300 mb-1`}>预设组</label>
-                                    <Select
-                                        value={selectedNestId}
-                                        onChange={(e) => {
-                                            const nestId = parseInt(e.currentTarget.value);
-                                            setSelectedNestId(nestId);
-                                        }}
-                                    >
-                                        {data.nests.map((nest) => (
-                                            <option key={nest.id} value={nest.id}>
-                                                {nest.name}
-                                            </option>
-                                        ))}
-                                    </Select>
-                                </div>
-                                <div css={tw`flex-1 mt-4 md:mt-0`}>
-                                    <label css={tw`block text-xs text-neutral-300 mb-1`}>预设</label>
-                                    <Select
-                                        value={data.currentEggId}
-                                        onChange={(e) => handleEggChange(parseInt(e.currentTarget.value))}
-                                    >
-                                        {(currentNest || data.nests.find((n) => n.id === data.currentNestId))?.eggs.map(
-                                            (egg) => (
-                                                <option key={egg.id} value={egg.id}>
-                                                    {egg.name}
+                                {showNestDropdown && (
+                                    <div css={tw`flex-1`}>
+                                        <label css={tw`block text-xs text-neutral-300 mb-1`}>预设组</label>
+                                        <Select
+                                            value={selectedNestId}
+                                            onChange={(e) => handleNestChange(parseInt(e.currentTarget.value))}
+                                        >
+                                            {data.nests!.map((nest) => (
+                                                <option key={nest.id} value={nest.id}>
+                                                    {nest.name}
                                                 </option>
-                                            )
-                                        )}
-                                    </Select>
-                                </div>
+                                            ))}
+                                        </Select>
+                                    </div>
+                                )}
+                                {showEggDropdown && (
+                                    <div css={tw`flex-1 ${showNestDropdown ? 'mt-4 md:mt-0' : ''}`}>
+                                        <label css={tw`block text-xs text-neutral-300 mb-1`}>预设</label>
+                                        <Select
+                                            value={data.currentEggId}
+                                            onChange={(e) => handleEggChange(parseInt(e.currentTarget.value))}
+                                        >
+                                            {(currentNest || data.nests!.find((n) => n.id === data.currentNestId))?.eggs.map(
+                                                (egg) => (
+                                                    <option key={egg.id} value={egg.id}>
+                                                        {egg.name}
+                                                    </option>
+                                                )
+                                            )}
+                                        </Select>
+                                    </div>
+                                )}
                             </div>
                         </InputSpinner>
                         <p css={tw`text-xs text-neutral-300 mt-2`}>

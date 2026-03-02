@@ -3,6 +3,18 @@ import http, { FractalResponseList } from '@/api/http';
 import { rawDataToServerEggVariable } from '@/api/transformers';
 import { ServerEggVariable } from '@/api/server/types';
 
+// 'disabled' is intentionally excluded: undefined represents the disabled state in the frontend.
+export type EggChangeMode = 'egg_only' | 'nest_only' | 'both';
+
+const VALID_EGG_CHANGE_MODES: readonly string[] = ['egg_only', 'nest_only', 'both'];
+
+function toEggChangeMode(value: unknown): EggChangeMode | undefined {
+    if (typeof value === 'string' && VALID_EGG_CHANGE_MODES.includes(value)) {
+        return value as EggChangeMode;
+    }
+    return undefined;
+}
+
 export interface NestData {
     id: number;
     name: string;
@@ -13,7 +25,7 @@ interface Response {
     invocation: string;
     variables: ServerEggVariable[];
     dockerImages: Record<string, string>;
-    eggChangeAllowed?: boolean;
+    eggChangeMode?: EggChangeMode;
     nests?: NestData[];
     currentEggId?: number;
     currentNestId?: number;
@@ -31,7 +43,7 @@ export default (uuid: string, initialData?: Response | null, config?: ConfigInte
                 variables,
                 invocation: data.meta.startup_command,
                 dockerImages: data.meta.docker_images || {},
-                eggChangeAllowed: data.meta.egg_change_allowed || false,
+                eggChangeMode: toEggChangeMode(data.meta.egg_change_mode),
                 nests: data.meta.nests || undefined,
                 currentEggId: data.meta.current_egg_id || undefined,
                 currentNestId: data.meta.current_nest_id || undefined,
