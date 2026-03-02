@@ -32,7 +32,7 @@ const StartupContainer = () => {
             invocation: server.data!.invocation,
             dockerImage: server.data!.dockerImage,
         }),
-        isEqual
+        isEqual,
     );
 
     const { data, error, isValidating, mutate } = getServerStartup(uuid, {
@@ -87,7 +87,7 @@ const StartupContainer = () => {
                 })
                 .then(() => setLoading(false));
         },
-        [uuid]
+        [uuid],
     );
 
     const handleEggChange = useCallback(
@@ -111,7 +111,7 @@ const StartupContainer = () => {
                             currentEggId: response.currentEggId,
                             currentNestId: response.currentNestId,
                         }),
-                        false
+                        false,
                     );
                     // Fix: also update dockerImage so the Docker image section reflects the new egg
                     setServerFromState((s) => ({
@@ -127,7 +127,7 @@ const StartupContainer = () => {
                 })
                 .then(() => setEggLoading(false));
         },
-        [uuid]
+        [uuid],
     );
 
     // Handle nest group change:
@@ -140,7 +140,7 @@ const StartupContainer = () => {
                 handleEggChange(nest.eggs[0].id);
             }
         },
-        [data, handleEggChange]
+        [data, handleEggChange],
     );
 
     const eggChangeMode = data?.eggChangeMode;
@@ -224,13 +224,13 @@ const StartupContainer = () => {
                                             value={data.currentEggId}
                                             onChange={(e) => handleEggChange(parseInt(e.currentTarget.value))}
                                         >
-                                            {(currentNest || data.nests!.find((n) => n.id === data.currentNestId))?.eggs.map(
-                                                (egg) => (
-                                                    <option key={egg.id} value={egg.id}>
-                                                        {egg.name}
-                                                    </option>
-                                                )
-                                            )}
+                                            {(
+                                                currentNest || data.nests!.find((n) => n.id === data.currentNestId)
+                                            )?.eggs.map((egg) => (
+                                                <option key={egg.id} value={egg.id}>
+                                                    {egg.name}
+                                                </option>
+                                            ))}
                                         </Select>
                                     </div>
                                 )}
