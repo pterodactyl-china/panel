@@ -210,7 +210,7 @@ export default ({ initialCron, onChange }: Props) => {
 
     return (
         <div css={tw`mt-6`}>
-            <div css={tw`flex flex-wrap items-center gap-2`}>
+            <div css={tw`flex items-center gap-2 mb-3`}>
                 <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>执行频率</span>
                 <Select
                     value={frequency}
@@ -223,8 +223,9 @@ export default ({ initialCron, onChange }: Props) => {
                     <option value={'weekly'}>每周</option>
                     <option value={'monthly'}>每月</option>
                 </Select>
-                <span css={tw`text-neutral-500 text-sm mx-1`}>|</span>
+            </div>
 
+            <div css={tw`flex flex-wrap items-center gap-2`}>
                 {frequency === 'minutely' && (
                     <>
                         <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>每</span>
@@ -265,7 +266,7 @@ export default ({ initialCron, onChange }: Props) => {
                         >
                             {range(0, 59).map((m) => (
                                 <option key={m} value={m}>
-                                    {m}
+                                    {String(m).padStart(2, '0')}
                                 </option>
                             ))}
                         </Select>
@@ -279,7 +280,7 @@ export default ({ initialCron, onChange }: Props) => {
                         <Select value={dayHour} onChange={(e) => setDayHour(Number(e.target.value))} css={tw`w-auto`}>
                             {range(0, 23).map((h) => (
                                 <option key={h} value={h}>
-                                    {h}
+                                    {String(h).padStart(2, '0')}
                                 </option>
                             ))}
                         </Select>
@@ -291,7 +292,7 @@ export default ({ initialCron, onChange }: Props) => {
                         >
                             {range(0, 59).map((m) => (
                                 <option key={m} value={m}>
-                                    {m}
+                                    {String(m).padStart(2, '0')}
                                 </option>
                             ))}
                         </Select>
@@ -312,7 +313,7 @@ export default ({ initialCron, onChange }: Props) => {
                         <Select value={weekHour} onChange={(e) => setWeekHour(Number(e.target.value))} css={tw`w-auto`}>
                             {range(0, 23).map((h) => (
                                 <option key={h} value={h}>
-                                    {h}
+                                    {String(h).padStart(2, '0')}
                                 </option>
                             ))}
                         </Select>
@@ -324,7 +325,7 @@ export default ({ initialCron, onChange }: Props) => {
                         >
                             {range(0, 59).map((m) => (
                                 <option key={m} value={m}>
-                                    {m}
+                                    {String(m).padStart(2, '0')}
                                 </option>
                             ))}
                         </Select>
@@ -350,7 +351,7 @@ export default ({ initialCron, onChange }: Props) => {
                         >
                             {range(0, 23).map((h) => (
                                 <option key={h} value={h}>
-                                    {h}
+                                    {String(h).padStart(2, '0')}
                                 </option>
                             ))}
                         </Select>
@@ -362,7 +363,7 @@ export default ({ initialCron, onChange }: Props) => {
                         >
                             {range(0, 59).map((m) => (
                                 <option key={m} value={m}>
-                                    {m}
+                                    {String(m).padStart(2, '0')}
                                 </option>
                             ))}
                         </Select>

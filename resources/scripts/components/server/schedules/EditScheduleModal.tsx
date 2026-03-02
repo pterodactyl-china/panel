@@ -95,15 +95,6 @@ const EditScheduleModal = ({ schedule }: Props) => {
                     <h3 css={tw`text-2xl mb-6`}>{schedule ? '编辑计划' : '创建新计划'}</h3>
                     <FlashMessageRender byKey={'schedule:edit'} css={tw`mb-6`} />
                     <Field name={'name'} label={'计划名'} description={'此计划的名字'} />
-                    <div css={tw`mt-6 bg-neutral-700 border border-neutral-800 shadow-inner p-4 rounded`}>
-                        <Switch
-                            name={'simple_mode'}
-                            description={simpleMode ? '使用简单的时间选择器设置执行频率' : '直接编辑 Cron 表达式'}
-                            label={simpleMode ? '简单模式' : '高级模式'}
-                            defaultChecked={simpleMode}
-                            onChange={() => setSimpleMode((s) => !s)}
-                        />
-                    </div>
                     {simpleMode ? (
                         <ScheduleSimpleForm
                             initialCron={{
@@ -150,6 +141,15 @@ const EditScheduleModal = ({ schedule }: Props) => {
                             </div>
                         </>
                     )}
+                    <div css={tw`mt-6 bg-neutral-700 border border-neutral-800 shadow-inner p-4 rounded`}>
+                        <Switch
+                            name={'simple_mode'}
+                            description={simpleMode ? '使用简单的时间选择器设置执行频率' : '直接编辑 Cron 表达式'}
+                            label={simpleMode ? '简单模式' : '高级模式'}
+                            defaultChecked={simpleMode}
+                            onChange={() => setSimpleMode((s) => !s)}
+                        />
+                    </div>
                     <div css={tw`mt-6 bg-neutral-700 border border-neutral-800 shadow-inner p-4 rounded`}>
                         <FormikSwitch
                             name={'onlyWhenOnline'}
