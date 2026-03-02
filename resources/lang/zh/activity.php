@@ -120,6 +120,7 @@ return [
         'startup' => [
             'edit' => '将 :variable 变量从 ":old" 更改为 ":new"',
             'image' => '将服务器的 Docker 映像从 :old 更新为 :new',
+            'egg-change' => '将服务器预设从 :old 更改为 :new',
         ],
         'subuser' => [
             'create' => '将 :email 添加为子用户',

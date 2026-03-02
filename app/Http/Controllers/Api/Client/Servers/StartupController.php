@@ -130,6 +130,8 @@ class StartupController extends ClientApiController
         $egg = Egg::query()->findOrFail($request->input('egg_id'));
 
         $originalEggId = $server->egg_id;
+        $server->loadMissing('egg');
+        $originalEggName = $server->egg?->name ?? (string) $originalEggId;
 
         $server->forceFill([
             'egg_id' => $egg->id,
@@ -139,7 +141,7 @@ class StartupController extends ClientApiController
 
         if ($originalEggId !== $egg->id) {
             Activity::event('server:startup.egg-change')
-                ->property(['old' => $originalEggId, 'new' => $egg->id])
+                ->property(['old' => $originalEggName, 'new' => $egg->name])
                 ->log();
         }
 

@@ -120,6 +120,7 @@ return [
         'startup' => [
             'edit' => 'Changed the :variable variable from ":old" to ":new"',
             'image' => 'Updated the Docker Image for the server from :old to :new',
+            'egg-change' => 'Changed the server preset from :old to :new',
         ],
         'subuser' => [
             'create' => 'Added :email as a subuser',
