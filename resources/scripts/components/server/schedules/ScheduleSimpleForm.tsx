@@ -22,8 +22,7 @@ const MINUTE_INTERVALS = [1, 2, 5, 10, 15, 20, 30];
 const HOUR_INTERVALS = [1, 2, 3, 4, 6, 8, 12];
 const DAYS_OF_WEEK = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
 
-const range = (start: number, end: number): number[] =>
-    Array.from({ length: end - start + 1 }, (_, i) => start + i);
+const range = (start: number, end: number): number[] => Array.from({ length: end - start + 1 }, (_, i) => start + i);
 
 const parseInitialState = (
     cron?: CronValues
@@ -63,7 +62,11 @@ const parseInitialState = (
     // minutely: */X * * * *
     if (minuteMatch && cron.hour === '*' && cron.dayOfMonth === '*' && cron.month === '*' && cron.dayOfWeek === '*') {
         const interval = Number(minuteMatch[1]);
-        return { ...defaults, frequency: 'minutely', minuteInterval: MINUTE_INTERVALS.includes(interval) ? interval : 5 };
+        return {
+            ...defaults,
+            frequency: 'minutely',
+            minuteInterval: MINUTE_INTERVALS.includes(interval) ? interval : 5,
+        };
     }
 
     // hourly: M */H * * * or M * * * *
@@ -252,11 +255,7 @@ export default ({ initialCron, onChange }: Props) => {
                         ))}
                     </Select>
                     <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>小时，在第</span>
-                    <Select
-                        value={hourOffset}
-                        onChange={(e) => setHourOffset(Number(e.target.value))}
-                        css={tw`w-auto`}
-                    >
+                    <Select value={hourOffset} onChange={(e) => setHourOffset(Number(e.target.value))} css={tw`w-auto`}>
                         {range(0, 59).map((m) => (
                             <option key={m} value={m}>
                                 {m}
@@ -322,11 +321,7 @@ export default ({ initialCron, onChange }: Props) => {
                 <>
                     <div css={tw`flex items-center gap-2`}>
                         <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>每月</span>
-                        <Select
-                            value={monthDay}
-                            onChange={(e) => setMonthDay(Number(e.target.value))}
-                            css={tw`w-auto`}
-                        >
+                        <Select value={monthDay} onChange={(e) => setMonthDay(Number(e.target.value))} css={tw`w-auto`}>
                             {range(1, 31).map((d) => (
                                 <option key={d} value={d}>
                                     {d}
