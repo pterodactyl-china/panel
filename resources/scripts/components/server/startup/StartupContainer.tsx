@@ -218,7 +218,7 @@ const StartupContainer = () => {
                                     </div>
                                 )}
                                 {showEggDropdown && (
-                                    <div css={tw`flex-1 ${showNestDropdown ? 'mt-4 md:mt-0' : ''}`}>
+                                    <div css={[tw`flex-1`, showNestDropdown && tw`mt-4 md:mt-0`]}>
                                         <label css={tw`block text-xs text-neutral-300 mb-1`}>预设</label>
                                         <Select
                                             value={data.currentEggId}
