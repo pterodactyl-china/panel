@@ -85,6 +85,65 @@ class CreateNewAllocationTest extends ClientApiIntegrationTestCase
             ->assertJsonPath('errors.0.detail', 'Cannot assign additional allocations to this server: limit has been reached.');
     }
 
+    /**
+     * Test that consecutive allocations can be created when the feature is enabled.
+     */
+    public function testConsecutiveAllocationsCanBeCreated()
+    {
+        config()->set('pterodactyl.client_features.allocations.consecutive.enabled', true);
+        config()->set('pterodactyl.client_features.allocations.consecutive.limit', 3);
+
+        /** @var \Pterodactyl\Models\Server $server */
+        [$user, $server] = $this->generateTestAccount();
+        $server->update(['allocation_limit' => 5]);
+
+        $response = $this->actingAs($user)->postJson($this->link($server, '/network/allocations'), ['count' => 2]);
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonPath('object', 'list');
+
+        $data = $response->json('data');
+        $this->assertCount(2, $data);
+
+        $ports = array_map(fn ($item) => $item['attributes']['port'], $data);
+        sort($ports);
+        $this->assertSame($ports[1], $ports[0] + 1, 'Returned ports must be consecutive.');
+    }
+
+    /**
+     * Test that requesting consecutive allocations fails when the feature is disabled.
+     */
+    public function testConsecutiveAllocationFailsWhenFeatureNotEnabled()
+    {
+        config()->set('pterodactyl.client_features.allocations.consecutive.enabled', false);
+
+        /** @var \Pterodactyl\Models\Server $server */
+        [$user, $server] = $this->generateTestAccount();
+        $server->update(['allocation_limit' => 5]);
+
+        $this->actingAs($user)->postJson($this->link($server, '/network/allocations'), ['count' => 2])
+            ->assertStatus(Response::HTTP_BAD_REQUEST)
+            ->assertJsonPath('errors.0.code', 'DisplayException')
+            ->assertJsonPath('errors.0.detail', '连续端口分配功能未启用。');
+    }
+
+    /**
+     * Test that requesting more consecutive allocations than the configured limit fails.
+     */
+    public function testConsecutiveAllocationFailsWhenCountExceedsLimit()
+    {
+        config()->set('pterodactyl.client_features.allocations.consecutive.enabled', true);
+        config()->set('pterodactyl.client_features.allocations.consecutive.limit', 3);
+
+        /** @var \Pterodactyl\Models\Server $server */
+        [$user, $server] = $this->generateTestAccount();
+        $server->update(['allocation_limit' => 10]);
+
+        $this->actingAs($user)->postJson($this->link($server, '/network/allocations'), ['count' => 5])
+            ->assertStatus(Response::HTTP_BAD_REQUEST)
+            ->assertJsonPath('errors.0.code', 'DisplayException')
+            ->assertJsonPath('errors.0.detail', '最多只能请求 3 个连续端口。');
+    }
+
     public static function permissionDataProvider(): array
     {
         return [[[Permission::ACTION_ALLOCATION_CREATE]], [[]]];

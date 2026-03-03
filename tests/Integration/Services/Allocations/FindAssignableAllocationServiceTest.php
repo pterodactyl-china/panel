@@ -167,6 +167,132 @@ class FindAssignableAllocationServiceTest extends IntegrationTestCase
         $this->getService()->handle($server);
     }
 
+    /**
+     * Test that handleMultiple finds and assigns consecutive existing unassigned allocations.
+     */
+    public function testHandleMultipleFindsExistingConsecutiveAllocations()
+    {
+        $server = $this->createServerModel();
+
+        // Create consecutive unassigned allocations.
+        Allocation::factory()->create([
+            'node_id' => $server->node_id,
+            'ip' => $server->allocation->ip,
+            'port' => 6000,
+        ]);
+        Allocation::factory()->create([
+            'node_id' => $server->node_id,
+            'ip' => $server->allocation->ip,
+            'port' => 6001,
+        ]);
+        Allocation::factory()->create([
+            'node_id' => $server->node_id,
+            'ip' => $server->allocation->ip,
+            'port' => 6002,
+        ]);
+
+        $result = $this->getService()->handleMultiple($server, 2);
+
+        $this->assertCount(2, $result);
+        $ports = array_map(fn ($a) => $a->port, $result);
+        sort($ports);
+        $this->assertSame(6000, $ports[0]);
+        $this->assertSame(6001, $ports[1]);
+
+        foreach ($result as $allocation) {
+            $this->assertSame($server->id, $allocation->server_id);
+        }
+    }
+
+    /**
+     * Test that handleMultiple creates new consecutive allocations from the configured range
+     * when no consecutive existing allocations are available.
+     */
+    public function testHandleMultipleCreatesNewConsecutiveAllocations()
+    {
+        $server = $this->createServerModel();
+        config()->set('pterodactyl.client_features.allocations.range_start', 7000);
+        config()->set('pterodactyl.client_features.allocations.range_end', 7010);
+
+        $result = $this->getService()->handleMultiple($server, 3);
+
+        $this->assertCount(3, $result);
+        $ports = array_map(fn ($a) => $a->port, $result);
+        sort($ports);
+        // Ports must be consecutive.
+        $this->assertSame($ports[1], $ports[0] + 1);
+        $this->assertSame($ports[2], $ports[0] + 2);
+
+        foreach ($result as $allocation) {
+            $this->assertSame($server->id, $allocation->server_id);
+            $this->assertSame($server->allocation->ip, $allocation->ip);
+        }
+    }
+
+    /**
+     * Test that handleMultiple skips non-consecutive gaps and finds the first valid block.
+     */
+    public function testHandleMultipleSkipsNonConsecutiveGaps()
+    {
+        $server = $this->createServerModel();
+        config()->set('pterodactyl.client_features.allocations.range_start', 8000);
+        config()->set('pterodactyl.client_features.allocations.range_end', 8010);
+
+        // Occupy 8000 so 8001-8003 is the first consecutive block.
+        Allocation::factory()->create([
+            'node_id' => $server->node_id,
+            'ip' => $server->allocation->ip,
+            'port' => 8000,
+            'server_id' => $server->id,
+        ]);
+
+        $result = $this->getService()->handleMultiple($server, 3);
+
+        $this->assertCount(3, $result);
+        $ports = array_map(fn ($a) => $a->port, $result);
+        sort($ports);
+        $this->assertSame(8001, $ports[0]);
+        $this->assertSame(8002, $ports[1]);
+        $this->assertSame(8003, $ports[2]);
+    }
+
+    /**
+     * Test that handleMultiple throws when no consecutive block is available.
+     */
+    public function testHandleMultipleThrowsWhenNoConsecutiveBlockAvailable()
+    {
+        $server = $this->createServerModel();
+        config()->set('pterodactyl.client_features.allocations.range_start', 9000);
+        config()->set('pterodactyl.client_features.allocations.range_end', 9004);
+
+        // Occupy every other port so no 3 consecutive ports exist: 9000, 9002, 9004 taken.
+        foreach ([9000, 9002, 9004] as $port) {
+            Allocation::factory()->create([
+                'node_id' => $server->node_id,
+                'ip' => $server->allocation->ip,
+                'port' => $port,
+                'server_id' => $server->id,
+            ]);
+        }
+
+        $this->expectException(NoAutoAllocationSpaceAvailableException::class);
+
+        $this->getService()->handleMultiple($server, 3);
+    }
+
+    /**
+     * Test that handleMultiple throws when the auto-allocation feature is not enabled.
+     */
+    public function testHandleMultipleThrowsWhenFeatureNotEnabled()
+    {
+        config()->set('pterodactyl.client_features.allocations.enabled', false);
+        $server = $this->createServerModel();
+
+        $this->expectException(AutoAllocationNotEnabledException::class);
+
+        $this->getService()->handleMultiple($server, 2);
+    }
+
     private function getService(): FindAssignableAllocationService
     {
         return $this->app->make(FindAssignableAllocationService::class);

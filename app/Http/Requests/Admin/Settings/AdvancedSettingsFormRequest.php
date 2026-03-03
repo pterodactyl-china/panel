@@ -34,6 +34,13 @@ class AdvancedSettingsFormRequest extends AdminFormRequest
                 'between:1024,65535',
                 'gt:pterodactyl:client_features:allocations:range_start',
             ],
+            'pterodactyl:client_features:allocations:consecutive:enabled' => 'required|in:true,false',
+            'pterodactyl:client_features:allocations:consecutive:limit' => [
+                'nullable',
+                'required_if:pterodactyl:client_features:allocations:consecutive:enabled,true',
+                'integer',
+                'between:2,10',
+            ],
             'pterodactyl:client_features:egg_change:mode' => 'required|in:disabled,egg_only,both',
         ];
     }
@@ -52,6 +59,8 @@ class AdvancedSettingsFormRequest extends AdminFormRequest
             'pterodactyl:client_features:allocations:enabled' => 'Auto Create Allocations Enabled',
             'pterodactyl:client_features:allocations:range_start' => 'Starting Port',
             'pterodactyl:client_features:allocations:range_end' => 'Ending Port',
+            'pterodactyl:client_features:allocations:consecutive:enabled' => 'Consecutive Allocations Enabled',
+            'pterodactyl:client_features:allocations:consecutive:limit' => 'Consecutive Allocations Limit',
             'pterodactyl:client_features:egg_change:mode' => 'Allow Egg Change Mode',
         ];
     }

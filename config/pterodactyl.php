@@ -118,6 +118,10 @@ return [
             'enabled' => env('PTERODACTYL_CLIENT_ALLOCATIONS_ENABLED', false),
             'range_start' => env('PTERODACTYL_CLIENT_ALLOCATIONS_RANGE_START'),
             'range_end' => env('PTERODACTYL_CLIENT_ALLOCATIONS_RANGE_END'),
+            'consecutive' => [
+                'enabled' => env('PTERODACTYL_CLIENT_ALLOCATIONS_CONSECUTIVE_ENABLED', false),
+                'limit' => env('PTERODACTYL_CLIENT_ALLOCATIONS_CONSECUTIVE_LIMIT', 3),
+            ],
         ],
 
         'egg_change' => [

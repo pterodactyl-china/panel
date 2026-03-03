@@ -37,6 +37,10 @@ class AssetComposer
                 'record' => config('icp.record') ?? '',
                 'security_record' => config('icp.security_record') ?? '',
             ],
+            'allocations' => [
+                'consecutiveEnabled' => config('pterodactyl.client_features.allocations.consecutive.enabled', false),
+                'consecutiveLimit' => (int) config('pterodactyl.client_features.allocations.consecutive.limit', 3),
+            ],
         ]);
     }
 }

@@ -11,4 +11,11 @@ class NewAllocationRequest extends ClientApiRequest
     {
         return Permission::ACTION_ALLOCATION_CREATE;
     }
+
+    public function rules(): array
+    {
+        return [
+            'count' => 'sometimes|integer|min:1|max:10',
+        ];
+    }
 }

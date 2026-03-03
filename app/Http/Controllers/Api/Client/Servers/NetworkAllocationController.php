@@ -94,19 +94,44 @@ class NetworkAllocationController extends ClientApiController
      */
     public function store(NewAllocationRequest $request, Server $server): array
     {
-        $allocation = Activity::event('server:allocation.create')->transaction(function ($log) use ($server) {
-            if ($server->allocations()->lockForUpdate()->count() >= $server->allocation_limit) {
+        $count = (int) $request->input('count', 1);
+
+        if ($count > 1) {
+            if (!config('pterodactyl.client_features.allocations.consecutive.enabled')) {
+                throw new DisplayException('连续端口分配功能未启用。');
+            }
+
+            $limit = (int) config('pterodactyl.client_features.allocations.consecutive.limit', 3);
+            if ($count > $limit) {
+                throw new DisplayException("最多只能请求 {$limit} 个连续端口。");
+            }
+        }
+
+        $result = Activity::event('server:allocation.create')->transaction(function ($log) use ($server, $count) {
+            if ($server->allocations()->lockForUpdate()->count() + $count > $server->allocation_limit) {
                 throw new DisplayException('Cannot assign additional allocations to this server: limit has been reached.');
             }
 
-            $allocation = $this->assignableAllocationService->handle($server);
+            if ($count > 1) {
+                $allocations = $this->assignableAllocationService->handleMultiple($server, $count);
+                $log->subject($allocations[0])->property('allocation', implode(', ', array_map(fn ($a) => $a->toString(), $allocations)));
 
+                return $allocations;
+            }
+
+            $allocation = $this->assignableAllocationService->handle($server);
             $log->subject($allocation)->property('allocation', $allocation->toString());
 
             return $allocation;
         });
 
-        return $this->fractal->item($allocation)
+        if (is_array($result)) {
+            return $this->fractal->collection($result)
+                ->transformWith($this->getTransformer(AllocationTransformer::class))
+                ->toArray();
+        }
+
+        return $this->fractal->item($result)
             ->transformWith($this->getTransformer(AllocationTransformer::class))
             ->toArray();
     }
