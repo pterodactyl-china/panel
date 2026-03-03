@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components/macro';
 import Select from '@/components/elements/Select';
 import tw from 'twin.macro';
 
@@ -23,184 +22,6 @@ const range = (start: number, end: number): number[] => Array.from({ length: end
 const MINUTE_INTERVALS = range(1, 59);
 const HOUR_INTERVALS = range(1, 23);
 const DAYS_OF_WEEK = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-
-// ─── Drum / wheel picker ──────────────────────────────────────────────────────
-
-const ITEM_HEIGHT = 36; // px — height of each row in the wheel
-const SCROLL_THRESHOLD = 2; // px — tolerance to skip no-op smooth-scrolls
-const SCROLL_DEBOUNCE_MS = 100; // ms — wait after last scroll event before snapping
-const SCROLL_END_DELAY_MS = 250; // ms — how long after snapping before accepting external updates
-
-// neutral-600 = hsl(209, 14%, 37%) — must match TimePickerBox background
-const BG_COLOR = 'hsl(209, 14%, 37%)';
-
-const WheelOuter = styled.div`
-    position: relative;
-    height: ${ITEM_HEIGHT * 3}px;
-    width: 2.75rem;
-    overflow: hidden;
-    flex-shrink: 0;
-    /* gradient fades that dissolve items into the background */
-    &::before,
-    &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        height: ${ITEM_HEIGHT}px;
-        pointer-events: none;
-        z-index: 2;
-    }
-    &::before {
-        top: 0;
-        background: linear-gradient(to bottom, ${BG_COLOR}, transparent);
-    }
-    &::after {
-        bottom: 0;
-        background: linear-gradient(to top, ${BG_COLOR}, transparent);
-    }
-`;
-
-const WheelHighlight = styled.div`
-    position: absolute;
-    top: ${ITEM_HEIGHT}px;
-    left: 0;
-    right: 0;
-    height: ${ITEM_HEIGHT}px;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    background: rgba(255, 255, 255, 0.06);
-    pointer-events: none;
-    z-index: 1;
-`;
-
-const WheelScroll = styled.ul`
-    height: ${ITEM_HEIGHT * 3}px;
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
-    scrollbar-width: none;
-    list-style: none;
-    padding: ${ITEM_HEIGHT}px 0;
-    margin: 0;
-    &::-webkit-scrollbar {
-        display: none;
-    }
-`;
-
-const WheelItem = styled.li`
-    height: ${ITEM_HEIGHT}px;
-    line-height: ${ITEM_HEIGHT}px;
-    text-align: center;
-    scroll-snap-align: center;
-    cursor: pointer;
-    font-size: 0.875rem;
-    user-select: none;
-    ${tw`text-neutral-200`};
-`;
-
-interface WheelPickerProps {
-    items: string[];
-    /** selected index (= numeric value for 0-based sequences) */
-    value: number;
-    onChange: (index: number) => void;
-}
-
-const WheelPicker = ({ items, value, onChange }: WheelPickerProps) => {
-    const listRef = useRef<HTMLUListElement>(null);
-    const scrollTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-    const endTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-    const userScrolling = useRef(false);
-    const hasMounted = useRef(false);
-
-    // On first render: jump directly (no animation). On subsequent value changes
-    // from outside while the user is not scrolling: smooth-scroll to the new position.
-    useEffect(() => {
-        if (!listRef.current) return;
-        if (!hasMounted.current) {
-            listRef.current.scrollTop = value * ITEM_HEIGHT;
-            hasMounted.current = true;
-        } else if (!userScrolling.current) {
-            const target = value * ITEM_HEIGHT;
-            if (Math.abs(listRef.current.scrollTop - target) > SCROLL_THRESHOLD) {
-                listRef.current.scrollTo({ top: target, behavior: 'smooth' });
-            }
-        }
-    }, [value]);
-
-    // Clean up pending timers on unmount to prevent setState after unmount.
-    useEffect(
-        () => () => {
-            clearTimeout(scrollTimer.current);
-            clearTimeout(endTimer.current);
-        },
-        []
-    );
-
-    const handleScroll = () => {
-        userScrolling.current = true;
-        clearTimeout(scrollTimer.current);
-        scrollTimer.current = setTimeout(() => {
-            scrollTimer.current = undefined;
-            if (!listRef.current) return;
-            const index = Math.round(listRef.current.scrollTop / ITEM_HEIGHT);
-            const clamped = Math.max(0, Math.min(index, items.length - 1));
-            // Snap to the nearest item
-            listRef.current.scrollTo({ top: clamped * ITEM_HEIGHT, behavior: 'smooth' });
-            if (clamped !== value) onChange(clamped);
-            clearTimeout(endTimer.current);
-            endTimer.current = setTimeout(() => {
-                endTimer.current = undefined;
-                userScrolling.current = false;
-            }, SCROLL_END_DELAY_MS);
-        }, SCROLL_DEBOUNCE_MS);
-    };
-
-    return (
-        <WheelOuter>
-            <WheelHighlight />
-            <WheelScroll ref={listRef} onScroll={handleScroll}>
-                {items.map((item, i) => (
-                    <WheelItem
-                        key={item}
-                        onClick={() => {
-                            onChange(i);
-                            listRef.current?.scrollTo({ top: i * ITEM_HEIGHT, behavior: 'smooth' });
-                        }}
-                    >
-                        {item}
-                    </WheelItem>
-                ))}
-            </WheelScroll>
-        </WheelOuter>
-    );
-};
-
-const TimePickerBox = styled.div`
-    display: inline-flex;
-    align-items: center;
-    flex-shrink: 0;
-    padding: 0 0.5rem;
-    ${tw`bg-neutral-600 border border-neutral-500 rounded`};
-`;
-
-const HOURS = range(0, 23).map((h) => String(h).padStart(2, '0'));
-const MINS = range(0, 59).map((m) => String(m).padStart(2, '0'));
-
-interface TimePickerProps {
-    hour: number;
-    minute: number;
-    onHourChange: (h: number) => void;
-    onMinuteChange: (m: number) => void;
-}
-
-/** HH:MM drum-wheel picker */
-const TimePicker = ({ hour, minute, onHourChange, onMinuteChange }: TimePickerProps) => (
-    <TimePickerBox>
-        <WheelPicker items={HOURS} value={hour} onChange={onHourChange} />
-        <span css={tw`text-neutral-300 text-sm font-semibold px-1 select-none`}>:</span>
-        <WheelPicker items={MINS} value={minute} onChange={onMinuteChange} />
-    </TimePickerBox>
-);
 
 const parseInitialState = (
     cron?: CronValues
@@ -454,13 +275,30 @@ export default ({ initialCron, onChange }: Props) => {
                 {frequency === 'daily' && (
                     <>
                         <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>每天</span>
-                        <TimePicker
-                            hour={dayHour}
-                            minute={dayMinute}
-                            onHourChange={setDayHour}
-                            onMinuteChange={setDayMinute}
-                        />
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>执行</span>
+                        <Select
+                            value={dayHour}
+                            onChange={(e) => setDayHour(Number(e.target.value))}
+                            css={tw`w-auto min-w-0 shrink`}
+                        >
+                            {range(0, 23).map((h) => (
+                                <option key={h} value={h}>
+                                    {String(h).padStart(2, '0')}
+                                </option>
+                            ))}
+                        </Select>
+                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>时</span>
+                        <Select
+                            value={dayMinute}
+                            onChange={(e) => setDayMinute(Number(e.target.value))}
+                            css={tw`w-auto min-w-0 shrink`}
+                        >
+                            {range(0, 59).map((m) => (
+                                <option key={m} value={m}>
+                                    {String(m).padStart(2, '0')}
+                                </option>
+                            ))}
+                        </Select>
+                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>分执行一次</span>
                     </>
                 )}
 
@@ -478,13 +316,30 @@ export default ({ initialCron, onChange }: Props) => {
                                 </option>
                             ))}
                         </Select>
-                        <TimePicker
-                            hour={weekHour}
-                            minute={weekMinute}
-                            onHourChange={setWeekHour}
-                            onMinuteChange={setWeekMinute}
-                        />
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>执行</span>
+                        <Select
+                            value={weekHour}
+                            onChange={(e) => setWeekHour(Number(e.target.value))}
+                            css={tw`w-auto min-w-0 shrink`}
+                        >
+                            {range(0, 23).map((h) => (
+                                <option key={h} value={h}>
+                                    {String(h).padStart(2, '0')}
+                                </option>
+                            ))}
+                        </Select>
+                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>时</span>
+                        <Select
+                            value={weekMinute}
+                            onChange={(e) => setWeekMinute(Number(e.target.value))}
+                            css={tw`w-auto min-w-0 shrink`}
+                        >
+                            {range(0, 59).map((m) => (
+                                <option key={m} value={m}>
+                                    {String(m).padStart(2, '0')}
+                                </option>
+                            ))}
+                        </Select>
+                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>分执行一次</span>
                     </>
                 )}
 
@@ -503,13 +358,30 @@ export default ({ initialCron, onChange }: Props) => {
                             ))}
                         </Select>
                         <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>日</span>
-                        <TimePicker
-                            hour={monthHour}
-                            minute={monthMinute}
-                            onHourChange={setMonthHour}
-                            onMinuteChange={setMonthMinute}
-                        />
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>执行</span>
+                        <Select
+                            value={monthHour}
+                            onChange={(e) => setMonthHour(Number(e.target.value))}
+                            css={tw`w-auto min-w-0 shrink`}
+                        >
+                            {range(0, 23).map((h) => (
+                                <option key={h} value={h}>
+                                    {String(h).padStart(2, '0')}
+                                </option>
+                            ))}
+                        </Select>
+                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>时</span>
+                        <Select
+                            value={monthMinute}
+                            onChange={(e) => setMonthMinute(Number(e.target.value))}
+                            css={tw`w-auto min-w-0 shrink`}
+                        >
+                            {range(0, 59).map((m) => (
+                                <option key={m} value={m}>
+                                    {String(m).padStart(2, '0')}
+                                </option>
+                            ))}
+                        </Select>
+                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>分执行一次</span>
                     </>
                 )}
             </div>
