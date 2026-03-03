@@ -211,7 +211,7 @@ export default ({ initialCron, onChange }: Props) => {
     return (
         <div css={tw`mt-6`}>
             <div css={tw`flex flex-wrap items-center gap-x-3 gap-y-2`}>
-            <div css={tw`flex items-center gap-2`}>
+            <div css={tw`flex flex-wrap items-center gap-2`}>
                 <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>执行频率</span>
                 <Select
                     value={frequency}
@@ -227,7 +227,7 @@ export default ({ initialCron, onChange }: Props) => {
             </div>
 
             {frequency === 'minutely' && (
-                <div css={tw`flex items-center gap-2`}>
+                <div css={tw`flex flex-wrap items-center gap-2`}>
                     <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>每</span>
                     <Select
                         value={minuteInterval}
@@ -245,7 +245,7 @@ export default ({ initialCron, onChange }: Props) => {
             )}
 
             {frequency === 'hourly' && (
-                <div css={tw`flex items-center gap-2`}>
+                <div css={tw`flex flex-wrap items-center gap-2`}>
                     <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>每</span>
                     <Select
                         value={hourInterval}
@@ -275,7 +275,7 @@ export default ({ initialCron, onChange }: Props) => {
             )}
 
             {frequency === 'daily' && (
-                <div css={tw`flex items-center gap-2`}>
+                <div css={tw`flex flex-wrap items-center gap-2`}>
                     <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>每天</span>
                     <Select value={dayHour} onChange={(e) => setDayHour(Number(e.target.value))} css={tw`w-auto`}>
                         {range(0, 23).map((h) => (
@@ -301,7 +301,7 @@ export default ({ initialCron, onChange }: Props) => {
             )}
 
             {frequency === 'weekly' && (
-                <div css={tw`flex items-center gap-2`}>
+                <div css={tw`flex flex-wrap items-center gap-2`}>
                     <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>每</span>
                     <Select value={weekDay} onChange={(e) => setWeekDay(Number(e.target.value))} css={tw`w-auto`}>
                         {DAYS_OF_WEEK.map((day, i) => (
@@ -334,7 +334,7 @@ export default ({ initialCron, onChange }: Props) => {
             )}
 
             {frequency === 'monthly' && (
-                <div css={tw`flex items-center gap-2`}>
+                <div css={tw`flex flex-wrap items-center gap-2`}>
                     <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>每月</span>
                     <Select value={monthDay} onChange={(e) => setMonthDay(Number(e.target.value))} css={tw`w-auto`}>
                         {range(1, 31).map((d) => (
