@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Select from '@/components/elements/Select';
+import Label from '@/components/elements/Label';
 import tw from 'twin.macro';
 
 type FrequencyType = 'minutely' | 'hourly' | 'daily' | 'weekly' | 'monthly';
@@ -208,180 +209,125 @@ export default ({ initialCron, onChange }: Props) => {
         monthMinute,
     ]);
 
+    const currentHour = frequency === 'daily' ? dayHour : frequency === 'weekly' ? weekHour : monthHour;
+    const currentMinute = frequency === 'daily' ? dayMinute : frequency === 'weekly' ? weekMinute : monthMinute;
+
     return (
         <div css={tw`mt-6`}>
-            <div css={tw`flex flex-wrap items-center gap-x-3 gap-y-2`}>
-                <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>执行频率</span>
-                <Select
-                    value={frequency}
-                    onChange={(e) => setFrequency(e.target.value as FrequencyType)}
-                    css={tw`w-auto min-w-0 shrink`}
-                >
-                    <option value={'minutely'}>按分钟</option>
-                    <option value={'hourly'}>按小时</option>
-                    <option value={'daily'}>每天</option>
-                    <option value={'weekly'}>每周</option>
-                    <option value={'monthly'}>每月</option>
-                </Select>
+            <div css={tw`grid grid-cols-2 sm:grid-cols-4 gap-4`}>
+                <div>
+                    <Label>执行频率</Label>
+                    <Select value={frequency} onChange={(e) => setFrequency(e.target.value as FrequencyType)}>
+                        <option value={'minutely'}>按分钟</option>
+                        <option value={'hourly'}>按小时</option>
+                        <option value={'daily'}>每天</option>
+                        <option value={'weekly'}>每周</option>
+                        <option value={'monthly'}>每月</option>
+                    </Select>
+                </div>
 
                 {frequency === 'minutely' && (
-                    <>
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>每</span>
-                        <Select
-                            value={minuteInterval}
-                            onChange={(e) => setMinuteInterval(Number(e.target.value))}
-                            css={tw`w-auto min-w-0 shrink`}
-                        >
+                    <div>
+                        <Label>间隔（分钟）</Label>
+                        <Select value={minuteInterval} onChange={(e) => setMinuteInterval(Number(e.target.value))}>
                             {MINUTE_INTERVALS.map((m) => (
                                 <option key={m} value={m}>
                                     {m}
                                 </option>
                             ))}
                         </Select>
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>分钟执行一次</span>
-                    </>
+                    </div>
                 )}
 
                 {frequency === 'hourly' && (
                     <>
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>每</span>
-                        <Select
-                            value={hourInterval}
-                            onChange={(e) => setHourInterval(Number(e.target.value))}
-                            css={tw`w-auto min-w-0 shrink`}
-                        >
-                            {HOUR_INTERVALS.map((h) => (
-                                <option key={h} value={h}>
-                                    {h}
-                                </option>
-                            ))}
-                        </Select>
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>小时，在第</span>
-                        <Select
-                            value={hourOffset}
-                            onChange={(e) => setHourOffset(Number(e.target.value))}
-                            css={tw`w-auto min-w-0 shrink`}
-                        >
-                            {range(0, 59).map((m) => (
-                                <option key={m} value={m}>
-                                    {String(m).padStart(2, '0')}
-                                </option>
-                            ))}
-                        </Select>
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>分执行一次</span>
-                    </>
-                )}
-
-                {frequency === 'daily' && (
-                    <>
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>每天</span>
-                        <Select
-                            value={dayHour}
-                            onChange={(e) => setDayHour(Number(e.target.value))}
-                            css={tw`w-auto min-w-0 shrink`}
-                        >
-                            {range(0, 23).map((h) => (
-                                <option key={h} value={h}>
-                                    {String(h).padStart(2, '0')}
-                                </option>
-                            ))}
-                        </Select>
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>时</span>
-                        <Select
-                            value={dayMinute}
-                            onChange={(e) => setDayMinute(Number(e.target.value))}
-                            css={tw`w-auto min-w-0 shrink`}
-                        >
-                            {range(0, 59).map((m) => (
-                                <option key={m} value={m}>
-                                    {String(m).padStart(2, '0')}
-                                </option>
-                            ))}
-                        </Select>
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>分执行一次</span>
+                        <div>
+                            <Label>间隔（小时）</Label>
+                            <Select value={hourInterval} onChange={(e) => setHourInterval(Number(e.target.value))}>
+                                {HOUR_INTERVALS.map((h) => (
+                                    <option key={h} value={h}>
+                                        {h}
+                                    </option>
+                                ))}
+                            </Select>
+                        </div>
+                        <div>
+                            <Label>偏移（分钟）</Label>
+                            <Select value={hourOffset} onChange={(e) => setHourOffset(Number(e.target.value))}>
+                                {range(0, 59).map((m) => (
+                                    <option key={m} value={m}>
+                                        {String(m).padStart(2, '0')}
+                                    </option>
+                                ))}
+                            </Select>
+                        </div>
                     </>
                 )}
 
                 {frequency === 'weekly' && (
-                    <>
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>每</span>
-                        <Select
-                            value={weekDay}
-                            onChange={(e) => setWeekDay(Number(e.target.value))}
-                            css={tw`w-auto min-w-0 shrink`}
-                        >
+                    <div>
+                        <Label>星期</Label>
+                        <Select value={weekDay} onChange={(e) => setWeekDay(Number(e.target.value))}>
                             {DAYS_OF_WEEK.map((day, i) => (
                                 <option key={i} value={i}>
                                     {day}
                                 </option>
                             ))}
                         </Select>
-                        <Select
-                            value={weekHour}
-                            onChange={(e) => setWeekHour(Number(e.target.value))}
-                            css={tw`w-auto min-w-0 shrink`}
-                        >
-                            {range(0, 23).map((h) => (
-                                <option key={h} value={h}>
-                                    {String(h).padStart(2, '0')}
-                                </option>
-                            ))}
-                        </Select>
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>时</span>
-                        <Select
-                            value={weekMinute}
-                            onChange={(e) => setWeekMinute(Number(e.target.value))}
-                            css={tw`w-auto min-w-0 shrink`}
-                        >
-                            {range(0, 59).map((m) => (
-                                <option key={m} value={m}>
-                                    {String(m).padStart(2, '0')}
-                                </option>
-                            ))}
-                        </Select>
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>分执行一次</span>
-                    </>
+                    </div>
                 )}
 
                 {frequency === 'monthly' && (
-                    <>
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>每月</span>
-                        <Select
-                            value={monthDay}
-                            onChange={(e) => setMonthDay(Number(e.target.value))}
-                            css={tw`w-auto min-w-0 shrink`}
-                        >
+                    <div>
+                        <Label>日期</Label>
+                        <Select value={monthDay} onChange={(e) => setMonthDay(Number(e.target.value))}>
                             {range(1, 31).map((d) => (
                                 <option key={d} value={d}>
                                     {d}
                                 </option>
                             ))}
                         </Select>
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>日</span>
-                        <Select
-                            value={monthHour}
-                            onChange={(e) => setMonthHour(Number(e.target.value))}
-                            css={tw`w-auto min-w-0 shrink`}
-                        >
-                            {range(0, 23).map((h) => (
-                                <option key={h} value={h}>
-                                    {String(h).padStart(2, '0')}
-                                </option>
-                            ))}
-                        </Select>
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>时</span>
-                        <Select
-                            value={monthMinute}
-                            onChange={(e) => setMonthMinute(Number(e.target.value))}
-                            css={tw`w-auto min-w-0 shrink`}
-                        >
-                            {range(0, 59).map((m) => (
-                                <option key={m} value={m}>
-                                    {String(m).padStart(2, '0')}
-                                </option>
-                            ))}
-                        </Select>
-                        <span css={tw`text-neutral-300 text-sm whitespace-nowrap`}>分执行一次</span>
+                    </div>
+                )}
+
+                {(frequency === 'daily' || frequency === 'weekly' || frequency === 'monthly') && (
+                    <>
+                        <div>
+                            <Label>小时</Label>
+                            <Select
+                                value={currentHour}
+                                onChange={(e) => {
+                                    const v = Number(e.target.value);
+                                    if (frequency === 'daily') setDayHour(v);
+                                    else if (frequency === 'weekly') setWeekHour(v);
+                                    else setMonthHour(v);
+                                }}
+                            >
+                                {range(0, 23).map((h) => (
+                                    <option key={h} value={h}>
+                                        {String(h).padStart(2, '0')}
+                                    </option>
+                                ))}
+                            </Select>
+                        </div>
+                        <div>
+                            <Label>分钟</Label>
+                            <Select
+                                value={currentMinute}
+                                onChange={(e) => {
+                                    const v = Number(e.target.value);
+                                    if (frequency === 'daily') setDayMinute(v);
+                                    else if (frequency === 'weekly') setWeekMinute(v);
+                                    else setMonthMinute(v);
+                                }}
+                            >
+                                {range(0, 59).map((m) => (
+                                    <option key={m} value={m}>
+                                        {String(m).padStart(2, '0')}
+                                    </option>
+                                ))}
+                            </Select>
+                        </div>
                     </>
                 )}
             </div>
