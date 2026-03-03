@@ -17,11 +17,11 @@ interface Props {
     onChange: (values: CronValues) => void;
 }
 
-const MINUTE_INTERVALS = [1, 2, 5, 10, 15, 20, 30];
-const HOUR_INTERVALS = [1, 2, 3, 4, 6, 8, 12];
-const DAYS_OF_WEEK = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-
 const range = (start: number, end: number): number[] => Array.from({ length: end - start + 1 }, (_, i) => start + i);
+
+const MINUTE_INTERVALS = range(1, 59);
+const HOUR_INTERVALS = range(1, 23);
+const DAYS_OF_WEEK = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
 
 const parseInitialState = (
     cron?: CronValues
@@ -64,7 +64,7 @@ const parseInitialState = (
         return {
             ...defaults,
             frequency: 'minutely',
-            minuteInterval: MINUTE_INTERVALS.includes(interval) ? interval : 5,
+            minuteInterval: interval >= 1 && interval <= 59 ? interval : 5,
         };
     }
 
@@ -84,7 +84,7 @@ const parseInitialState = (
             ...defaults,
             frequency: 'hourly',
             hourOffset: minuteNum,
-            hourInterval: HOUR_INTERVALS.includes(interval) ? interval : 1,
+            hourInterval: interval >= 1 && interval <= 23 ? interval : 1,
         };
     }
 
