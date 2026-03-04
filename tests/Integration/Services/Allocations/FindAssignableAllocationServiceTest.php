@@ -167,6 +167,93 @@ class FindAssignableAllocationServiceTest extends IntegrationTestCase
         $this->getService()->handle($server);
     }
 
+    /**
+     * Test that handleConsecutive returns the requested number of consecutive ports
+     * and assigns them all to the server.
+     */
+    public function testConsecutiveAllocationReturnsValidConsecutivePorts()
+    {
+        $server = $this->createServerModel();
+        config()->set('pterodactyl.client_features.allocations.range_start', 5000);
+        config()->set('pterodactyl.client_features.allocations.range_end', 5010);
+
+        $allocations = $this->getService()->handleConsecutive($server, 3);
+
+        $this->assertCount(3, $allocations);
+
+        $ports = array_map(fn ($a) => $a->port, $allocations);
+        sort($ports);
+
+        // Verify all ports are consecutive.
+        for ($i = 0; $i < count($ports) - 1; ++$i) {
+            $this->assertSame($ports[$i] + 1, $ports[$i + 1]);
+        }
+
+        // Verify all allocations belong to the server.
+        foreach ($allocations as $allocation) {
+            $this->assertSame($server->id, $allocation->server_id);
+            $this->assertSame($server->allocation->ip, $allocation->ip);
+        }
+    }
+
+    /**
+     * Test that handleConsecutive picks randomly from all available consecutive sequences
+     * rather than always returning the first one.
+     */
+    public function testConsecutiveAllocationIsRandomized()
+    {
+        $server = $this->createServerModel();
+        config()->set('pterodactyl.client_features.allocations.range_start', 5000);
+        config()->set('pterodactyl.client_features.allocations.range_end', 5019);
+
+        $startPorts = [];
+        // Run many times; with 18 possible start positions for count=2 across 20 ports,
+        // the probability of always getting 5000 is (1/18)^20 ≈ negligible.
+        for ($attempt = 0; $attempt < 20; ++$attempt) {
+            // Reset all allocations between runs.
+            $server->node->allocations()->whereNotIn('id', [$server->allocation_id])->delete();
+
+            $allocations = $this->getService()->handleConsecutive($server, 2);
+            $ports = array_map(fn ($a) => $a->port, $allocations);
+            sort($ports);
+            $startPorts[] = $ports[0];
+
+            // Reset server_id so ports are available again for next iteration.
+            $server->node->allocations()
+                ->whereNotIn('id', [$server->allocation_id])
+                ->update(['server_id' => null]);
+        }
+
+        // After 20 runs there must be more than one distinct starting port, proving randomness.
+        $this->assertGreaterThan(1, count(array_unique($startPorts)));
+    }
+
+    /**
+     * Test that handleConsecutive throws when there are not enough consecutive ports.
+     */
+    public function testConsecutiveAllocationThrowsWhenNoConsecutiveSequenceAvailable()
+    {
+        $server = $this->createServerModel();
+        $server2 = $this->createServerModel(['node_id' => $server->node_id]);
+        config()->set('pterodactyl.client_features.allocations.range_start', 5000);
+        config()->set('pterodactyl.client_features.allocations.range_end', 5004);
+
+        // Block every other port so no two consecutive ports are free.
+        foreach ([5001, 5003] as $port) {
+            Allocation::factory()->create([
+                'ip' => $server->allocation->ip,
+                'port' => $port,
+                'node_id' => $server->node_id,
+                'server_id' => $server2->id,
+            ]);
+        }
+
+        $this->expectException(NoAutoAllocationSpaceAvailableException::class);
+        $this->expectExceptionMessage('无法分配更多端口：节点上没有可用空间。');
+
+        $this->getService()->handleConsecutive($server, 2);
+    }
+
     private function getService(): FindAssignableAllocationService
     {
         return $this->app->make(FindAssignableAllocationService::class);

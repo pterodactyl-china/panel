@@ -94,8 +94,10 @@ class FindAssignableAllocationService
 
         $available = array_values(array_diff(range((int) $start, (int) $end), $usedPorts));
 
-        // Find a consecutive sequence of $count ports within the available ports.
-        $consecutiveStart = null;
+        // Find all valid consecutive sequences of $count ports within the available ports,
+        // then pick one at random so that port allocation is not always biased towards the
+        // beginning of the range.
+        $validStarts = [];
         $consecutiveCount = 1;
         for ($i = 0; $i < count($available) - 1; ++$i) {
             if ($available[$i + 1] === $available[$i] + 1) {
@@ -103,17 +105,18 @@ class FindAssignableAllocationService
                 if ($consecutiveCount >= $count) {
                     // Walk back ($count - 1) positions from the current end of the sequence
                     // to find the start port of the consecutive block.
-                    $consecutiveStart = $available[$i + 1 - ($count - 1)];
-                    break;
+                    $validStarts[] = $available[$i + 1 - ($count - 1)];
                 }
             } else {
                 $consecutiveCount = 1;
             }
         }
 
-        if ($consecutiveStart === null) {
+        if (empty($validStarts)) {
             throw new NoAutoAllocationSpaceAvailableException();
         }
+
+        $consecutiveStart = $validStarts[array_rand($validStarts)];
 
         $ports = range($consecutiveStart, $consecutiveStart + $count - 1);
 
