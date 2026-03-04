@@ -100,7 +100,7 @@ class NetworkAllocationController extends ClientApiController
         if ($count > 1 && $consecutiveEnabled) {
             $allocations = Activity::event('server:allocation.create')->transaction(function ($log) use ($server, $count) {
                 if ($server->allocations()->lockForUpdate()->count() + $count > $server->allocation_limit) {
-                    throw new DisplayException('Cannot assign additional allocations to this server: limit has been reached.');
+                    throw new DisplayException('无法为此服务器分配更多端口：已达到分配限制。');
                 }
 
                 $allocations = $this->assignableAllocationService->handleConsecutive($server, $count);
@@ -118,7 +118,7 @@ class NetworkAllocationController extends ClientApiController
 
         $allocation = Activity::event('server:allocation.create')->transaction(function ($log) use ($server) {
             if ($server->allocations()->lockForUpdate()->count() >= $server->allocation_limit) {
-                throw new DisplayException('Cannot assign additional allocations to this server: limit has been reached.');
+                throw new DisplayException('无法为此服务器分配更多端口：已达到分配限制。');
             }
 
             $allocation = $this->assignableAllocationService->handle($server);
