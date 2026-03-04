@@ -197,8 +197,8 @@ class FindAssignableAllocationServiceTest extends IntegrationTestCase
     }
 
     /**
-     * Test that handleConsecutive picks randomly from all available consecutive sequences
-     * rather than always returning the first one.
+     * Test that handleConsecutive picks a random starting port (like single-port allocation)
+     * rather than always returning the first available consecutive sequence.
      */
     public function testConsecutiveAllocationIsRandomized()
     {
@@ -207,8 +207,8 @@ class FindAssignableAllocationServiceTest extends IntegrationTestCase
         config()->set('pterodactyl.client_features.allocations.range_end', 5019);
 
         $startPorts = [];
-        // Run many times; with 18 possible start positions for count=2 across 20 ports,
-        // the probability of always getting 5000 is (1/18)^20 ≈ negligible.
+        // Run many times; with 19 possible start positions for count=2 across 20 ports,
+        // the probability of always getting 5000 is (1/19)^20 ≈ negligible.
         for ($attempt = 0; $attempt < 20; ++$attempt) {
             // Reset all allocations between runs.
             $server->node->allocations()->whereNotIn('id', [$server->allocation_id])->delete();

@@ -94,29 +94,30 @@ class FindAssignableAllocationService
 
         $available = array_values(array_diff(range((int) $start, (int) $end), $usedPorts));
 
-        // Find all valid consecutive sequences of $count ports within the available ports,
-        // then pick one at random so that port allocation is not always biased towards the
-        // beginning of the range.
-        $validStarts = [];
-        $consecutiveCount = 1;
-        for ($i = 0; $i < count($available) - 1; ++$i) {
-            if ($available[$i + 1] === $available[$i] + 1) {
-                ++$consecutiveCount;
-                if ($consecutiveCount >= $count) {
-                    // Walk back ($count - 1) positions from the current end of the sequence
-                    // to find the start port of the consecutive block.
-                    $validStarts[] = $available[$i + 1 - ($count - 1)];
+        // Build a set of available ports for O(1) lookup, then shuffle the ports so that
+        // the starting candidate is chosen randomly — mirroring how single-port allocation
+        // uses array_rand to avoid always picking from the beginning of the range.
+        $availableSet = array_flip($available);
+        shuffle($available);
+
+        $consecutiveStart = null;
+        foreach ($available as $candidate) {
+            $valid = true;
+            for ($j = 1; $j < $count; ++$j) {
+                if (!isset($availableSet[$candidate + $j])) {
+                    $valid = false;
+                    break;
                 }
-            } else {
-                $consecutiveCount = 1;
+            }
+            if ($valid) {
+                $consecutiveStart = $candidate;
+                break;
             }
         }
 
-        if (empty($validStarts)) {
+        if ($consecutiveStart === null) {
             throw new NoAutoAllocationSpaceAvailableException();
         }
-
-        $consecutiveStart = $validStarts[array_rand($validStarts)];
 
         $ports = range($consecutiveStart, $consecutiveStart + $count - 1);
 
