@@ -208,10 +208,6 @@ class Handler extends ExceptionHandler
             $error['detail'] = '无法在服务器上找到请求的资源。';
         }
 
-        if (method_exists($e, 'getStatusCode') && $e->getStatusCode() === 429) {
-            $error['detail'] = '请求操作过于频繁，请稍后再试。';
-        }
-
         if (config('app.debug')) {
             $error = array_merge($error, [
                 'detail' => $e->getMessage(),

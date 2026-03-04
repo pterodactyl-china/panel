@@ -12,7 +12,7 @@ class NoAutoAllocationSpaceAvailableException extends DisplayException
     public function __construct()
     {
         parent::__construct(
-            '无法分配更多端口：节点上没有可用空间。'
+            'Cannot assign additional allocation: no more space available on node.'
         );
     }
 }
