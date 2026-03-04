@@ -82,7 +82,7 @@ class CreateNewAllocationTest extends ClientApiIntegrationTestCase
         $this->actingAs($user)->postJson($this->link($server, '/network/allocations'))
             ->assertStatus(Response::HTTP_BAD_REQUEST)
             ->assertJsonPath('errors.0.code', 'DisplayException')
-            ->assertJsonPath('errors.0.detail', 'Cannot assign additional allocations to this server: limit has been reached.');
+            ->assertJsonPath('errors.0.detail', '无法为此服务器分配更多端口：已达到分配限制。');
     }
 
     public static function permissionDataProvider(): array
