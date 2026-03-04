@@ -94,7 +94,7 @@ class NetworkAllocationController extends ClientApiController
      */
     public function store(NewAllocationRequest $request, Server $server): array
     {
-        $count = (int) ($request->input('count', 1));
+        $count = (int) $request->input('count', 1);
         $consecutiveEnabled = (bool) config('pterodactyl.client_features.allocations.consecutive_enabled', false);
 
         if ($count > 1 && $consecutiveEnabled) {

@@ -58,8 +58,8 @@ class FindAssignableAllocationService
      * @return Allocation[]
      *
      * @throws \Pterodactyl\Exceptions\DisplayException
-     * @throws \Pterodactyl\Exceptions\Service\Allocation\AutoAllocationNotEnabledException
-     * @throws \Pterodactyl\Exceptions\Service\Allocation\NoAutoAllocationSpaceAvailableException
+     * @throws AutoAllocationNotEnabledException
+     * @throws NoAutoAllocationSpaceAvailableException
      * @throws \Pterodactyl\Exceptions\Service\Allocation\CidrOutOfRangeException
      * @throws \Pterodactyl\Exceptions\Service\Allocation\InvalidPortMappingException
      * @throws \Pterodactyl\Exceptions\Service\Allocation\PortOutOfRangeException
@@ -83,10 +83,12 @@ class FindAssignableAllocationService
 
         $ip = $server->allocation->ip;
 
-        // Get all ports already allocated on this node/ip within the range.
+        // Get all ports already assigned to any server on this node/ip within the range.
+        // Unassigned allocations (server_id = null) are still considered available.
         $usedPorts = $server->node->allocations()
             ->where('ip', $ip)
             ->whereBetween('port', [$start, $end])
+            ->whereNotNull('server_id')
             ->pluck('port')
             ->toArray();
 
@@ -96,7 +98,7 @@ class FindAssignableAllocationService
         $consecutiveStart = null;
         $consecutiveCount = 1;
         for ($i = 0; $i < count($available) - 1; ++$i) {
-            if ($available[$i] + 1 === $available[$i + 1]) {
+            if ($available[$i + 1] === $available[$i] + 1) {
                 ++$consecutiveCount;
                 if ($consecutiveCount >= $count) {
                     // Walk back ($count - 1) positions from the current end of the sequence
