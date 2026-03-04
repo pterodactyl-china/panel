@@ -146,6 +146,25 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label class="control-label">连续端口创建</label>
+                                <div>
+                                    <select class="form-control" name="pterodactyl:client_features:allocations:consecutive_enabled">
+                                        <option value="false">禁用</option>
+                                        <option value="true" @if(old('pterodactyl:client_features:allocations:consecutive_enabled', config('pterodactyl.client_features.allocations.consecutive_enabled'))) selected @endif>启用</option>
+                                    </select>
+                                    <p class="text-muted small">如果启用，用户在创建新分配时可以选择申请多个连续端口.</p>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="control-label">最大连续端口数</label>
+                                <div>
+                                    <input type="number" class="form-control" name="pterodactyl:client_features:allocations:consecutive_limit" min="2" max="10" value="{{ old('pterodactyl:client_features:allocations:consecutive_limit', config('pterodactyl.client_features.allocations.consecutive_limit', 3)) }}">
+                                    <p class="text-muted small">用户一次最多可申请的连续端口数量（2-10）.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="box">

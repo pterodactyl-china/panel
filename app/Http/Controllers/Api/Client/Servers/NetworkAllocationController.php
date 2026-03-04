@@ -94,6 +94,28 @@ class NetworkAllocationController extends ClientApiController
      */
     public function store(NewAllocationRequest $request, Server $server): array
     {
+        $count = (int) ($request->input('count', 1));
+        $consecutiveEnabled = (bool) config('pterodactyl.client_features.allocations.consecutive_enabled', false);
+
+        if ($count > 1 && $consecutiveEnabled) {
+            $allocations = Activity::event('server:allocation.create')->transaction(function ($log) use ($server, $count) {
+                if ($server->allocations()->lockForUpdate()->count() + $count > $server->allocation_limit) {
+                    throw new DisplayException('Cannot assign additional allocations to this server: limit has been reached.');
+                }
+
+                $allocations = $this->assignableAllocationService->handleConsecutive($server, $count);
+
+                $ports = implode(', ', array_map(fn ($a) => $a->toString(), $allocations));
+                $log->property('allocation', $ports);
+
+                return $allocations;
+            });
+
+            return $this->fractal->collection($allocations)
+                ->transformWith($this->getTransformer(AllocationTransformer::class))
+                ->toArray();
+        }
+
         $allocation = Activity::event('server:allocation.create')->transaction(function ($log) use ($server) {
             if ($server->allocations()->lockForUpdate()->count() >= $server->allocation_limit) {
                 throw new DisplayException('Cannot assign additional allocations to this server: limit has been reached.');

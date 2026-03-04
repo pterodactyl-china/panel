@@ -17,6 +17,10 @@ export interface SiteSettings {
         record: string;
         security_record: string;
     };
+    allocations: {
+        consecutiveEnabled: boolean;
+        consecutiveLimit: number;
+    };
 }
 
 export interface SettingsStore {

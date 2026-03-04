@@ -52,6 +52,104 @@ class FindAssignableAllocationService
     }
 
     /**
+     * Finds or creates a set of consecutive (sequential) unassigned allocations and assigns
+     * them all to the given server.
+     *
+     * @return Allocation[]
+     *
+     * @throws \Pterodactyl\Exceptions\DisplayException
+     * @throws \Pterodactyl\Exceptions\Service\Allocation\AutoAllocationNotEnabledException
+     * @throws \Pterodactyl\Exceptions\Service\Allocation\NoAutoAllocationSpaceAvailableException
+     * @throws \Pterodactyl\Exceptions\Service\Allocation\CidrOutOfRangeException
+     * @throws \Pterodactyl\Exceptions\Service\Allocation\InvalidPortMappingException
+     * @throws \Pterodactyl\Exceptions\Service\Allocation\PortOutOfRangeException
+     * @throws \Pterodactyl\Exceptions\Service\Allocation\TooManyPortsInRangeException
+     */
+    public function handleConsecutive(Server $server, int $count): array
+    {
+        if (!config('pterodactyl.client_features.allocations.enabled')) {
+            throw new AutoAllocationNotEnabledException();
+        }
+
+        $start = config('pterodactyl.client_features.allocations.range_start', null);
+        $end = config('pterodactyl.client_features.allocations.range_end', null);
+
+        if (!$start || !$end) {
+            throw new NoAutoAllocationSpaceAvailableException();
+        }
+
+        Assert::integerish($start);
+        Assert::integerish($end);
+
+        $ip = $server->allocation->ip;
+
+        // Get all ports already allocated on this node/ip within the range.
+        $usedPorts = $server->node->allocations()
+            ->where('ip', $ip)
+            ->whereBetween('port', [$start, $end])
+            ->pluck('port')
+            ->toArray();
+
+        $available = array_values(array_diff(range((int) $start, (int) $end), $usedPorts));
+
+        // Find a consecutive sequence of $count ports within the available ports.
+        $consecutiveStart = null;
+        $consecutiveCount = 1;
+        for ($i = 0; $i < count($available) - 1; ++$i) {
+            if ($available[$i] + 1 === $available[$i + 1]) {
+                ++$consecutiveCount;
+                if ($consecutiveCount >= $count) {
+                    // Walk back ($count - 1) positions from the current end of the sequence
+                    // to find the start port of the consecutive block.
+                    $consecutiveStart = $available[$i + 1 - ($count - 1)];
+                    break;
+                }
+            } else {
+                $consecutiveCount = 1;
+            }
+        }
+
+        if ($consecutiveStart === null) {
+            throw new NoAutoAllocationSpaceAvailableException();
+        }
+
+        $ports = range($consecutiveStart, $consecutiveStart + $count - 1);
+
+        // Create any ports in the range that don't already exist as allocations.
+        $existingPorts = $server->node->allocations()
+            ->where('ip', $ip)
+            ->whereIn('port', $ports)
+            ->pluck('port')
+            ->toArray();
+
+        $newPorts = array_values(array_diff($ports, $existingPorts));
+
+        if (!empty($newPorts)) {
+            $this->service->handle($server->node, [
+                'allocation_ip' => $ip,
+                'allocation_ports' => $newPorts,
+            ]);
+        }
+
+        // Assign all the consecutive allocations to the server.
+        $allocations = $server->node->allocations()
+            ->where('ip', $ip)
+            ->whereIn('port', $ports)
+            ->whereNull('server_id')
+            ->get();
+
+        if ($allocations->count() !== $count) {
+            throw new NoAutoAllocationSpaceAvailableException();
+        }
+
+        $allocations->each(function (Allocation $allocation) use ($server) {
+            $allocation->update(['server_id' => $server->id]);
+        });
+
+        return $allocations->map(fn (Allocation $a) => $a->refresh())->all();
+    }
+
+    /**
      * Create a new allocation on the server's node with a random port from the defined range
      * in the settings. If there are no matches in that range, or something is wrong with the
      * range information provided an exception will be raised.

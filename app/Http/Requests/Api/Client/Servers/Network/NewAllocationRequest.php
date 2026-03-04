@@ -11,4 +11,13 @@ class NewAllocationRequest extends ClientApiRequest
     {
         return Permission::ACTION_ALLOCATION_CREATE;
     }
+
+    public function rules(): array
+    {
+        $limit = (int) config('pterodactyl.client_features.allocations.consecutive_limit', 3);
+
+        return [
+            'count' => ['nullable', 'integer', "between:1,{$limit}"],
+        ];
+    }
 }
