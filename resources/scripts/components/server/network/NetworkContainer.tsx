@@ -75,18 +75,34 @@ const NetworkContainer = () => {
                                     <div css={tw`flex items-center space-x-3`}>
                                         {consecutiveEnabled && (
                                             <div css={tw`flex items-center space-x-2`}>
-                                                <label css={tw`text-sm text-neutral-300 whitespace-nowrap`}>连续端口数:</label>
+                                                <label css={tw`text-sm text-neutral-300 whitespace-nowrap`}>
+                                                    连续端口数:
+                                                </label>
                                                 <input
                                                     type={'number'}
                                                     min={1}
                                                     max={Math.min(consecutiveLimit, allocationLimit - data.length)}
                                                     value={consecutiveCount}
-                                                    onChange={(e) => setConsecutiveCount(Math.max(1, Math.min(consecutiveLimit, parseInt(e.target.value) || 1)))}
+                                                    onChange={(e) =>
+                                                        setConsecutiveCount(
+                                                            Math.max(
+                                                                1,
+                                                                Math.min(
+                                                                    consecutiveLimit,
+                                                                    parseInt(e.target.value) || 1
+                                                                )
+                                                            )
+                                                        )
+                                                    }
                                                     css={tw`w-16 bg-neutral-800 text-neutral-200 border border-neutral-600 rounded px-2 py-1 text-sm`}
                                                 />
                                             </div>
                                         )}
-                                        <Button css={tw`w-full sm:w-auto`} color={'primary'} onClick={onCreateAllocation}>
+                                        <Button
+                                            css={tw`w-full sm:w-auto`}
+                                            color={'primary'}
+                                            onClick={onCreateAllocation}
+                                        >
                                             创建新的网络设置
                                         </Button>
                                     </div>
