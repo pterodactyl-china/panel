@@ -134,7 +134,7 @@
 
                     <div class="modal-footer">
                         {!! csrf_field() !!}
-                        <button type="button" class="btn btn-default btn-sm pull-left" data-dismiss="modal">权限</button>
+                        <button type="button" class="btn btn-default btn-sm pull-left" data-dismiss="modal">取消</button>
                         <button type="submit" class="btn btn-success btn-sm">创建</button>
                     </div>
                 </form>

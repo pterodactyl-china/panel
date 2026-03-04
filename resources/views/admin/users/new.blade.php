@@ -117,7 +117,7 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                },
                 success: function(data) {
-                    $("#gen_pass").html('<strong>Generated Password:</strong> ' + data).slideDown();
+                    $("#gen_pass").html('<strong>生成的密码：</strong> ' + data).slideDown();
                     $('input[name="password"], input[name="password_confirmation"]').val(data);
                     return false;
                 }

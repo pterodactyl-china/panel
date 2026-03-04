@@ -153,7 +153,7 @@
                 </div>
                 <div class="modal-footer">
                     {{{ csrf_field() }}}
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="submit" class="btn btn-danger">删除分配</button>
                 </div>
             </form>
@@ -338,9 +338,9 @@
                     console.error(jqXHR);
                     swal({
                         type: 'error',
-                        title: 'Whoops!',
+                        title: '噢谢!',
                         html: true,
-                        text: 'An error occurred while attempting to delete these allocations. Please try again.',
+                        text: '尝试删除这些分配时发生错误，请再试一次。',
                     });
                 });
             });
@@ -348,7 +348,7 @@
             swal({
                 type: 'warning',
                 title: '',
-                text: 'Please select allocation(s) to delete.',
+                text: '请选择要删除的分配。',
             });
         }
     }

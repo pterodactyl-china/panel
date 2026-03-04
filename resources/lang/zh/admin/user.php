@@ -9,6 +9,7 @@
 
 return [
     'exceptions' => [
+        'delete_self' => '您不能删除自己的账户。',
         'user_has_servers' => '无法删除账户下有服务器的用户，请将其全部删除，然后再继续此操作。',
     ],
     'notices' => [

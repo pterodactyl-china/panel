@@ -129,7 +129,7 @@
                 console.error(jqXHR);
                 swal({
                     type: 'error',
-                    title: 'Whoops!',
+                    title: '呜呼!',
                     text: (typeof jqXHR.responseJSON.error !== 'undefined') ? jqXHR.responseJSON.error : '处理此请求时发生错误，此请求无法继续处理！'
                 });
             });
