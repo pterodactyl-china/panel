@@ -21,7 +21,7 @@ export default ({ meta }: { meta: Record<string, unknown> }) => {
                 </Dialog.Footer>
             </Dialog>
             <button
-                aria-describedby={'View additional event metadata'}
+                aria-describedby={'查看附加事件元数据'}
                 className={
                     'p-2 transition-colors duration-100 text-gray-400 group-hover:text-gray-300 group-hover:hover:text-gray-50'
                 }

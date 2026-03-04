@@ -76,7 +76,7 @@
                         <label for="pDatabaseName" class="control-label">数据库</label>
                         <div class="input-group">
                             <span class="input-group-addon">s{{ $server->id }}_</span>
-                            <input id="pDatabaseName" type="text" name="database" class="form-control" placeholder="database" />
+                            <input id="pDatabaseName" type="text" name="database" class="form-control" placeholder="数据库名" />
                         </div>
                     </div>
                     <div class="form-group">

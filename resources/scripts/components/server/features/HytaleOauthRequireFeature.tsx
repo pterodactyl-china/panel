@@ -55,17 +55,16 @@ const HytaleOauthRequireFeature = () => {
             showSpinnerOverlay={false}
         >
             <FlashMessageRender key={'feature:hytaleOauth'} css={tw`mb-4`} />
-            <h2 css={tw`text-2xl mb-4 text-neutral-100`}>Authentication Required</h2>
+            <h2 css={tw`text-2xl mb-4 text-neutral-100`}>需要身份验证</h2>
             <p css={tw`text-neutral-200`}>
-                You need to authenticate with your Hytale account to download or update server files. Please log in to
-                continue.
+                您需要使用 Hytale 账户进行身份验证才能下载或更新服务器文件，请登录后继续。
             </p>
             <div css={tw`mt-8 sm:flex items-center justify-end`}>
                 <Button isSecondary onClick={() => setVisible(false)} css={tw`w-full sm:w-auto border-transparent`}>
-                    Cancel
+                    取消
                 </Button>
                 <Button onClick={handleLogin} css={tw`mt-4 sm:mt-0 sm:ml-4 w-full sm:w-auto`}>
-                    Log in
+                    登录
                 </Button>
             </div>
         </Modal>

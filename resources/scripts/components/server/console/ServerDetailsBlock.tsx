@@ -15,7 +15,14 @@ import UptimeDuration from '@/components/server/UptimeDuration';
 import StatBlock from '@/components/server/console/StatBlock';
 import useWebsocketEvent from '@/plugins/useWebsocketEvent';
 import classNames from 'classnames';
-import { capitalize } from '@/lib/strings';
+import { ServerStatus } from '@/state/server';
+
+const statusMap: Record<NonNullable<ServerStatus>, string> = {
+    offline: '离线',
+    starting: '启动中',
+    stopping: '停止中',
+    running: '运行中',
+};
 
 type Stats = Record<'memory' | 'cpu' | 'disk' | 'uptime' | 'rx' | 'tx', number>;
 
@@ -103,7 +110,7 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
                 ) : stats.uptime > 0 ? (
                     <UptimeDuration uptime={stats.uptime / 1000} />
                 ) : (
-                    capitalize(status)
+                    statusMap[status] ?? '未知状态'
                 )}
             </StatBlock>
             <StatBlock icon={faMicrochip} title={'CPU'} color={getBackgroundColor(stats.cpu, limits.cpu)}>

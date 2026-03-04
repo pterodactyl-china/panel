@@ -51,7 +51,7 @@ const DisableTOTPDialog = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.currentTarget.value)}
             />
             <Dialog.Footer>
-                <Button.Text onClick={close}>Cancel</Button.Text>
+                <Button.Text onClick={close}>取消</Button.Text>
                 <Tooltip delay={100} disabled={password.length > 0} content={'您必须输入您的帐户密码才能继续。'}>
                     <Button.Danger type={'submit'} form={'disable-totp-form'} disabled={submitting || !password.length}>
                         禁用
