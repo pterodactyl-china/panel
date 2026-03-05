@@ -219,7 +219,7 @@
             }).fail(function (jqXHR) {
                 console.error(jqXHR);
                 swal({
-                    title: '噢谢!',
+                    title: '呜呼!',
                     text: jqXHR.responseJSON.error,
                     type: 'error'
                 });
@@ -338,7 +338,7 @@
                     console.error(jqXHR);
                     swal({
                         type: 'error',
-                        title: '噢谢!',
+                        title: '呜呼!',
                         html: true,
                         text: '尝试删除这些分配时发生错误，请再试一次。',
                     });

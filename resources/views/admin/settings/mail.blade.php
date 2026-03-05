@@ -180,7 +180,7 @@
             }
 
             swal({
-                title: '噢谢!',
+                title: '呜呼!',
                 text: '尝试执行时出错 ' + verb + ' 邮箱设置: ' + errorText,
                 type: 'error'
             });
