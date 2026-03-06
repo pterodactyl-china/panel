@@ -4,9 +4,9 @@ namespace Pterodactyl\Jobs\Schedule;
 
 use Carbon\CarbonImmutable;
 use Pterodactyl\Models\Task;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Bus;
 use Pterodactyl\Services\Backups\InitiateBackupService;
 use Pterodactyl\Repositories\Wings\DaemonPowerRepository;
 use Pterodactyl\Repositories\Wings\DaemonCommandRepository;
