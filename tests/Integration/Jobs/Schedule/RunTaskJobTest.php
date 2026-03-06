@@ -177,8 +177,6 @@ class RunTaskJobTest extends IntegrationTestCase
      */
     public function testNextTaskWithTimeOffsetIsDispatchedCorrectly()
     {
-        Bus::fake();
-
         $server = $this->createServerModel();
 
         /** @var Schedule $schedule */
@@ -216,7 +214,12 @@ class RunTaskJobTest extends IntegrationTestCase
         $mock->expects('setServer')->andReturnSelf();
         $mock->expects('send')->with('start')->andReturn(new Response());
 
-        Bus::dispatchSync(new RunTaskJob($task1));
+        Bus::fake();
+
+        // Call handle() directly to bypass the faked bus so that the job actually
+        // runs while the inner dispatch() call for the next task is still captured.
+        $job = new RunTaskJob($task1);
+        app()->call([$job, 'handle']);
 
         $task1->refresh();
         $task2->refresh();
