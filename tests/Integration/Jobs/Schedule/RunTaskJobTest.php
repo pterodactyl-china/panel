@@ -298,7 +298,7 @@ class RunTaskJobTest extends IntegrationTestCase
         $powerMock->expects('send')->with('start')->andReturn(new Response());
 
         Bus::fake();
-        app()->call([(new RunTaskJob($task1)), 'handle']);
+        app()->call([new RunTaskJob($task1), 'handle']);
 
         $task1->refresh();
         $task2->refresh();
@@ -318,7 +318,7 @@ class RunTaskJobTest extends IntegrationTestCase
         $commandMock->expects('send')->with('say hello')->andReturn(new Response());
 
         Bus::fake();
-        app()->call([(new RunTaskJob($task2)), 'handle']);
+        app()->call([new RunTaskJob($task2), 'handle']);
 
         $task2->refresh();
         $task3->refresh();
@@ -338,7 +338,7 @@ class RunTaskJobTest extends IntegrationTestCase
         $commandMock2->expects('send')->with('say world')->andReturn(new Response());
 
         Bus::fake();
-        app()->call([(new RunTaskJob($task3)), 'handle']);
+        app()->call([new RunTaskJob($task3), 'handle']);
 
         $task3->refresh();
         $schedule->refresh();
