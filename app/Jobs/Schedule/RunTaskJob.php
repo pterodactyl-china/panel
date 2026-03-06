@@ -6,6 +6,7 @@ use Carbon\CarbonImmutable;
 use Pterodactyl\Models\Task;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Bus;
 use Pterodactyl\Services\Backups\InitiateBackupService;
 use Pterodactyl\Repositories\Wings\DaemonPowerRepository;
 use Pterodactyl\Repositories\Wings\DaemonCommandRepository;
@@ -14,6 +15,15 @@ use Pterodactyl\Exceptions\Http\Connection\DaemonConnectionException;
 class RunTaskJob implements ShouldQueue
 {
     use Queueable;
+
+    /**
+     * The number of times the job may be attempted.
+     *
+     * Since schedule task execution is not idempotent (running a task twice sends
+     * the command twice), we disable retries to prevent duplicate executions if
+     * something goes wrong while queuing the next task in the chain.
+     */
+    public int $tries = 1;
 
     /**
      * RunTaskJob constructor.
@@ -107,7 +117,7 @@ class RunTaskJob implements ShouldQueue
 
         $nextTask->update(['is_queued' => true]);
 
-        dispatch((new self($nextTask, $this->manualRun))->delay($nextTask->time_offset));
+        Bus::dispatch((new self($nextTask, $this->manualRun))->delay($nextTask->time_offset));
     }
 
     /**
