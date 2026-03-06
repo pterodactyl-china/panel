@@ -18,6 +18,7 @@ class UpdateServerDetailsRequest extends ServerWriteRequest
             'name' => $rules['name'],
             'user' => $rules['owner_id'],
             'description' => array_merge(['nullable'], $rules['description']),
+            'expires_at' => 'sometimes|nullable|date',
         ];
     }
 
@@ -32,6 +33,7 @@ class UpdateServerDetailsRequest extends ServerWriteRequest
             'name' => $this->input('name'),
             'owner_id' => $this->input('user'),
             'description' => $this->input('description'),
+            'expires_at' => $this->input('expires_at'),
         ];
     }
 

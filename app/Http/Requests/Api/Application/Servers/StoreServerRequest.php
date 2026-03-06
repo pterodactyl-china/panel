@@ -62,6 +62,7 @@ class StoreServerRequest extends ApplicationApiRequest
             'deploy.port_range.*' => 'string',
 
             'start_on_completion' => 'sometimes|boolean',
+            'expires_at' => 'sometimes|nullable|date',
         ];
     }
 
@@ -95,6 +96,7 @@ class StoreServerRequest extends ApplicationApiRequest
             'allocation_limit' => array_get($data, 'feature_limits.allocations'),
             'backup_limit' => array_get($data, 'feature_limits.backups'),
             'oom_disabled' => array_get($data, 'oom_disabled'),
+            'expires_at' => array_get($data, 'expires_at'),
         ];
     }
 

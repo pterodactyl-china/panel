@@ -88,6 +88,7 @@ class ServerTransformer extends BaseTransformer
             ],
             $server->getUpdatedAtColumn() => $this->formatTimestamp($server->updated_at),
             $server->getCreatedAtColumn() => $this->formatTimestamp($server->created_at),
+            'expires_at' => $this->formatTimestamp($server->expires_at),
         ];
     }
 

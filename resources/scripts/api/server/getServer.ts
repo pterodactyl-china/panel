@@ -60,6 +60,7 @@ export interface Server {
     isTransferring: boolean;
     variables: ServerEggVariable[];
     allocations: Allocation[];
+    expiresAt: Date | null;
 }
 
 export const rawDataToServerObject = ({ attributes: data }: FractalResponseData): Server => ({
@@ -89,6 +90,7 @@ export const rawDataToServerObject = ({ attributes: data }: FractalResponseData)
     allocations: ((data.relationships?.allocations as FractalResponseList | undefined)?.data || []).map(
         rawDataToServerAllocation
     ),
+    expiresAt: data.expires_at ? new Date(data.expires_at) : null,
 });
 
 export default (uuid: string): Promise<[Server, string[]]> => {
