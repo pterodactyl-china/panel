@@ -171,6 +171,72 @@ class RunTaskJobTest extends IntegrationTestCase
         $this->assertTrue(Carbon::now()->isSameAs(\DateTimeInterface::ATOM, $schedule->last_run_at));
     }
 
+    /**
+     * Test that a next task with a time offset is correctly dispatched with the expected delay
+     * and the schedule remains in the processing state until all tasks complete.
+     */
+    public function testNextTaskWithTimeOffsetIsDispatchedCorrectly()
+    {
+        Bus::fake();
+
+        $server = $this->createServerModel();
+
+        /** @var Schedule $schedule */
+        $schedule = Schedule::factory()->create([
+            'server_id' => $server->id,
+            'is_active' => true,
+            'is_processing' => true,
+            'last_run_at' => null,
+        ]);
+
+        /** @var Task $task1 */
+        $task1 = Task::factory()->create([
+            'schedule_id' => $schedule->id,
+            'sequence_id' => 1,
+            'action' => Task::ACTION_POWER,
+            'payload' => 'start',
+            'time_offset' => 0,
+            'is_queued' => true,
+            'continue_on_failure' => false,
+        ]);
+
+        /** @var Task $task2 */
+        $task2 = Task::factory()->create([
+            'schedule_id' => $schedule->id,
+            'sequence_id' => 2,
+            'action' => Task::ACTION_COMMAND,
+            'payload' => 'say hello',
+            'time_offset' => 30,
+            'is_queued' => false,
+            'continue_on_failure' => false,
+        ]);
+
+        $mock = \Mockery::mock(DaemonPowerRepository::class);
+        $this->instance(DaemonPowerRepository::class, $mock);
+        $mock->expects('setServer')->andReturnSelf();
+        $mock->expects('send')->with('start')->andReturn(new Response());
+
+        Bus::dispatchSync(new RunTaskJob($task1));
+
+        $task1->refresh();
+        $task2->refresh();
+        $schedule->refresh();
+
+        // task1 should no longer be queued after running.
+        $this->assertFalse($task1->is_queued);
+
+        // task2 should have been marked as queued.
+        $this->assertTrue($task2->is_queued);
+
+        // The schedule should still be processing since task2 hasn't run yet.
+        $this->assertTrue($schedule->is_processing);
+
+        // task2 should have been dispatched with a 30-second delay.
+        Bus::assertDispatched(RunTaskJob::class, function (RunTaskJob $job) use ($task2) {
+            return $job->task->id === $task2->id && $job->delay === 30;
+        });
+    }
+
     public static function isManualRunDataProvider(): array
     {
         return [[true], [false]];
