@@ -14,6 +14,7 @@ use Pterodactyl\Jobs\Schedule\RunTaskJob;
 use GuzzleHttp\Exception\BadResponseException;
 use Pterodactyl\Tests\Integration\IntegrationTestCase;
 use Pterodactyl\Repositories\Wings\DaemonPowerRepository;
+use Pterodactyl\Repositories\Wings\DaemonCommandRepository;
 use Pterodactyl\Exceptions\Http\Connection\DaemonConnectionException;
 
 class RunTaskJobTest extends IntegrationTestCase
@@ -238,6 +239,113 @@ class RunTaskJobTest extends IntegrationTestCase
         Bus::assertDispatched(RunTaskJob::class, function (RunTaskJob $job) use ($task2) {
             return $job->task->id === $task2->id && $job->delay === 30;
         });
+    }
+
+    /**
+     * Test that multiple tasks with time offsets are correctly chained:
+     * task1 → task2 (offset 30s) → task3 (offset 60s) → schedule complete.
+     * This verifies queueNextTask() works for any number of chained offsets.
+     */
+    public function testMultipleTasksWithTimeOffsetsAreChainedCorrectly()
+    {
+        $server = $this->createServerModel();
+
+        /** @var Schedule $schedule */
+        $schedule = Schedule::factory()->create([
+            'server_id' => $server->id,
+            'is_active' => true,
+            'is_processing' => true,
+            'last_run_at' => null,
+        ]);
+
+        /** @var Task $task1 */
+        $task1 = Task::factory()->create([
+            'schedule_id' => $schedule->id,
+            'sequence_id' => 1,
+            'action' => Task::ACTION_POWER,
+            'payload' => 'start',
+            'time_offset' => 0,
+            'is_queued' => true,
+            'continue_on_failure' => false,
+        ]);
+
+        /** @var Task $task2 */
+        $task2 = Task::factory()->create([
+            'schedule_id' => $schedule->id,
+            'sequence_id' => 2,
+            'action' => Task::ACTION_COMMAND,
+            'payload' => 'say hello',
+            'time_offset' => 30,
+            'is_queued' => false,
+            'continue_on_failure' => false,
+        ]);
+
+        /** @var Task $task3 */
+        $task3 = Task::factory()->create([
+            'schedule_id' => $schedule->id,
+            'sequence_id' => 3,
+            'action' => Task::ACTION_COMMAND,
+            'payload' => 'say world',
+            'time_offset' => 60,
+            'is_queued' => false,
+            'continue_on_failure' => false,
+        ]);
+
+        // --- Phase 1: task1 runs, dispatches task2 with 30s delay ---
+        $powerMock = \Mockery::mock(DaemonPowerRepository::class);
+        $this->instance(DaemonPowerRepository::class, $powerMock);
+        $powerMock->expects('setServer')->andReturnSelf();
+        $powerMock->expects('send')->with('start')->andReturn(new Response());
+
+        Bus::fake();
+        app()->call([(new RunTaskJob($task1)), 'handle']);
+
+        $task1->refresh();
+        $task2->refresh();
+        $schedule->refresh();
+
+        $this->assertFalse($task1->is_queued);
+        $this->assertTrue($task2->is_queued);
+        $this->assertTrue($schedule->is_processing);
+        Bus::assertDispatched(RunTaskJob::class, function (RunTaskJob $job) use ($task2) {
+            return $job->task->id === $task2->id && $job->delay === 30;
+        });
+
+        // --- Phase 2: task2 runs, dispatches task3 with 60s delay ---
+        $commandMock = \Mockery::mock(DaemonCommandRepository::class);
+        $this->instance(DaemonCommandRepository::class, $commandMock);
+        $commandMock->expects('setServer')->andReturnSelf();
+        $commandMock->expects('send')->with('say hello')->andReturn(new Response());
+
+        Bus::fake();
+        app()->call([(new RunTaskJob($task2)), 'handle']);
+
+        $task2->refresh();
+        $task3->refresh();
+        $schedule->refresh();
+
+        $this->assertFalse($task2->is_queued);
+        $this->assertTrue($task3->is_queued);
+        $this->assertTrue($schedule->is_processing);
+        Bus::assertDispatched(RunTaskJob::class, function (RunTaskJob $job) use ($task3) {
+            return $job->task->id === $task3->id && $job->delay === 60;
+        });
+
+        // --- Phase 3: task3 runs, schedule completes ---
+        $commandMock2 = \Mockery::mock(DaemonCommandRepository::class);
+        $this->instance(DaemonCommandRepository::class, $commandMock2);
+        $commandMock2->expects('setServer')->andReturnSelf();
+        $commandMock2->expects('send')->with('say world')->andReturn(new Response());
+
+        Bus::fake();
+        app()->call([(new RunTaskJob($task3)), 'handle']);
+
+        $task3->refresh();
+        $schedule->refresh();
+
+        $this->assertFalse($task3->is_queued);
+        $this->assertFalse($schedule->is_processing);
+        Bus::assertNotDispatched(RunTaskJob::class);
     }
 
     public static function isManualRunDataProvider(): array
