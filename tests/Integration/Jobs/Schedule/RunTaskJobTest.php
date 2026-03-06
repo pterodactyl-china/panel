@@ -348,6 +348,116 @@ class RunTaskJobTest extends IntegrationTestCase
         Bus::assertNotDispatched(RunTaskJob::class);
     }
 
+    /**
+     * Test the exact scenario reported by the user: three tasks where the second and third
+     * tasks share the same time offset (0 → 1 → 1). This previously caused the schedule to
+     * get stuck in "is_processing = true" because queueNextTask() used $this->dispatch()
+     * (via the Dispatchable trait) which creates new RunTaskJob($jobInstance) — passing a
+     * RunTaskJob where a Task is expected — instead of the global dispatch() helper which
+     * correctly pushes the existing job instance onto the queue.
+     */
+    public function testTasksWithSameTimeOffsetAreChainedCorrectly()
+    {
+        $server = $this->createServerModel();
+
+        /** @var Schedule $schedule */
+        $schedule = Schedule::factory()->create([
+            'server_id' => $server->id,
+            'is_active' => true,
+            'is_processing' => true,
+            'last_run_at' => null,
+        ]);
+
+        /** @var Task $task1 */
+        $task1 = Task::factory()->create([
+            'schedule_id' => $schedule->id,
+            'sequence_id' => 1,
+            'action' => Task::ACTION_COMMAND,
+            'payload' => 'say 1',
+            'time_offset' => 0,
+            'is_queued' => true,
+            'continue_on_failure' => false,
+        ]);
+
+        /** @var Task $task2 */
+        $task2 = Task::factory()->create([
+            'schedule_id' => $schedule->id,
+            'sequence_id' => 2,
+            'action' => Task::ACTION_COMMAND,
+            'payload' => 'say 2',
+            'time_offset' => 1,
+            'is_queued' => false,
+            'continue_on_failure' => false,
+        ]);
+
+        /** @var Task $task3 */
+        $task3 = Task::factory()->create([
+            'schedule_id' => $schedule->id,
+            'sequence_id' => 3,
+            'action' => Task::ACTION_COMMAND,
+            'payload' => 'say 3',
+            'time_offset' => 1,
+            'is_queued' => false,
+            'continue_on_failure' => false,
+        ]);
+
+        // --- Phase 1: task1 runs (offset=0), dispatches task2 with 1s delay ---
+        $commandMock1 = \Mockery::mock(DaemonCommandRepository::class);
+        $this->instance(DaemonCommandRepository::class, $commandMock1);
+        $commandMock1->expects('setServer')->andReturnSelf();
+        $commandMock1->expects('send')->with('say 1')->andReturn(new Response());
+
+        Bus::fake();
+        app()->call([new RunTaskJob($task1), 'handle']);
+
+        $task1->refresh();
+        $task2->refresh();
+        $schedule->refresh();
+
+        $this->assertFalse($task1->is_queued);
+        $this->assertTrue($task2->is_queued);
+        $this->assertTrue($schedule->is_processing);
+        Bus::assertDispatched(RunTaskJob::class, function (RunTaskJob $job) use ($task2) {
+            return $job->task->id === $task2->id && $job->delay === 1;
+        });
+
+        // --- Phase 2: task2 runs (offset=1, same as task3), dispatches task3 with 1s delay ---
+        $commandMock2 = \Mockery::mock(DaemonCommandRepository::class);
+        $this->instance(DaemonCommandRepository::class, $commandMock2);
+        $commandMock2->expects('setServer')->andReturnSelf();
+        $commandMock2->expects('send')->with('say 2')->andReturn(new Response());
+
+        Bus::fake();
+        app()->call([new RunTaskJob($task2), 'handle']);
+
+        $task2->refresh();
+        $task3->refresh();
+        $schedule->refresh();
+
+        $this->assertFalse($task2->is_queued);
+        $this->assertTrue($task3->is_queued);
+        $this->assertTrue($schedule->is_processing);
+        Bus::assertDispatched(RunTaskJob::class, function (RunTaskJob $job) use ($task3) {
+            return $job->task->id === $task3->id && $job->delay === 1;
+        });
+
+        // --- Phase 3: task3 runs (offset=1, same as task2), schedule completes ---
+        $commandMock3 = \Mockery::mock(DaemonCommandRepository::class);
+        $this->instance(DaemonCommandRepository::class, $commandMock3);
+        $commandMock3->expects('setServer')->andReturnSelf();
+        $commandMock3->expects('send')->with('say 3')->andReturn(new Response());
+
+        Bus::fake();
+        app()->call([new RunTaskJob($task3), 'handle']);
+
+        $task3->refresh();
+        $schedule->refresh();
+
+        $this->assertFalse($task3->is_queued);
+        $this->assertFalse($schedule->is_processing);
+        Bus::assertNotDispatched(RunTaskJob::class);
+    }
+
     public static function isManualRunDataProvider(): array
     {
         return [[true], [false]];
