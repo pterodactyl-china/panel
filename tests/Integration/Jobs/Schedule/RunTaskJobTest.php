@@ -142,6 +142,69 @@ class RunTaskJobTest extends IntegrationTestCase
     }
 
     /**
+     * Test that when a schedule has multiple tasks, completing one task queues
+     * the next task rather than getting stuck in a processing state.
+     */
+    public function testNextTaskIsQueuedAfterCurrentTaskCompletes()
+    {
+        $server = $this->createServerModel();
+
+        /** @var Schedule $schedule */
+        $schedule = Schedule::factory()->create([
+            'server_id' => $server->id,
+            'is_active' => true,
+            'is_processing' => true,
+            'last_run_at' => null,
+        ]);
+
+        /** @var Task $task1 */
+        $task1 = Task::factory()->create([
+            'schedule_id' => $schedule->id,
+            'sequence_id' => 1,
+            'action' => Task::ACTION_POWER,
+            'payload' => 'start',
+            'time_offset' => 0,
+            'is_queued' => true,
+        ]);
+
+        /** @var Task $task2 */
+        $task2 = Task::factory()->create([
+            'schedule_id' => $schedule->id,
+            'sequence_id' => 2,
+            'action' => Task::ACTION_POWER,
+            'payload' => 'restart',
+            'time_offset' => 1,
+            'is_queued' => false,
+        ]);
+
+        $mock = \Mockery::mock(DaemonPowerRepository::class);
+        $this->instance(DaemonPowerRepository::class, $mock);
+
+        $mock->shouldReceive('setServer')
+            ->twice()
+            ->with(\Mockery::on(function ($value) use ($server) {
+                return $value instanceof Server && $value->id === $server->id;
+            }))
+            ->andReturnSelf();
+        $mock->shouldReceive('send')->with('start')->once()->andReturn(new Response());
+        $mock->shouldReceive('send')->with('restart')->once()->andReturn(new Response());
+
+        // With QUEUE_DRIVER=sync, dispatching task1 also dispatches and runs task2 immediately.
+        Bus::dispatchSync(new RunTaskJob($task1));
+
+        $task1->refresh();
+        $task2->refresh();
+        $schedule->refresh();
+
+        // Both tasks should no longer be queued
+        $this->assertFalse($task1->is_queued);
+        $this->assertFalse($task2->is_queued);
+        // Schedule should be complete (not stuck in processing)
+        $this->assertFalse($schedule->is_processing);
+        $this->assertTrue(CarbonImmutable::now()->isSameAs(\DateTimeInterface::ATOM, $schedule->last_run_at));
+    }
+
+    /**
      * Test that a schedule is not executed if the server is suspended.
      *
      * @see https://github.com/pterodactyl/panel/issues/4008
