@@ -11,7 +11,9 @@ use Illuminate\Contracts\Bus\Dispatcher;
 use Pterodactyl\Jobs\Schedule\RunTaskJob;
 use Pterodactyl\Exceptions\DisplayException;
 use Pterodactyl\Tests\Integration\IntegrationTestCase;
+use Pterodactyl\Repositories\Wings\DaemonServerRepository;
 use Pterodactyl\Services\Schedules\ProcessScheduleService;
+use Pterodactyl\Exceptions\Http\Connection\DaemonConnectionException;
 
 class ProcessScheduleServiceTest extends IntegrationTestCase
 {
@@ -145,6 +147,88 @@ class ProcessScheduleServiceTest extends IntegrationTestCase
         ]);
 
         $this->assertDatabaseHas('tasks', ['id' => $task->id, 'is_queued' => false]);
+    }
+
+    /**
+     * Test that when only_when_online is true and a non-DaemonConnectionException occurs,
+     * failed() is called exactly once (not twice as in the original buggy code that always
+     * called $job->failed() unconditionally after the if-block).
+     *
+     * The buggy double-call caused markScheduleComplete() to fire twice and, more importantly,
+     * prevented the first task from ever being dispatched.
+     */
+    public function testOnlyWhenOnlineNonDaemonConnectionExceptionCallsFailedOnce()
+    {
+        Bus::fake();
+
+        $server = $this->createServerModel();
+        /** @var Schedule $schedule */
+        $schedule = Schedule::factory()->create([
+            'server_id' => $server->id,
+            'only_when_online' => true,
+            'last_run_at' => null,
+        ]);
+        /** @var Task $task */
+        $task = Task::factory()->create(['schedule_id' => $schedule->id, 'sequence_id' => 1]);
+
+        // Swap the DaemonServerRepository to throw a generic (non-DaemonConnection) exception.
+        $serverRepo = \Mockery::mock(DaemonServerRepository::class);
+        $this->instance(DaemonServerRepository::class, $serverRepo);
+        $serverRepo->expects('setServer')->andReturnSelf();
+        $serverRepo->expects('getDetails')->andThrow(new \RuntimeException('Generic Wings error'));
+
+        $this->getService()->handle($schedule);
+
+        // Schedule should be marked complete exactly once (is_processing = false).
+        $schedule->refresh();
+        $task->refresh();
+        $this->assertFalse($schedule->is_processing);
+        $this->assertNotNull($schedule->last_run_at);
+        $this->assertFalse($task->is_queued);
+
+        // No job should have been dispatched since the server check failed.
+        Bus::assertNothingDispatched();
+    }
+
+    /**
+     * Test that when only_when_online is true and a DaemonConnectionException occurs,
+     * the schedule is quietly marked complete (task not dispatched).
+     */
+    public function testOnlyWhenOnlineDaemonConnectionExceptionQuietlyCompletesSchedule()
+    {
+        Bus::fake();
+
+        $server = $this->createServerModel();
+        /** @var Schedule $schedule */
+        $schedule = Schedule::factory()->create([
+            'server_id' => $server->id,
+            'only_when_online' => true,
+            'last_run_at' => null,
+        ]);
+        /** @var Task $task */
+        $task = Task::factory()->create(['schedule_id' => $schedule->id, 'sequence_id' => 1]);
+
+        $serverRepo = \Mockery::mock(DaemonServerRepository::class);
+        $this->instance(DaemonServerRepository::class, $serverRepo);
+        $serverRepo->expects('setServer')->andReturnSelf();
+        $serverRepo->expects('getDetails')->andThrow(
+            new DaemonConnectionException(
+                new \GuzzleHttp\Exception\BadResponseException(
+                    'Bad request',
+                    new \GuzzleHttp\Psr7\Request('GET', '/'),
+                    new \GuzzleHttp\Psr7\Response()
+                )
+            )
+        );
+
+        $this->getService()->handle($schedule);
+
+        $schedule->refresh();
+        $task->refresh();
+        $this->assertFalse($schedule->is_processing);
+        $this->assertNotNull($schedule->last_run_at);
+        $this->assertFalse($task->is_queued);
+        Bus::assertNothingDispatched();
     }
 
     public static function dispatchNowDataProvider(): array

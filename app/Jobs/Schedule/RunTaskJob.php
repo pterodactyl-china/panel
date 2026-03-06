@@ -92,7 +92,7 @@ class RunTaskJob implements ShouldQueue
     /**
      * Handle a failure while sending the action to the daemon or otherwise processing the job.
      */
-    public function failed(?\Exception $exception = null)
+    public function failed(?\Throwable $exception = null)
     {
         $this->markTaskNotQueued();
         $this->markScheduleComplete();

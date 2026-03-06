@@ -14,6 +14,7 @@ use Pterodactyl\Jobs\Schedule\RunTaskJob;
 use GuzzleHttp\Exception\BadResponseException;
 use Pterodactyl\Tests\Integration\IntegrationTestCase;
 use Pterodactyl\Repositories\Wings\DaemonPowerRepository;
+use Pterodactyl\Repositories\Wings\DaemonCommandRepository;
 use Pterodactyl\Exceptions\Http\Connection\DaemonConnectionException;
 
 class RunTaskJobTest extends IntegrationTestCase
@@ -310,6 +311,148 @@ class RunTaskJobTest extends IntegrationTestCase
         $this->assertFalse($task->is_queued);
         $this->assertFalse($schedule->is_processing);
         $this->assertTrue(Carbon::now()->isSameAs(\DateTimeInterface::ATOM, $schedule->last_run_at));
+    }
+
+    /**
+     * Test that failed() correctly handles any \Throwable (including PHP \Error and \TypeError)
+     * so that markScheduleComplete() is always called and the schedule is never left stuck in
+     * is_processing = true.
+     */
+    public function testFailedMethodHandlesPhpErrors()
+    {
+        $server = $this->createServerModel();
+
+        /** @var Schedule $schedule */
+        $schedule = Schedule::factory()->create([
+            'server_id' => $server->id,
+            'is_processing' => true,
+            'last_run_at' => null,
+        ]);
+
+        /** @var Task $task */
+        $task = Task::factory()->create(['schedule_id' => $schedule->id, 'is_queued' => true]);
+
+        $job = new RunTaskJob($task);
+
+        // Simulate the queue worker calling failed() with a PHP \Error (e.g. TypeError).
+        // With the old type hint (?\Exception), passing a \TypeError here would itself throw a
+        // secondary TypeError, and markScheduleComplete() would never be called, leaving
+        // the schedule permanently stuck with is_processing = true.
+        $job->failed(new \TypeError('Simulated type error'));
+
+        $task->refresh();
+        $schedule->refresh();
+
+        $this->assertFalse($task->is_queued);
+        $this->assertFalse($schedule->is_processing);
+        $this->assertTrue(CarbonImmutable::now()->isSameAs(\DateTimeInterface::ATOM, $schedule->last_run_at));
+    }
+
+    /**
+     * Test that a 3-task chain works correctly in an async-queue context where each job runs
+     * in a separate invocation (simulated by using Bus::fake() and calling handle() directly).
+     *
+     * This is a regression test for the production bug where task 3+ would not execute even
+     * though the dispatch mechanism appeared correct in sync-queue unit tests.
+     */
+    public function testAsyncThreeTaskChainDispatchesEachTaskThenCompletesSchedule()
+    {
+        $server = $this->createServerModel();
+
+        /** @var Schedule $schedule */
+        $schedule = Schedule::factory()->create([
+            'server_id' => $server->id,
+            'is_active' => true,
+            'is_processing' => true,
+            'last_run_at' => null,
+        ]);
+
+        /** @var Task $task1 */
+        $task1 = Task::factory()->create([
+            'schedule_id' => $schedule->id,
+            'sequence_id' => 1,
+            'action' => Task::ACTION_COMMAND,
+            'payload' => 'cmd1',
+            'time_offset' => 0,
+            'is_queued' => true,
+        ]);
+
+        /** @var Task $task2 */
+        $task2 = Task::factory()->create([
+            'schedule_id' => $schedule->id,
+            'sequence_id' => 2,
+            'action' => Task::ACTION_COMMAND,
+            'payload' => 'cmd2',
+            'time_offset' => 30,
+            'is_queued' => false,
+        ]);
+
+        /** @var Task $task3 */
+        $task3 = Task::factory()->create([
+            'schedule_id' => $schedule->id,
+            'sequence_id' => 3,
+            'action' => Task::ACTION_COMMAND,
+            'payload' => 'cmd3',
+            'time_offset' => 30,
+            'is_queued' => false,
+        ]);
+
+        // --- Phase 1: task1 runs (separate worker invocation), dispatches task2 ---
+        $commandMock1 = \Mockery::mock(DaemonCommandRepository::class);
+        $this->instance(DaemonCommandRepository::class, $commandMock1);
+        $commandMock1->expects('setServer')->andReturnSelf();
+        $commandMock1->expects('send')->with('cmd1')->andReturn(new Response());
+
+        Bus::fake();
+        app()->call([new RunTaskJob($task1), 'handle']);
+
+        $task1->refresh();
+        $task2->refresh();
+        $schedule->refresh();
+
+        $this->assertFalse($task1->is_queued, 'task1 should be dequeued after running');
+        $this->assertTrue($task2->is_queued, 'task2 should be marked queued by queueNextTask()');
+        $this->assertTrue($schedule->is_processing, 'schedule should still be processing after task1');
+        Bus::assertDispatched(RunTaskJob::class, function (RunTaskJob $job) use ($task2) {
+            return $job->task->id === $task2->id && $job->delay === 30;
+        });
+
+        // --- Phase 2: task2 runs (separate worker invocation), dispatches task3 ---
+        $commandMock2 = \Mockery::mock(DaemonCommandRepository::class);
+        $this->instance(DaemonCommandRepository::class, $commandMock2);
+        $commandMock2->expects('setServer')->andReturnSelf();
+        $commandMock2->expects('send')->with('cmd2')->andReturn(new Response());
+
+        Bus::fake();
+        app()->call([new RunTaskJob($task2), 'handle']);
+
+        $task2->refresh();
+        $task3->refresh();
+        $schedule->refresh();
+
+        $this->assertFalse($task2->is_queued, 'task2 should be dequeued after running');
+        $this->assertTrue($task3->is_queued, 'task3 should be marked queued by queueNextTask()');
+        $this->assertTrue($schedule->is_processing, 'schedule should still be processing after task2');
+        Bus::assertDispatched(RunTaskJob::class, function (RunTaskJob $job) use ($task3) {
+            return $job->task->id === $task3->id && $job->delay === 30;
+        });
+
+        // --- Phase 3: task3 runs (separate worker invocation), completes schedule ---
+        $commandMock3 = \Mockery::mock(DaemonCommandRepository::class);
+        $this->instance(DaemonCommandRepository::class, $commandMock3);
+        $commandMock3->expects('setServer')->andReturnSelf();
+        $commandMock3->expects('send')->with('cmd3')->andReturn(new Response());
+
+        Bus::fake();
+        app()->call([new RunTaskJob($task3), 'handle']);
+
+        $task3->refresh();
+        $schedule->refresh();
+
+        $this->assertFalse($task3->is_queued, 'task3 should be dequeued after running');
+        $this->assertFalse($schedule->is_processing, 'schedule should be complete after all tasks');
+        $this->assertTrue(CarbonImmutable::now()->isSameAs(\DateTimeInterface::ATOM, $schedule->last_run_at));
+        Bus::assertNothingDispatched();
     }
 
     public static function isManualRunDataProvider(): array
