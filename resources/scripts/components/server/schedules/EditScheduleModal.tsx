@@ -38,7 +38,18 @@ const EditScheduleModal = ({ schedule }: Props) => {
     const uuid = ServerContext.useStoreState((state) => state.server.data!.uuid);
     const appendSchedule = ServerContext.useStoreActions((actions) => actions.schedules.appendSchedule);
     const [showCheatsheet, setShowCheetsheet] = useState(false);
-    const [simpleMode, setSimpleMode] = useState(!schedule);
+    const [simpleMode, setSimpleMode] = useState(() => {
+        const stored = localStorage.getItem('schedule_editor_simple_mode');
+        return stored !== null ? stored === 'true' : true;
+    });
+
+    const toggleSimpleMode = () => {
+        setSimpleMode((s) => {
+            const next = !s;
+            localStorage.setItem('schedule_editor_simple_mode', String(next));
+            return next;
+        });
+    };
 
     useEffect(() => {
         return () => {
@@ -144,10 +155,10 @@ const EditScheduleModal = ({ schedule }: Props) => {
                     <div css={tw`mt-6 bg-neutral-700 border border-neutral-800 shadow-inner p-4 rounded`}>
                         <Switch
                             name={'simple_mode'}
-                            description={simpleMode ? '使用简单的时间选择器设置执行频率' : '直接编辑 Cron 表达式'}
-                            label={simpleMode ? '简单模式' : '高级模式'}
-                            defaultChecked={simpleMode}
-                            onChange={() => setSimpleMode((s) => !s)}
+                            description={simpleMode ? '直接编辑 Cron 表达式' : '使用简单的时间选择器设置执行频率'}
+                            label={simpleMode ? '高级模式' : '简单模式'}
+                            checked={!simpleMode}
+                            onChange={toggleSimpleMode}
                         />
                     </div>
                     <div css={tw`mt-6 bg-neutral-700 border border-neutral-800 shadow-inner p-4 rounded`}>
