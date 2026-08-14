@@ -53,18 +53,15 @@ class FindAssignableAllocationService
     }
 
     /**
-     * Finds or creates a set of consecutive (sequential) unassigned allocations and assigns
-     * them all to the given server.
+     * 从节点已创建的未分配 allocation 记录中，找出一段连续的端口并分配给服务器。
+     * 绝不创建新的 allocation 记录：只有预先创建好的端口（已存在于数据库中）才允许
+     * 分配，因为服务器可能依赖为这些端口配置的安全组/防火墙，创建全新端口会绕过
+     * 安全组导致服务器无法访问。
      *
      * @return Allocation[]
      *
-     * @throws \Pterodactyl\Exceptions\DisplayException
      * @throws AutoAllocationNotEnabledException
      * @throws NoAutoAllocationSpaceAvailableException
-     * @throws \Pterodactyl\Exceptions\Service\Allocation\CidrOutOfRangeException
-     * @throws \Pterodactyl\Exceptions\Service\Allocation\InvalidPortMappingException
-     * @throws \Pterodactyl\Exceptions\Service\Allocation\PortOutOfRangeException
-     * @throws \Pterodactyl\Exceptions\Service\Allocation\TooManyPortsInRangeException
      */
     public function handleConsecutive(Server $server, int $count): array
     {
@@ -84,61 +81,37 @@ class FindAssignableAllocationService
 
         $ip = $server->allocation->ip;
 
-        // Get all ports already assigned to any server on this node/ip within the range.
-        // Unassigned allocations (server_id = null) are still considered available.
-        $usedPorts = $server->node->allocations()
+        // 只从节点上已经创建的未分配 allocation 记录中挑选连续端口。这些端口已包含在
+        // 服务器的安全组/防火墙规则中，绝不能为凑数创建全新端口，否则会绕过安全组导致
+        // 服务器无法访问。
+        $unassigned = $server->node->allocations()
             ->where('ip', $ip)
             ->whereBetween('port', [$start, $end])
-            ->whereNotNull('server_id')
+            ->whereNull('server_id')
+            ->orderBy('port')
             ->pluck('port')
             ->toArray();
 
-        $available = array_values(array_diff(range((int) $start, (int) $end), $usedPorts));
-
-        // Build a set of available ports for O(1) lookup, then shuffle the ports so that
-        // the starting candidate is chosen randomly — mirroring how single-port allocation
-        // uses array_rand to avoid always picking from the beginning of the range.
-        $availableSet = array_flip($available);
-        shuffle($available);
-
-        $consecutiveStart = null;
-        foreach ($available as $candidate) {
-            $valid = true;
-            for ($j = 1; $j < $count; ++$j) {
-                if (!isset($availableSet[$candidate + $j])) {
-                    $valid = false;
-                    break;
-                }
-            }
-            if ($valid) {
-                $consecutiveStart = $candidate;
-                break;
-            }
-        }
+        // 在已创建的未分配端口中随机挑选一个能够容纳 $count 个连续端口的起始位置。
+        $consecutiveStart = $this->findConsecutiveBlock($unassigned, $count);
 
         if ($consecutiveStart === null) {
-            throw new NoAutoAllocationSpaceAvailableException();
+            throw new NoAutoAllocationSpaceAvailableException('无法分配更多端口：节点上没有可用空间。');
         }
 
-        $ports = range($consecutiveStart, $consecutiveStart + $count - 1);
+        return $this->assignConsecutivePorts($server, $ip, $consecutiveStart, $count);
+    }
 
-        // Create any ports in the range that don't already exist as allocations.
-        $existingPorts = $server->node->allocations()
-            ->where('ip', $ip)
-            ->whereIn('port', $ports)
-            ->pluck('port')
-            ->toArray();
+    /**
+     * 将一段连续端口的 allocation 记录绑定到服务器。块内端口均为已创建的未分配记录，
+     * 统一按端口查询后分配给服务器。
+     *
+     * @return Allocation[]
+     */
+    private function assignConsecutivePorts(Server $server, string $ip, int $start, int $count): array
+    {
+        $ports = range($start, $start + $count - 1);
 
-        $newPorts = array_values(array_diff($ports, $existingPorts));
-
-        if (!empty($newPorts)) {
-            $this->service->handle($server->node, [
-                'allocation_ip' => $ip,
-                'allocation_ports' => $newPorts,
-            ]);
-        }
-
-        // Assign all the consecutive allocations to the server.
         $allocations = $server->node->allocations()
             ->where('ip', $ip)
             ->whereIn('port', $ports)
@@ -146,7 +119,7 @@ class FindAssignableAllocationService
             ->get();
 
         if ($allocations->count() !== $count) {
-            throw new NoAutoAllocationSpaceAvailableException();
+            throw new NoAutoAllocationSpaceAvailableException('无法分配更多端口：节点上没有可用空间。');
         }
 
         $allocations->each(function (Allocation $allocation) use ($server) {
@@ -154,6 +127,39 @@ class FindAssignableAllocationService
         });
 
         return $allocations->map(fn (Allocation $a) => $a->refresh())->all();
+    }
+
+    /**
+     * 在端口数组中查找所有能够容纳 count 个连续端口的起始位置，并随机返回其中一个。
+     *
+     * @param int[] $ports 已排序的端口数组
+     * @param int $count 需要的连续端口数量
+     *
+     * @return int|null 连续块的起始端口，如果没有找到则返回 null
+     */
+    private function findConsecutiveBlock(array $ports, int $count): ?int
+    {
+        $portSet = array_flip($ports);
+        $candidates = [];
+
+        foreach ($ports as $candidate) {
+            $valid = true;
+            for ($j = 1; $j < $count; ++$j) {
+                if (!isset($portSet[$candidate + $j])) {
+                    $valid = false;
+                    break;
+                }
+            }
+            if ($valid) {
+                $candidates[] = $candidate;
+            }
+        }
+
+        if (empty($candidates)) {
+            return null;
+        }
+
+        return $candidates[array_rand($candidates)];
     }
 
     /**

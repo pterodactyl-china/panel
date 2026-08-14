@@ -174,8 +174,19 @@ class FindAssignableAllocationServiceTest extends IntegrationTestCase
     public function testConsecutiveAllocationReturnsValidConsecutivePorts()
     {
         $server = $this->createServerModel();
+        // 将主分配移出端口范围，避免随机端口干扰本次测试。
+        $server->allocation->update(['port' => 65530]);
         config()->set('pterodactyl.client_features.allocations.range_start', 5000);
         config()->set('pterodactyl.client_features.allocations.range_end', 5010);
+
+        // 预先创建整段未分配的 allocation 记录（模拟已配置好安全组的端口）。
+        foreach (range(5000, 5010) as $port) {
+            Allocation::factory()->create([
+                'node_id' => $server->node_id,
+                'ip' => $server->allocation->ip,
+                'port' => $port,
+            ]);
+        }
 
         $allocations = $this->getService()->handleConsecutive($server, 3);
 
@@ -197,28 +208,113 @@ class FindAssignableAllocationServiceTest extends IntegrationTestCase
     }
 
     /**
+     * Test that handleConsecutive reuses existing unassigned allocation records entirely,
+     * without creating any new ports.
+     */
+    public function testConsecutiveAllocationReusesExistingUnassignedAllocations()
+    {
+        $server = $this->createServerModel();
+        // 将主分配移出端口范围，避免随机端口干扰本次测试。
+        $server->allocation->update(['port' => 65530]);
+
+        config()->set('pterodactyl.client_features.allocations.range_start', 5000);
+        config()->set('pterodactyl.client_features.allocations.range_end', 5002);
+
+        // 预先创建三个未分配的 allocation 记录（5000、5001、5002）。
+        $existing = collect([5000, 5001, 5002])->map(fn (int $port) => Allocation::factory()->create([
+            'node_id' => $server->node_id,
+            'ip' => $server->allocation->ip,
+            'port' => $port,
+        ]));
+
+        $allocations = $this->getService()->handleConsecutive($server, 3);
+
+        $this->assertCount(3, $allocations);
+
+        // 必须完全复用已有的未分配记录，而不是创建任何新端口。
+        $this->assertSame(
+            $existing->pluck('id')->sort()->values()->all(),
+            collect($allocations)->pluck('id')->sort()->values()->all()
+        );
+
+        // 三个端口必须是连续的，且都属于该服务器。
+        $ports = array_map(fn ($a) => $a->port, $allocations);
+        sort($ports);
+        $this->assertSame([5000, 5001, 5002], $ports);
+
+        foreach ($allocations as $allocation) {
+            $this->assertSame($server->id, $allocation->server_id);
+            $this->assertSame($server->allocation->ip, $allocation->ip);
+        }
+    }
+
+    /**
+     * Test that handleConsecutive throws and does NOT create new ports when there are not
+     * enough consecutive unassigned allocation records, since new ports would bypass the
+     * security groups configured for the pre-created ports.
+     */
+    public function testConsecutiveAllocationDoesNotCreatePortsWhenNoConsecutiveUnassignedSequenceExists()
+    {
+        $server = $this->createServerModel();
+        // 将主分配移出端口范围，避免随机端口干扰本次测试。
+        $server->allocation->update(['port' => 65530]);
+
+        config()->set('pterodactyl.client_features.allocations.range_start', 5000);
+        config()->set('pterodactyl.client_features.allocations.range_end', 5002);
+
+        // 只预创建 5000、5001 两个未分配端口，缺少 5002 无法凑成连续段。
+        foreach ([5000, 5001] as $port) {
+            Allocation::factory()->create([
+                'node_id' => $server->node_id,
+                'ip' => $server->allocation->ip,
+                'port' => $port,
+            ]);
+        }
+
+        $countBefore = $server->node->allocations()->count();
+
+        try {
+            $this->getService()->handleConsecutive($server, 3);
+            $this->fail('Expected NoAutoAllocationSpaceAvailableException to be thrown.');
+        } catch (NoAutoAllocationSpaceAvailableException $exception) {
+            $this->assertSame('无法分配更多端口：节点上没有可用空间。', $exception->getMessage());
+        }
+
+        // 必须没有创建任何新的 allocation 记录（端口 5002 不允许被自动创建）。
+        $this->assertSame($countBefore, $server->node->allocations()->count());
+    }
+
+    /**
      * Test that handleConsecutive picks a random starting port (like single-port allocation)
      * rather than always returning the first available consecutive sequence.
      */
     public function testConsecutiveAllocationIsRandomized()
     {
         $server = $this->createServerModel();
+        // 将主分配移出端口范围，避免随机端口干扰本次测试。
+        $server->allocation->update(['port' => 65530]);
         config()->set('pterodactyl.client_features.allocations.range_start', 5000);
         config()->set('pterodactyl.client_features.allocations.range_end', 5019);
+
+        // 预先创建整段未分配的 allocation 记录（模拟已配置好安全组的端口）。
+        foreach (range(5000, 5019) as $port) {
+            Allocation::factory()->create([
+                'node_id' => $server->node_id,
+                'ip' => $server->allocation->ip,
+                'port' => $port,
+            ]);
+        }
 
         $startPorts = [];
         // Run many times; with 19 possible start positions for count=2 across 20 ports,
         // the probability of always getting 5000 is (1/19)^20 ≈ negligible.
         for ($attempt = 0; $attempt < 20; ++$attempt) {
-            // Reset all allocations between runs.
-            $server->node->allocations()->whereNotIn('id', [$server->allocation_id])->delete();
-
             $allocations = $this->getService()->handleConsecutive($server, 2);
             $ports = array_map(fn ($a) => $a->port, $allocations);
             sort($ports);
             $startPorts[] = $ports[0];
 
-            // Reset server_id so ports are available again for next iteration.
+            // Reset server_id so the same ports are available again for next iteration.
             $server->node->allocations()
                 ->whereNotIn('id', [$server->allocation_id])
                 ->update(['server_id' => null]);

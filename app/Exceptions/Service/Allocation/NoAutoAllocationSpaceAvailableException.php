@@ -9,10 +9,10 @@ class NoAutoAllocationSpaceAvailableException extends DisplayException
     /**
      * NoAutoAllocationSpaceAvailableException constructor.
      */
-    public function __construct()
+    public function __construct(?string $message = null)
     {
         parent::__construct(
-            '无法分配更多端口：节点上没有可用空间。'
+            $message ?? '无法分配更多端口：节点上没有可用空间。'
         );
     }
 }
