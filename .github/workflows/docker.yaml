@@ -58,14 +58,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # 登录阿里云 ACR
-      - name: Login to Aliyun ACR
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ secrets.ALIYUN_ACR_REGISTRY }}  # e.g., registry.cn-hangzhou.aliyuncs.com
-          username: ${{ secrets.ALIYUN_ACR_ACCESS_KEY_ID }}
-          password: ${{ secrets.ALIYUN_ACR_ACCESS_KEY_SECRET }}
+      # # 登录阿里云 ACR
+      # - name: Login to Aliyun ACR
+      #   if: github.event_name != 'pull_request'
+      #   uses: docker/login-action@v3
+      #   with:
+      #     registry: ${{ secrets.ALIYUN_ACR_REGISTRY }}
+      #     username: ${{ secrets.ALIYUN_ACR_ACCESS_KEY_ID }}
+      #     password: ${{ secrets.ALIYUN_ACR_ACCESS_KEY_SECRET }}
 
       - name: Update version
         if: "github.event_name == 'release' && github.event.action == 'published'"
