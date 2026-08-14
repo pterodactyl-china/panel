@@ -26,7 +26,10 @@
                     <p>此操作将使用预设的安装脚本重新安装服务器。<strong>危险!</strong> 这可能会覆盖服务器数据。</p>
                 </div>
                 <div class="box-footer">
-                    @if($server->isInstalled())
+                    @if(! $server->canBeReinstalled())
+                        <button class="btn btn-danger disabled">Reinstall Server</button>
+                        <p style="padding-top: 1rem;">This server is set to skip its install script. Disable "Skip Egg Install Script" on the startup page to reinstall it.</p>
+                    @elseif($server->isInstalled())
                         <form action="{{ route('admin.servers.view.manage.reinstall', $server->id) }}" method="POST">
                             {!! csrf_field() !!}
                             <button type="submit" class="btn btn-danger">重新安装服务器</button>

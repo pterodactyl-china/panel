@@ -62,7 +62,7 @@ Pterodactyl® 是一个免费的开源游戏服务器管理面板，使用 PHP�
 * Xonotic
 * Starmade
 * Discord ATLBot, and most other Node.js/Python discord bots
-* [更多...](https://pterodactyleggs.com)
+* [更多...](https://eggs.pterodactyl.io)
 
 ## 开源协议
 
