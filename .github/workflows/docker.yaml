@@ -27,7 +27,7 @@ jobs:
           images: |
             ghcr.io/pterodactyl-china/panel
             pterodactylchina/panel
-            ${{ secrets.ALIYUN_ACR_REGISTRY }}/pterodactyl-china/panel
+            # ${{ secrets.ALIYUN_ACR_REGISTRY }}/pterodactyl-china/panel
           flavor: |
             latest=false
           tags: |
