@@ -23,8 +23,8 @@ jobs:
           VERSION: ${{ github.ref_name }}
         run: |
           BRANCH=release/${{ env.VERSION }}
-          git config --local user.email 'ci@pterodactyl.io'
-          git config --local user.name 'Pterodactyl CI'
+          git config --local user.email 'ci@pterodactyl.top'
+          git config --local user.name 'Pterodactyl China CI'
           git checkout -b "$BRANCH"
           git push -u origin "$BRANCH"
           sed -i "s/'canary'/'${VERSION:1}'/" config/app.php
@@ -48,17 +48,16 @@ jobs:
           files: |
             panel.tar.gz
 
-      # Hand the tagged version to pterodactyl/pterodactyl-cdn, which publishes
-      # https://cdn.pterodactyl.io/releases/latest.json. It can't read the
-      # version off the API itself, because the release above is still a draft.
-      # GITHUB_TOKEN deliberately cannot be used here: it has no access to
-      # another repository.
-      - name: Update CDN release manifest
-        if: ${{ !contains(github.ref_name, 'rc') && !contains(github.ref_name, 'beta') && !contains(github.ref_name, 'alpha') }}
+      # 通知版本清单仓库 pterodactyl-china/.github，由它更新
+      # https://api.pterodactyl.top/releases/latest.json（对标官方 cdn.pterodactyl.io）。
+      # 上面创建的是 draft release，清单仓库无法通过 API 读到版本号，只能由这里主动告知。
+      # GITHUB_TOKEN 无法跨仓库使用，需要 CDN_DISPATCH_TOKEN（对 .github 仓库有 Contents: Read and write 的 PAT）。
+      - name: Update release manifest
+        if: ${{ secrets.CDN_DISPATCH_TOKEN != '' && !contains(github.ref_name, 'rc') && !contains(github.ref_name, 'beta') && !contains(github.ref_name, 'alpha') }}
         env:
           GH_TOKEN: ${{ secrets.CDN_DISPATCH_TOKEN }}
           VERSION: ${{ github.ref_name }}
         run: |
           jq -n --arg version "$VERSION" \
             '{event_type: "release-tagged", client_payload: {component: "panel", version: $version}}' \
-            | gh api repos/pterodactyl/pterodactyl-cdn/dispatches --input -
+            | gh api repos/pterodactyl-china/.github/dispatches --input -
