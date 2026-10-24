@@ -63,20 +63,20 @@ const LOAD_PHASES = new Set(['register', 'boot', 'compatibility']);
 const stateBadge = (state: ExtensionState = '', errorPhase?: string | null) => {
     switch (state) {
         case 'not_registered':
-            return { label: 'Not set up', className: 'bg-accent/10 text-accent' };
+            return { label: '未设置', className: 'bg-accent/10 text-accent' };
         case 'error':
             return {
-                label: !errorPhase || LOAD_PHASES.has(errorPhase) ? 'Failed to load' : 'Runtime error',
+                label: !errorPhase || LOAD_PHASES.has(errorPhase) ? '加载失败' : '运行时错误',
                 className: 'bg-destructive/15 text-destructive',
             };
         case 'invalid':
-            return { label: 'Invalid package', className: 'bg-destructive/15 text-destructive' };
+            return { label: '无效的软件包', className: 'bg-destructive/15 text-destructive' };
         default:
             return null;
     }
 };
 
-const extensionName = (extension: AdminExtension): string => extension.name || extension.id || 'Unknown extension';
+const extensionName = (extension: AdminExtension): string => extension.name || extension.id || '未知扩展';
 
 const extensionId = (extension: AdminExtension): string => extension.id || extensionName(extension);
 
@@ -147,15 +147,13 @@ function ActionButton({ label, icon, disabled, color = 'grey', isLoading, onClic
 }
 
 function ReplacementNotice({ replacement }: { replacement: AdminExtensionReplacement }) {
-    const installed = replacement.installedVersion ? `v${replacement.installedVersion}` : 'a copy';
+    const installed = replacement.installedVersion ? `v${replacement.installedVersion}` : '副本';
 
     return (
-        <Alert type='warning' title='Replace an installed extension?'>
-            This package is <code className='font-mono'>{replacement.id}</code> v{replacement.version}, and {installed}{' '}
-            of <code className='font-mono'>{replacement.id}</code> is already installed. Installing it replaces the
-            installed files.
-            {replacement.enabled &&
-                ' The extension is enabled and stays enabled, so the new version runs its migrations and code right away.'}
+        <Alert type='warning' title='替换已安装的扩展？'>
+            已安装 <code className='font-mono'>{replacement.id}</code>（{installed}），即将安装 v{replacement.version}。
+            安装后将覆盖 <code className='font-mono'>{replacement.id}</code> 的已安装文件。
+            {replacement.enabled && ' 该扩展已启用并将保持启用状态，因此新版本会立即运行其迁移与代码。'}
         </Alert>
     );
 }
@@ -188,7 +186,7 @@ function InstallExtensionDialog({ open, onClose }: { open: boolean; onClose: () 
     return (
         <Dialog
             open={open}
-            title='Install extension'
+            title='安装扩展'
             preventExternalClose={submitting}
             hideCloseIcon={submitting}
             onClose={onClose}
@@ -196,11 +194,11 @@ function InstallExtensionDialog({ open, onClose }: { open: boolean; onClose: () 
             <SpinnerOverlay visible={submitting} />
             <div className='space-y-5'>
                 <div>
-                    <Label htmlFor='extension_package'>Package</Label>
+                    <Label htmlFor='extension_package'>软件包</Label>
                     <FileInput
                         id='extension_package'
                         accept='.pteroext,.zip,application/zip'
-                        aria-label='Extension package'
+                        aria-label='扩展包'
                         disabled={submitting}
                         onChange={(event) => {
                             setFile(event.currentTarget.files?.[0] ?? null);
@@ -210,7 +208,7 @@ function InstallExtensionDialog({ open, onClose }: { open: boolean; onClose: () 
                 </div>
                 <label className='flex items-center gap-3 text-sm text-foreground'>
                     <Checkbox checked={enable} onChange={setEnable} disabled={submitting} />
-                    Enable after install
+                    安装后启用
                 </label>
                 {replacement && <ReplacementNotice replacement={replacement} />}
             </div>
@@ -222,7 +220,7 @@ function InstallExtensionDialog({ open, onClose }: { open: boolean; onClose: () 
                     disabled={submitting}
                     onClick={onClose}
                 >
-                    Cancel
+                    取消
                 </Button>
                 <Button
                     type='button'
@@ -232,7 +230,7 @@ function InstallExtensionDialog({ open, onClose }: { open: boolean; onClose: () 
                     isLoading={submitting}
                     onClick={() => void submit()}
                 >
-                    {replacement ? `Replace ${replacement.id}` : 'Install'}
+                    {replacement ? `Replace ${replacement.id}` : '安装'}
                 </Button>
             </div>
         </Dialog>
@@ -244,7 +242,7 @@ function InstallExtensionButton() {
         <Dialog.Trigger
             trigger={({ onClick }) => (
                 <NewButton icon={UploadCloud} onClick={onClick}>
-                    Install
+                    安装
                 </NewButton>
             )}
         >
@@ -280,7 +278,7 @@ function ExtensionToolbar({
                             type='button'
                             color='grey'
                             isSecondary
-                            aria-label='Refresh extensions'
+                            aria-label='刷新扩展'
                             disabled={isFetching}
                             isLoading={isFetching}
                             className='inline-flex h-9 w-9 items-center justify-center p-0'
@@ -344,11 +342,9 @@ function SettingsEmptyState({ extensionEnabled }: { extensionEnabled: boolean | 
                 <EmptyMedia variant='icon'>
                     <Settings2 />
                 </EmptyMedia>
-                <EmptyTitle>{extensionEnabled ? 'No settings' : 'Settings unavailable'}</EmptyTitle>
+                <EmptyTitle>{extensionEnabled ? 'No settings' : '设置不可用'}</EmptyTitle>
                 <EmptyDescription>
-                    {extensionEnabled
-                        ? "This extension doesn't register any settings."
-                        : 'Enable the extension to load its settings.'}
+                    {extensionEnabled ? '此扩展未注册任何设置。' : '启用此扩展以加载其设置。'}
                 </EmptyDescription>
             </EmptyHeader>
         </Empty>
@@ -436,7 +432,7 @@ function SettingsDialogActions({
                 disabled={submitting}
                 onClick={onCancel}
             >
-                Cancel
+                取消
             </Button>
             <Button
                 type='button'
@@ -445,7 +441,7 @@ function SettingsDialogActions({
                 isLoading={submitting}
                 onClick={onSubmit}
             >
-                Save Settings
+                保存设置
             </Button>
         </div>
     );
@@ -571,13 +567,11 @@ function ExtensionCardDetails({ extension }: { extension: AdminExtension }) {
                 className='mt-3 line-clamp-3 text-sm leading-relaxed text-card-foreground/80'
                 title={extension.description || undefined}
             >
-                {extension.description || 'No description provided.'}
+                {extension.description || '未提供描述。'}
             </p>
 
             {extension.state === 'not_registered' && (
-                <p className='mt-3 text-sm text-muted-foreground'>
-                    Found in the extensions folder. Turn it on to finish setting it up.
-                </p>
+                <p className='mt-3 text-sm text-muted-foreground'>已位于扩展目录中。启用它以完成设置。</p>
             )}
 
             {extension.error && (
@@ -585,7 +579,7 @@ function ExtensionCardDetails({ extension }: { extension: AdminExtension }) {
                     <p className='break-words text-sm text-destructive'>{extension.error}</p>
                     {extension.errored_at && (
                         <p className='mt-1 text-xs text-destructive/80'>
-                            {extension.error_phase && <>In {extension.error_phase}, </>}
+                            {extension.error_phase && <>阶段 {extension.error_phase}，</>}
                             {new Date(extension.errored_at).toLocaleString()}
                         </p>
                     )}
@@ -640,14 +634,14 @@ function RemoveExtensionButton({ extension, name }: { extension: AdminExtension;
 
     return (
         <Dialog.ConfirmTrigger
-            title='Remove extension'
-            confirm='Remove'
+            title='移除扩展'
+            confirm='移除'
             preventExternalClose={removePending}
             hideCloseIcon={removePending}
             pending={removePending}
             trigger={({ onClick }) => (
                 <ActionButton
-                    label='Remove'
+                    label='移除'
                     icon={Trash2}
                     color='red'
                     disabled={!canRemove(extension) || removePending}
@@ -658,8 +652,7 @@ function RemoveExtensionButton({ extension, name }: { extension: AdminExtension;
             onConfirmed={(_event, close) => submitRemove(close)}
         >
             <SpinnerOverlay visible={removePending} />
-            Removing <strong>{name}</strong> deletes the extension files, published assets, settings, subuser
-            permissions it added, and install record.
+            移除 <strong>{name}</strong> 将删除扩展文件、已发布的资源、设置、它添加的子用户权限以及安装记录。
         </Dialog.ConfirmTrigger>
     );
 }
@@ -678,9 +671,7 @@ function ExtensionCard({ extension }: { extension: AdminExtension }) {
                     <ExtensionToggle extension={extension} name={name} />
                     {extension.enabled && (
                         <Dialog.Trigger
-                            trigger={({ onClick }) => (
-                                <ActionButton label='Settings' icon={Settings2} onClick={onClick} />
-                            )}
+                            trigger={({ onClick }) => <ActionButton label='设置' icon={Settings2} onClick={onClick} />}
                         >
                             {({ open, onClose }) => (
                                 <SettingsDialog extension={extension} open={open} onClose={onClose} />
@@ -701,10 +692,8 @@ function EmptyExtensionsState() {
                 <EmptyMedia variant='icon'>
                     <FileArchive />
                 </EmptyMedia>
-                <EmptyTitle>No extensions installed</EmptyTitle>
-                <EmptyDescription>
-                    Install an extension package to add features and integrations to this panel.
-                </EmptyDescription>
+                <EmptyTitle>未安装任何扩展</EmptyTitle>
+                <EmptyDescription>安装扩展包以为面板添加功能与集成。</EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
                 <InstallExtensionButton />
@@ -739,11 +728,7 @@ export default function ExtensionsContainer() {
     }
 
     return (
-        <AdminContentBlock
-            title='Admin · Extensions'
-            heading='Extensions'
-            description='Manage extensions that add features and integrations to your panel.'
-        >
+        <AdminContentBlock title='管理 · 扩展' heading='扩展' description='管理为面板添加功能与集成的扩展。'>
             {runtimeFailures.length > 0 && (
                 <Alert type='danger' className='mb-4'>
                     {runtimeFailures.map((state) => (
@@ -755,9 +740,9 @@ export default function ExtensionsContainer() {
             )}
             {data?.meta?.enabled === false && (
                 <Alert type='warning' className='mb-4'>
-                    Extensions are turned off on this panel, so installed extensions won&apos;t load. Set{' '}
-                    <code className='font-mono'>PTERODACTYL_EXTENSIONS_ENABLED=true</code> in your{' '}
-                    <code className='font-mono'>.env</code> to turn them on.
+                    此面板已关闭扩展功能，因此已安装的扩展不会加载。请将{' '}
+                    <code className='font-mono'>PTERODACTYL_EXTENSIONS_ENABLED=true</code> 设置为{' '}
+                    <code className='font-mono'>true</code> 以启用它们。
                 </Alert>
             )}
             {data && <ExtensionToolbar failedCount={failedCount} isFetching={isFetching} onRefresh={() => refetch()} />}

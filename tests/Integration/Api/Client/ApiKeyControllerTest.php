@@ -67,7 +67,7 @@ test('api key cannot specify more than fifty ips', function (): void {
         $ips[] = '127.0.0.'.$i;
     }
 
-    $this->actingAs(User::factory()->create())->postJson('/api/client/account/api-keys', ['description' => 'Test Data', 'allowed_ips' => $ips])->assertUnprocessable()->assertJsonPath('errors.0.detail', 'The allowed ips may not have more than 50 items.');
+    $this->actingAs(User::factory()->create())->postJson('/api/client/account/api-keys', ['description' => 'Test Data', 'allowed_ips' => $ips])->assertUnprocessable()->assertJsonPath('errors.0.detail', 'allowed ips 最多只有 50 个单元。');
 });
 test('api key allowed ips must be a list', function (): void {
     $user = User::factory()->create();
@@ -86,8 +86,8 @@ test('api key limit is applied', function (): void {
 });
 test('validation error is returned for bad requests', function (): void {
     $this->actingAs(User::factory()->create());
-    $this->postJson('/api/client/account/api-keys', ['description' => '', 'allowed_ips' => ['127.0.0.1']])->assertUnprocessable()->assertJsonPath('errors.0.meta.rule', 'required')->assertJsonPath('errors.0.detail', 'The description field is required.');
-    $this->postJson('/api/client/account/api-keys', ['description' => str_repeat('a', 501), 'allowed_ips' => ['127.0.0.1']])->assertUnprocessable()->assertJsonPath('errors.0.meta.rule', 'max')->assertJsonPath('errors.0.detail', 'The description may not be greater than 500 characters.');
+    $this->postJson('/api/client/account/api-keys', ['description' => '', 'allowed_ips' => ['127.0.0.1']])->assertUnprocessable()->assertJsonPath('errors.0.meta.rule', 'required')->assertJsonPath('errors.0.detail', 'description 不能为空。');
+    $this->postJson('/api/client/account/api-keys', ['description' => str_repeat('a', 501), 'allowed_ips' => ['127.0.0.1']])->assertUnprocessable()->assertJsonPath('errors.0.meta.rule', 'max')->assertJsonPath('errors.0.detail', 'description 不能大于 500 个字符。');
     $this->postJson('/api/client/account/api-keys', ['description' => 'Foobar', 'allowed_ips' => ['hodor', '127.0.0.1', 'hodor/24']])->assertUnprocessable()->assertJsonPath('errors.0.detail', '"hodor" is not a valid IP address or CIDR range.')->assertJsonPath('errors.0.meta.source_field', 'allowed_ips.0')->assertJsonPath('errors.1.detail', '"hodor/24" is not a valid IP address or CIDR range.')->assertJsonPath('errors.1.meta.source_field', 'allowed_ips.2');
 });
 test('api key can be deleted', function (): void {

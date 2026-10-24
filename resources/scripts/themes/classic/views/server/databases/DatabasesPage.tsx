@@ -5,7 +5,7 @@ import PageStatus from '../../shared/PageStatus';
 export default function DatabasesPage({ model, className }: ViewProps<'page.server.databases'>) {
     return (
         <PageStatus model={model} className={className}>
-            <ServerContentBlock title='Databases' className={className}>
+            <ServerContentBlock title='数据库' className={className}>
                 <View name='server.databases' />
             </ServerContentBlock>
         </PageStatus>

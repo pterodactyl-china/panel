@@ -98,11 +98,7 @@ export default function MountsContainer() {
     }
 
     return (
-        <AdminContentBlock
-            title='Admin · Mounts'
-            heading='Mounts'
-            description='Manage additional directories that can be mounted into server containers.'
-        >
+        <AdminContentBlock title='管理 · 挂载' heading='挂载' description='管理可挂载到服务器容器中的其他目录。'>
             <form
                 className='mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between'
                 onSubmit={(event) => {
@@ -121,9 +117,9 @@ export default function MountsContainer() {
                     <TextInput
                         key={filter}
                         name='filter'
-                        aria-label='Search mounts'
+                        aria-label='搜索挂载'
                         className='h-9 border-border bg-card pl-10'
-                        placeholder='Search mounts…'
+                        placeholder='搜索挂载…'
                         defaultValue={filter}
                     />
                 </div>
@@ -137,10 +133,10 @@ export default function MountsContainer() {
                         emptyState={
                             <AdminListEmpty
                                 icon={FolderInput}
-                                noun='mounts'
+                                noun='挂载'
                                 filter={filter}
                                 onClearFilter={() => navigateToSearch({ page: 1, filter: '' })}
-                                description='Create a mount to share a host directory with server containers.'
+                                description='创建挂载，将宿主机目录共享给服务器容器。'
                                 action={<CreateMountButton />}
                             />
                         }
@@ -149,7 +145,7 @@ export default function MountsContainer() {
                         table={table}
                         total={mounts.meta.pagination.total}
                         count={mounts.meta.pagination.count}
-                        itemLabel='mounts'
+                        itemLabel='挂载'
                     />
                 </>
             ) : (

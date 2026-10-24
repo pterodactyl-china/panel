@@ -148,7 +148,7 @@ function useAccountLayoutModel(): AccountLayoutModel {
 
 const adminLink = (internalId: number, order: number): NavItem => ({
     id: 'admin',
-    label: 'Open Admin Area',
+    label: '打开管理区',
     destination: { to: '/panel/servers/$id', params: { id: String(internalId) } },
     icon: 'external-link',
     group: null,
@@ -214,11 +214,11 @@ function useAdminLayoutModel(): AdminLayoutModel {
 }
 
 const appLinks = (rootAdmin: boolean): AppLayoutLink[] => [
-    { id: 'dashboard', label: 'Dashboard', destination: { to: '/' }, exact: true, icon: 'layers' },
+    { id: 'dashboard', label: '仪表盘', destination: { to: '/' }, exact: true, icon: 'layers' },
     ...(rootAdmin
-        ? [{ id: 'admin', label: 'Admin', destination: { to: '/panel' }, exact: false, icon: 'user-cog' } as const]
+        ? [{ id: 'admin', label: '管理', destination: { to: '/panel' }, exact: false, icon: 'user-cog' } as const]
         : []),
-    { id: 'account', label: 'Account Settings', destination: { to: '/account' }, exact: false, icon: 'user-round' },
+    { id: 'account', label: '账户设置', destination: { to: '/account' }, exact: false, icon: 'user-round' },
 ];
 
 const DASHBOARD: AppArea = Object.freeze({ kind: 'dashboard' });
@@ -355,24 +355,24 @@ const extensionItem = (area: NavArea, order: number): Partial<NavItem> => ({
 
 const accountNav = (extension = false) =>
     navFixture('account', [
-        ['', 'Account', 'user-round'],
-        ['api', 'API Credentials', 'key-round'],
-        ['ssh', 'SSH Keys', 'terminal'],
-        ['activity', 'Activity', 'history'],
+        ['', '账户', 'user-round'],
+        ['api', 'API 凭据', 'key-round'],
+        ['ssh', 'SSH 密钥', 'terminal'],
+        ['activity', '活动', 'history'],
         ...(extension ? [['tickets', 'Tickets', 'life-buoy', extensionItem('account', 4)] as const] : []),
     ]);
 
 const serverPaths = [
     ['', 'Console', 'square-terminal'],
     ['files', 'Files', 'folder', { hash: '/' }],
-    ['databases', 'Databases', 'database'],
+    ['databases', '数据库', 'database'],
     ['schedules', 'Schedules', 'calendar-clock'],
-    ['users', 'Users', 'users'],
+    ['users', '用户', 'users'],
     ['backups', 'Backups', 'archive'],
     ['network', 'Network', 'network'],
     ['startup', 'Startup', 'rocket'],
-    ['settings', 'Settings', 'settings'],
-    ['activity', 'Activity', 'history'],
+    ['settings', '设置', 'settings'],
+    ['activity', '活动', 'history'],
 ] as const;
 
 function serverLayoutFixture(
@@ -402,20 +402,20 @@ function serverLayoutFixture(
 
 const adminNav = (extension = false) =>
     navFixture('admin', [
-        ['', 'Overview', 'layout-dashboard'],
-        ['activity', 'Activity', 'history'],
-        ['settings', 'Settings', 'settings'],
-        ['users', 'Users', 'users'],
-        ['locations', 'Locations', 'map-pin'],
-        ['nodes', 'Nodes', 'network'],
-        ['servers', 'Servers', 'server'],
-        ['databases', 'Database Hosts', 'database'],
-        ['mounts', 'Mounts', 'folder-tree'],
-        ['eggs', 'Eggs', 'egg'],
-        ['tags', 'Tags', 'tag'],
-        ['extensions', 'Extensions', 'blocks'],
-        ['themes', 'Themes', 'palette'],
-        ['api', 'API Keys', 'key-round'],
+        ['', '概览', 'layout-dashboard'],
+        ['activity', '活动', 'history'],
+        ['settings', '设置', 'settings'],
+        ['users', '用户', 'users'],
+        ['locations', '地域', 'map-pin'],
+        ['nodes', '节点', 'network'],
+        ['servers', '服务器', 'server'],
+        ['databases', '数据库主机', 'database'],
+        ['mounts', '挂载', 'folder-tree'],
+        ['eggs', '预设', 'egg'],
+        ['tags', '标签', 'tag'],
+        ['extensions', '扩展', 'blocks'],
+        ['themes', '主题', 'palette'],
+        ['api', 'API 密钥', 'key-round'],
         ...(extension ? [['tickets', 'Tickets', 'life-buoy', extensionItem('admin', 14)] as const] : []),
     ]);
 

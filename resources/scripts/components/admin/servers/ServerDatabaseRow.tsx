@@ -46,24 +46,24 @@ function DeleteDatabaseConfirmForm({
                     onChange: ({ value }) =>
                         value === databaseName || value === serverDatabaseShortName(databaseName)
                             ? undefined
-                            : 'The database name must be provided.',
+                            : '必须提供数据库名称。',
                 }}
             >
                 {(field) => (
                     <field.TextField
                         type='text'
                         id='confirm_name'
-                        label='Confirm Database Name'
-                        description='Enter the database name to confirm deletion.'
+                        label='确认数据库名称'
+                        description='输入数据库名称以确认删除。'
                     />
                 )}
             </form.AppField>
             <div className='mt-6 text-right'>
                 <Button type='button' isSecondary className='mr-2' onClick={onCancel}>
-                    Cancel
+                    取消
                 </Button>
                 <form.AppForm>
-                    <form.SubmitButton color='red'>Delete Database</form.SubmitButton>
+                    <form.SubmitButton color='red'>删除数据库</form.SubmitButton>
                 </form.AppForm>
             </div>
         </Form>
@@ -93,15 +93,15 @@ function DeleteServerDatabaseDialog({ serverId, database, open, onClose }: Serve
     return (
         <Dialog
             open={open}
-            title='Confirm database deletion'
+            title='确认删除数据库'
             preventExternalClose={isSubmitting}
             hideCloseIcon={isSubmitting}
             onClose={onClose}
         >
             <SpinnerOverlay visible={isSubmitting} />
             <p className='text-sm'>
-                Deleting a database is a permanent action, it cannot be undone. This will permanently delete the{' '}
-                <strong>{databaseAttributes.name}</strong> database and remove all associated data.
+                删除数据库是不可撤销的操作。这将永久删除数据库 <strong>{databaseAttributes.name}</strong>{' '}
+                ，并移除所有关联数据。
             </p>
             <DeleteDatabaseConfirmForm form={form} databaseName={databaseAttributes.name} onCancel={onClose} />
         </Dialog>
@@ -126,33 +126,33 @@ function ServerDatabaseConnectionDialog({ serverId, database, open, onClose }: S
     };
 
     return (
-        <Dialog open={open} title='Database connection details' onClose={onClose}>
+        <Dialog open={open} title='数据库连接详情' onClose={onClose}>
             <div>
-                <Label>Endpoint</Label>
+                <Label>端点</Label>
                 <CopyOnClick text={connectionString}>
                     <TextInput type='text' readOnly value={connectionString} />
                 </CopyOnClick>
             </div>
             <div className='mt-6'>
-                <Label>Connections from</Label>
+                <Label>允许连接来源</Label>
                 <TextInput type='text' readOnly value={databaseAttributes.connections_from} />
             </div>
             <div className='mt-6'>
-                <Label>Max Connections</Label>
-                <TextInput type='text' readOnly value={databaseAttributes.max_connections ?? 'Unlimited'} />
+                <Label>最大连接数</Label>
+                <TextInput type='text' readOnly value={databaseAttributes.max_connections ?? '无限制'} />
             </div>
             <div className='mt-6'>
-                <Label>Username</Label>
+                <Label>用户名</Label>
                 <CopyOnClick text={databaseAttributes.username}>
                     <TextInput type='text' readOnly value={databaseAttributes.username} />
                 </CopyOnClick>
             </div>
             <div className='mt-6'>
-                <Label>Password</Label>
-                <SecretInput value={password} label='Password' />
+                <Label>密码</Label>
+                <SecretInput value={password} label='密码' />
             </div>
             <div className='mt-6'>
-                <Label>JDBC Connection String</Label>
+                <Label>JDBC 连接字符串</Label>
                 <CopyOnClick text={jdbcConnection} showInNotification={false}>
                     <TextInput type='text' readOnly value={jdbcConnection} />
                 </CopyOnClick>
@@ -165,10 +165,10 @@ function ServerDatabaseConnectionDialog({ serverId, database, open, onClose }: S
                     onClick={rotate}
                     isLoading={rotatePassword.isPending}
                 >
-                    Rotate Password
+                    轮换密码
                 </Button>
                 <Button isSecondary onClick={onClose}>
-                    Close
+                    关闭
                 </Button>
             </div>
         </Dialog>
@@ -184,8 +184,8 @@ export function ServerDatabaseActions({ serverId, database }: ServerDatabaseRowP
                 trigger={({ onClick }) => (
                     <RowActionButton
                         icon={Eye}
-                        label='Connection details'
-                        aria-label={`View ${name} connection details`}
+                        label='连接详情'
+                        aria-label={`查看 ${name} 的连接详情`}
                         onClick={onClick}
                     />
                 )}
@@ -199,7 +199,7 @@ export function ServerDatabaseActions({ serverId, database }: ServerDatabaseRowP
                     />
                 )}
             </Dialog.Trigger>
-            <Dialog.Trigger trigger={({ onClick }) => <DeleteAction aria-label={`Delete ${name}`} onClick={onClick} />}>
+            <Dialog.Trigger trigger={({ onClick }) => <DeleteAction aria-label={`删除 ${name}`} onClick={onClick} />}>
                 {({ open, onClose }) => (
                     <DeleteServerDatabaseDialog serverId={serverId} database={database} open={open} onClose={onClose} />
                 )}

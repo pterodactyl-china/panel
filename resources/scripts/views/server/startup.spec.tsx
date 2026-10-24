@@ -183,11 +183,11 @@ describe('startup command', () => {
     it('copies the rendered command', async () => {
         renderStartup();
 
-        fireEvent.click(await screen.findByRole('button', { name: 'Copy startup command' }));
+        fireEvent.click(await screen.findByRole('button', { name: '复制启动命令' }));
         await advance();
 
         expect(mocks.copy).toHaveBeenCalledWith('start original');
-        expect(screen.getByText('Copied text to clipboard.')).toBeVisible();
+        expect(screen.getByText('文本已复制到剪贴板。')).toBeVisible();
     });
 });
 
@@ -196,7 +196,7 @@ describe('startup docker image', () => {
         renderStartup(undefined, 'ghcr.io/example/custom:latest');
 
         expect(await screen.findByDisplayValue('ghcr.io/example/custom:latest')).toBeDisabled();
-        expect(screen.getByText(/manually set by an administrator/)).toBeVisible();
+        expect(screen.getByText(/已由管理员手动设置/)).toBeVisible();
     });
 
     it('shares an image change the startup form slot starts with the image picker', async () => {
@@ -220,7 +220,9 @@ describe('startup docker image', () => {
 
         expect(await screen.findByText('Form idle')).toBeVisible();
         expect(slot?.canChangeDockerImage).toBe(true);
-        await expect(slot!.setDockerImage('ghcr.io/example/other')).rejects.toThrow('cannot be selected');
+        await expect(slot!.setDockerImage('ghcr.io/example/other')).rejects.toThrow(
+            '当前服务器无法选择此 Docker 镜像。'
+        );
 
         void act(() => slot!.setDockerImage(images['Java 17']));
         await advance();

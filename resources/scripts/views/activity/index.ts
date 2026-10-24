@@ -38,7 +38,7 @@ const humanise = (value: string) =>
         )
         .join(' ');
 
-/** `server:power.start` lists as "Start" under "Power". */
+/** `server:power.start` lists as "启动" under "Power". */
 export function eventGroups(events: readonly string[]): ActivityEventGroup[] {
     const grouped = new Map<string, ActivityFilterOption[]>();
 
@@ -310,7 +310,7 @@ implementViews({
                 logFixture('account', {
                     entries: [],
                     pagination: null,
-                    error: 'Request failed with status code 500.',
+                    error: '请求失败，状态码 500。',
                 }),
         },
     },

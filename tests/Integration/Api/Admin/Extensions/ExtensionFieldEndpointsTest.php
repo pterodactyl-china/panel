@@ -127,7 +127,7 @@ test('invalid values reject the request before the core change', function (strin
 
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     $response->assertJsonPath('errors.0.meta.source_field', 'extensions.fields.note');
-    $response->assertJsonPath('errors.0.detail', 'The note may not be greater than 32 characters.');
+    $response->assertJsonPath('errors.0.detail', 'note 不能大于 32 个字符。');
 
     expect($case['find']())->toBeNull();
 })->with('formEndpoints');
@@ -141,7 +141,7 @@ test('an extension sent without values still runs its rules, so a required field
 
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     $response->assertJsonPath('errors.0.meta.source_field', 'extensions.fields.note');
-    $response->assertJsonPath('errors.0.detail', 'The note field is required.');
+    $response->assertJsonPath('errors.0.detail', 'note 不能为空。');
 
     expect($case['find']())->toBeNull();
 })->with('formEndpoints');
@@ -154,7 +154,7 @@ test('a create that leaves an extension out still runs its rules, so a required 
 
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     $response->assertJsonPath('errors.0.meta.source_field', 'extensions.fields.note');
-    $response->assertJsonPath('errors.0.detail', 'The note field is required.');
+    $response->assertJsonPath('errors.0.detail', 'note 不能为空。');
 
     expect($case['find']())->toBeNull();
 })->with('createEndpoints');

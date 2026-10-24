@@ -107,7 +107,7 @@ const backupSummary = ({ attributes }: ServerBackup): BackupSummary => ({
 });
 
 const validateName = (name: string): string | undefined =>
-    name.length <= 191 ? undefined : 'The backup name must not exceed 191 characters.';
+    name.length <= 191 ? undefined : '备份名称不得超过 191 个字符。';
 
 const useBackupsPageModel = () => pageStatus(useServerBackups(useLoadedServer().attributes.uuid, usePageSearch()));
 
@@ -169,12 +169,12 @@ function useBackupListModel(): BackupListModel {
             remove: (backupUuid: string) =>
                 withBackup(backupUuid, async (backup) => {
                     await deleteBackup(deleteServerBackupInput(uuid, backup));
-                    toast.success('Backup deleted', { description: `${backup.attributes.name} has been removed.` });
+                    toast.success('备份已删除', { description: `${backup.attributes.name} 已移除。` });
                 }),
             restore: (backupUuid: string, truncate: boolean) =>
                 withBackup(backupUuid, async (backup) => {
                     await restoreBackup(restoreServerBackupInput(uuid, backup, truncate));
-                    toast.success('Backup restore started', {
+                    toast.success('备份恢复已开始', {
                         description: `${backup.attributes.name} is being restored.`,
                     });
                 }),

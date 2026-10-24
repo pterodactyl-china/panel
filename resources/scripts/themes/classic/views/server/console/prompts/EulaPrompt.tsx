@@ -6,14 +6,14 @@ export default function EulaPrompt({ model }: ViewProps<'server.feature.eula'>) 
     return (
         <Dialog
             open={model.open}
-            title={<>Accept Minecraft&reg; EULA</>}
+            title={<>接受 Minecraft&reg; EULA</>}
             onClose={model.close}
             preventExternalClose={model.pending}
             hideCloseIcon={model.pending}
         >
             <SpinnerOverlay visible={model.pending} />
             <p className='text-foreground'>
-                By pressing "I Accept" below you are indicating your agreement to the&nbsp;
+                按下方的「我接受」按钮，即表示您同意以下&nbsp;
                 <a
                     target='_blank'
                     className='text-accent underline transition-colors duration-150 hover:text-accent/80'
@@ -26,13 +26,13 @@ export default function EulaPrompt({ model }: ViewProps<'server.feature.eula'>) 
             </p>
             <div className='mt-8 sm:flex items-center justify-end'>
                 <Button isSecondary onClick={model.close} className={cancelClass}>
-                    Cancel
+                    取消
                 </Button>
                 <Button
                     onClick={() => void model.accept().catch(() => {})}
                     className='mt-4 sm:mt-0 sm:ml-4 w-full sm:w-auto'
                 >
-                    I Accept
+                    我接受
                 </Button>
             </div>
         </Dialog>

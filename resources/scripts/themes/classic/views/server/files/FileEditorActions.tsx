@@ -9,7 +9,7 @@ export default function FileEditorActions({ model, className }: ViewProps<'serve
             isLoading={model.saving}
             onClick={() => void model.save()}
         >
-            {model.isNew ? 'Create File' : 'Save Content'}
+            {model.isNew ? '创建文件' : '保存内容'}
         </Button>
     );
 }

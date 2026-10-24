@@ -70,7 +70,7 @@ export default function AttachNodesModal({ mount, open, onClose, onAttached }: P
     return (
         <Dialog
             open={open}
-            title='Attach nodes'
+            title='关联节点'
             preventExternalClose={submitting}
             hideCloseIcon={submitting}
             onClose={onClose}
@@ -86,20 +86,18 @@ export default function AttachNodesModal({ mount, open, onClose, onAttached }: P
                                 <EmptyMedia variant='icon'>
                                     <HardDrive />
                                 </EmptyMedia>
-                                <EmptyTitle>{hasNodes ? 'All nodes attached' : 'No nodes yet'}</EmptyTitle>
+                                <EmptyTitle>{hasNodes ? '所有节点均已关联' : '暂无节点'}</EmptyTitle>
                                 <EmptyDescription>
-                                    {hasNodes
-                                        ? 'Every node is already attached to this mount.'
-                                        : 'Create a node before attaching it to this mount.'}
+                                    {hasNodes ? '所有节点都已关联到此挂载。' : '请先创建节点，再将其关联到此挂载。'}
                                 </EmptyDescription>
                             </EmptyHeader>
                         </Empty>
                     ) : (
                         <>
-                            <Label>Nodes</Label>
+                            <Label>节点</Label>
                             <Select
                                 multiple
-                                placeholder='Select one or more nodes…'
+                                placeholder='选择一个或多个节点…'
                                 value={selected}
                                 onChange={(value) => setSelected((value as (string | number)[]).map(Number))}
                                 groups={groups.map((group) => ({
@@ -116,7 +114,7 @@ export default function AttachNodesModal({ mount, open, onClose, onAttached }: P
                             className={cn('w-full sm:w-auto', groups.length > 0 && 'sm:mr-2')}
                             onClick={onClose}
                         >
-                            {groups.length > 0 ? 'Cancel' : 'Close'}
+                            {groups.length > 0 ? '取消' : '关闭'}
                         </Button>
                         {groups.length > 0 && (
                             <Button
@@ -125,7 +123,7 @@ export default function AttachNodesModal({ mount, open, onClose, onAttached }: P
                                 disabled={selected.length === 0}
                                 onClick={submit}
                             >
-                                Attach Nodes
+                                关联节点
                             </Button>
                         )}
                     </div>

@@ -35,10 +35,10 @@ export function RenameDialog({ model, files, move, ...props }: DialogProps & { f
                                         <field.TextField
                                             type='string'
                                             id='file_name'
-                                            label='File Name'
+                                            label='文件名'
                                             description={
                                                 move
-                                                    ? 'Enter the new name and directory of this file or folder, relative to the current directory.'
+                                                    ? '输入此文件或文件夹的新名称与目录（相对于当前目录）。'
                                                     : undefined
                                             }
                                             autoFocus
@@ -48,7 +48,7 @@ export function RenameDialog({ model, files, move, ...props }: DialogProps & { f
                             </div>
                             <div className='w-full sm:w-auto mt-4 sm:mt-0'>
                                 <form.AppForm>
-                                    <form.SubmitButton className='w-full'>{move ? 'Move' : 'Rename'}</form.SubmitButton>
+                                    <form.SubmitButton className='w-full'>{move ? '移动' : '重命名'}</form.SubmitButton>
                                 </form.AppForm>
                             </div>
                         </div>
@@ -56,7 +56,7 @@ export function RenameDialog({ model, files, move, ...props }: DialogProps & { f
                             <form.Subscribe selector={(state) => state.values.name}>
                                 {(name) => (
                                     <p className='text-xs mt-2 text-muted-foreground'>
-                                        <strong className='text-foreground'>New location:</strong>
+                                        <strong className='text-foreground'>新地域：</strong>
                                         &nbsp;/home/container/{model.resolve(name)}
                                     </p>
                                 )}
@@ -89,13 +89,13 @@ export function ChmodDialog({ model, files, ...props }: DialogProps & { files: {
                             <div className='w-full sm:flex-1 sm:mr-4'>
                                 <form.AppField name='mode'>
                                     {(field) => (
-                                        <field.TextField type='string' id='file_mode' label='File Mode' autoFocus />
+                                        <field.TextField type='string' id='file_mode' label='文件权限' autoFocus />
                                     )}
                                 </form.AppField>
                             </div>
                             <div className='w-full sm:w-auto mt-4 sm:mt-0'>
                                 <form.AppForm>
-                                    <form.SubmitButton className='w-full'>Update</form.SubmitButton>
+                                    <form.SubmitButton className='w-full'>更新</form.SubmitButton>
                                 </form.AppForm>
                             </div>
                         </div>
@@ -125,14 +125,13 @@ function NewDirectoryForm({ model, onClose }: { model: FileManagerModel; onClose
                 <form.AppField
                     name='directoryName'
                     validators={{
-                        onChange: ({ value }) =>
-                            value.length >= 1 ? undefined : 'A valid directory name must be provided.',
+                        onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供有效的目录名称。'),
                     }}
                 >
-                    {(field) => <field.TextField autoFocus id='directoryName' label='Name' />}
+                    {(field) => <field.TextField autoFocus id='directoryName' label='名称' />}
                 </form.AppField>
                 <p className='mt-2 text-sm md:text-base break-all'>
-                    <span className='text-foreground'>This directory will be created as&nbsp;</span>
+                    <span className='text-foreground'>此目录将被创建为&nbsp;</span>
                     <Code>
                         /home/container/
                         <form.Subscribe selector={(state) => state.values.directoryName}>
@@ -143,10 +142,10 @@ function NewDirectoryForm({ model, onClose }: { model: FileManagerModel; onClose
             </Form>
             <Dialog.Footer>
                 <Button.Text className='w-full sm:w-auto' onClick={onClose}>
-                    Cancel
+                    取消
                 </Button.Text>
                 <Button className='w-full sm:w-auto' onClick={() => form.handleSubmit()}>
-                    Create
+                    创建
                 </Button>
             </Dialog.Footer>
         </>
@@ -155,9 +154,9 @@ function NewDirectoryForm({ model, onClose }: { model: FileManagerModel; onClose
 
 export function NewDirectoryButton({ model }: { model: FileManagerModel }) {
     return (
-        <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>New folder</NewButton>}>
+        <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>新建文件夹</NewButton>}>
             {({ open, onClose }) => (
-                <Dialog open={open} onClose={onClose} title='Create folder'>
+                <Dialog open={open} onClose={onClose} title='创建文件夹'>
                     <NewDirectoryForm model={model} onClose={onClose} />
                 </Dialog>
             )}

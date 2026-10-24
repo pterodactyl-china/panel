@@ -61,18 +61,17 @@ function DeleteServerDialog({ server, mode, open, onClose }: DeleteServerDialogP
     return (
         <Dialog
             open={open}
-            title={mode === 'force' ? 'Forcibly delete server' : 'Confirm server deletion'}
+            title={mode === 'force' ? '强制删除服务器' : '确认删除服务器'}
             preventExternalClose={isSubmitting}
             hideCloseIcon={isSubmitting}
             onClose={close}
         >
             <SpinnerOverlay visible={isSubmitting} />
             <p className='text-sm'>
-                Deleting a server is a permanent action, it cannot be undone. This will permanently delete the{' '}
-                <strong>{attributes.name}</strong> server and remove all associated data.
+                删除服务器是不可撤销的操作。这将永久删除服务器 <strong>{attributes.name}</strong> ，并移除所有关联数据。
                 {mode === 'force' && (
                     <span className='block mt-2 text-destructive'>
-                        Force deleting may leave dangling files on the daemon if it reports an error.
+                        若守护进程报错，强制删除可能在守护进程上遗留残留文件。
                     </span>
                 )}
             </p>
@@ -80,26 +79,25 @@ function DeleteServerDialog({ server, mode, open, onClose }: DeleteServerDialogP
                 <form.AppField
                     name='confirm'
                     validators={{
-                        onChange: ({ value }) =>
-                            value === attributes.name ? undefined : 'The server name must be provided.',
+                        onChange: ({ value }) => (value === attributes.name ? undefined : '必须提供服务器名称。'),
                     }}
                 >
                     {(field) => (
                         <field.TextField
                             type='text'
                             id={`confirm_server_name_${mode}`}
-                            label='Confirm Server Name'
-                            description='Enter the name of this server to confirm deletion.'
+                            label='确认服务器名称'
+                            description='输入此服务器的名称以确认删除。'
                         />
                     )}
                 </form.AppField>
                 <div className='mt-6 text-right'>
                     <Button type='button' isSecondary className='mr-2' disabled={isSubmitting} onClick={close}>
-                        Cancel
+                        取消
                     </Button>
                     <form.AppForm>
                         <form.SubmitButton color='red'>
-                            {mode === 'force' ? 'Force Delete Server' : 'Delete Server'}
+                            {mode === 'force' ? '强制删除服务器' : '删除服务器'}
                         </form.SubmitButton>
                     </form.AppForm>
                 </div>
@@ -122,7 +120,7 @@ const DeleteActionCard = ({
     <TitledGreyBox title={title} className='flex h-full flex-col' contentClassName='flex flex-1 flex-col p-0'>
         <div className='flex flex-1 flex-col gap-3 p-3'>
             <Alert type='danger'>
-                <strong className='font-semibold'>Danger!</strong> {warning}
+                <strong className='font-semibold'>危险！</strong> {warning}
             </Alert>
             <p className='text-sm text-muted-foreground'>{description}</p>
         </div>
@@ -141,33 +139,33 @@ function ServerDeleteContent({ server }: Props) {
 
             <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
                 <DeleteActionCard
-                    title='Safely Delete Server'
+                    title='安全删除服务器'
                     warning={
                         <>
-                            Deleting a server is an irreversible action. <strong>All server data</strong> (including
-                            files and users) will be removed from the system.
+                            删除服务器是不可撤销的操作。 <strong>所有服务器数据</strong>
+                            （包括文件与用户）将从系统中移除。
                         </>
                     }
-                    description='This action will attempt to delete the server from both the panel and daemon. If either one reports an error the action will be cancelled.'
+                    description='此操作将尝试同时从面板和守护进程删除服务器。任一方报错，操作将被取消。'
                     action={
                         <Button color='red' className='whitespace-nowrap' onClick={() => setMode('safe')}>
-                            Safely Delete This Server
+                            安全删除此服务器
                         </Button>
                     }
                 />
 
                 <DeleteActionCard
-                    title='Force Delete Server'
+                    title='强制删除服务器'
                     warning={
                         <>
-                            Deleting a server is an irreversible action. <strong>All server data</strong> will be
-                            removed. This method may leave dangling files on your daemon if it reports an error.
+                            删除服务器是不可撤销的操作。 <strong>所有服务器数据</strong>{' '}
+                            将被移除。若守护进程报错，此方式可能在守护进程上遗留残留文件。
                         </>
                     }
-                    description='This action will attempt to delete the server from both the panel and daemon. If the daemon does not respond, or reports an error, the deletion will continue.'
+                    description='此操作将尝试同时从面板和守护进程删除服务器。如果守护进程无响应或报错，删除仍会继续。'
                     action={
                         <Button color='red' className='whitespace-nowrap' onClick={() => setMode('force')}>
-                            Forcibly Delete This Server
+                            强制删除此服务器
                         </Button>
                     }
                 />

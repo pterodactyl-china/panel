@@ -53,7 +53,7 @@ export default function AttachEggsModal({ mount, open, onClose, onAttached }: Pr
     return (
         <Dialog
             open={open}
-            title='Attach eggs'
+            title='关联预设'
             preventExternalClose={submitting}
             hideCloseIcon={submitting}
             onClose={onClose}
@@ -69,20 +69,20 @@ export default function AttachEggsModal({ mount, open, onClose, onAttached }: Pr
                                 <EmptyMedia variant='icon'>
                                     <Egg />
                                 </EmptyMedia>
-                                <EmptyTitle>{eggs.data.length === 0 ? 'No eggs yet' : 'All eggs attached'}</EmptyTitle>
+                                <EmptyTitle>{eggs.data.length === 0 ? '暂无预设' : '所有预设均已关联'}</EmptyTitle>
                                 <EmptyDescription>
                                     {eggs.data.length === 0
-                                        ? 'Create or import an egg before attaching it to this mount.'
-                                        : 'Every egg is already attached to this mount.'}
+                                        ? '请先创建或导入预设，再将其关联到此挂载。'
+                                        : '所有预设都已关联到此挂载。'}
                                 </EmptyDescription>
                             </EmptyHeader>
                         </Empty>
                     ) : (
                         <>
-                            <Label>Eggs</Label>
+                            <Label>预设</Label>
                             <Select
                                 multiple
-                                placeholder='Select one or more eggs…'
+                                placeholder='选择一个或多个预设…'
                                 value={selected}
                                 onChange={(value) => setSelected((value as (string | number)[]).map(Number))}
                                 options={availableEggs.map((egg) => ({
@@ -99,7 +99,7 @@ export default function AttachEggsModal({ mount, open, onClose, onAttached }: Pr
                             className={cn('w-full sm:w-auto', availableEggs.length > 0 && 'sm:mr-2')}
                             onClick={onClose}
                         >
-                            {availableEggs.length > 0 ? 'Cancel' : 'Close'}
+                            {availableEggs.length > 0 ? '取消' : '关闭'}
                         </Button>
                         {availableEggs.length > 0 && (
                             <Button
@@ -108,7 +108,7 @@ export default function AttachEggsModal({ mount, open, onClose, onAttached }: Pr
                                 disabled={selected.length === 0}
                                 onClick={submit}
                             >
-                                Attach Eggs
+                                关联预设
                             </Button>
                         )}
                     </div>

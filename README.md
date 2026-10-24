@@ -1,71 +1,57 @@
-<p align="center">
-  <a href="https://pterodactyl.io">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset=".github/assets/logo-dark.svg">
-      <img alt="Pterodactyl" src=".github/assets/logo-light.svg" height="72">
-    </picture>
-  </a>
-</p>
+[![Logo Image](https://api.pterodactyl.top/logos/new/pterodactyl_china_logo.png)](https://pterodactyl.top)
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/pterodactyl/panel/ci.yaml?label=Tests&style=for-the-badge&branch=2.0-develop)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/pterodactyl-china/panel/ci.yaml?label=%E6%B5%8B%E8%AF%95&style=for-the-badge&branch=2.0-develop)
 ![Discord](https://img.shields.io/discord/122900397965705216?label=Discord&logo=Discord&logoColor=white&style=for-the-badge)
-![GitHub Releases](https://img.shields.io/github/downloads/pterodactyl/panel/latest/total?style=for-the-badge)
-![GitHub contributors](https://img.shields.io/github/contributors/pterodactyl/panel?style=for-the-badge)
+![GitHub Releases](https://img.shields.io/github/downloads/pterodactyl-china/panel/latest/total?style=for-the-badge)
+![GitHub contributors](https://img.shields.io/github/contributors/pterodactyl-china/panel?style=for-the-badge)
 
-# Pterodactyl Panel
+# Pterodactyl 面板
 
-Pterodactyl® is a free, open-source game server management panel built with PHP, React, and Go. Designed with security
-in mind, Pterodactyl runs all game servers in isolated Docker containers while exposing a beautiful and intuitive
-UI to end users.
+**本仓库实时同步上游并进行简体中文汉化：界面文案、后端消息、邮件模板、命令行输出与 API 错误提示均已本地化，默认语言为中文、默认时区为 Asia/Shanghai。发布的 Releases 均通过 GitHub Actions 的构建与测试，并在发布前经过本地环境验证。**
 
-Stop settling for less. Make game servers a first class citizen on your platform.
+> 汉化与维护：[Pterodactyl China](https://pterodactyl.top)（翼龙面板中国社区）。引用本站语言包或汉化文本时，请保留作者署名。
 
-[![Watch: Introducing Pterodactyl v2](.github/assets/v2-video.jpg)](https://www.youtube.com/watch?v=1ER4kv0jVEU)
+Pterodactyl® 是一款免费、开源的游戏服务器管理面板，使用 PHP、React 与 Go 构建。它以安全为核心设计，将所有游戏服务器运行在相互隔离的 Docker 容器中，同时为用户提供美观、直观的操作界面。
 
-## What's new in v2
+不必再妥协。让游戏服务器成为您平台上一等一的存在。
 
-This branch (`2.0-develop`) is where Pterodactyl v2 is being built. It is under active development; the current
-stable release line lives on [`1.0-develop`](https://github.com/pterodactyl/panel/tree/1.0-develop).
+[![观看：Pterodactyl v2 介绍](.github/assets/v2-video.jpg)](https://www.youtube.com/watch?v=1ER4kv0jVEU)
 
-* **Extension SDK** — extend the panel through a versioned API instead of editing core files, so your changes
-  survive updates. Example extensions live in [pterodactyl/extensions](https://github.com/pterodactyl/extensions).
-* **Fully modernized tech stack** — Vite, React 19, TanStack Router and Query, Tailwind 4 and Laravel 13.
-* **Brand new admin area** — the admin and client areas are now a single React application with one design.
-* **One-click egg importer** — browse the egg catalog and import directly from the panel.
-* **Theming with design tokens** — restyle the panel without rebuilding it.
-* **Still 100% free and open source** — MIT licensed, as always.
+## v2 有哪些新特性
 
-## Documentation
+本分支（`2.0-develop`）是 Pterodactyl v2 的开发分支，目前处于活跃开发中；当前稳定发布线位于 [`1.0-develop`](https://github.com/pterodactyl/panel/tree/1.0-develop)。
 
-* [Panel Documentation](https://pterodactyl.io/panel/1.0/getting_started.html)
-* [Wings Documentation](https://pterodactyl.io/wings/1.0/installing.html)
-* [Community Guides](https://pterodactyl.io/community/about.html)
-* Or, get additional help [via Discord](https://discord.gg/pterodactyl)
+* **扩展 SDK** —— 通过带版本号的 API 扩展面板，无需修改核心文件，您的改动可以跨越版本升级继续生效。示例扩展见 [pterodactyl/extensions](https://github.com/pterodactyl/extensions)。
+* **全面现代化的技术栈** —— Vite、React 19、TanStack Router 与 Query、Tailwind 4 以及 Laravel 13。
+* **全新的管理后台** —— 管理与客户端区域合并为单一 React 应用，采用统一设计。
+* **一键导入预设** —— 浏览预设目录并直接从面板导入。
+* **基于设计令牌的主题系统** —— 无需重新构建即可更换面板外观。
+* **依然 100% 免费开源** —— 一如既往采用 MIT 许可证。
 
-## Sponsors
+## 文档
 
-I would like to extend my sincere thanks to the following sponsors for helping fund Pterodactyl's development.
-[Interested in becoming a sponsor?](https://github.com/sponsors/pterodactyl)
+* [面板文档](https://pterodactyl.io/panel/1.0/getting_started.html)
+* [Wings 文档](https://pterodactyl.io/wings/1.0/installing.html)
+* [社区指南](https://pterodactyl.io/community/about.html)
+* 或者通过 [Discord](https://discord.gg/pterodactyl) 获取更多帮助
 
-| Company                                                                           | About                                                                                                                                                                                                                                           |
-|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [**Buildurly**](https://buildurly.com/)                                           | Buildurly is a hardware procurement company. They deliver tailored, enterprise-grade hardware solutions designed around your unique needs. From sourcing to delivery, Buildurly's white-glove service ensures a seamless, worry-free, professional experience.                                                                                                                                          |
-| [**Hosturly**](https://hosturly.com/)                                             | Hosturly is an enterprise hosting provider. They provide cost-effective, high-performance, and reliable services, including VPS, Web, Dedicated, and Colocation.                                                                                |
-| [**indifferent broccoli**](https://indifferentbroccoli.com/)                      | indifferent broccoli is a game server hosting and rental company. With them, you get top-notch computer power for your gaming sessions. They destroy lag, latency, and complexity--letting you focus on the fun stuff.                         |
-| [**Infraly, LLC**](https://infraly.co/)                                           | Infraly is an infrastructure company powering the next generation of online services. Through their brands, Infraly delivers cutting-edge solutions across multiple markets. Their vertically integrated approach provides unmatched performance, scalability, and reliability, giving our customers full control.                                                                                     |
-| [**MineStrator**](https://minestrator.com/)                                       | MineStrator is a game server hosting provider. Looking for the most high-end French hosting company for your Minecraft server? More than 24,000 members on our Discord trust us. Give us a try!                                                |
-| [**Physgun**](https://physgun.com/)                                               | Physgun is a game server hosting provider. Most providers rent rack space and rebrand a panel. At Physgun, they engineer the performance, write the features, and staff the support. Physgun truly is game hosting perfected!                   |
-| [**WISP**](https://wisp.gg/)                                                      | WISP is an industry-leading SaaS platform for game server management, designed for hosting companies, gaming organizations, and enthusiasts. WISP combines modern, intuitive interfaces with powerful tools, making server deployment and administration seamless, scalable, and efficient.                                                                                                                 |
+## 赞助商
 
+感谢以下赞助商对 Pterodactyl 开发工作的支持。[有意成为赞助商？](https://github.com/sponsors/pterodactyl)
 
-### Supported Games
+| 公司/个人 | 关于 |
+| ------- | ----- |
+| [**VLssu公益服**](https://vlssu.cn) | 一个热衷于美好社区的我的世界服务器。 |
+| [**速特互联**](https://www.suteidc.com) | 我的世界服务器出租，支持一键安装MOD插件 |
+| [**裕米云计算**](https://comcorn.cn) | COMCORN公共服务平台，提供优质项目云资源支持 |
 
-Pterodactyl supports a wide variety of games by utilizing Docker containers to isolate each instance. This gives
-you the power to run game servers without bloating machines with a host of additional dependencies.
+### 支持的游戏
 
-Some of our core supported games include:
+Pterodactyl 通过 Docker 容器隔离每个实例，从而支持种类繁多的游戏。这让您无需在机器上堆砌大量依赖，就能运行游戏服务器。
 
-* Minecraft — including Paper, Sponge, Bungeecord, Waterfall, and more
+我们核心支持的部分游戏包括：
+
+* Minecraft —— 包含 Paper、Sponge、Bungeecord、Waterfall 等
 * Rust
 * Terraria
 * Teamspeak
@@ -75,8 +61,7 @@ Some of our core supported games include:
 * Garry's Mod
 * ARK: Survival Evolved
 
-In addition to our standard nest of supported games, our community is constantly pushing the limits of this software
-and there are plenty more games available provided by the community. Some of these games include:
+除了内置的支持游戏外，社区也在不断拓展这款软件的边界，提供了大量额外的游戏支持，例如：
 
 * Factorio
 * San Andreas: MP
@@ -84,11 +69,11 @@ and there are plenty more games available provided by the community. Some of the
 * Squad
 * Xonotic
 * Starmade
-* Discord ATLBot, and most other Node.js/Python discord bots
-* [and many more...](https://eggs.pterodactyl.io)
+* Discord ATLBot，以及大多数其他 Node.js/Python 的 Discord 机器人
+* [以及更多……](https://eggs.pterodactyl.io)
 
-## License
+## 许可证
 
-Pterodactyl® Copyright © 2015 - 2022 Dane Everitt and contributors.
+Pterodactyl® 版权所有 © 2015 - 2022 Dane Everitt 及贡献者。
 
-Code released under the [MIT License](./LICENSE.md).
+代码基于 [MIT 许可证](./LICENSE.md) 发布。

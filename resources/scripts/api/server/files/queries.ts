@@ -110,7 +110,7 @@ export const compressFilesInput = (
     path: { server_uuid: uuid },
     body: { root: directory, files },
     timeout: 60000,
-    timeoutErrorMessage: 'It looks like this archive is taking a long time to generate. It will appear once completed.',
+    timeoutErrorMessage: '此压缩包生成耗时较长，完成后将自动出现。',
 });
 
 export const decompressFileInput = (
@@ -121,8 +121,7 @@ export const decompressFileInput = (
     path: { server_uuid: uuid },
     body: { root: directory, file },
     timeout: 300000,
-    timeoutErrorMessage:
-        'It looks like this archive is taking a long time to be unarchived. Once completed the unarchived files will appear.',
+    timeoutErrorMessage: '此压缩包解压耗时较长，完成后解压出的文件将自动出现。',
 });
 
 export const writeFileContentsInput = (
@@ -268,9 +267,9 @@ export const useCreateDirectory = () => {
                 }));
             }
 
-            toast.success('Directory created');
+            toast.success('目录已创建');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to create directory'),
+        onError: (error) => notifyHttpError(error, '无法创建目录'),
     });
 };
 
@@ -296,9 +295,9 @@ export const useRenameFiles = () => {
             }
 
             await queryClient.invalidateQueries({ queryKey: allServerFilesQueryKey(path.server_uuid) });
-            toast.success('Files updated');
+            toast.success('文件已更新');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update files'),
+        onError: (error) => notifyHttpError(error, '无法更新文件'),
     });
 };
 
@@ -332,9 +331,9 @@ export const useChmodFiles = () => {
                 await queryClient.invalidateQueries({ queryKey: serverFilesQueryKey(path.server_uuid, body.root) });
             }
 
-            toast.success('Permissions updated');
+            toast.success('权限已更新');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update permissions'),
+        onError: (error) => notifyHttpError(error, '无法更新权限'),
     });
 };
 
@@ -352,9 +351,9 @@ export const useDeleteFiles = () => {
                 );
             }
 
-            toast.success(body?.files?.length === 1 ? 'File deleted' : 'Files deleted');
+            toast.success(body?.files?.length === 1 ? '文件已删除' : '文件已删除');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to delete files'),
+        onError: (error) => notifyHttpError(error, '无法删除文件'),
     });
 };
 
@@ -368,9 +367,9 @@ export const useCopyFile = (directory: string) => {
                 await queryClient.invalidateQueries({ queryKey: serverFilesQueryKey(path.server_uuid, directory) });
             }
 
-            toast.success('File copied');
+            toast.success('文件已复制');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to copy file'),
+        onError: (error) => notifyHttpError(error, '无法复制文件'),
     });
 };
 
@@ -384,9 +383,9 @@ export const useCompressFiles = () => {
                 await queryClient.invalidateQueries({ queryKey: serverFilesQueryKey(path.server_uuid, body.root) });
             }
 
-            toast.success('Archive started');
+            toast.success('压缩已开始');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to archive files'),
+        onError: (error) => notifyHttpError(error, '无法压缩文件'),
     });
 };
 
@@ -400,16 +399,16 @@ export const useDecompressFile = () => {
                 await queryClient.invalidateQueries({ queryKey: serverFilesQueryKey(path.server_uuid, body.root) });
             }
 
-            toast.success('Unarchive started');
+            toast.success('解压已开始');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to unarchive file'),
+        onError: (error) => notifyHttpError(error, '无法解压文件'),
     });
 };
 
 export const useFileDownloadUrl = () =>
     useMutation({
         mutationFn: ({ uuid, file }: { uuid: string; file: string }) => getFileDownloadUrl(uuid, file),
-        onError: (error) => notifyHttpError(error, 'Unable to create file download'),
+        onError: (error) => notifyHttpError(error, '无法生成文件下载'),
     });
 
 export const useSaveFileContent = () => {
@@ -419,9 +418,9 @@ export const useSaveFileContent = () => {
         ...clientWriteFileContentsMutation(),
         onSuccess: async (_data, { path, query, body }) => {
             await updateServerFileContent(queryClient, path.server_uuid, query.file, body);
-            toast.success('File saved');
+            toast.success('文件已保存');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to save file'),
+        onError: (error) => notifyHttpError(error, '无法保存文件'),
     });
 };
 
@@ -499,7 +498,7 @@ export const useUploadFiles = () => {
                     } catch (error) {
                         if (!controller.signal.aborted && !axios.isCancel(error)) {
                             outcome = 'failed';
-                            notifyHttpError(error, `Unable to upload ${file.name}`);
+                            notifyHttpError(error, `无法上传 ${file.name}`);
                         }
                     }
                 }
@@ -512,10 +511,10 @@ export const useUploadFiles = () => {
         },
         onSuccess: ({ uploaded, failed }) => {
             if (uploaded.length > 0 && failed.length === 0) {
-                toast.success('Upload complete');
+                toast.success('上传完成');
             }
         },
-        onError: (error) => notifyHttpError(error, 'Unable to upload files'),
+        onError: (error) => notifyHttpError(error, '无法上传文件'),
         onSettled: (_data, _error, { uuid, directory }) =>
             queryClient.invalidateQueries({ queryKey: serverFilesQueryKey(uuid, directory) }),
     });

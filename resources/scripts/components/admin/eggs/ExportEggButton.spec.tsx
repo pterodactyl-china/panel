@@ -54,7 +54,7 @@ describe('ExportEggButton', () => {
     it('downloads the exported file as-is so it can be imported again', async () => {
         render(<ExportEggButton egg={egg} />);
 
-        fireEvent.click(screen.getByRole('button', { name: 'Export' }));
+        fireEvent.click(screen.getByRole('button', { name: '导出' }));
 
         await waitFor(() => expect(blobs).toHaveLength(1));
 

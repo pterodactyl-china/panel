@@ -5,7 +5,7 @@ import PageStatus from '../../shared/PageStatus';
 export default function StartupPage({ model, className }: ViewProps<'page.server.startup'>) {
     return (
         <PageStatus model={model} className={className}>
-            <ServerContentBlock title='Startup Settings' className={className}>
+            <ServerContentBlock title='启动设置' className={className}>
                 {model.slot && <Slot name='server.startup.form' data={model.slot} />}
                 <div className='md:flex md:items-start'>
                     <View name='server.startup.command' className='flex-1' />

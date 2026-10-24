@@ -19,11 +19,11 @@ type CreateServerDatabaseDialogProps = Props & {
 
 const validateDatabaseName = ({ value }: { value: string }): string | undefined => {
     if (value.length < 1) {
-        return 'A database name must be provided.';
+        return '必须提供数据库名称。';
     }
 
     if (value.length > 48) {
-        return 'Database name must not exceed 48 characters.';
+        return '数据库名称不得超过 48 个字符。';
     }
 
     return undefined;
@@ -61,7 +61,7 @@ function CreateServerDatabaseDialog({ serverId, open, onClose }: CreateServerDat
     return (
         <Dialog
             open={open}
-            title='Create new database'
+            title='创建新数据库'
             preventExternalClose={isSubmitting}
             hideCloseIcon={isSubmitting}
             onClose={onClose}
@@ -73,8 +73,8 @@ function CreateServerDatabaseDialog({ serverId, open, onClose }: CreateServerDat
                         <field.TextField
                             type='text'
                             id='database_name'
-                            label='Database Name'
-                            description='A descriptive name for this database instance.'
+                            label='数据库名称'
+                            description='数据库实例的描述性名称。'
                         />
                     )}
                 </form.AppField>
@@ -83,10 +83,10 @@ function CreateServerDatabaseDialog({ serverId, open, onClose }: CreateServerDat
                         {(field) => (
                             <field.SelectField
                                 id='database_host_id'
-                                label='Database Host'
-                                description='The host this database will be created on.'
+                                label='数据库主机'
+                                description='此数据库将创建在该主机上。'
                                 options={[
-                                    { value: 0, label: 'Select a database host...', disabled: true },
+                                    { value: 0, label: '选择数据库主机...', disabled: true },
                                     ...hosts.map((host) => ({
                                         value: host.attributes.id,
                                         label: `${host.attributes.name} (${host.attributes.host}:${host.attributes.port})`,
@@ -102,11 +102,8 @@ function CreateServerDatabaseDialog({ serverId, open, onClose }: CreateServerDat
                             <field.TextField
                                 type='text'
                                 id='connections_from'
-                                label='Connections From'
-                                description={
-                                    'Where connections should be allowed from. Leave blank to allow connections ' +
-                                    'from anywhere.'
-                                }
+                                label='允许连接来源'
+                                description='允许连接的来源。留空则允许任意来源连接。'
                             />
                         )}
                     </form.AppField>
@@ -118,18 +115,18 @@ function CreateServerDatabaseDialog({ serverId, open, onClose }: CreateServerDat
                                 type='number'
                                 min={0}
                                 id='max_connections'
-                                label='Max Connections'
-                                description='Maximum simultaneous connections allowed for this database user.'
+                                label='最大连接数'
+                                description='此数据库用户允许的最大并发连接数。'
                             />
                         )}
                     </form.AppField>
                 </div>
                 <div className='flex flex-wrap justify-end mt-6'>
                     <Button type='button' isSecondary className='w-full sm:w-auto sm:mr-2' onClick={onClose}>
-                        Cancel
+                        取消
                     </Button>
                     <form.AppForm>
-                        <form.SubmitButton className='w-full mt-4 sm:w-auto sm:mt-0'>Create Database</form.SubmitButton>
+                        <form.SubmitButton className='w-full mt-4 sm:w-auto sm:mt-0'>创建数据库</form.SubmitButton>
                     </form.AppForm>
                 </div>
             </Form>
@@ -139,7 +136,7 @@ function CreateServerDatabaseDialog({ serverId, open, onClose }: CreateServerDat
 
 export default function CreateServerDatabaseButton(props: Props) {
     return (
-        <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>New database</NewButton>}>
+        <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>新建数据库</NewButton>}>
             {({ open, onClose }) => <CreateServerDatabaseDialog {...props} open={open} onClose={onClose} />}
         </Dialog.Trigger>
     );

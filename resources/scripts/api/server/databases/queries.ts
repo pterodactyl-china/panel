@@ -92,9 +92,9 @@ export const useCreateServerDatabase = () => {
         ...clientCreateServerDatabaseMutation(),
         onSuccess: async (database, { path }) => {
             await upsertDatabase(queryClient, path.server_uuid, database);
-            toast.success('Database created', { description: `${database.attributes.name} is ready to use.` });
+            toast.success('数据库已创建', { description: `${database.attributes.name} 已可使用。` });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to create database'),
+        onError: (error) => notifyHttpError(error, '无法创建数据库'),
     });
 };
 
@@ -107,9 +107,9 @@ export const useDeleteServerDatabase = () => {
             await removeDatabase(queryClient, variables.path.server_uuid, variables.path.database_id);
             const name = variables.meta?.name;
 
-            toast.success('Database deleted', { description: name ? `${name} has been removed.` : undefined });
+            toast.success('数据库已删除', { description: name ? `${name} 已移除。` : undefined });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to delete database'),
+        onError: (error) => notifyHttpError(error, '无法删除数据库'),
     });
 };
 
@@ -120,10 +120,10 @@ export const useRotateDatabasePassword = () => {
         ...clientRotateServerDatabasePasswordMutation(),
         onSuccess: async (database, { path }) => {
             await upsertDatabase(queryClient, path.server_uuid, database);
-            toast.success('Database password rotated', {
+            toast.success('数据库密码已轮换', {
                 description: `${database.attributes.name} has a new password.`,
             });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to rotate database password'),
+        onError: (error) => notifyHttpError(error, '无法轮换数据库密码'),
     });
 };

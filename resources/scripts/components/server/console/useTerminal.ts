@@ -57,7 +57,7 @@ const buildTerminalStyle = (): Pick<ITerminalOptions, 'fontFamily' | 'fontSize' 
     probe.remove();
 
     if (!Number.isFinite(fontSize) || fontFamily.length === 0) {
-        throw new Error('Terminal font tokens could not be resolved.');
+        throw new Error('无法解析终端字体变量。');
     }
 
     return { fontFamily, fontSize, theme };
@@ -471,8 +471,8 @@ export const useTerminal = () => {
                     return;
                 }
 
-                console.error('Failed to load the console terminal.', error);
-                setTerminalError(error instanceof Error ? error : new Error('Failed to load the console terminal.'));
+                console.error('加载控制台终端失败。', error);
+                setTerminalError(error instanceof Error ? error : new Error('加载控制台终端失败。'));
             });
 
         return () => {

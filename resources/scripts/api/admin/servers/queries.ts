@@ -441,11 +441,11 @@ export const useCreateAdminServer = () => {
                 invalidateGeneratedOperations(queryClient, ['adminListServers']),
                 invalidateAdminNodeAllocations(queryClient, [server.attributes.node]),
             ]);
-            const messages = resourceMutationMessages('server', 'create', server.attributes.name);
+            const messages = resourceMutationMessages('服务器', 'create', server.attributes.name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('server', 'create').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('服务器', 'create').errorTitle),
     });
 };
 
@@ -461,9 +461,9 @@ export const useUpdateAdminServerDetails = () => {
                     queryKey: adminServerDetailKey(variables.path.server_admin_identifier),
                 }),
             ]);
-            toast.success('Server details updated', { description: `${server.attributes.name} has been updated.` });
+            toast.success('服务器详情已更新', { description: `${server.attributes.name} 已更新。` });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update server details'),
+        onError: (error) => notifyHttpError(error, '无法更新服务器详情'),
     });
 };
 
@@ -478,11 +478,11 @@ export const useUpdateAdminServerBuild = () => {
                 queryClient.invalidateQueries({ queryKey: adminServerDetailKey(server.attributes.id) }),
                 invalidateAdminNodeAllocations(queryClient, [server.attributes.node]),
             ]);
-            toast.success('Build configuration updated', {
+            toast.success('构建配置已更新', {
                 description: `${server.attributes.name} has updated build settings.`,
             });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update build configuration'),
+        onError: (error) => notifyHttpError(error, '无法更新构建配置'),
     });
 };
 
@@ -498,11 +498,11 @@ export const useUpdateAdminServerStartup = () => {
                     queryKey: adminServerDetailKey(variables.path.server_admin_identifier),
                 }),
             ]);
-            toast.success('Startup configuration updated', {
+            toast.success('启动配置已更新', {
                 description: `${server.attributes.name} has updated startup settings.`,
             });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update startup configuration'),
+        onError: (error) => notifyHttpError(error, '无法更新启动配置'),
     });
 };
 
@@ -527,11 +527,11 @@ export const useDeleteAdminServer = () => {
         onSuccess: async (_data, variables) => {
             await onAdminServerDeleted(queryClient, variables.path.server_admin_identifier);
             const name = variables.meta?.name;
-            const messages = resourceMutationMessages('server', 'delete', name);
+            const messages = resourceMutationMessages('服务器', 'delete', name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('server', 'delete').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('服务器', 'delete').errorTitle),
     });
 };
 
@@ -543,11 +543,11 @@ export const useForceDeleteAdminServer = () => {
         onSuccess: async (_data, variables) => {
             await onAdminServerDeleted(queryClient, variables.path.server_admin_identifier);
             const name = variables.meta?.name;
-            const messages = resourceMutationMessages('server', 'delete', name);
+            const messages = resourceMutationMessages('服务器', 'delete', name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('server', 'delete').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('服务器', 'delete').errorTitle),
     });
 };
 
@@ -571,11 +571,11 @@ export const useTransferAdminServer = () => {
                     sourceNodeId === undefined ? undefined : [sourceNodeId, variables.body.node_id]
                 ),
             ]);
-            toast.success('Server transfer started', {
-                description: 'The server will move to the selected node and allocation.',
+            toast.success('服务器转移已开始', {
+                description: '服务器将迁移到所选节点与分配。',
             });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to transfer server'),
+        onError: (error) => notifyHttpError(error, '无法转移服务器'),
     });
 };
 
@@ -591,11 +591,11 @@ export const useCreateAdminServerDatabase = () => {
                 }),
                 invalidateGeneratedOperations(queryClient, ['adminListDatabaseHostDatabases']),
             ]);
-            const messages = resourceMutationMessages('database', 'create', database.attributes.name);
+            const messages = resourceMutationMessages('数据库', 'create', database.attributes.name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('database', 'create').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('数据库', 'create').errorTitle),
     });
 };
 
@@ -612,11 +612,11 @@ export const useDeleteAdminServerDatabase = () => {
                 invalidateGeneratedOperations(queryClient, ['adminListDatabaseHostDatabases']),
             ]);
             const name = variables.meta?.name;
-            const messages = resourceMutationMessages('database', 'delete', name);
+            const messages = resourceMutationMessages('数据库', 'delete', name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('database', 'delete').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('数据库', 'delete').errorTitle),
     });
 };
 
@@ -629,11 +629,11 @@ export const useRotateAdminServerDatabasePassword = () => {
             await queryClient.invalidateQueries({
                 queryKey: adminServerDatabaseListQueryKey(variables.path.server_admin_identifier),
             });
-            toast.success('Database password rotated', {
+            toast.success('数据库密码已轮换', {
                 description: `${database.attributes.name} has a new password.`,
             });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to rotate database password'),
+        onError: (error) => notifyHttpError(error, '无法轮换数据库密码'),
     });
 };
 
@@ -648,13 +648,11 @@ export const useAttachAdminServerMount = () => {
             });
             const name = variables.meta?.name;
 
-            toast.success('Mount attached', {
-                description: name
-                    ? `${name} has been mounted to this server.`
-                    : 'The mount has been attached to this server.',
+            toast.success('挂载已关联', {
+                description: name ? `${name} 已挂载到此服务器。` : '挂载已关联到此服务器。',
             });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to attach mount'),
+        onError: (error) => notifyHttpError(error, '无法关联挂载'),
     });
 };
 
@@ -669,13 +667,11 @@ export const useDetachAdminServerMount = () => {
             });
             const name = variables.meta?.name;
 
-            toast.success('Mount detached', {
-                description: name
-                    ? `${name} has been unmounted from this server.`
-                    : 'The mount has been detached from this server.',
+            toast.success('挂载已解除关联', {
+                description: name ? `${name} 已从此服务器卸载挂载。` : '挂载已从此服务器解除关联。',
             });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to detach mount'),
+        onError: (error) => notifyHttpError(error, '无法解除挂载'),
     });
 };
 
@@ -691,9 +687,9 @@ export const useReinstallAdminServer = () => {
                     queryKey: adminServerDetailKey(variables.path.server_admin_identifier),
                 }),
             ]);
-            toast.success('Server is being reinstalled.');
+            toast.success('服务器正在重装。');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to reinstall server'),
+        onError: (error) => notifyHttpError(error, '无法重装服务器'),
     });
 };
 
@@ -709,9 +705,9 @@ export const useToggleAdminServerInstallState = () => {
                     queryKey: adminServerDetailKey(variables.path.server_admin_identifier),
                 }),
             ]);
-            toast.success('Install status has been toggled.');
+            toast.success('安装状态已切换。');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to toggle install status'),
+        onError: (error) => notifyHttpError(error, '无法切换安装状态'),
     });
 };
 
@@ -727,14 +723,9 @@ export const useUpdateAdminServerSuspension = () => {
                     queryKey: adminServerDetailKey(variables.path.server_admin_identifier),
                 }),
             ]);
-            toast.success(
-                variables.body?.suspended === true ? 'Server has been suspended.' : 'Server has been unsuspended.'
-            );
+            toast.success(variables.body?.suspended === true ? '服务器已冻结。' : '服务器已解冻。');
         },
         onError: (error, variables) =>
-            notifyHttpError(
-                error,
-                variables.body?.suspended === true ? 'Unable to suspend server' : 'Unable to unsuspend server'
-            ),
+            notifyHttpError(error, variables.body?.suspended === true ? '无法冻结服务器' : '无法解冻服务器'),
     });
 };

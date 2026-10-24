@@ -84,7 +84,7 @@ final readonly class CompleteBackup implements CompletesBackups
                 return;
             }
 
-            throw new DisplayException('Cannot complete backup request: no upload_id present on model.');
+            throw new DisplayException('无法完成备份请求：模型上不存在 upload_id。');
         }
 
         $params = [

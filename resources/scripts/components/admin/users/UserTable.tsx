@@ -42,39 +42,37 @@ function DeleteUserDialog({ user, open, onClose }: UserDialogProps) {
     return (
         <Dialog
             open={open}
-            title='Confirm user deletion'
+            title='确认删除用户'
             preventExternalClose={isSubmitting}
             hideCloseIcon={isSubmitting}
             onClose={onClose}
         >
             <SpinnerOverlay visible={isSubmitting} />
             <p className='text-sm'>
-                Deleting a user is permanent. This will permanently delete <strong>{attributes.email}</strong> and all
-                associated data.
+                删除用户是不可撤销的操作。这将永久删除 <strong>{attributes.email}</strong> 及其所有关联数据。
             </p>
             <Form form={form} className='m-0 mt-6'>
                 <form.AppField
                     name='confirm'
                     validators={{
-                        onChange: ({ value }) =>
-                            value === attributes.email ? undefined : 'The email address must be provided.',
+                        onChange: ({ value }) => (value === attributes.email ? undefined : '必须提供电子邮箱地址。'),
                     }}
                 >
                     {(field) => (
                         <field.TextField
                             type='text'
                             id={`confirm_${attributes.uuid}`}
-                            label='Confirm email address'
-                            description='Enter the email address to confirm deletion.'
+                            label='确认电子邮箱地址'
+                            description='输入电子邮箱地址以确认删除。'
                         />
                     )}
                 </form.AppField>
                 <div className='mt-6 flex justify-end gap-2'>
                     <Button.Text type='button' isSecondary onClick={onClose}>
-                        Cancel
+                        取消
                     </Button.Text>
                     <form.AppForm>
-                        <form.SubmitButton color='red'>Delete user</form.SubmitButton>
+                        <form.SubmitButton color='red'>删除用户</form.SubmitButton>
                     </form.AppForm>
                 </div>
             </Form>
@@ -108,11 +106,7 @@ const UserIdentityCell = ({ user }: { user: AdminUser }) => {
                             {name}
                         </span>
                         {attributes.root_admin ? (
-                            <Icon
-                                icon={Star}
-                                aria-label='Root administrator'
-                                className='h-3.5 w-3.5 shrink-0 text-warning'
-                            />
+                            <Icon icon={Star} aria-label='超级管理员' className='h-3.5 w-3.5 shrink-0 text-warning' />
                         ) : null}
                     </Link>
                 )}
@@ -129,13 +123,13 @@ const UserActionsCell = ({ user }: { user: AdminUser }) => {
 
     return (
         <RowActions>
-            <EditLinkAction aria-label={`Edit ${email}`} to='/panel/users/$id' params={{ id }} />
+            <EditLinkAction aria-label={`编辑 ${email}`} to='/panel/users/$id' params={{ id }} />
             <Dialog.Trigger
                 trigger={({ onClick }) => (
                     <DeleteAction
-                        aria-label={`Delete ${email}`}
+                        aria-label={`删除 ${email}`}
                         disabled={user.attributes.servers_count > 0}
-                        disabledReason='Users who own servers cannot be deleted.'
+                        disabledReason='拥有服务器的用户无法删除。'
                         onClick={onClick}
                     />
                 )}
@@ -150,7 +144,7 @@ export const userColumns = [
     {
         id: 'email',
         accessorFn: (user) => user.attributes.email,
-        header: ({ column }) => <DataTableColumnHeader column={column} title='User' />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title='用户' />,
         cell: ({ row }) => <UserIdentityCell user={row.original} />,
         enableSorting: true,
         meta: { headerClassName: 'min-w-52', cellClassName: 'min-w-52' },
@@ -158,7 +152,7 @@ export const userColumns = [
     {
         id: 'username',
         accessorFn: (user) => user.attributes.username,
-        header: ({ column }) => <DataTableColumnHeader column={column} title='Username' />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title='用户名' />,
         cell: ({ row }) => (
             <span className='block w-0 min-w-full truncate font-mono text-xs' title={row.original.attributes.username}>
                 {row.original.attributes.username}
@@ -169,7 +163,7 @@ export const userColumns = [
     },
     {
         id: 'security',
-        header: 'Security',
+        header: '安全',
         cell: ({ row }) => {
             const enabled = row.original.attributes['2fa'];
 
@@ -190,7 +184,7 @@ export const userColumns = [
     },
     {
         id: 'servers_count',
-        header: 'Servers',
+        header: '服务器',
         cell: ({ row }) => {
             const { id, servers_count } = row.original.attributes;
 
@@ -212,13 +206,13 @@ export const userColumns = [
     {
         id: 'created_at',
         accessorFn: (user) => user.attributes.created_at,
-        header: ({ column }) => <DataTableColumnHeader column={column} title='Created' />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title='创建时间' />,
         cell: ({ row }) => (
             <time
                 className='whitespace-nowrap text-xs text-muted-foreground'
                 dateTime={row.original.attributes.created_at}
             >
-                {dayjs(row.original.attributes.created_at).format('MMM D, YYYY')}
+                {dayjs(row.original.attributes.created_at).format('YYYY-MM-DD')}
             </time>
         ),
         enableSorting: true,

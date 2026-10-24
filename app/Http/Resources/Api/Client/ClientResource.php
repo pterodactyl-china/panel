@@ -25,7 +25,7 @@ abstract class ClientResource extends ApiResource
 
     public function getUser(): User
     {
-        return $this->request()->user() ?? throw new UnexpectedValueException('Client API resources require an authenticated user.');
+        return $this->request()->user() ?? throw new UnexpectedValueException('客户端 API 资源需要已登录用户。');
     }
 
     /**

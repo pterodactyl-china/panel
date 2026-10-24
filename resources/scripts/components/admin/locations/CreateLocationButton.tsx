@@ -35,7 +35,7 @@ function CreateLocationDialog({ open, onClose }: CreateLocationDialogProps) {
     return (
         <Dialog
             open={open}
-            title='Create new location'
+            title='创建新地域'
             preventExternalClose={isSubmitting}
             hideCloseIcon={isSubmitting}
             onClose={onClose}
@@ -52,8 +52,8 @@ function CreateLocationDialog({ open, onClose }: CreateLocationDialogProps) {
                         <field.TextField
                             type='text'
                             id='short'
-                            label='Short Code'
-                            description='A short identifier used to distinguish this location from others.'
+                            label='短代码'
+                            description='用于区分此地域与其他地域的简短标识。'
                         />
                     )}
                 </form.AppField>
@@ -61,17 +61,11 @@ function CreateLocationDialog({ open, onClose }: CreateLocationDialogProps) {
                     <form.AppField
                         name='long'
                         validators={{
-                            onChange: ({ value }) =>
-                                value.length <= 191 ? undefined : 'The description must not exceed 191 characters.',
+                            onChange: ({ value }) => (value.length <= 191 ? undefined : '描述不得超过 191 个字符。'),
                         }}
                     >
                         {(field) => (
-                            <field.TextField
-                                type='text'
-                                id='long'
-                                label='Description'
-                                description='A longer description of this location.'
-                            />
+                            <field.TextField type='text' id='long' label='描述' description='此地域的详细描述。' />
                         )}
                     </form.AppField>
                 </div>
@@ -87,10 +81,10 @@ function CreateLocationDialog({ open, onClose }: CreateLocationDialogProps) {
                 </form.AppField>
                 <div className='flex flex-wrap justify-end mt-6'>
                     <Button type='button' isSecondary className='w-full sm:w-auto sm:mr-2' onClick={onClose}>
-                        Cancel
+                        取消
                     </Button>
                     <form.AppForm>
-                        <form.SubmitButton className='w-full mt-4 sm:w-auto sm:mt-0'>Create Location</form.SubmitButton>
+                        <form.SubmitButton className='w-full mt-4 sm:w-auto sm:mt-0'>创建地域</form.SubmitButton>
                     </form.AppForm>
                 </div>
             </Form>
@@ -100,7 +94,7 @@ function CreateLocationDialog({ open, onClose }: CreateLocationDialogProps) {
 
 export default function CreateLocationButton() {
     return (
-        <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>New location</NewButton>}>
+        <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>新建地域</NewButton>}>
             {({ open, onClose }) => <CreateLocationDialog open={open} onClose={onClose} />}
         </Dialog.Trigger>
     );

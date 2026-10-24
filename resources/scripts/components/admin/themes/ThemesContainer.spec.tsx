@@ -148,35 +148,35 @@ describe('themes page', () => {
         const user = setup();
         const card = (await screen.findByRole('heading', { name: 'Aurora' })).closest('article')!;
 
-        expect(screen.getByRole('heading', { name: 'Classic' }).closest('article')).toHaveTextContent('Active');
+        expect(screen.getByRole('heading', { name: 'Classic' }).closest('article')).toHaveTextContent('已启用');
         expect(screen.getByText('Theme "broken" is not enabled or failed to load.')).toBeInTheDocument();
         expect(
             within(screen.getByRole('heading', { name: 'Broken' }).closest('article')!).getByRole('button', {
-                name: 'Activate',
+                name: '启用',
             })
         ).toBeDisabled();
 
-        await user.click(within(card).getByRole('button', { name: 'Activate' }));
+        await user.click(within(card).getByRole('button', { name: '启用' }));
 
         await waitFor(() =>
             expect(requests).toHaveBeenCalledWith(
                 expect.objectContaining({ method: 'post', url: '/api/admin/themes/aurora/activate' })
             )
         );
-        expect(mocks.toastSuccess).toHaveBeenCalledWith('Theme activated', expect.anything());
+        expect(mocks.toastSuccess).toHaveBeenCalledWith('主题已激活', expect.anything());
     });
 
     it('saves every setting and offers a reload', async () => {
         const user = setup();
         const card = (await screen.findByRole('heading', { name: 'Aurora' })).closest('article')!;
 
-        await user.click(within(card).getByRole('button', { name: 'Settings' }));
+        await user.click(within(card).getByRole('button', { name: '设置' }));
         const dialog = await screen.findByRole('dialog', { name: 'Aurora settings' });
         const accent = await within(dialog).findByLabelText('Accent');
 
         await user.clear(accent);
         await user.type(accent, '#445566');
-        await user.click(within(dialog).getByRole('button', { name: 'Save Settings' }));
+        await user.click(within(dialog).getByRole('button', { name: '保存设置' }));
 
         await waitFor(() =>
             expect(requests).toHaveBeenCalledWith(
@@ -187,7 +187,7 @@ describe('themes page', () => {
 
         expect(JSON.parse(String(patch.data))).toEqual({ settings: { accent: '#445566', compact: false } });
         await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
-        expect(mocks.toastSuccess).toHaveBeenCalledWith('Theme settings saved', expect.anything());
+        expect(mocks.toastSuccess).toHaveBeenCalledWith('主题设置已保存', expect.anything());
     });
 
     it('splits settings that name a tab into sections', async () => {
@@ -223,10 +223,10 @@ describe('themes page', () => {
         const user = setup();
         const card = (await screen.findByRole('heading', { name: 'Aurora' })).closest('article')!;
 
-        await user.click(within(card).getByRole('button', { name: 'Settings' }));
+        await user.click(within(card).getByRole('button', { name: '设置' }));
         const dialog = await screen.findByRole('dialog', { name: 'Aurora settings' });
 
-        expect(await within(dialog).findByText('Section')).toBeInTheDocument();
+        expect(await within(dialog).findByText('区块')).toBeInTheDocument();
         expect(within(dialog).getByText('Compact spacing')).toBeInTheDocument();
     });
 });

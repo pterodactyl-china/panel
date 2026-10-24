@@ -8,7 +8,7 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Pterodactyl\Models\Node;
 
-#[Signature('p:node:list {--format=text : The output format: "text" or "json". }')]
+#[Signature('p:node:list {--format=text : 输出格式：「text」或「json」。 }')]
 class NodeListCommand extends Command
 {
     public function handle(): int

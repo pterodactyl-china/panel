@@ -34,11 +34,11 @@ const initialPermissions = {
 
 const validateMemo = (value: string): string | undefined => {
     if (value.length < 1) {
-        return 'A description must be provided.';
+        return '必须提供描述。';
     }
 
     if (value.length > 500) {
-        return 'The description must not exceed 500 characters.';
+        return '描述不得超过 500 个字符。';
     }
 
     return undefined;
@@ -72,7 +72,7 @@ function CreateApiKeyDialog({ open, onClose, onCreatedSecret }: CreateApiKeyDial
     return (
         <Dialog
             open={open}
-            title='Create application API key'
+            title='创建应用 API 密钥'
             preventExternalClose={isSubmitting}
             hideCloseIcon={isSubmitting}
             onClose={onClose}
@@ -89,13 +89,13 @@ function CreateApiKeyDialog({ open, onClose, onCreatedSecret }: CreateApiKeyDial
                         <field.TextField
                             type='text'
                             id='memo'
-                            label='Description'
-                            description='A short note describing what this key is used for. You cannot edit a key after creating it.'
+                            label='描述'
+                            description='简要说明此密钥的用途。密钥创建后无法修改。'
                         />
                     )}
                 </form.AppField>
                 <div className='mt-6'>
-                    <Label>Permissions</Label>
+                    <Label>权限</Label>
                     <div className='mt-2 space-y-3'>
                         {API_KEY_RESOURCES.map((resource) => (
                             <div key={resource} className='flex items-center'>
@@ -106,9 +106,9 @@ function CreateApiKeyDialog({ open, onClose, onCreatedSecret }: CreateApiKeyDial
                                             <field.SelectField
                                                 id={`r_${resource}`}
                                                 options={[
-                                                    { value: PERMISSION_NONE, label: 'None' },
-                                                    { value: PERMISSION_READ, label: 'Read' },
-                                                    { value: PERMISSION_READ_WRITE, label: 'Read & Write' },
+                                                    { value: PERMISSION_NONE, label: '无' },
+                                                    { value: PERMISSION_READ, label: '只读' },
+                                                    { value: PERMISSION_READ_WRITE, label: '读与写' },
                                                 ]}
                                             />
                                         )}
@@ -120,10 +120,10 @@ function CreateApiKeyDialog({ open, onClose, onCreatedSecret }: CreateApiKeyDial
                 </div>
                 <div className='flex flex-wrap justify-end mt-6'>
                     <Button type='button' isSecondary className='w-full sm:w-auto sm:mr-2' onClick={onClose}>
-                        Cancel
+                        取消
                     </Button>
                     <form.AppForm>
-                        <form.SubmitButton className='w-full mt-4 sm:w-auto sm:mt-0'>Create Key</form.SubmitButton>
+                        <form.SubmitButton className='w-full mt-4 sm:w-auto sm:mt-0'>创建密钥</form.SubmitButton>
                     </form.AppForm>
                 </div>
             </Form>
@@ -136,11 +136,8 @@ export default function CreateApiKeyButton() {
 
     return (
         <>
-            <Dialog open={secret.length > 0} title='Your new API key' onClose={() => setSecret('')}>
-                <p className='text-sm mb-6'>
-                    The application API key shown below will not be displayed again. Store it somewhere safe before
-                    closing this dialog.
-                </p>
+            <Dialog open={secret.length > 0} title='您的新 API 密钥' onClose={() => setSecret('')}>
+                <p className='text-sm mb-6'>下方显示的应用 API 密钥不会再次显示。请在关闭此对话框前将其妥善保存。</p>
                 <pre className='text-sm bg-muted rounded-sm py-2 px-4 font-mono'>
                     <CopyOnClick text={secret}>
                         <code className='font-mono'>{secret}</code>
@@ -148,11 +145,11 @@ export default function CreateApiKeyButton() {
                 </pre>
                 <div className='flex justify-end mt-6'>
                     <Button type='button' onClick={() => setSecret('')}>
-                        Close
+                        关闭
                     </Button>
                 </div>
             </Dialog>
-            <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>New API key</NewButton>}>
+            <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>新建 API 密钥</NewButton>}>
                 {({ open, onClose }) => (
                     <CreateApiKeyDialog open={open} onClose={onClose} onCreatedSecret={setSecret} />
                 )}

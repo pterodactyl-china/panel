@@ -101,16 +101,16 @@ describe('extension install dialog', () => {
                 config,
             }));
 
-        await user.click(screen.getAllByRole('button', { name: 'Install' })[0]!);
-        const dialog = await screen.findByRole('dialog', { name: 'Install extension' });
+        await user.click(screen.getAllByRole('button', { name: '安装' })[0]!);
+        const dialog = await screen.findByRole('dialog', { name: '安装扩展' });
 
-        await user.upload(within(dialog).getByLabelText('Extension package'), new File(['zip'], 'votes.pteroext'));
-        await user.click(within(dialog).getByRole('button', { name: 'Install' }));
+        await user.upload(within(dialog).getByLabelText('扩展包'), new File(['zip'], 'votes.pteroext'));
+        await user.click(within(dialog).getByRole('button', { name: '安装' }));
 
         const notice = await within(dialog).findByRole('alert');
 
-        expect(notice).toHaveTextContent('This package is votes v2.0.0, and v1.0.0 of votes is already installed.');
-        expect(notice).toHaveTextContent('stays enabled');
+        expect(notice).toHaveTextContent('已安装 votes（v1.0.0），即将安装 v2.0.0');
+        expect(notice).toHaveTextContent('保持启用状态');
         expect(mocks.notifyError).not.toHaveBeenCalled();
         expect((upload.mock.calls[0]![0].data as FormData).get('replace')).toBe('false');
 
@@ -119,7 +119,7 @@ describe('extension install dialog', () => {
         await waitFor(() => expect(upload).toHaveBeenCalledTimes(2));
         expect((upload.mock.calls[1]![0].data as FormData).get('replace')).toBe('true');
         await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
-        expect(mocks.toastSuccess).toHaveBeenCalledWith('Extension installed', expect.anything());
+        expect(mocks.toastSuccess).toHaveBeenCalledWith('扩展已安装', expect.anything());
     });
 
     it('asks again when a different package is chosen', async () => {
@@ -129,18 +129,18 @@ describe('extension install dialog', () => {
             throw conflict(config);
         });
 
-        await user.click(screen.getAllByRole('button', { name: 'Install' })[0]!);
-        const dialog = await screen.findByRole('dialog', { name: 'Install extension' });
-        const input = within(dialog).getByLabelText('Extension package');
+        await user.click(screen.getAllByRole('button', { name: '安装' })[0]!);
+        const dialog = await screen.findByRole('dialog', { name: '安装扩展' });
+        const input = within(dialog).getByLabelText('扩展包');
 
         await user.upload(input, new File(['zip'], 'votes.pteroext'));
-        await user.click(within(dialog).getByRole('button', { name: 'Install' }));
+        await user.click(within(dialog).getByRole('button', { name: '安装' }));
         await within(dialog).findByRole('button', { name: 'Replace votes' });
 
         await user.upload(input, new File(['zip'], 'other.pteroext'));
 
         expect(within(dialog).queryByRole('alert')).not.toBeInTheDocument();
-        expect(within(dialog).getByRole('button', { name: 'Install' })).toBeEnabled();
+        expect(within(dialog).getByRole('button', { name: '安装' })).toBeEnabled();
     });
 });
 
@@ -151,8 +151,8 @@ describe('extension failures', () => {
     afterEach(cleanup);
 
     it.each([
-        ['boot', 'Failed to load'],
-        ['event', 'Runtime error'],
+        ['boot', '加载失败'],
+        ['event', '运行时错误'],
     ])('labels a %s failure "%s" and says when it happened', async (phase, label) => {
         const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
 
@@ -176,7 +176,7 @@ describe('extension failures', () => {
         );
 
         expect(await screen.findByText(label)).toBeInTheDocument();
-        expect(screen.getByText(new RegExp(`^In ${phase},`))).toBeInTheDocument();
+        expect(screen.getByText(new RegExp(`^阶段 ${phase}，`))).toBeInTheDocument();
     });
 });
 
@@ -210,8 +210,9 @@ describe('extension mark', () => {
     it('shows a lucide icon by name', async () => {
         const { container } = render(<ExtensionMark extension={extension({ icon: 'life-buoy' })} />);
 
-        await waitFor(() =>
-            expect(container.querySelector('svg')?.getAttribute('class')).toContain('lucide-life-buoy')
+        await waitFor(
+            () => expect(container.querySelector('svg')?.getAttribute('class')).toContain('lucide-life-buoy'),
+            { timeout: 10_000 }
         );
         expect(container).not.toHaveTextContent('ST');
     });

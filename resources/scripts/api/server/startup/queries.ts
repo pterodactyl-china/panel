@@ -48,9 +48,9 @@ export const useSetSelectedDockerImage = (uuid: string) => {
                 ...server,
                 attributes: { ...server.attributes, docker_image: variables.body.docker_image },
             }));
-            toast.success('Docker image updated');
+            toast.success('Docker 镜像已更新');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update Docker image'),
+        onError: (error) => notifyHttpError(error, '无法更新 Docker 镜像'),
     });
 };
 
@@ -98,6 +98,6 @@ export const useUpdateStartupVariable = (uuid: string) => {
                 }
             );
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update startup variable'),
+        onError: (error) => notifyHttpError(error, '无法更新启动变量'),
     });
 };

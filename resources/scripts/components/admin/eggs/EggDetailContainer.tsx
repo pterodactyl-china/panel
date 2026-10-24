@@ -17,10 +17,10 @@ import Slot from '@/extensions/Slot';
 import { resourceNavigation, type ResourceTab } from '@/views/navigation';
 
 const tabs: ResourceTab[] = [
-    { id: 'configuration', label: 'Configuration', to: '/panel/eggs/$eggId', exact: true },
-    { id: 'tags', label: 'Tags', to: '/panel/eggs/$eggId/tags' },
-    { id: 'variables', label: 'Variables', to: '/panel/eggs/$eggId/variables' },
-    { id: 'script', label: 'Install Script', to: '/panel/eggs/$eggId/script' },
+    { id: 'configuration', label: '配置', to: '/panel/eggs/$eggId', exact: true },
+    { id: 'tags', label: '标签', to: '/panel/eggs/$eggId/tags' },
+    { id: 'variables', label: '变量', to: '/panel/eggs/$eggId/variables' },
+    { id: 'script', label: '安装脚本', to: '/panel/eggs/$eggId/script' },
 ];
 
 export default function EggDetailContainer() {
@@ -46,7 +46,7 @@ export default function EggDetailContainer() {
     return (
         <ExtensionResourceProvider.Provider value={resourceContext}>
             <AdminContentBlock
-                title={`Admin · ${egg.attributes.name}`}
+                title={`管理 · ${egg.attributes.name}`}
                 heading={egg.attributes.name}
                 description={egg.attributes.description ?? undefined}
             >
@@ -56,7 +56,7 @@ export default function EggDetailContainer() {
                         className='inline-flex items-center text-sm text-muted-foreground hover:text-foreground'
                     >
                         <Icon icon={ArrowLeft} className='mr-2' />
-                        Back to Eggs
+                        返回预设
                     </Link>
                     <div className='flex flex-wrap items-center gap-2'>
                         <ExportEggButton egg={egg} />

@@ -137,7 +137,7 @@ export const useUpdateAdminGeneralSettings = () => {
 
             toast.success(notification.title, { description: notification.description });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update general settings'),
+        onError: (error) => notifyHttpError(error, '无法更新常规设置'),
     });
 };
 
@@ -154,7 +154,7 @@ export const useUpdateAdminMailSettings = ({ successNotification = true }: Updat
                 toast.success(notification.title, { description: notification.description });
             }
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update mail settings'),
+        onError: (error) => notifyHttpError(error, '无法更新邮件设置'),
     });
 };
 
@@ -162,10 +162,10 @@ export const useSendTestAdminMail = () =>
     useMutation({
         ...adminSendTestMailMutation(),
         onSuccess: () =>
-            toast.success('Mail settings tested', {
-                description: 'Mail settings have been saved and a test email has been sent to your account.',
+            toast.success('邮件设置测试完成', {
+                description: '邮件设置已保存，测试邮件已发送到您的账户。',
             }),
-        onError: (error) => notifyHttpError(error, 'Unable to test mail settings'),
+        onError: (error) => notifyHttpError(error, '无法测试邮件设置'),
     });
 
 export const useUpdateAdminAdvancedSettings = () => {
@@ -186,6 +186,6 @@ export const useUpdateAdminAdvancedSettings = () => {
 
             toast.success(notification.title, { description: notification.description });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update advanced settings'),
+        onError: (error) => notifyHttpError(error, '无法更新高级设置'),
     });
 };

@@ -32,7 +32,7 @@ test('upgrade keeps maintenance enabled and reports failure when a deployment st
 
     Process::assertRan(fn (PendingProcess $process): bool => $process->command === [PHP_BINARY, 'artisan', 'down', '--no-interaction']);
     Process::assertNotRan(fn (PendingProcess $process): bool => $process->command === [PHP_BINARY, 'artisan', 'up', '--no-interaction']);
-    expect(Artisan::output())->not->toContain('Panel has been successfully upgraded.');
+    expect(Artisan::output())->not->toContain('面板已成功升级。');
     if ($archive !== null) {
         expect($permissions)->toBe(0700);
         $this->assertDirectoryDoesNotExist(dirname($archive));
@@ -47,5 +47,5 @@ test('upgrade leaves maintenance only after every deployment step succeeds', fun
     Process::assertRan(fn (PendingProcess $process): bool => $process->command === [PHP_BINARY, 'artisan', 'migrate', '--no-interaction', '--force', '--seed']);
     Process::assertRan(fn (PendingProcess $process): bool => $process->command === [PHP_BINARY, 'artisan', 'up', '--no-interaction']);
     Process::assertRanTimes(fn (PendingProcess $process): bool => true, 9);
-    expect(Artisan::output())->toContain('Panel has been successfully upgraded.');
+    expect(Artisan::output())->toContain('面板已成功升级。');
 });

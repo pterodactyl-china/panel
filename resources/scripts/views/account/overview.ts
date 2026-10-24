@@ -68,15 +68,14 @@ function useAccountPasswordModel(): AccountPasswordModel {
         form,
         name: 'current',
         validators: {
-            onChange: ({ value }) => (value.length >= 1 ? undefined : 'You must provide your current password.'),
+            onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供当前密码。'),
         },
     });
     const password = useField({
         form,
         name: 'password',
         validators: {
-            onChange: ({ value }) =>
-                value.length >= 8 ? undefined : 'Your new password should be at least 8 characters in length.',
+            onChange: ({ value }) => (value.length >= 8 ? undefined : '新密码长度至少为 8 个字符。'),
         },
     });
     const confirmPassword = useField({
@@ -85,9 +84,7 @@ function useAccountPasswordModel(): AccountPasswordModel {
         validators: {
             onChangeListenTo: ['password'],
             onChange: ({ value, fieldApi }) =>
-                value === fieldApi.form.getFieldValue('password')
-                    ? undefined
-                    : 'Password confirmation does not match the password you entered.',
+                value === fieldApi.form.getFieldValue('password') ? undefined : '确认密码与您输入的密码不一致。',
         },
     });
     const canSubmit = useStore(form.store, (state) => state.canSubmit);
@@ -125,15 +122,14 @@ function useAccountEmailModel(): AccountEmailModel {
         form,
         name: 'email',
         validators: {
-            onChange: ({ value }) => (isEmail(value) ? undefined : 'A valid email address must be provided.'),
+            onChange: ({ value }) => (isEmail(value) ? undefined : '必须提供有效的电子邮箱地址。'),
         },
     });
     const password = useField({
         form,
         name: 'password',
         validators: {
-            onChange: ({ value }) =>
-                value.length >= 1 ? undefined : 'You must provide your current account password.',
+            onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供当前账户密码。'),
         },
     });
     const canSubmit = useStore(form.store, (state) => state.canSubmit);
@@ -361,7 +357,7 @@ implementViews({
         use: useAccountPasswordModel,
         fixtures: {
             default: () => passwordFixture(),
-            invalid: () => passwordFixture('Your new password should be at least 8 characters in length.'),
+            invalid: () => passwordFixture('新密码长度至少为 8 个字符。'),
         },
     },
     'account.email': {

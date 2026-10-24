@@ -209,7 +209,7 @@ it('keeps non-administrators out of the admin area before any admin request', { 
 
     expect(panel?.status).toBe('error');
     expect(panel?.error).toBeInstanceOf(RouteAccessDenied);
-    expect(panel?.error).toHaveProperty('message', expect.stringContaining('administrative area'));
+    expect(panel?.error).toHaveProperty('message', expect.stringContaining('管理区域'));
     expect(requests).toEqual([]);
 });
 

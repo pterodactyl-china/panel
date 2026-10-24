@@ -19,9 +19,9 @@ import type { ViewProps } from '@/sdk/theme';
 import ActivityLogEntry from './ActivityLogEntry';
 
 const emptyMessages = {
-    account: 'Actions taken on your account will appear here.',
-    server: 'Actions taken on this server will appear here.',
-    admin: 'Actions taken through the admin panel will appear here.',
+    account: '您账户上执行的操作将显示在这里。',
+    server: '此服务器上执行的操作将显示在这里。',
+    admin: '通过管理面板执行的操作将显示在这里。',
 } satisfies Record<ActivityScope, string>;
 
 function Results({ model, filtered }: { model: ActivityLogModel; filtered: boolean }) {
@@ -43,15 +43,15 @@ function Results({ model, filtered }: { model: ActivityLogModel; filtered: boole
         <Empty className='border bg-card'>
             <EmptyHeader>
                 <EmptyMedia variant='icon'>{filtered ? <ListFilter /> : <History />}</EmptyMedia>
-                <EmptyTitle>{filtered ? 'No matching activity' : 'No activity yet'}</EmptyTitle>
+                <EmptyTitle>{filtered ? '没有匹配的活动' : '暂无活动'}</EmptyTitle>
                 <EmptyDescription>
-                    {filtered ? 'No activity matches the selected filters.' : emptyMessages[model.scope]}
+                    {filtered ? '没有活动匹配所选筛选条件。' : emptyMessages[model.scope]}
                 </EmptyDescription>
             </EmptyHeader>
             {filtered && (
                 <EmptyContent>
                     <NewButton isSecondary icon={XCircle} onClick={model.actions.clearFilters}>
-                        Clear filters
+                        清除筛选
                     </NewButton>
                 </EmptyContent>
             )}
@@ -67,11 +67,11 @@ function Filters({ model, filtered }: { model: ActivityLogModel; filtered: boole
             {model.users && (
                 <div className='w-full sm:max-w-xs'>
                     <Select
-                        options={[{ value: '', label: 'All users' }, ...model.users]}
+                        options={[{ value: '', label: '所有用户' }, ...model.users]}
                         value={model.user ?? ''}
-                        placeholder='All users'
-                        searchPlaceholder='Search users…'
-                        emptyMessage='No users have acted here yet.'
+                        placeholder='所有用户'
+                        searchPlaceholder='搜索用户…'
+                        emptyMessage='尚无用户在此操作。'
                         onChange={(value) => actions.setUser(String(value) || null)}
                     />
                 </div>
@@ -79,13 +79,13 @@ function Filters({ model, filtered }: { model: ActivityLogModel; filtered: boole
             <div className='w-full sm:max-w-sm'>
                 <Select
                     groups={[
-                        { label: '', options: [{ value: '', label: 'All events' }] },
+                        { label: '', options: [{ value: '', label: '所有事件' }] },
                         ...model.events.map((group) => ({ label: group.label, options: [...group.options] })),
                     ]}
                     value={model.event ?? ''}
-                    placeholder='All events'
-                    searchPlaceholder='Search events…'
-                    emptyMessage='Nothing has been recorded here yet.'
+                    placeholder='所有事件'
+                    searchPlaceholder='搜索事件…'
+                    emptyMessage='这里尚未记录任何内容。'
                     onChange={(value) => actions.setEvent(String(value) || null)}
                 />
             </div>
@@ -96,7 +96,7 @@ function Filters({ model, filtered }: { model: ActivityLogModel; filtered: boole
                     className='inline-flex items-center justify-center w-full sm:w-auto sm:shrink-0 h-auto'
                     onClick={actions.clearFilters}
                 >
-                    Clear Filters <XCircle className='w-4 h-4 ml-2' />
+                    清除筛选 <XCircle className='w-4 h-4 ml-2' />
                 </ButtonStyle>
             )}
         </div>
@@ -112,7 +112,7 @@ export default function ActivityLog({ model, className }: ViewProps<'activity.lo
                 <div className='mb-4 space-y-3'>
                     <Alert type='danger'>{model.error}</Alert>
                     <ButtonStyle type='button' color='grey' onClick={model.retry}>
-                        Retry
+                        重试
                     </ButtonStyle>
                 </div>
             )}

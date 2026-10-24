@@ -15,11 +15,11 @@ use Pterodactyl\Services\Extensions\ExtensionDirectories;
 use Pterodactyl\Services\Extensions\ExtensionManifest;
 use Pterodactyl\Services\Extensions\ExtensionUrlDownloader;
 
-#[Description('Install an extension package into the extensions directory.')]
+#[Description('将扩展包安装到扩展目录。')]
 #[Signature('p:extension:install
-                            {path : Path to a .pteroext/.zip archive or an unpacked extension directory, or a signed install URL.}
-                            {--enable : Enable the extension (and run its migrations) after installing.}
-                            {--replace : Replace an installed extension with the same id without asking.}')]
+                            {path : .pteroext/.zip 归档、已解压扩展目录的路径，或带签名的安装地址。}
+                            {--enable : 安装后启用扩展并执行其迁移。}
+                            {--replace : 直接替换同 ID 的已安装扩展，不再询问。}')]
 class InstallCommand extends Command
 {
     public function handle(InstallsExtensions $installer, ExtensionUrlDownloader $urls, ExtensionDirectories $directories): int
@@ -32,7 +32,7 @@ class InstallCommand extends Command
             // anything is downloaded, so the panel never installs from an arbitrary address.
             if ($urls->isUrl($path)) {
                 $directories->assertWritable();
-                $this->components->info('Verifying the install URL and downloading the extension.');
+                $this->components->info('正在校验安装地址并下载扩展。');
                 $path = $urls->download($path);
                 $download = $path;
             }
@@ -67,12 +67,13 @@ class InstallCommand extends Command
         try {
             return $installer->install($path, $enable, (bool) $this->option('replace'));
         } catch (ExtensionAlreadyInstalledException $extensionAlreadyInstalledException) {
-            $installed = $extensionAlreadyInstalledException->installedVersion === null ? 'the installed copy' : 'v'.$extensionAlreadyInstalledException->installedVersion;
-            $kept = $extensionAlreadyInstalledException->enabled ? ' It stays enabled and its migrations run.' : '';
+            $installed = $extensionAlreadyInstalledException->installedVersion === null ? '已安装的副本' : 'v'.$extensionAlreadyInstalledException->installedVersion;
+            $kept = $extensionAlreadyInstalledException->enabled ? ' 它将保持启用状态并执行其迁移。' : '';
             throw_unless(
-                $this->input->isInteractive() && $this->components->confirm("Extension \"{$extensionAlreadyInstalledException->identifier}\" is already installed. Replace {$installed} with v{$extensionAlreadyInstalledException->version}?{$kept}"),
+                $this->input->isInteractive() && $this->components->confirm("扩展「{$extensionAlreadyInstalledException->identifier}」已安装，是否用 v{$extensionAlreadyInstalledException->version} 替换 {$installed}？{$kept}"),
                 InvalidExtensionException::class,
-                $extensionAlreadyInstalledException->getMessage().' Pass --replace to replace it.',
+                $extensionAlreadyInstalledException->getMessage().' 请使用 --replace 参数进行替换。',
+
             );
 
             return $installer->install($path, $enable, replace: true);

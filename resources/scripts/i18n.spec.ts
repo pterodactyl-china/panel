@@ -29,10 +29,10 @@ afterEach(() => {
     delete (window as BootstrapWindow).SiteConfiguration;
 });
 
-it('starts in the signed-in user language, then the site locale, then English', async () => {
+it('starts in the signed-in user language, then the site locale, then Chinese', async () => {
     const { initialLanguage } = await import('@/i18n');
 
-    expect(initialLanguage()).toBe('en');
+    expect(initialLanguage()).toBe('zh');
 
     (window as BootstrapWindow).SiteConfiguration = { locale: 'fr' };
     expect(initialLanguage()).toBe('fr');

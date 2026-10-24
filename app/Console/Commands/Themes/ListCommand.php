@@ -10,7 +10,7 @@ use Illuminate\Console\Command;
 use Pterodactyl\Services\Extensions\ExtensionRepository;
 use Pterodactyl\Services\Themes\ThemeRepository;
 
-#[Description('List the built-in and installed themes: which one is active, and which are enabled.')]
+#[Description('列出内置与已安装主题：哪个已激活、哪些已启用。')]
 #[Signature('p:theme:list')]
 class ListCommand extends Command
 {

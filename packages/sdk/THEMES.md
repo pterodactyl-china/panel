@@ -1204,7 +1204,7 @@ test('puts the power controls in the server header', () => {
 
     const header = screen.getByRole('heading', { name: 'Survival' }).closest('header');
 
-    expect(header?.textContent).toContain('Restart');
+    expect(header?.textContent).toContain('重启');
 });
 ```
 <!-- /sample -->

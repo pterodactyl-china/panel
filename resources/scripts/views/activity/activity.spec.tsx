@@ -137,8 +137,8 @@ describe('activity views from fixtures', () => {
             'href',
             '/account/activity?event=user%3Aapi-key.create'
         );
-        expect(within(container).getByRole('button', { name: 'View additional event metadata' })).toBeVisible();
-        expect(container).toHaveTextContent('System');
+        expect(within(container).getByRole('button', { name: '查看事件附加元数据' })).toBeVisible();
+        expect(container).toHaveTextContent('系统');
         expect(within(container).getAllByRole('combobox')).toHaveLength(1);
         unmount();
     });
@@ -146,7 +146,7 @@ describe('activity views from fixtures', () => {
     it('offers to clear filters that match nothing, and filters by user on a server', () => {
         const { container, unmount } = renderView('activity.log', { fixture: 'filtered' });
 
-        expect(container).toHaveTextContent('No matching activity');
+        expect(container).toHaveTextContent('没有匹配的活动');
         expect(within(container).getAllByRole('combobox')).toHaveLength(2);
         unmount();
     });
@@ -154,7 +154,7 @@ describe('activity views from fixtures', () => {
     it.each(['page.account.activity', 'page.server.activity'] as const)('composes %s from the log', (name) => {
         const { container, unmount } = renderView(name);
 
-        expect(container).toHaveTextContent('Showing');
+        expect(container).toHaveTextContent('显示');
         unmount();
     });
 
@@ -171,8 +171,8 @@ describe('activity views from fixtures', () => {
         const view = within(container);
 
         fireEvent.click(view.getByRole('button', { name: '2' }));
-        fireEvent.click(view.getByRole('button', { name: /Clear Filters/ }));
-        fireEvent.click(view.getByRole('button', { name: 'Clear filters' }));
+        fireEvent.click(view.getAllByRole('button', { name: /清除筛选/ })[0]!);
+        fireEvent.click(view.getAllByRole('button', { name: '清除筛选' })[0]!);
 
         expect(actions.setPage).toHaveBeenCalledWith(2);
         expect(actions.clearFilters).toHaveBeenCalledTimes(2);
@@ -236,7 +236,7 @@ describe('activity.log', () => {
         expect(router!.state.location.search).toEqual({ page: 2, event: 'server:power.start', user: '7' });
 
         await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: /Clear Filters/ }));
+            fireEvent.click(screen.getAllByRole('button', { name: /清除筛选/ })[0]!);
         });
 
         expect(router!.state.location.search).toEqual({});

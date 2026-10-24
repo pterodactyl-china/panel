@@ -18,14 +18,14 @@ it('renders an item with a destination as a link that navigates and closes the m
     await act(async () => {
         render(
             <DropdownMenu triggerContent='Account menu'>
-                <DropdownMenu.Item destination={{ to: '/account/api' }}>API Credentials</DropdownMenu.Item>
+                <DropdownMenu.Item destination={{ to: '/account/api' }}>API 凭据</DropdownMenu.Item>
             </DropdownMenu>,
             { wrapper: host!.Wrapper }
         );
     });
     fireEvent.click(await screen.findByRole('button', { name: 'Account menu' }));
 
-    const link = await screen.findByRole('menuitem', { name: 'API Credentials' });
+    const link = await screen.findByRole('menuitem', { name: 'API 凭据' });
 
     expect(link.tagName).toBe('A');
     expect(link).toHaveAttribute('href', '/account/api');

@@ -61,7 +61,7 @@ const modes: Mode[] = [
         mode: 'php',
         ext: ['php', 'php3', 'php4', 'php5', 'php7', 'phtml'],
     },
-    { name: 'Plain Text', mime: 'text/plain', mode: 'null', ext: ['txt', 'text', 'conf', 'def', 'list', 'log'] },
+    { name: '纯文本', mime: 'text/plain', mode: 'null', ext: ['txt', 'text', 'conf', 'def', 'list', 'log'] },
     { name: 'PostgreSQL', mime: 'text/x-pgsql', mode: 'sql' },
     {
         name: 'Properties',

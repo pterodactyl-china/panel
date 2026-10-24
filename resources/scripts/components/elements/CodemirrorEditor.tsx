@@ -570,8 +570,8 @@ class CustomSearchPanel implements Panel {
             this.toggleReplaceBtn = document.createElement('button');
             this.toggleReplaceBtn.type = 'button';
             this.toggleReplaceBtn.className = 'cm-search-chevron';
-            this.toggleReplaceBtn.title = 'Toggle Replace (Ctrl+H)';
-            this.toggleReplaceBtn.setAttribute('aria-label', 'Toggle Replace');
+            this.toggleReplaceBtn.title = '切换替换 (Ctrl+H)';
+            this.toggleReplaceBtn.setAttribute('aria-label', '切换替换');
             this.toggleReplaceBtn.style.backgroundImage = 'none';
             this.toggleReplaceBtn.style.backgroundColor = 'var(--popover)';
             this.toggleReplaceBtn.style.borderColor = 'var(--border)';
@@ -605,19 +605,19 @@ class CustomSearchPanel implements Panel {
 
         togglesWrap.className = 'cm-search-toggles';
 
-        this.caseBtn = this.createToggle('Aa', 'Match Case (Alt+C)', query.caseSensitive, () => {
+        this.caseBtn = this.createToggle('Aa', '区分大小写 (Alt+C)', query.caseSensitive, () => {
             this.caseField.checked = !this.caseField.checked;
             this.updateToggleState(this.caseBtn, this.caseField.checked);
             this.commit();
         });
 
-        this.wordBtn = this.createToggle('\\b', 'Match Whole Word (Alt+W)', query.wholeWord, () => {
+        this.wordBtn = this.createToggle('\\b', '全字匹配 (Alt+W)', query.wholeWord, () => {
             this.wordField.checked = !this.wordField.checked;
             this.updateToggleState(this.wordBtn, this.wordField.checked);
             this.commit();
         });
 
-        this.reBtn = this.createToggle('.*', 'Use Regular Expression (Alt+R)', query.regexp, () => {
+        this.reBtn = this.createToggle('.*', '使用正则表达式 (Alt+R)', query.regexp, () => {
             this.reField.checked = !this.reField.checked;
             this.updateToggleState(this.reBtn, this.reField.checked);
             this.commit();
@@ -632,21 +632,21 @@ class CustomSearchPanel implements Panel {
 
         const prevBtn = this.createIconButton(
             '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>',
-            'Previous Match (Shift+Enter)',
+            '上一个匹配 (Shift+Enter)',
             'prev',
             () => findPrevious(this.view)
         );
 
         const nextBtn = this.createIconButton(
             '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
-            'Next Match (Enter)',
+            '下一个匹配 (Enter)',
             'next',
             () => findNext(this.view)
         );
 
         const allBtn = this.createActionButton(
             'All',
-            'Select All Matches (Alt+Enter)',
+            '选择所有匹配 (Alt+Enter)',
             'select',
             () => selectMatches(this.view),
             'ghost'
@@ -657,8 +657,8 @@ class CustomSearchPanel implements Panel {
         closeBtn.type = 'button';
         closeBtn.className = 'cm-button cm-icon-button cm-search-close';
         closeBtn.name = 'close';
-        closeBtn.title = 'Close (Escape)';
-        closeBtn.setAttribute('aria-label', 'Close');
+        closeBtn.title = '关闭 (Esc)';
+        closeBtn.setAttribute('aria-label', '关闭');
         closeBtn.style.position = 'static';
         closeBtn.style.backgroundImage = 'none';
         closeBtn.style.backgroundColor = 'var(--destructive)';
@@ -703,14 +703,14 @@ class CustomSearchPanel implements Panel {
 
             const replaceBtn = this.createActionButton(
                 'Replace',
-                'Replace (Enter)',
+                '替换 (Enter)',
                 'replace',
                 () => replaceNext(this.view),
                 'primary'
             );
             const replaceAllBtn = this.createActionButton(
                 'All',
-                'Replace All',
+                '全部替换',
                 'replaceAll',
                 () => replaceAll(this.view),
                 'secondary'
@@ -730,7 +730,7 @@ class CustomSearchPanel implements Panel {
             this.toggleReplaceBtn.innerHTML = this.isReplaceOpen
                 ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>'
                 : '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
-            this.toggleReplaceBtn.title = this.isReplaceOpen ? 'Hide Replace' : 'Toggle Replace (Ctrl+H)';
+            this.toggleReplaceBtn.title = this.isReplaceOpen ? '隐藏替换' : '切换替换 (Ctrl+H)';
             this.toggleReplaceBtn.setAttribute('aria-expanded', String(this.isReplaceOpen));
         }
 
@@ -938,7 +938,7 @@ const createEditorState = (
             indentUnit.of('    '),
             EditorView.lineWrapping,
             EditorView.contentAttributes.of({
-                'aria-label': 'File editor',
+                'aria-label': '文件编辑器',
                 autocapitalize: 'off',
                 autocorrect: 'off',
             }),

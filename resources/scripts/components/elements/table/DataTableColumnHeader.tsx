@@ -21,9 +21,7 @@ export default function DataTableColumnHeader<TData extends RowData, TValue>({
 
     const direction = column.getIsSorted();
     const nextDirection = column.getNextSortingOrder();
-    const label = nextDirection
-        ? `Sort ${title} ${nextDirection === 'asc' ? 'ascending' : 'descending'}`
-        : `Clear ${title} sorting`;
+    const label = nextDirection ? `按 ${title} ${nextDirection === 'asc' ? '升序' : '降序'}排序` : `清除 ${title} 排序`;
     const SortIcon = direction ? sortIcons[direction] : ArrowUpDown;
 
     return (

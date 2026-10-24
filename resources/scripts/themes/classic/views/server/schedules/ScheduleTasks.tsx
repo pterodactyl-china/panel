@@ -27,13 +27,13 @@ import TaskDialog from './TaskDialog';
 const actionDetails = (action: string): [string, LucideIcon] => {
     switch (action) {
         case 'command':
-            return ['Send Command', Code];
+            return ['发送命令', Code];
         case 'power':
-            return ['Send Power Action', ToggleRight];
+            return ['发送电源操作', ToggleRight];
         case 'backup':
-            return ['Create Backup', FileArchive];
+            return ['创建备份', FileArchive];
         default:
-            return ['Unknown Action', Code];
+            return ['未知操作', Code];
     }
 };
 
@@ -56,14 +56,14 @@ function TaskIdentity({ task }: { task: ScheduleTask }) {
 }
 
 function TaskActions({ model, task }: { model: ScheduleTasksModel; task: ScheduleTask }) {
-    const name = `task ${task.sequence} (${actionDetails(task.action)[0]})`;
+    const name = `任务 ${task.sequence}（${actionDetails(task.action)[0]}）`;
 
     return (
         <RowActions>
             {model.canUpdate && (
                 <>
                     <Dialog.Trigger
-                        trigger={({ onClick }) => <EditAction aria-label={`Edit ${name}`} onClick={onClick} />}
+                        trigger={({ onClick }) => <EditAction aria-label={`编辑 ${name}`} onClick={onClick} />}
                     >
                         {(dialog) => (
                             <TaskDialog
@@ -75,16 +75,16 @@ function TaskActions({ model, task }: { model: ScheduleTasksModel; task: Schedul
                         )}
                     </Dialog.Trigger>
                     <Dialog.ConfirmTrigger
-                        title='Confirm task deletion'
-                        confirm='Delete Task'
+                        title='确认删除任务'
+                        confirm='删除任务'
                         onConfirmed={async (_event, close) => {
                             if (await model.actions.remove(task.id)) {
                                 close();
                             }
                         }}
-                        trigger={({ onClick }) => <DeleteAction aria-label={`Delete ${name}`} onClick={onClick} />}
+                        trigger={({ onClick }) => <DeleteAction aria-label={`删除 ${name}`} onClick={onClick} />}
                     >
-                        Are you sure you want to delete this task? This action cannot be undone.
+                        确定要删除此任务吗？此操作无法撤销。
                     </Dialog.ConfirmTrigger>
                 </>
             )}
@@ -96,13 +96,13 @@ function columns(model: ScheduleTasksModel): TableColumn<ScheduleTask>[] {
     return [
         {
             id: 'action',
-            label: 'Task',
+            label: '任务',
             sortValue: (task) => actionDetails(task.action)[0],
             cell: (task) => <TaskIdentity task={task} />,
         },
         {
             id: 'delay',
-            label: 'Delay',
+            label: '延迟',
             sortValue: (task) => task.timeOffset,
             cell: (task) =>
                 task.sequence > 1 && task.timeOffset > 0 ? (
@@ -118,15 +118,15 @@ function columns(model: ScheduleTasksModel): TableColumn<ScheduleTask>[] {
         },
         {
             id: 'continue_on_failure',
-            label: 'Failure behavior',
+            label: '失败处理',
             cell: (task) =>
                 task.continueOnFailure ? (
                     <Badge tone='warning' className='inline-flex items-center gap-1.5 whitespace-nowrap rounded-full'>
                         <Icon icon={ArrowDownCircle} className='h-3.5 w-3.5' />
-                        Continues
+                        继续
                     </Badge>
                 ) : (
-                    <span className='text-xs text-muted-foreground'>Stops</span>
+                    <span className='text-xs text-muted-foreground'>停止</span>
                 ),
             headerClassName: 'hidden lg:table-cell w-36',
             cellClassName: 'hidden lg:table-cell w-36',
@@ -152,10 +152,8 @@ export default function ScheduleTasks({ model, className }: ViewProps<'server.sc
                             <EmptyMedia variant='icon'>
                                 <ListTodo />
                             </EmptyMedia>
-                            <EmptyTitle>No tasks</EmptyTitle>
-                            <EmptyDescription>
-                                Add a task to tell this schedule what to do when it runs.
-                            </EmptyDescription>
+                            <EmptyTitle>没有任务</EmptyTitle>
+                            <EmptyDescription>添加任务以指定此计划运行时要执行的操作。</EmptyDescription>
                         </EmptyHeader>
                         {model.canUpdate && (
                             <EmptyContent>

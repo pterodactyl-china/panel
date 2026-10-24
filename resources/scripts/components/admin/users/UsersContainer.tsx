@@ -104,11 +104,7 @@ export default function UsersContainer() {
     }
 
     return (
-        <AdminContentBlock
-            title='Admin · Users'
-            heading='Users'
-            description='Manage panel accounts, permissions, and account access.'
-        >
+        <AdminContentBlock title='管理 · 用户' heading='用户' description='管理面板账户、权限与账户访问。'>
             <form
                 className='mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between'
                 onSubmit={(event) => {
@@ -127,9 +123,9 @@ export default function UsersContainer() {
                     <TextInput
                         key={filter}
                         name='filter'
-                        aria-label='Search users'
+                        aria-label='搜索用户'
                         className='h-9 border-border bg-card pl-10'
-                        placeholder='Search users…'
+                        placeholder='搜索用户…'
                         defaultValue={filter}
                     />
                 </div>
@@ -143,10 +139,10 @@ export default function UsersContainer() {
                         emptyState={
                             <AdminListEmpty
                                 icon={Users}
-                                noun='users'
+                                noun='用户'
                                 filter={filter}
                                 onClearFilter={() => navigateToSearch({ page: 1, filter: '' })}
-                                description='Create an account for each person who should sign in to the panel.'
+                                description='为每位需要登录面板的人员创建账户。'
                                 action={<CreateUserButton />}
                             />
                         }
@@ -155,7 +151,7 @@ export default function UsersContainer() {
                         table={table}
                         total={users.meta.pagination.total}
                         count={users.meta.pagination.count}
-                        itemLabel='users'
+                        itemLabel='用户'
                     />
                 </>
             ) : (

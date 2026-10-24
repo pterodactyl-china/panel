@@ -2,7 +2,7 @@ import { AxiosError, AxiosHeaders } from 'axios';
 import { describe, expect, it } from 'vitest';
 import { httpErrorToHuman } from '@/api/http';
 
-const FALLBACK = 'An unexpected error occurred.';
+const FALLBACK = '发生意外错误。';
 
 /** The bodies these cases send, including malformed ones the parser has to tolerate. */
 type ResponseBody =

@@ -21,7 +21,7 @@ export interface NavigationBlockerOptions {
     confirm?: (transition: NavigationTransition) => boolean | Promise<boolean>;
 }
 
-export const UNSAVED_CHANGES_MESSAGE = 'You have unsaved changes. Leave this page and discard them?';
+export const UNSAVED_CHANGES_MESSAGE = '您有未保存的更改。要离开此页面并放弃这些更改吗？';
 
 /** Asks before leaving while `shouldBlock` holds, including back/forward and tab close. */
 export function useNavigationBlocker(

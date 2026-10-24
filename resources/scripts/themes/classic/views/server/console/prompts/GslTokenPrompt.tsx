@@ -13,24 +13,21 @@ export default function GslTokenPrompt({ model }: ViewProps<'server.feature.gslT
     return (
         <Dialog
             open={model.open}
-            title='Invalid GSL token'
+            title='GSL 令牌无效'
             onClose={model.close}
             preventExternalClose={model.pending}
             hideCloseIcon={model.pending}
         >
             <SpinnerOverlay visible={model.pending} />
             <Form form={form}>
-                <p className='mt-4'>It seems like your Gameserver Login Token (GSL token) is invalid or has expired.</p>
-                <p className='mt-4'>
-                    You can either generate a new one and enter it below or leave the field blank to remove it
-                    completely.
-                </p>
+                <p className='mt-4'>您的游戏服务器登录令牌（GSL 令牌）似乎无效或已过期。</p>
+                <p className='mt-4'>您可以生成新的令牌并填入下方，或将此字段留空以完全移除。</p>
                 <div className='sm:flex items-center mt-4'>
                     <form.AppField name='gslToken'>
                         {(field) => (
                             <field.TextField
-                                label='GSL Token'
-                                description='Visit https://steamcommunity.com/dev/managegameservers to generate a token.'
+                                label='GSL 令牌'
+                                description='访问 https://steamcommunity.com/dev/managegameservers 生成令牌。'
                                 autoFocus
                             />
                         )}
@@ -39,7 +36,7 @@ export default function GslTokenPrompt({ model }: ViewProps<'server.feature.gslT
                 <div className='mt-8 sm:flex items-center justify-end'>
                     <div className='mt-4 sm:mt-0 sm:ml-4 w-full sm:w-auto'>
                         <form.AppForm>
-                            <form.SubmitButton className='w-full sm:w-auto'>Update GSL Token</form.SubmitButton>
+                            <form.SubmitButton className='w-full sm:w-auto'>更新 GSL 令牌</form.SubmitButton>
                         </form.AppForm>
                     </div>
                 </div>

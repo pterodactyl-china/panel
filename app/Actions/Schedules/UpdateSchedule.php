@@ -31,7 +31,7 @@ final class UpdateSchedule implements UpdatesSchedules
         try {
             $schedule->next_run_at = $schedule->getNextRunDate();
         } catch (Throwable) {
-            throw new DisplayException('The cron data provided does not evaluate to a valid expression.');
+            throw new DisplayException('提供的 Cron 表达式无效。');
         }
 
         // A schedule switched on or off is no longer mid-run.

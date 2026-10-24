@@ -57,7 +57,7 @@ describe('SettingsSections', () => {
     it('renders fields in the scroll area without a section picker when no field names a tab', () => {
         render(<SettingsSections schema={[field('a', null), field('b', null)]} renderField={renderField} />);
 
-        expect(screen.queryByLabelText('Section')).toBeNull();
+        expect(screen.queryByLabelText('区块')).toBeNull();
         expect(screen.getByText('a')).toBeVisible();
         expect(screen.getByText('b')).toBeVisible();
     });
@@ -72,14 +72,14 @@ describe('SettingsSections', () => {
             />
         );
 
-        expect(screen.getByLabelText('Section')).toHaveValue('General');
+        expect(screen.getByLabelText('区块')).toHaveValue('General');
         expect(screen.getByText('enabled')).toBeVisible();
         expect(screen.getByText('bucket')).not.toBeVisible();
 
-        await user.click(screen.getByLabelText('Section'));
+        await user.click(screen.getByLabelText('区块'));
         await user.click(await screen.findByRole('option', { name: 'Storage' }));
 
-        expect(screen.getByLabelText('Section')).toHaveValue('Storage');
+        expect(screen.getByLabelText('区块')).toHaveValue('Storage');
         expect(screen.getByText('bucket')).toBeVisible();
         expect(screen.getByText('access_key')).toBeVisible();
         expect(screen.getByText('enabled')).not.toBeVisible();

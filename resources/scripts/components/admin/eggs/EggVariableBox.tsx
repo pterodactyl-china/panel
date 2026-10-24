@@ -72,19 +72,15 @@ export default function EggVariableBox({ eggId, variable }: Props) {
                         <field.TextField
                             type='text'
                             id={`name_${variable.attributes.id}`}
-                            label='Name'
-                            description='A human-readable name for this variable.'
+                            label='名称'
+                            description='此变量的易读名称。'
                         />
                     )}
                 </form.AppField>
                 <div className='mt-4'>
                     <form.AppField name='description'>
                         {(field) => (
-                            <field.TextAreaField
-                                id={`description_${variable.attributes.id}`}
-                                label='Description'
-                                rows={3}
-                            />
+                            <field.TextAreaField id={`description_${variable.attributes.id}`} label='描述' rows={3} />
                         )}
                     </form.AppField>
                 </div>
@@ -96,68 +92,58 @@ export default function EggVariableBox({ eggId, variable }: Props) {
                         }}
                     >
                         {(field) => (
-                            <field.TextField
-                                type='text'
-                                id={`env_${variable.attributes.id}`}
-                                label='Environment Variable'
-                            />
+                            <field.TextField type='text' id={`env_${variable.attributes.id}`} label='环境变量' />
                         )}
                     </form.AppField>
                     <form.AppField name='defaultValue'>
                         {(field) => (
-                            <field.TextField
-                                type='text'
-                                id={`default_${variable.attributes.id}`}
-                                label='Default Value'
-                            />
+                            <field.TextField type='text' id={`default_${variable.attributes.id}`} label='默认值' />
                         )}
                     </form.AppField>
                 </div>
                 <p className='text-xs text-muted-foreground mt-2'>
-                    Access this variable in the startup command with <Code>{variable.attributes.env_variable}</Code>.
+                    在启动命令中通过以下方式引用此变量： <Code>{variable.attributes.env_variable}</Code>.
                 </p>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-4'>
                     <form.AppField name='userViewable'>
-                        {(field) => <field.SwitchField label='Users Can View' />}
+                        {(field) => <field.SwitchField label='用户可查看' />}
                     </form.AppField>
                     <form.AppField name='userEditable'>
-                        {(field) => <field.SwitchField label='Users Can Edit' />}
+                        {(field) => <field.SwitchField label='用户可编辑' />}
                     </form.AppField>
                 </div>
                 <div className='mt-4'>
                     <form.AppField
                         name='rules'
                         validators={{
-                            onChange: ({ value }) =>
-                                value.length >= 1 ? undefined : 'Validation rules must be provided.',
+                            onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供验证规则。'),
                         }}
                     >
                         {(field) => (
                             <field.TextField
                                 type='text'
                                 id={`rules_${variable.attributes.id}`}
-                                label='Input Rules'
-                                description='Standard Laravel validation rules used to validate this variable.'
+                                label='输入规则'
+                                description='用于验证此变量的标准 Laravel 验证规则。'
                             />
                         )}
                     </form.AppField>
                 </div>
                 <div className='flex items-center justify-between mt-6'>
                     <Dialog.ConfirmTrigger
-                        title={`Delete ${variable.attributes.name}`}
-                        confirm='Delete Variable'
+                        title={`删除 ${variable.attributes.name}`}
+                        confirm='删除变量'
                         onConfirmed={confirmDelete}
                         trigger={({ onClick }) => (
                             <Button type='button' color='red' isSecondary onClick={onClick}>
-                                Delete
+                                删除
                             </Button>
                         )}
                     >
-                        This will permanently remove the <strong>{variable.attributes.name}</strong> variable from this
-                        egg.
+                        这将从该预设中永久移除变量 <strong>{variable.attributes.name}</strong>。
                     </Dialog.ConfirmTrigger>
                     <form.AppForm>
-                        <form.SubmitButton>Save</form.SubmitButton>
+                        <form.SubmitButton>保存</form.SubmitButton>
                     </form.AppForm>
                 </div>
             </TitledGreyBox>

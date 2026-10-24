@@ -81,7 +81,7 @@ test('two factor can be disabled on account', function () {
     $response = $this->actingAs($user)->postJson('/api/client/account/two-factor/disable', ['password' => 'invalid']);
     $response->assertStatus(Response::HTTP_BAD_REQUEST);
     $response->assertJsonPath('errors.0.code', 'InvalidPasswordProvidedException');
-    $response->assertJsonPath('errors.0.detail', 'The password provided was invalid for this account.');
+    $response->assertJsonPath('errors.0.detail', '提供的密码对此帐户无效。');
     $response = $this->actingAs($user)->postJson('/api/client/account/two-factor/disable', ['password' => 'password']);
     $response->assertStatus(Response::HTTP_NO_CONTENT);
     $user = $user->refresh();
@@ -99,11 +99,11 @@ test('no error is returned if two factor is not enabled', function () {
 });
 test('enabling two factor requires valid password', function () {
     $user = User::factory()->create(['use_totp' => false]);
-    $this->actingAs($user)->postJson('/api/client/account/two-factor', ['code' => '123456', 'password' => 'foo'])->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.detail', 'The password provided was invalid for this account.');
+    $this->actingAs($user)->postJson('/api/client/account/two-factor', ['code' => '123456', 'password' => 'foo'])->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.detail', '提供的密码对此帐户无效。');
     expect($user->refresh()->use_totp)->toBeFalse();
 });
 test('disabling two factor requires valid password', function () {
     $user = User::factory()->create(['use_totp' => true]);
-    $this->actingAs($user)->postJson('/api/client/account/two-factor/disable', ['password' => 'foo'])->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.detail', 'The password provided was invalid for this account.');
+    $this->actingAs($user)->postJson('/api/client/account/two-factor/disable', ['password' => 'foo'])->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.detail', '提供的密码对此帐户无效。');
     expect($user->refresh()->use_totp)->toBeTrue();
 });

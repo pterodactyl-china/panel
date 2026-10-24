@@ -16,13 +16,13 @@ use InvalidArgumentException;
 use Pterodactyl\Services\FilesystemChanges;
 use Symfony\Component\Console\Helper\ProgressBar;
 
-#[Description('Downloads a new archive for Pterodactyl from GitHub and then executes the normal upgrade commands.')]
+#[Description('从 GitHub 下载 Pterodactyl 新版本压缩包，并执行常规升级命令。')]
 #[Signature('p:upgrade
-        {--user= : The user that PHP runs under. All files will be owned by this user.}
-        {--group= : The group that PHP runs under. All files will be owned by this group.}
-        {--url= : The specific archive to download.}
-        {--release= : A specific Pterodactyl version to download from GitHub. Leave blank to use latest.}
-        {--skip-download : If set no archive will be downloaded.}')]
+        {--user= : 运行 PHP 的用户，所有文件将归属于该用户。}
+        {--group= : 运行 PHP 的用户组，所有文件将归属于该用户组。}
+        {--url= : 指定要下载的压缩包。}
+        {--release= : 要从 GitHub 下载的指定 Pterodactyl 版本，留空则使用最新版。}
+        {--skip-download : 设置后不下载压缩包。}')]
 class UpgradeCommand extends Command
 {
     protected const string DEFAULT_URL = 'https://github.com/pterodactyl/panel/releases/%s/panel.tar.gz';
@@ -41,8 +41,8 @@ class UpgradeCommand extends Command
     {
         $skipDownload = $this->option('skip-download');
         if (! $skipDownload) {
-            $this->output->warning('This command does not verify the integrity of downloaded assets. Please ensure that you trust the download source before continuing. If you do not wish to download an archive, please indicate that using the --skip-download flag, or answering "no" to the question below.');
-            $this->output->comment('Download Source (set with --url=):');
+            $this->output->warning('此命令不会校验下载资源的完整性，继续前请确认您信任下载来源。若不想下载压缩包，请使用 --skip-download 参数，或在下方问题中回答「否」。');
+            $this->output->comment('下载来源（通过 --url= 指定）：');
             $this->line($this->getUrl());
         }
 
@@ -50,7 +50,7 @@ class UpgradeCommand extends Command
         $group = is_string($this->option('group')) ? $this->option('group') : 'www-data';
         if ($this->input->isInteractive()) {
             if (! $skipDownload) {
-                $skipDownload = ! $this->confirm('Would you like to download and unpack the archive files for the latest version?', true);
+                $skipDownload = ! $this->confirm('是否下载并解压最新版本的压缩包？', true);
             }
 
             if (($this->option('user')) === null) {
@@ -58,16 +58,16 @@ class UpgradeCommand extends Command
                 $userDetails = $ownerId !== false ? posix_getpwuid($ownerId) : false;
                 $user = $userDetails !== false ? $userDetails['name'] : 'www-data';
 
-                if (! $this->confirm("Your webserver user has been detected as <fg=blue>[{$user}]:</> is this correct?", true)) {
+                if (! $this->confirm("检测到您的 Web 服务器用户为 <fg=blue>[{$user}]:</>，是否正确？", true)) {
                     $user = $this->anticipate(
-                        'Please enter the name of the user running your webserver process. This varies from system to system, but is generally "www-data", "nginx", or "apache".',
+                        '请输入运行 Web 服务器进程的用户名。不同系统有所不同，常见为「www-data」「nginx」或「apache」。',
                         [
                             'www-data',
                             'nginx',
                             'apache',
                         ]
                     );
-                    throw_unless(is_string($user), InvalidArgumentException::class, 'A webserver user is required.');
+                    throw_unless(is_string($user), InvalidArgumentException::class, '必须提供运行 Web 服务器的用户。');
                 }
             }
 
@@ -76,21 +76,21 @@ class UpgradeCommand extends Command
                 $groupDetails = $groupId !== false ? posix_getgrgid($groupId) : false;
                 $group = $groupDetails !== false ? $groupDetails['name'] : 'www-data';
 
-                if (! $this->confirm("Your webserver group has been detected as <fg=blue>[{$group}]:</> is this correct?", true)) {
+                if (! $this->confirm("检测到您的 Web 服务器用户组为 <fg=blue>[{$group}]:</>，是否正确？", true)) {
                     $group = $this->anticipate(
-                        'Please enter the name of the group running your webserver process. Normally this is the same as your user.',
+                        '请输入运行 Web 服务器进程的用户组名，通常与用户名相同。',
                         [
                             'www-data',
                             'nginx',
                             'apache',
                         ]
                     );
-                    throw_unless(is_string($group), InvalidArgumentException::class, 'A webserver group is required.');
+                    throw_unless(is_string($group), InvalidArgumentException::class, '必须提供运行 Web 服务器的用户组。');
                 }
             }
 
-            if (! $this->confirm('Are you sure you want to run the upgrade process for your Panel?')) {
-                $this->warn('Upgrade process terminated by user.');
+            if (! $this->confirm('确定要为面板执行升级流程吗？')) {
+                $this->warn('升级流程已被用户终止。');
 
                 return self::SUCCESS;
             }
@@ -125,7 +125,7 @@ class UpgradeCommand extends Command
         $this->withProgress($bar, fn () => $this->runArtisan('up'));
 
         $this->newLine(2);
-        $this->info('Panel has been successfully upgraded. Please ensure you also update any Wings instances: https://pterodactyl.io/docs/v2/wings/upgrading');
+        $this->info('面板已成功升级。请同时更新所有 Wings 实例：https://pterodactyl.io/docs/v2/wings/upgrading');
 
         return self::SUCCESS;
     }
@@ -150,7 +150,7 @@ class UpgradeCommand extends Command
     private function download(FilesystemChanges $files): void
     {
         $directory = storage_path('app/.upgrade-'.Str::uuid());
-        throw_unless(File::makeDirectory($directory, 0700, true), Exception::class, 'Unable to create a temporary upgrade directory.');
+        throw_unless(File::makeDirectory($directory, 0700, true), Exception::class, '无法创建临时升级目录。');
         $archive = $directory.DIRECTORY_SEPARATOR.'panel.tar.gz';
 
         try {

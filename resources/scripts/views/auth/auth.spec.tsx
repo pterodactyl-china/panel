@@ -100,7 +100,7 @@ describe('auth views from fixtures', () => {
 
         const invalid = renderView('page.auth.login', { fixture: 'invalid' });
 
-        expect(invalid.container).toHaveTextContent('A username or email must be provided.');
+        expect(invalid.container).toHaveTextContent('必须提供用户名或电子邮箱。');
         expect(invalid.container.querySelector('input[name="password"]')).toHaveAttribute('aria-invalid', 'true');
         invalid.unmount();
     });
@@ -119,24 +119,24 @@ describe('page.auth.login', () => {
     it('gives password managers the attributes they read', async () => {
         await renderAuth('/auth/login');
 
-        const username = screen.getByLabelText('Username or Email');
-        const password = screen.getByLabelText('Password');
+        const username = screen.getByLabelText('用户名或电子邮箱');
+        const password = screen.getByLabelText('密码');
 
         expect(username).toHaveAttribute('name', 'username');
         expect(username).toHaveAttribute('autocomplete', 'username');
         expect(password).toHaveAttribute('type', 'password');
         expect(password).toHaveAttribute('autocomplete', 'current-password');
-        expect(screen.getByRole('link', { name: 'Forgot password?' })).toHaveAttribute('href', '/auth/password');
+        expect(screen.getByRole('link', { name: '忘记密码？' })).toHaveAttribute('href', '/auth/password');
     });
 
     it('hands a two-factor login to the checkpoint with its token and destination', async () => {
         mocks.login.mockResolvedValue({ data: { complete: false, confirmation_token: 'confirm-token' } });
         await renderAuth('/auth/login?redirect=%2Fpanel%2Fnodes');
 
-        fireEvent.change(screen.getByLabelText('Username or Email'), { target: { value: 'alex' } });
-        fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'correct horse' } });
+        fireEvent.change(screen.getByLabelText('用户名或电子邮箱'), { target: { value: 'alex' } });
+        fireEvent.change(screen.getByLabelText('密码'), { target: { value: 'correct horse' } });
         await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: 'Login' }));
+            fireEvent.click(screen.getByRole('button', { name: '登录' }));
         });
 
         await waitFor(() => expect(router!.state.location.pathname).toBe('/auth/login/checkpoint'));
@@ -150,11 +150,11 @@ describe('page.auth.login', () => {
     it('validates before submitting', async () => {
         await renderAuth('/auth/login');
 
-        fireEvent.change(screen.getByLabelText('Username or Email'), { target: { value: 'alex' } });
-        fireEvent.change(screen.getByLabelText('Username or Email'), { target: { value: '' } });
+        fireEvent.change(screen.getByLabelText('用户名或电子邮箱'), { target: { value: 'alex' } });
+        fireEvent.change(screen.getByLabelText('用户名或电子邮箱'), { target: { value: '' } });
 
-        expect(await screen.findByText('A username or email must be provided.')).toBeVisible();
-        expect(screen.getByRole('button', { name: 'Login' })).toBeDisabled();
+        expect(await screen.findByText('必须提供用户名或电子邮箱。')).toBeVisible();
+        expect(screen.getByRole('button', { name: '登录' })).toBeDisabled();
         expect(mocks.login).not.toHaveBeenCalled();
     });
 
@@ -165,20 +165,20 @@ describe('page.auth.login', () => {
         await renderAuth('/auth/login', true);
 
         expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
-        fireEvent.change(screen.getByLabelText('Username or Email'), { target: { value: 'alex' } });
-        fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'secret' } });
+        fireEvent.change(screen.getByLabelText('用户名或电子邮箱'), { target: { value: 'alex' } });
+        fireEvent.change(screen.getByLabelText('密码'), { target: { value: 'secret' } });
 
         mocks.execute.mockResolvedValueOnce(null);
         await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: 'Login' }));
+            fireEvent.click(screen.getByRole('button', { name: '登录' }));
         });
 
-        expect(error).toHaveBeenCalledWith('Captcha verification failed, please try again.');
+        expect(error).toHaveBeenCalledWith('验证码校验失败，请重试。');
         expect(mocks.login).not.toHaveBeenCalled();
 
         mocks.execute.mockResolvedValueOnce('captcha-token');
         await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: 'Login' }));
+            fireEvent.click(screen.getByRole('button', { name: '登录' }));
         });
 
         expect(mocks.login).toHaveBeenCalledWith({
@@ -193,17 +193,17 @@ describe('page.auth.checkpoint', () => {
         await renderAuth('/auth/login');
         await act(() => router!.navigate({ to: '/auth/login/checkpoint', state: { token: 'confirm-token' } }));
 
-        const code = screen.getByTitle('Authentication Code');
+        const code = screen.getByTitle('验证码');
 
         expect(code).toHaveAttribute('autocomplete', 'one-time-code');
-        fireEvent.click(screen.getByRole('button', { name: "I've Lost My Device" }));
+        fireEvent.click(screen.getByRole('button', { name: '我的设备已丢失' }));
 
-        const recovery = screen.getByTitle('Recovery Code');
+        const recovery = screen.getByTitle('恢复代码');
 
         expect(recovery).toHaveAttribute('name', 'recoveryCode');
         fireEvent.change(recovery, { target: { value: 'abcd-efgh' } });
         await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: 'Continue' }));
+            fireEvent.click(screen.getByRole('button', { name: '继续' }));
         });
 
         expect(mocks.checkpoint).toHaveBeenCalledWith({
@@ -217,12 +217,12 @@ describe('password reset forms', () => {
         mocks.requestReset.mockResolvedValue({});
         await renderAuth('/auth/password');
 
-        const email = screen.getByLabelText('Email');
+        const email = screen.getByLabelText('电子邮箱');
 
         expect(email).toHaveAttribute('autocomplete', 'email');
         fireEvent.change(email, { target: { value: 'alex@example.test' } });
         await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: 'Send Email' }));
+            fireEvent.click(screen.getByRole('button', { name: '发送邮件' }));
         });
 
         expect(mocks.requestReset).toHaveBeenCalledWith({
@@ -235,16 +235,16 @@ describe('password reset forms', () => {
         mocks.reset.mockReturnValue(new Promise(() => {}));
         await renderAuth('/auth/password/reset/reset-token?email=alex%40example.test');
 
-        expect(screen.getByLabelText('Email')).toHaveValue('alex@example.test');
-        fireEvent.change(screen.getByLabelText('New Password'), { target: { value: 'correct horse' } });
-        fireEvent.change(screen.getByLabelText('Confirm New Password'), { target: { value: 'correct' } });
+        expect(screen.getByLabelText('电子邮箱')).toHaveValue('alex@example.test');
+        fireEvent.change(screen.getByLabelText('新密码'), { target: { value: 'correct horse' } });
+        fireEvent.change(screen.getByLabelText('确认新密码'), { target: { value: 'correct' } });
 
-        expect(await screen.findByText('Your new password does not match.')).toBeVisible();
-        expect(screen.getByLabelText('New Password')).toHaveAttribute('autocomplete', 'new-password');
+        expect(await screen.findByText('两次输入的新密码不一致。')).toBeVisible();
+        expect(screen.getByLabelText('新密码')).toHaveAttribute('autocomplete', 'new-password');
 
-        fireEvent.change(screen.getByLabelText('Confirm New Password'), { target: { value: 'correct horse' } });
+        fireEvent.change(screen.getByLabelText('确认新密码'), { target: { value: 'correct horse' } });
         await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: 'Reset Password' }));
+            fireEvent.click(screen.getByRole('button', { name: '重置密码' }));
         });
 
         expect(mocks.reset).toHaveBeenCalledWith({

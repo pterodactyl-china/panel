@@ -94,13 +94,11 @@ it('extension controls participate in native validation, submission, and shared 
     const field = await screen.findByLabelText('Extension username');
 
     fireEvent.change(field, { target: { value: '' } });
-    fireEvent.click(screen.getAllByRole('button', { name: 'Save Changes' })[0]);
-    await waitFor(() =>
-        expect(screen.getAllByText(/username must be provided|Use the extension username/i).length).toBeGreaterThan(0)
-    );
+    fireEvent.click(screen.getAllByRole('button', { name: '保存更改' })[0]);
+    await waitFor(() => expect(screen.getAllByText(/必须提供用户名|使用扩展用户名/).length).toBeGreaterThan(0));
     expect(requests).toBe(0);
     fireEvent.change(field, { target: { value: 'extended' } });
-    fireEvent.click(screen.getAllByRole('button', { name: 'Save Changes' })[0]);
+    fireEvent.click(screen.getAllByRole('button', { name: '保存更改' })[0]);
     await waitFor(() => expect(requests).toBe(1));
     await waitFor(() => expect(host?.queryClient.getQueryState(userKey)?.isInvalidated).toBe(true));
     expect(savedPayload).toMatchObject({ username: 'extended', email: 'alex@example.test' });

@@ -64,7 +64,7 @@ test('exception is thrown if removing the default allocation', function () {
     $allocations = Allocation::factory()->times(4)->create(['node_id' => $server->node_id]);
     $allocations[0]->update(['server_id' => $server->id]);
     $this->expectException(DisplayException::class);
-    $this->expectExceptionMessage('You are attempting to delete the default allocation for this server but there is no fallback allocation to use.');
+    $this->expectExceptionMessage('您正在试图删除此服务器的默认分配，但没有可供使用的备用分配。');
     getService()->update($server, ['add_allocations' => [], 'remove_allocations' => [$server->allocation_id, $allocations[0]->id]]);
 });
 test('server build data is properly updated on wings', function () {

@@ -105,9 +105,9 @@ export default function ApiKeysContainer() {
 
     return (
         <AdminContentBlock
-            title='Admin · Application API'
-            heading='Application API'
-            description='Manage application API keys used to automate panel administration.'
+            title='管理 · 应用 API'
+            heading='应用 API'
+            description='管理用于自动化面板管理的应用 API 密钥。'
         >
             <form
                 className='mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between'
@@ -127,9 +127,9 @@ export default function ApiKeysContainer() {
                     <TextInput
                         key={filter}
                         name='filter'
-                        aria-label='Search application API keys'
+                        aria-label='搜索应用 API 密钥'
                         className='h-9 border-border bg-card pl-10'
-                        placeholder='Search API keys…'
+                        placeholder='搜索 API 密钥…'
                         defaultValue={filter}
                     />
                 </div>
@@ -143,10 +143,10 @@ export default function ApiKeysContainer() {
                         emptyState={
                             <AdminListEmpty
                                 icon={KeyRound}
-                                noun='API keys'
+                                noun='API 密钥'
                                 filter={filter}
                                 onClearFilter={() => navigateToSearch({ page: 1, filter: '' })}
-                                description='Create an application API key to automate panel administration.'
+                                description='创建应用 API 密钥，用于自动化面板管理。'
                             />
                         }
                     />
@@ -154,7 +154,7 @@ export default function ApiKeysContainer() {
                         table={table}
                         total={apiKeys.meta.pagination.total}
                         count={apiKeys.meta.pagination.count}
-                        itemLabel='API keys'
+                        itemLabel='API 密钥'
                     />
                 </>
             ) : (

@@ -34,15 +34,15 @@ export default function FileNameModal({ directory, onFileNamed, onClose, ...prop
                     {(field) => (
                         <field.TextField
                             id='fileName'
-                            label='File Name'
-                            description='Enter the name that this file should be saved as.'
+                            label='文件名'
+                            description='输入此文件保存时使用的名称。'
                             autoFocus
                         />
                     )}
                 </form.AppField>
                 <div className='mt-6 text-right'>
                     <form.AppForm>
-                        <form.SubmitButton>Create File</form.SubmitButton>
+                        <form.SubmitButton>创建文件</form.SubmitButton>
                     </form.AppForm>
                 </div>
             </Form>

@@ -32,9 +32,9 @@ export const useCreateAccountApiKey = () => {
             queryClient.setQueryData<ClientListAccountApiKeysResponse>(clientListAccountApiKeysQueryKey(), (current) =>
                 upsertListItem(current, created, (key) => key.attributes.identifier === created.attributes.identifier)
             );
-            toast.success('API key created');
+            toast.success('API 密钥已创建');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to create API key'),
+        onError: (error) => notifyHttpError(error, '无法创建 API 密钥'),
     });
 };
 
@@ -55,7 +55,7 @@ export const useDeleteAccountApiKey = () => {
             return { removed: previous?.data.find((item) => item.attributes.identifier === variables.path.identifier) };
         },
         onSuccess: () => {
-            toast.success('API key deleted');
+            toast.success('API 密钥已删除');
         },
         onSettled: () => {
             if (queryClient.isMutating({ mutationKey: clientDeleteAccountApiKeyMutation().mutationKey }) === 1) {
@@ -77,7 +77,7 @@ export const useDeleteAccountApiKey = () => {
                 );
             }
 
-            notifyHttpError(error, 'Unable to delete API key');
+            notifyHttpError(error, '无法删除 API 密钥');
         },
     });
 };

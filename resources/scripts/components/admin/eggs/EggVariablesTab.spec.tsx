@@ -55,7 +55,7 @@ describe('EggVariablesTab', () => {
         const user = userEvent.setup();
         const { rerender, container } = render(<EggVariablesTab />);
 
-        const name = screen.getByLabelText('Name');
+        const name = screen.getByLabelText('名称');
 
         await user.clear(name);
         await user.type(name, 'Server Version');
@@ -63,7 +63,7 @@ describe('EggVariablesTab', () => {
         query = { ...query, isFetching: true };
         rerender(<EggVariablesTab />);
 
-        expect(screen.getByLabelText('Name')).toBe(name);
+        expect(screen.getByLabelText('名称')).toBe(name);
         expect(name).toHaveValue('Server Version');
         expect(container.querySelector('[aria-busy="true"]')).toContainElement(name);
     });

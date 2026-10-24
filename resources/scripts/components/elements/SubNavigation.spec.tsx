@@ -85,7 +85,7 @@ const overflowed = () =>
         .filter((link) => link.hasAttribute('data-overflowed'))
         .map((link) => link.textContent);
 
-const moreToggle = () => screen.getByText('More').closest('span')!;
+const moreToggle = () => screen.getByText('更多').closest('span')!;
 
 describe('SubNavigation overflow', () => {
     beforeEach(() => {
@@ -151,7 +151,7 @@ describe('SubNavigation overflow', () => {
         expect(screen.getByTestId('nav')).not.toHaveAttribute('data-collapsed');
         expect(moreToggle().hidden).toBe(false);
 
-        fireEvent.click(screen.getByRole('button', { name: /More/ }));
+        fireEvent.click(screen.getByRole('button', { name: /更多/ }));
 
         expect((await screen.findAllByRole('menuitem')).map((entry) => entry.textContent)).toEqual([
             'Backups',
@@ -170,9 +170,9 @@ describe('SubNavigation overflow', () => {
         );
 
         expect(overflowed()).toEqual(['Files', 'Backups']);
-        expect(screen.getByRole('button', { name: /More/ })).toHaveClass('shadow-navigation-active');
+        expect(screen.getByRole('button', { name: /更多/ })).toHaveClass('shadow-navigation-active');
 
-        fireEvent.click(screen.getByRole('button', { name: /More/ }));
+        fireEvent.click(screen.getByRole('button', { name: /更多/ }));
         fireEvent.click(await screen.findByRole('menuitem', { name: 'Files' }));
 
         await waitFor(() => expect(host!.location().pathname).toBe('/account/files'));

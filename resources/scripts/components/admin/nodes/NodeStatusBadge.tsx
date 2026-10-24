@@ -4,17 +4,17 @@ export type NodeStatus = 'checking' | 'online' | 'offline';
 
 const statusStyles = {
     checking: {
-        label: 'Checking',
+        label: '检查中',
         dot: 'animate-pulse bg-muted-foreground',
         badge: 'border-border bg-muted text-muted-foreground',
     },
     online: {
-        label: 'Online',
+        label: '在线',
         dot: 'bg-success',
         badge: 'border-success/25 bg-success/10 text-success',
     },
     offline: {
-        label: 'Offline',
+        label: '离线',
         dot: 'bg-destructive',
         badge: 'border-destructive/25 bg-destructive/10 text-destructive',
     },

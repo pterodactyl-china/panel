@@ -101,12 +101,11 @@ export const useCreateAdminApiKey = () => {
         ...adminCreateApiKeyMutation(),
         onSuccess: async (apiKey) => {
             await invalidateGeneratedOperations(queryClient, ['adminListApiKeys']);
-            const messages = resourceMutationMessages('application API key', 'create', apiKey.attributes.identifier);
+            const messages = resourceMutationMessages('应用 API 密钥', 'create', apiKey.attributes.identifier);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) =>
-            notifyHttpError(error, resourceMutationMessages('application API key', 'create').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('应用 API 密钥', 'create').errorTitle),
     });
 };
 
@@ -117,11 +116,10 @@ export const useDeleteAdminApiKey = () => {
         ...adminDeleteApiKeyMutation(),
         onSuccess: async (_data, variables) => {
             await invalidateGeneratedOperations(queryClient, ['adminListApiKeys']);
-            const messages = resourceMutationMessages('application API key', 'delete', variables.path.identifier);
+            const messages = resourceMutationMessages('应用 API 密钥', 'delete', variables.path.identifier);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) =>
-            notifyHttpError(error, resourceMutationMessages('application API key', 'delete').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('应用 API 密钥', 'delete').errorTitle),
     });
 };

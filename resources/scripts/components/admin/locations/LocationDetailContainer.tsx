@@ -43,7 +43,7 @@ type LocationNode = Extract<
 const locationNodeColumns = [
     {
         id: 'name',
-        header: 'Node',
+        header: '节点',
         cell: ({ row }) => (
             <div className='min-w-0'>
                 <Link
@@ -61,7 +61,7 @@ const locationNodeColumns = [
     },
     {
         id: 'servers',
-        header: 'Servers',
+        header: '服务器',
         cell: ({ row }) => (
             <span className='text-xs text-muted-foreground'>{row.original.attributes.servers_count}</span>
         ),
@@ -70,7 +70,7 @@ const locationNodeColumns = [
     actionsColumn<LocationNode>(1, (node) => (
         <RowActions>
             <EditLinkAction
-                aria-label={`Edit ${node.attributes.name}`}
+                aria-label={`编辑 ${node.attributes.name}`}
                 to='/panel/nodes/$id/settings'
                 params={{ id: node.attributes.id }}
             />
@@ -118,7 +118,7 @@ function LocationDetailForm({ location }: { location: AdminLocation }) {
 
     return (
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
-            <TitledGreyBox title='Location Details'>
+            <TitledGreyBox title='地域详情'>
                 <Form form={form} className='m-0'>
                     <form.AppField
                         name='short'
@@ -130,8 +130,8 @@ function LocationDetailForm({ location }: { location: AdminLocation }) {
                             <field.TextField
                                 type='text'
                                 id='short'
-                                label='Short Code'
-                                description='A short identifier used to distinguish this location from others.'
+                                label='短代码'
+                                description='用于区分此地域与其他地域的简短标识。'
                             />
                         )}
                     </form.AppField>
@@ -140,18 +140,11 @@ function LocationDetailForm({ location }: { location: AdminLocation }) {
                             name='long'
                             validators={{
                                 onChange: ({ value }) =>
-                                    (value?.length ?? 0) <= 191
-                                        ? undefined
-                                        : 'The description must not exceed 191 characters.',
+                                    (value?.length ?? 0) <= 191 ? undefined : '描述不得超过 191 个字符。',
                             }}
                         >
                             {(field) => (
-                                <field.TextField
-                                    type='text'
-                                    id='long'
-                                    label='Description'
-                                    description='A longer description of this location.'
-                                />
+                                <field.TextField type='text' id='long' label='描述' description='此地域的详细描述。' />
                             )}
                         </form.AppField>
                     </div>
@@ -168,22 +161,21 @@ function LocationDetailForm({ location }: { location: AdminLocation }) {
                     </form.AppField>
                     <div className='flex justify-end mt-6'>
                         <Dialog.ConfirmTrigger
-                            title='Delete location'
-                            confirm='Delete Location'
+                            title='删除地域'
+                            confirm='删除地域'
                             pending={deleteLocation.isPending}
                             onConfirmed={(_event, close) => onDelete(close)}
                             trigger={({ onClick }) => (
                                 <Button type='button' color='red' isSecondary className='mr-2' onClick={onClick}>
                                     <Icon icon={Trash2} />
-                                    Delete Location
+                                    删除地域
                                 </Button>
                             )}
                         >
-                            Deleting <strong>{attributes.short}</strong> is permanent and cannot be undone. Locations
-                            with assigned nodes cannot be deleted.
+                            删除 <strong>{attributes.short}</strong> 是不可撤销的操作。已分配节点的地域无法删除。
                         </Dialog.ConfirmTrigger>
                         <form.AppForm>
-                            <form.SubmitButton>Save Changes</form.SubmitButton>
+                            <form.SubmitButton>保存更改</form.SubmitButton>
                         </form.AppForm>
                     </div>
                 </Form>
@@ -192,7 +184,7 @@ function LocationDetailForm({ location }: { location: AdminLocation }) {
             <TitledGreyBox
                 title={
                     <div className='flex items-center justify-between gap-3'>
-                        <h2 className={cardTitleClass}>Nodes</h2>
+                        <h2 className={cardTitleClass}>节点</h2>
                         <span className='text-xs text-muted-foreground'>
                             {attributes.nodes_count} nodes · {attributes.servers_count} servers
                         </span>
@@ -207,8 +199,8 @@ function LocationDetailForm({ location }: { location: AdminLocation }) {
                                 <EmptyMedia variant='icon'>
                                     <HardDrive />
                                 </EmptyMedia>
-                                <EmptyTitle>No nodes</EmptyTitle>
-                                <EmptyDescription>Nodes assigned to this location will appear here.</EmptyDescription>
+                                <EmptyTitle>没有节点</EmptyTitle>
+                                <EmptyDescription>分配到此地域的节点将显示在这里。</EmptyDescription>
                             </EmptyHeader>
                         </Empty>
                     }
@@ -230,7 +222,7 @@ export default function LocationDetailContainer() {
 
     if (!location) {
         return (
-            <AdminContentBlock title='Admin · Location' heading='Location'>
+            <AdminContentBlock title='管理 · 地域' heading='Location'>
                 <Spinner size='large' centered />
             </AdminContentBlock>
         );
@@ -238,16 +230,16 @@ export default function LocationDetailContainer() {
 
     return (
         <AdminContentBlock
-            title={`Admin · Location · ${location.attributes.short}`}
+            title={`管理 · 地域 · ${location.attributes.short}`}
             heading={location.attributes.short}
-            description={location.attributes.long ?? 'No description provided.'}
+            description={location.attributes.long ?? '未提供描述。'}
         >
             <Link
                 to='/panel/locations'
                 className='inline-flex items-center text-sm text-muted-foreground hover:text-accent mb-4'
             >
                 <Icon icon={ArrowLeft} className='mr-2' />
-                Back to Locations
+                返回地域
             </Link>
 
             <LocationDetailForm

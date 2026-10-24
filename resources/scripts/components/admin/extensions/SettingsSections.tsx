@@ -50,7 +50,7 @@ export default function SettingsSections({
         <div className={settingsBodyClass}>
             {sections.length > 1 && (
                 <div className='shrink-0 pb-4 mb-1 border-b border-border'>
-                    <Label htmlFor={id}>Section</Label>
+                    <Label htmlFor={id}>区块</Label>
                     <Select
                         id={id}
                         value={current.name}

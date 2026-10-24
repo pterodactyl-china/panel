@@ -19,5 +19,5 @@ test('completing a password reset logs a translatable auth event', function () {
 
     $log = ActivityLog::query()->where('event', 'auth:password-reset')->latest('id')->firstOrFail();
     expect($log->subjects->first()->subject_id)->toBe($user->id);
-    expect(trans('activity.'.str_replace(':', '.', $log->event)))->toBe('Password reset');
+    expect(trans('activity.'.str_replace(':', '.', $log->event)))->toBe('重设密码');
 });

@@ -40,7 +40,7 @@ const AssignmentRow = ({ label, children }: { label: string; children: React.Rea
 
 const assignmentLinkClass = 'block truncate text-sm font-medium text-foreground transition-colors hover:text-accent';
 
-const formatLimit = (value: number, unit: string, unlimited = 'Unlimited') =>
+const formatLimit = (value: number, unit: string, unlimited = '无限制') =>
     value === 0 ? <Code>{unlimited}</Code> : <Code>{`${value}${unit}`}</Code>;
 
 const getDefaultAllocation = (
@@ -59,7 +59,7 @@ const hasConnectionAlias = (allocation: AllocationAttributes | undefined): alloc
 
 function ExternalIdentifierValue({ externalId }: { externalId: string | null | undefined }) {
     if (!externalId) {
-        return <span className='text-muted-foreground'>Not Set</span>;
+        return <span className='text-muted-foreground'>未设置</span>;
     }
 
     return <Code>{externalId}</Code>;
@@ -67,7 +67,7 @@ function ExternalIdentifierValue({ externalId }: { externalId: string | null | u
 
 function EggValue({ egg }: { egg: NamedRef | undefined }) {
     if (!egg) {
-        return <span className='text-muted-foreground'>Unknown</span>;
+        return <span className='text-muted-foreground'>未知</span>;
     }
 
     return (
@@ -79,7 +79,7 @@ function EggValue({ egg }: { egg: NamedRef | undefined }) {
 
 function CpuPinningValue({ threads }: { threads: string | null | undefined }) {
     if (!threads) {
-        return <span className='text-muted-foreground'>Not Set</span>;
+        return <span className='text-muted-foreground'>未设置</span>;
     }
 
     return <Code>{threads}</Code>;
@@ -87,11 +87,11 @@ function CpuPinningValue({ threads }: { threads: string | null | undefined }) {
 
 function SwapValue({ swap }: { swap: number }) {
     if (swap === 0) {
-        return <Code>Not Set</Code>;
+        return <Code>未设置</Code>;
     }
 
     if (swap === -1) {
-        return <Code>Unlimited</Code>;
+        return <Code>无限制</Code>;
     }
 
     return <Code>{`${swap}MiB`}</Code>;
@@ -99,7 +99,7 @@ function SwapValue({ swap }: { swap: number }) {
 
 function DefaultConnectionValue({ allocation }: { allocation: AllocationAttributes | undefined }) {
     if (!allocation) {
-        return <span className='text-muted-foreground'>Unknown</span>;
+        return <span className='text-muted-foreground'>未知</span>;
     }
 
     return <Code>{`${allocation.ip}:${allocation.port}`}</Code>;
@@ -107,7 +107,7 @@ function DefaultConnectionValue({ allocation }: { allocation: AllocationAttribut
 
 function ConnectionAliasValue({ allocation }: { allocation: AllocationAttributes | undefined }) {
     if (!hasConnectionAlias(allocation)) {
-        return <span className='text-muted-foreground'>No Alias Assigned</span>;
+        return <span className='text-muted-foreground'>未分配别名</span>;
     }
 
     return <Code>{`${allocation.alias}:${allocation.port}`}</Code>;
@@ -123,39 +123,39 @@ function InformationCard({
     egg: NamedRef | undefined;
 }) {
     return (
-        <TitledGreyBox title='Information'>
-            <Row label='Internal Identifier'>
+        <TitledGreyBox title='信息'>
+            <Row label='内部标识符'>
                 <Code>{attributes.id}</Code>
             </Row>
-            <Row label='External Identifier'>
+            <Row label='外部标识符'>
                 <ExternalIdentifierValue externalId={attributes.external_id} />
             </Row>
-            <Row label='UUID / Docker Container ID'>
+            <Row label='UUID / Docker 容器 ID'>
                 <CopyOnClick text={attributes.uuid}>
                     <Code>{attributes.uuid}</Code>
                 </CopyOnClick>
             </Row>
-            <Row label='Current Egg'>
+            <Row label='当前预设'>
                 <EggValue egg={egg} />
             </Row>
-            <Row label='Server Name'>{attributes.name}</Row>
-            <Row label='CPU Limit'>{formatLimit(attributes.limits.cpu, '%')}</Row>
-            <Row label='CPU Pinning'>
+            <Row label='服务器名称'>{attributes.name}</Row>
+            <Row label='CPU 限制'>{formatLimit(attributes.limits.cpu, '%')}</Row>
+            <Row label='CPU 绑定'>
                 <CpuPinningValue threads={attributes.limits.threads} />
             </Row>
-            <Row label='Memory'>
+            <Row label='内存'>
                 {formatLimit(attributes.limits.memory, 'MiB')}
                 {' / '}
                 <SwapValue swap={attributes.limits.swap} />
             </Row>
-            <Row label='Disk Space'>{formatLimit(attributes.limits.disk, 'MiB')}</Row>
-            <Row label='Block IO Weight'>
+            <Row label='磁盘空间'>{formatLimit(attributes.limits.disk, 'MiB')}</Row>
+            <Row label='块 IO 权重'>
                 <Code>{attributes.limits.io}</Code>
             </Row>
-            <Row label='Default Connection'>
+            <Row label='默认连接'>
                 <DefaultConnectionValue allocation={allocation} />
             </Row>
-            <Row label='Connection Alias'>
+            <Row label='连接别名'>
                 <ConnectionAliasValue allocation={allocation} />
             </Row>
         </TitledGreyBox>
@@ -168,21 +168,17 @@ function StatusCard({ attributes }: { attributes: ServerAttributes }) {
     }
 
     return (
-        <TitledGreyBox title='Status'>
-            {attributes.suspended && <p className='text-sm text-warning mb-2'>This server is currently suspended.</p>}
-            {attributes.container.installed === 0 && (
-                <p className='text-sm text-accent mb-2'>This server is currently installing.</p>
-            )}
-            {attributes.status === 'install_failed' && (
-                <p className='text-sm text-destructive'>This server failed to install.</p>
-            )}
+        <TitledGreyBox title='状态'>
+            {attributes.suspended && <p className='text-sm text-warning mb-2'>此服务器当前已冻结。</p>}
+            {attributes.container.installed === 0 && <p className='text-sm text-accent mb-2'>此服务器正在安装。</p>}
+            {attributes.status === 'install_failed' && <p className='text-sm text-destructive'>此服务器安装失败。</p>}
         </TitledGreyBox>
     );
 }
 
 function OwnerValue({ user, ownerName }: { user: UserRef | undefined; ownerName: string }) {
     if (!user) {
-        return <span className='text-sm text-muted-foreground'>Unknown</span>;
+        return <span className='text-sm text-muted-foreground'>未知</span>;
     }
 
     return (
@@ -197,7 +193,7 @@ function OwnerValue({ user, ownerName }: { user: UserRef | undefined; ownerName:
 
 function NodeValue({ node }: { node: NodeRef | undefined }) {
     if (!node) {
-        return <span className='text-sm text-muted-foreground'>Unknown</span>;
+        return <span className='text-sm text-muted-foreground'>未知</span>;
     }
 
     return (
@@ -212,7 +208,7 @@ function NodeValue({ node }: { node: NodeRef | undefined }) {
 
 function LocationValue({ location }: { location: LocationRef | undefined }) {
     if (!location) {
-        return <span className='text-sm text-muted-foreground'>Unknown</span>;
+        return <span className='text-sm text-muted-foreground'>未知</span>;
     }
 
     return (
@@ -237,15 +233,15 @@ function AssignmentCard({
     ownerName: string;
 }) {
     return (
-        <TitledGreyBox title='Server Assignment'>
+        <TitledGreyBox title='服务器分配'>
             <dl>
-                <AssignmentRow label='Owner'>
+                <AssignmentRow label='所有者'>
                     <OwnerValue user={user} ownerName={ownerName} />
                 </AssignmentRow>
-                <AssignmentRow label='Node'>
+                <AssignmentRow label='节点'>
                     <NodeValue node={node} />
                 </AssignmentRow>
-                <AssignmentRow label='Location'>
+                <AssignmentRow label='地域'>
                     <LocationValue location={location} />
                 </AssignmentRow>
             </dl>

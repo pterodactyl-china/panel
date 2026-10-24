@@ -11,19 +11,19 @@ use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Pterodactyl\Exceptions\Extensions\InvalidExtensionException;
 use Pterodactyl\Services\Extensions\Scaffolding\ExtensionScaffolder;
 
-#[Description('Scaffold a new extension package (manifest, provider, a client API route with Scribe attributes, and an SDK frontend) or, with --theme, a theme.')]
+#[Description('生成新扩展包的脚手架（清单、Provider、带 Scribe 注解的客户端 API 路由以及 SDK 前端），使用 --theme 时则生成主题。')]
 #[Signature('p:extension:make
-                            {id : The extension identifier (lowercase slug, e.g. my-extension).}
-                            {--name= : Display name (defaults to the id in headline case).}
-                            {--description= : Manifest description.}
-                            {--author= : Manifest author.}
-                            {--prefix= : Tailwind prefix for the classes of the extension: 2-12 lowercase letters (defaults to one derived from the id).}
-                            {--no-ui : Skip the frontend scaffold (backend-only extension).}
-                            {--theme : Scaffold a theme: stylesheet, a layout override, a skin, settings and a test.}
-                            {--css-only : With --theme: a theme of CSS alone, with no JavaScript entry.}
-                            {--extends= : With --theme: the theme to build on. Scaffolds a child that inherits its views, skins, stylesheet and settings.}
-                            {--out= : Parent directory: the package is created in <out>/<id> (defaults to the extensions directory).}
-                            {--force : Overwrite the target directory if it already exists.}')]
+                            {id : 扩展标识符（小写短横线格式，例如 my-extension）。}
+                            {--name= : 显示名称（默认为 id 的首字母大写形式）。}
+                            {--description= : 清单描述。}
+                            {--author= : 清单作者。}
+                            {--prefix= : 扩展样式的 Tailwind 前缀，2-12 个小写字母（默认由 id 推导）。}
+                            {--no-ui : 跳过前端脚手架（纯后端扩展）。}
+                            {--theme : 生成主题脚手架：样式表、布局覆盖、皮肤、设置与测试。}
+                            {--css-only : 配合 --theme：仅含 CSS 的主题，不含 JavaScript 入口。}
+                            {--extends= : 配合 --theme：作为基础的主题，将生成继承其视图、皮肤、样式表与设置的子主题。}
+                            {--out= : 父目录：包将创建在 <out>/<id>（默认为扩展目录）。}
+                            {--force : 目标目录已存在时覆盖。}')]
 class MakeCommand extends Command implements PromptsForMissingInput
 {
     public function handle(ExtensionScaffolder $scaffolder): int
@@ -48,14 +48,14 @@ class MakeCommand extends Command implements PromptsForMissingInput
             return self::FAILURE;
         }
 
-        $this->components->info("Extension scaffolded at {$target}.");
+        $this->components->info("扩展已生成至 {$target}。");
 
         foreach ($scaffolder->files() as $file) {
             $this->components->twoColumnDetail($file, '<fg=green>created</>');
         }
 
         $this->line('');
-        $this->components->info('Next steps:');
+        $this->components->info('后续步骤：');
         // p:extension:dev builds, installs and enables the package where it is; p:extension:install takes archives.
         $this->components->bulletList(array_filter([
             $this->option('no-ui') && ! $this->option('theme') ? null : "cd {$target} && npm install",
@@ -70,7 +70,7 @@ class MakeCommand extends Command implements PromptsForMissingInput
     protected function promptForMissingArgumentsUsing(): array
     {
         return [
-            'id' => ['What should the extension be identified as?', 'E.g. my-extension'],
+            'id' => ['扩展的标识名称是什么？', 'E.g. my-extension'],
         ];
     }
 }

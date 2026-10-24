@@ -30,7 +30,7 @@ const backupUsage = (model: BackupListModel): string | null => {
     const { limit, count } = model;
 
     if (limit === 0 && model.backups.length > 0) {
-        return 'Backups cannot be created for this server because the backup limit is set to 0.';
+        return '无法为此服务器创建备份，因为备份数量上限为 0。';
     }
 
     if (model.permissions.create && limit > 0 && count > 0) {
@@ -57,7 +57,7 @@ function BackupIdentity({ backup }: { backup: BackupSummary }) {
                 <div className='flex items-center gap-2'>
                     {backup.completedAt !== null && !backup.successful ? (
                         <Badge tone='danger' size='sm'>
-                            Failed
+                            失败
                         </Badge>
                     ) : null}
                     <p className='truncate font-medium'>{backup.name}</p>
@@ -73,10 +73,10 @@ function columns(model: BackupListModel): TableColumn<BackupSummary>[] {
     const hasActions = permissions.download || permissions.restore || permissions.delete;
 
     return [
-        { id: 'name', label: 'Backup', cell: (backup) => <BackupIdentity backup={backup} /> },
+        { id: 'name', label: '备份', cell: (backup) => <BackupIdentity backup={backup} /> },
         {
             id: 'bytes',
-            label: 'Size',
+            label: '大小',
             cell: (backup) => (
                 <span className='whitespace-nowrap text-xs'>
                     {backup.completedAt && backup.successful ? bytesToString(backup.bytes) : '-'}
@@ -87,7 +87,7 @@ function columns(model: BackupListModel): TableColumn<BackupSummary>[] {
         },
         {
             id: 'created_at',
-            label: 'Created',
+            label: '创建时间',
             cell: (backup) => (
                 <time
                     dateTime={backup.createdAt}
@@ -114,12 +114,12 @@ function EmptyBackups({ model }: { model: BackupListModel }) {
                     <EmptyMedia variant='icon'>
                         <Archive />
                     </EmptyMedia>
-                    <EmptyTitle>No backups on this page</EmptyTitle>
-                    <EmptyDescription>This page is past the end of the backup list.</EmptyDescription>
+                    <EmptyTitle>此页没有备份</EmptyTitle>
+                    <EmptyDescription>此页已超出备份列表末尾。</EmptyDescription>
                 </EmptyHeader>
                 <EmptyContent>
                     <NewButton isSecondary icon={ArrowLeft} onClick={() => model.actions.setPage(1)}>
-                        First page
+                        第一页
                     </NewButton>
                 </EmptyContent>
             </Empty>
@@ -132,11 +132,9 @@ function EmptyBackups({ model }: { model: BackupListModel }) {
                 <EmptyMedia variant='icon'>
                     <Archive />
                 </EmptyMedia>
-                <EmptyTitle>No backups</EmptyTitle>
+                <EmptyTitle>没有备份</EmptyTitle>
                 <EmptyDescription>
-                    {model.limit > 0
-                        ? "This server doesn't have any backups yet."
-                        : "Backups can't be created because this server's backup limit is 0."}
+                    {model.limit > 0 ? '此服务器还没有任何备份。' : '无法创建备份，因为此服务器的备份上限为 0。'}
                 </EmptyDescription>
             </EmptyHeader>
             {canAddBackup(model) && (
@@ -167,7 +165,7 @@ export default function BackupList({ model, className }: ViewProps<'server.backu
                 emptyState={<EmptyBackups model={model} />}
                 pagination={{
                     ...model.pagination,
-                    itemLabel: 'backups',
+                    itemLabel: '备份',
                     onPageSelect: model.actions.setPage,
                 }}
             />

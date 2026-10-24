@@ -34,7 +34,7 @@ class ResetPasswordController extends Controller
             [
                 'code' => 'DisplayException',
                 'status' => '400',
-                'detail' => 'This password reset token is invalid.',
+                'detail' => '此密码重置令牌无效。',
             ],
         ],
     ];

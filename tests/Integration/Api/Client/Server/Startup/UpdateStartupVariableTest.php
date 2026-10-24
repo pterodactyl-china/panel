@@ -20,7 +20,7 @@ test('startup variable can be updated', function (array $permissions): void {
     $response = $this->actingAs($user)->putJson($this->link($server).'/startup/variable', ['key' => 'BUNGEE_VERSION', 'value' => '1.2.3']);
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     $response->assertJsonPath('errors.0.code', 'ValidationException');
-    $response->assertJsonPath('errors.0.detail', 'The value may only contain letters and numbers.');
+    $response->assertJsonPath('errors.0.detail', 'value 只能由字母和数字组成。');
     $response = $this->actingAs($user)->putJson($this->link($server).'/startup/variable', ['key' => 'BUNGEE_VERSION', 'value' => '123']);
     $response->assertOk();
     $response->assertJsonPath('object', EggVariable::RESOURCE_NAME);

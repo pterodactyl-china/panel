@@ -65,7 +65,7 @@ const MountDetailsCard = ({
     error: unknown;
     onDelete: () => void;
 }) => (
-    <TitledGreyBox title='Mount Details'>
+    <TitledGreyBox title='挂载详情'>
         <Form form={form} className='m-0'>
             <form.AppField
                 name='name'
@@ -74,29 +74,18 @@ const MountDetailsCard = ({
                 }}
             >
                 {(field) => (
-                    <field.TextField
-                        type='text'
-                        id='name'
-                        label='Name'
-                        description='A unique name used to identify this mount.'
-                    />
+                    <field.TextField type='text' id='name' label='名称' description='用于标识此挂载的唯一名称。' />
                 )}
             </form.AppField>
             <div className='mt-6'>
                 <form.AppField
                     name='description'
                     validators={{
-                        onChange: ({ value }) =>
-                            value.length <= 191 ? undefined : 'A description must not exceed 191 characters.',
+                        onChange: ({ value }) => (value.length <= 191 ? undefined : '描述不得超过 191 个字符。'),
                     }}
                 >
                     {(field) => (
-                        <field.TextField
-                            type='text'
-                            id='description'
-                            label='Description'
-                            description='A longer description for this mount.'
-                        />
+                        <field.TextField type='text' id='description' label='描述' description='此挂载的详细描述。' />
                     )}
                 </form.AppField>
             </div>
@@ -104,15 +93,15 @@ const MountDetailsCard = ({
                 <form.AppField
                     name='source'
                     validators={{
-                        onChange: ({ value }) => (value.length >= 1 ? undefined : 'A source path must be provided.'),
+                        onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供源路径。'),
                     }}
                 >
                     {(field) => (
                         <field.TextField
                             type='text'
                             id='source'
-                            label='Source'
-                            description='The path on the host system to mount into the container.'
+                            label='源路径'
+                            description='宿主机上要挂载到容器中的路径。'
                         />
                     )}
                 </form.AppField>
@@ -121,37 +110,27 @@ const MountDetailsCard = ({
                 <form.AppField
                     name='target'
                     validators={{
-                        onChange: ({ value }) => (value.length >= 1 ? undefined : 'A target path must be provided.'),
+                        onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供目标路径。'),
                     }}
                 >
                     {(field) => (
                         <field.TextField
                             type='text'
                             id='target'
-                            label='Target'
-                            description='The path inside the container where the source will be mounted.'
+                            label='目标路径'
+                            description='源路径在容器内挂载的目标路径。'
                         />
                     )}
                 </form.AppField>
             </div>
             <div className='mt-6'>
                 <form.AppField name='readOnly'>
-                    {(field) => (
-                        <field.SwitchField
-                            label='Read Only'
-                            description='Mount this volume as read only inside the container.'
-                        />
-                    )}
+                    {(field) => <field.SwitchField label='只读' description='在容器内以只读方式挂载此卷。' />}
                 </form.AppField>
             </div>
             <div className='mt-6'>
                 <form.AppField name='userMountable'>
-                    {(field) => (
-                        <field.SwitchField
-                            label='User Mountable'
-                            description='Allow this mount to be added to servers by users.'
-                        />
-                    )}
+                    {(field) => <field.SwitchField label='用户可挂载' description='允许用户将此挂载添加到服务器。' />}
                 </form.AppField>
             </div>
             <form.AppField name='extensions'>
@@ -167,10 +146,10 @@ const MountDetailsCard = ({
             </form.AppField>
             <div className='flex justify-end mt-6'>
                 <Button type='button' color='red' isSecondary className='mr-2' onClick={onDelete}>
-                    Delete Mount
+                    删除挂载
                 </Button>
                 <form.AppForm>
-                    <form.SubmitButton>Save Changes</form.SubmitButton>
+                    <form.SubmitButton>保存更改</form.SubmitButton>
                 </form.AppForm>
             </div>
         </Form>
@@ -191,7 +170,7 @@ const AttachedEggsCard = ({
             [
                 {
                     id: 'name',
-                    header: 'Egg',
+                    header: '预设',
                     cell: ({ row }) => (
                         <Link
                             to='/panel/eggs/$eggId'
@@ -216,17 +195,17 @@ const AttachedEggsCard = ({
                 actionsColumn<AdminMountEgg>(2, (egg) => (
                     <RowActions>
                         <EditLinkAction
-                            aria-label={`Edit ${egg.attributes.name}`}
+                            aria-label={`编辑 ${egg.attributes.name}`}
                             to='/panel/eggs/$eggId'
                             params={{ eggId: egg.attributes.id }}
                         />
                         <Dialog.ConfirmTrigger
-                            title='Detach egg'
-                            confirm='Detach Egg'
+                            title='解除预设关联'
+                            confirm='解除预设关联'
                             trigger={({ onClick }) => (
                                 <DeleteAction
-                                    label='Detach'
-                                    aria-label={`Detach ${egg.attributes.name}`}
+                                    label='解除关联'
+                                    aria-label={`解除 ${egg.attributes.name}`}
                                     onClick={onClick}
                                 />
                             )}
@@ -235,8 +214,8 @@ const AttachedEggsCard = ({
                                 onDetach(egg);
                             }}
                         >
-                            This will detach <strong>{egg.attributes.name}</strong> from this mount. Servers using that
-                            egg will no longer be offered this mount.
+                            这将从挂载中解除预设 <strong>{egg.attributes.name}</strong>
+                            。使用该预设的服务器将不再获得此挂载。
                         </Dialog.ConfirmTrigger>
                     </RowActions>
                 )),
@@ -251,9 +230,9 @@ const AttachedEggsCard = ({
     });
 
     return (
-        <TitledGreyBox title='Eggs'>
+        <TitledGreyBox title='预设'>
             <ListToolbar>
-                <NewButton onClick={onAttach}>Attach eggs</NewButton>
+                <NewButton onClick={onAttach}>关联预设</NewButton>
             </ListToolbar>
             <DataTable
                 table={table}
@@ -263,11 +242,11 @@ const AttachedEggsCard = ({
                             <EmptyMedia variant='icon'>
                                 <Egg />
                             </EmptyMedia>
-                            <EmptyTitle>No eggs attached</EmptyTitle>
-                            <EmptyDescription>Servers using an attached egg are offered this mount.</EmptyDescription>
+                            <EmptyTitle>未关联预设</EmptyTitle>
+                            <EmptyDescription>使用已关联预设的服务器将获得此挂载。</EmptyDescription>
                         </EmptyHeader>
                         <EmptyContent>
-                            <NewButton onClick={onAttach}>Attach eggs</NewButton>
+                            <NewButton onClick={onAttach}>关联预设</NewButton>
                         </EmptyContent>
                     </Empty>
                 }
@@ -290,7 +269,7 @@ const AttachedNodesCard = ({
             [
                 {
                     id: 'name',
-                    header: 'Node',
+                    header: '节点',
                     cell: ({ row }) => (
                         <div className='min-w-0'>
                             <Link
@@ -309,17 +288,17 @@ const AttachedNodesCard = ({
                 actionsColumn<AdminMountNode>(2, (node) => (
                     <RowActions>
                         <EditLinkAction
-                            aria-label={`Edit ${node.attributes.name}`}
+                            aria-label={`编辑 ${node.attributes.name}`}
                             to='/panel/nodes/$id/settings'
                             params={{ id: node.attributes.id }}
                         />
                         <Dialog.ConfirmTrigger
-                            title='Detach node'
-                            confirm='Detach Node'
+                            title='解除节点关联'
+                            confirm='解除节点关联'
                             trigger={({ onClick }) => (
                                 <DeleteAction
-                                    label='Detach'
-                                    aria-label={`Detach ${node.attributes.name}`}
+                                    label='解除关联'
+                                    aria-label={`解除 ${node.attributes.name}`}
                                     onClick={onClick}
                                 />
                             )}
@@ -328,8 +307,8 @@ const AttachedNodesCard = ({
                                 onDetach(node);
                             }}
                         >
-                            This will detach <strong>{node.attributes.name}</strong> from this mount. Servers on that
-                            node will no longer be offered this mount.
+                            这将从挂载中解除节点 <strong>{node.attributes.name}</strong>
+                            。位于该节点上的服务器将不再获得此挂载。
                         </Dialog.ConfirmTrigger>
                     </RowActions>
                 )),
@@ -344,9 +323,9 @@ const AttachedNodesCard = ({
     });
 
     return (
-        <TitledGreyBox title='Nodes'>
+        <TitledGreyBox title='节点'>
             <ListToolbar>
-                <NewButton onClick={onAttach}>Attach nodes</NewButton>
+                <NewButton onClick={onAttach}>关联节点</NewButton>
             </ListToolbar>
             <DataTable
                 table={table}
@@ -356,11 +335,11 @@ const AttachedNodesCard = ({
                             <EmptyMedia variant='icon'>
                                 <HardDrive />
                             </EmptyMedia>
-                            <EmptyTitle>No nodes attached</EmptyTitle>
-                            <EmptyDescription>Servers on an attached node are offered this mount.</EmptyDescription>
+                            <EmptyTitle>未关联节点</EmptyTitle>
+                            <EmptyDescription>位于已关联节点上的服务器将获得此挂载。</EmptyDescription>
                         </EmptyHeader>
                         <EmptyContent>
-                            <NewButton onClick={onAttach}>Attach nodes</NewButton>
+                            <NewButton onClick={onAttach}>关联节点</NewButton>
                         </EmptyContent>
                     </Empty>
                 }
@@ -401,39 +380,38 @@ const DeleteMountDialog = ({
     return (
         <Dialog
             open
-            title='Confirm mount deletion'
+            title='确认删除挂载'
             preventExternalClose={deleteSubmitting}
             hideCloseIcon={deleteSubmitting}
             onClose={close}
         >
             <SpinnerOverlay visible={deleteSubmitting} />
             <p className='text-sm'>
-                Deleting a mount is a permanent action, it cannot be undone. This will permanently delete the{' '}
-                <strong>{mount.attributes.name}</strong> mount and detach it from every egg and node.
+                删除挂载是不可撤销的操作。这将永久删除挂载 <strong>{mount.attributes.name}</strong>{' '}
+                ，并从所有预设和节点中解除关联。
             </p>
             <Form form={deleteForm} className='m-0 mt-6'>
                 <deleteForm.AppField
                     name='confirm'
                     validators={{
-                        onChange: ({ value }) =>
-                            value === mount.attributes.name ? undefined : 'The mount name must be provided.',
+                        onChange: ({ value }) => (value === mount.attributes.name ? undefined : '必须提供挂载名称。'),
                     }}
                 >
                     {(field) => (
                         <field.TextField
                             type='text'
                             id='confirm_mount_name'
-                            label='Confirm Name'
-                            description='Enter the name of this mount to confirm deletion.'
+                            label='确认名称'
+                            description='输入此挂载的名称以确认删除。'
                         />
                     )}
                 </deleteForm.AppField>
                 <div className='mt-6 text-right'>
                     <Button type='button' isSecondary className='mr-2' onClick={close}>
-                        Cancel
+                        取消
                     </Button>
                     <deleteForm.AppForm>
-                        <deleteForm.SubmitButton color='red'>Delete Mount</deleteForm.SubmitButton>
+                        <deleteForm.SubmitButton color='red'>删除挂载</deleteForm.SubmitButton>
                     </deleteForm.AppForm>
                 </div>
             </Form>
@@ -474,7 +452,7 @@ const MountDetailContent = ({ mount }: { mount: AdminMountWithRelations }) => {
 
     return (
         <AdminContentBlock
-            title={`Admin · Mount · ${attributes.name}`}
+            title={`管理 · 挂载 · ${attributes.name}`}
             heading={attributes.name}
             description={attributes.uuid}
         >
@@ -483,7 +461,7 @@ const MountDetailContent = ({ mount }: { mount: AdminMountWithRelations }) => {
                 className='inline-flex items-center text-sm text-muted-foreground mb-4 hover:text-foreground'
             >
                 <Icon icon={ArrowLeft} className='mr-2' />
-                Back to Mounts
+                返回挂载
             </Link>
 
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
@@ -562,7 +540,7 @@ export default function MountDetailContainer() {
 
     if (!mount) {
         return (
-            <AdminContentBlock title='Admin · Mount' heading='Mount'>
+            <AdminContentBlock title='管理 · 挂载' heading='Mount'>
                 <Spinner size='large' centered />
             </AdminContentBlock>
         );

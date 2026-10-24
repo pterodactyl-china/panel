@@ -104,11 +104,7 @@ export default function LocationsContainer() {
     }
 
     return (
-        <AdminContentBlock
-            title='Admin · Locations'
-            heading='Locations'
-            description='Organize nodes by the regions and facilities where they run.'
-        >
+        <AdminContentBlock title='管理 · 地域' heading='地域' description='按节点所在的地区与机房进行组织。'>
             <form
                 className='mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between'
                 onSubmit={(event) => {
@@ -127,9 +123,9 @@ export default function LocationsContainer() {
                     <TextInput
                         key={filter}
                         name='filter'
-                        aria-label='Search locations'
+                        aria-label='搜索地域'
                         className='h-9 border-border bg-card pl-10'
-                        placeholder='Search locations…'
+                        placeholder='搜索地域…'
                         defaultValue={filter}
                     />
                 </div>
@@ -143,10 +139,10 @@ export default function LocationsContainer() {
                         emptyState={
                             <AdminListEmpty
                                 icon={MapPin}
-                                noun='locations'
+                                noun='地域'
                                 filter={filter}
                                 onClearFilter={() => navigateToSearch({ page: 1, filter: '' })}
-                                description='Create a location to group nodes by region or data center.'
+                                description='创建地域以按地区或数据中心对节点分组。'
                                 action={<CreateLocationButton />}
                             />
                         }
@@ -155,7 +151,7 @@ export default function LocationsContainer() {
                         table={table}
                         total={locations.meta.pagination.total}
                         count={locations.meta.pagination.count}
-                        itemLabel='locations'
+                        itemLabel='地域'
                     />
                 </>
             ) : (

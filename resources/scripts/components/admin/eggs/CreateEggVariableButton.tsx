@@ -52,7 +52,7 @@ function CreateEggVariableDialog({ eggId, open, onClose }: CreateEggVariableDial
     return (
         <Dialog
             open={open}
-            title='Create new egg variable'
+            title='创建新的预设变量'
             preventExternalClose={isSubmitting}
             hideCloseIcon={isSubmitting}
             onClose={onClose}
@@ -65,11 +65,11 @@ function CreateEggVariableDialog({ eggId, open, onClose }: CreateEggVariableDial
                         onChange: ({ value }) => validateVariableName(value),
                     }}
                 >
-                    {(field) => <field.TextField type='text' id='create_name' label='Name' />}
+                    {(field) => <field.TextField type='text' id='create_name' label='名称' />}
                 </form.AppField>
                 <div className='mt-6'>
                     <form.AppField name='description'>
-                        {(field) => <field.TextAreaField id='create_description' label='Description' rows={3} />}
+                        {(field) => <field.TextAreaField id='create_description' label='描述' rows={3} />}
                     </form.AppField>
                 </div>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-6'>
@@ -79,44 +79,43 @@ function CreateEggVariableDialog({ eggId, open, onClose }: CreateEggVariableDial
                             onChange: ({ value }) => validateEnvVariable(value),
                         }}
                     >
-                        {(field) => <field.TextField type='text' id='create_env' label='Environment Variable' />}
+                        {(field) => <field.TextField type='text' id='create_env' label='环境变量' />}
                     </form.AppField>
                     <form.AppField name='defaultValue'>
-                        {(field) => <field.TextField type='text' id='create_default' label='Default Value' />}
+                        {(field) => <field.TextField type='text' id='create_default' label='默认值' />}
                     </form.AppField>
                 </div>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-6'>
                     <form.AppField name='userViewable'>
-                        {(field) => <field.SwitchField label='Users Can View' />}
+                        {(field) => <field.SwitchField label='用户可查看' />}
                     </form.AppField>
                     <form.AppField name='userEditable'>
-                        {(field) => <field.SwitchField label='Users Can Edit' />}
+                        {(field) => <field.SwitchField label='用户可编辑' />}
                     </form.AppField>
                 </div>
                 <div className='mt-6'>
                     <form.AppField
                         name='rules'
                         validators={{
-                            onChange: ({ value }) =>
-                                value.length >= 1 ? undefined : 'Validation rules must be provided.',
+                            onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供验证规则。'),
                         }}
                     >
                         {(field) => (
                             <field.TextField
                                 type='text'
                                 id='create_rules'
-                                label='Input Rules'
-                                description='Standard Laravel validation rules used to validate this variable.'
+                                label='输入规则'
+                                description='用于验证此变量的标准 Laravel 验证规则。'
                             />
                         )}
                     </form.AppField>
                 </div>
                 <div className='flex flex-wrap justify-end mt-6'>
                     <Button type='button' isSecondary className='w-full sm:w-auto sm:mr-2' onClick={onClose}>
-                        Cancel
+                        取消
                     </Button>
                     <form.AppForm>
-                        <form.SubmitButton className='w-full mt-4 sm:w-auto sm:mt-0'>Create Variable</form.SubmitButton>
+                        <form.SubmitButton className='w-full mt-4 sm:w-auto sm:mt-0'>创建变量</form.SubmitButton>
                     </form.AppForm>
                 </div>
             </Form>
@@ -126,7 +125,7 @@ function CreateEggVariableDialog({ eggId, open, onClose }: CreateEggVariableDial
 
 export default function CreateEggVariableButton(props: Props) {
     return (
-        <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>New variable</NewButton>}>
+        <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>新建变量</NewButton>}>
             {({ open, onClose }) => <CreateEggVariableDialog {...props} open={open} onClose={onClose} />}
         </Dialog.Trigger>
     );

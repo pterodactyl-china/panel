@@ -170,11 +170,11 @@ export const useCreateAdminMount = () => {
         ...adminCreateMountMutation(),
         onSuccess: async (mount) => {
             await invalidateGeneratedOperations(queryClient, ['adminListMounts']);
-            const messages = resourceMutationMessages('mount', 'create', mount.attributes.name);
+            const messages = resourceMutationMessages('挂载', 'create', mount.attributes.name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('mount', 'create').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('挂载', 'create').errorTitle),
     });
 };
 
@@ -188,11 +188,11 @@ export const useUpdateAdminMount = () => {
                 invalidateGeneratedOperations(queryClient, ['adminListMounts']),
                 queryClient.invalidateQueries({ queryKey: adminMountDetailKey(variables.path.mount_id) }),
             ]);
-            const messages = resourceMutationMessages('mount', 'update', mount.attributes.name);
+            const messages = resourceMutationMessages('挂载', 'update', mount.attributes.name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('mount', 'update').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('挂载', 'update').errorTitle),
     });
 };
 
@@ -205,11 +205,11 @@ export const useDeleteAdminMount = () => {
             removeQueriesWhenUnobserved(queryClient, { queryKey: adminMountDetailKey(variables.path.mount_id) });
             await invalidateGeneratedOperations(queryClient, ['adminListMounts']);
             const name = variables.meta?.name;
-            const messages = resourceMutationMessages('mount', 'delete', name);
+            const messages = resourceMutationMessages('挂载', 'delete', name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('mount', 'delete').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('挂载', 'delete').errorTitle),
     });
 };
 
@@ -222,9 +222,9 @@ export const useAttachAdminMountEggs = () => {
             await queryClient.cancelQueries({ queryKey: adminMountQueryKey(mount.attributes.id) });
             queryClient.setQueryData(adminMountQueryKey(mount.attributes.id), mount);
             await invalidateGeneratedOperations(queryClient, ['adminListMounts']);
-            toast.success('Eggs attached', { description: 'The selected eggs have been attached to this mount.' });
+            toast.success('预设已关联', { description: '所选预设已关联到此挂载。' });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to attach eggs'),
+        onError: (error) => notifyHttpError(error, '无法关联预设'),
     });
 };
 
@@ -237,9 +237,9 @@ export const useAttachAdminMountNodes = () => {
             await queryClient.cancelQueries({ queryKey: adminMountQueryKey(mount.attributes.id) });
             queryClient.setQueryData(adminMountQueryKey(mount.attributes.id), mount);
             await invalidateGeneratedOperations(queryClient, ['adminListMounts']);
-            toast.success('Nodes attached', { description: 'The selected nodes have been attached to this mount.' });
+            toast.success('节点已关联', { description: '所选节点已关联到此挂载。' });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to attach nodes'),
+        onError: (error) => notifyHttpError(error, '无法关联节点'),
     });
 };
 
@@ -255,13 +255,11 @@ export const useDetachAdminMountEgg = () => {
             ]);
             const name = variables.meta?.name;
 
-            toast.success('Egg detached', {
-                description: name
-                    ? `${name} has been detached from this mount.`
-                    : 'The egg has been detached from this mount.',
+            toast.success('预设已解除关联', {
+                description: name ? `${name} 已从此挂载解除关联。` : '预设已从此挂载解除关联。',
             });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to detach egg'),
+        onError: (error) => notifyHttpError(error, '无法解除预设关联'),
     });
 };
 
@@ -277,12 +275,10 @@ export const useDetachAdminMountNode = () => {
             ]);
             const name = variables.meta?.name;
 
-            toast.success('Node detached', {
-                description: name
-                    ? `${name} has been detached from this mount.`
-                    : 'The node has been detached from this mount.',
+            toast.success('节点已解除关联', {
+                description: name ? `${name} 已从此挂载解除关联。` : '节点已从此挂载解除关联。',
             });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to detach node'),
+        onError: (error) => notifyHttpError(error, '无法解除节点关联'),
     });
 };

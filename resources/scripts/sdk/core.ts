@@ -66,7 +66,7 @@ export function useCurrentServerUuid(): string | undefined {
     return usePanelServerUuid();
 }
 
-export function useCurrentServerRequired(message = 'This extension screen requires a server context.'): SdkServer {
+export function useCurrentServerRequired(message = '此扩展页面需要服务器上下文。'): SdkServer {
     const server = useCurrentServer();
 
     if (!server) {

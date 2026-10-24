@@ -38,19 +38,19 @@ describe('RowActions', () => {
 
         render(
             <RowActions>
-                <EditAction aria-label='Edit Alpha' onClick={onEdit} />
-                <DeleteAction aria-label='Delete Alpha' onClick={onDelete} />
+                <EditAction aria-label='编辑 Alpha' onClick={onEdit} />
+                <DeleteAction aria-label='删除 Alpha' onClick={onDelete} />
             </RowActions>
         );
 
-        await user.click(screen.getByRole('button', { name: 'Edit Alpha' }));
-        await user.click(screen.getByRole('button', { name: 'Delete Alpha' }));
+        await user.click(screen.getByRole('button', { name: '编辑 Alpha' }));
+        await user.click(screen.getByRole('button', { name: '删除 Alpha' }));
         expect(onEdit).toHaveBeenCalledOnce();
         expect(onDelete).toHaveBeenCalledOnce();
 
-        await user.hover(screen.getByRole('button', { name: 'Edit Alpha' }));
+        await user.hover(screen.getByRole('button', { name: '编辑 Alpha' }));
         await waitFor(() =>
-            expect(screen.getAllByRole('tooltip').map((tooltip) => tooltip.textContent)).toContain('Edit')
+            expect(screen.getAllByRole('tooltip').map((tooltip) => tooltip.textContent)).toContain('编辑')
         );
     });
 
@@ -60,38 +60,38 @@ describe('RowActions', () => {
 
         render(
             <DeleteAction
-                aria-label='Delete Alpha'
+                aria-label='删除 Alpha'
                 disabled
-                disabledReason='Users who own servers cannot be deleted.'
+                disabledReason='拥有服务器的用户无法删除。'
                 onClick={onDelete}
             />
         );
 
-        const button = screen.getByRole('button', { name: 'Delete Alpha' });
+        const button = screen.getByRole('button', { name: '删除 Alpha' });
 
         expect(button).toBeDisabled();
 
         await user.hover(button.parentElement!);
-        expect(await screen.findByRole('tooltip')).toHaveTextContent('Users who own servers cannot be deleted.');
+        expect(await screen.findByRole('tooltip')).toHaveTextContent('拥有服务器的用户无法删除。');
     });
 
     it('links to the page where the resource is edited', () => {
-        render(<EditLinkAction aria-label='Edit Alpha' to='/panel/nodes/$id/settings' params={{ id: 7 }} />);
+        render(<EditLinkAction aria-label='编辑 Alpha' to='/panel/nodes/$id/settings' params={{ id: 7 }} />);
 
-        expect(screen.getByRole('link', { name: 'Edit Alpha' })).toHaveAttribute('href', '/panel/nodes/7/settings');
+        expect(screen.getByRole('link', { name: '编辑 Alpha' })).toHaveAttribute('href', '/panel/nodes/7/settings');
     });
 
     it('keeps other actions in the overflow menu', async () => {
         const onOpen = vi.fn();
 
         render(
-            <RowActionsMenu label='More actions for Alpha'>
-                <DropdownMenu.Item onClick={onOpen}>Open in client area</DropdownMenu.Item>
+            <RowActionsMenu label='Alpha 的更多操作'>
+                <DropdownMenu.Item onClick={onOpen}>在客户端打开</DropdownMenu.Item>
             </RowActionsMenu>
         );
 
-        fireEvent.click(screen.getByRole('button', { name: 'More actions for Alpha' }));
-        fireEvent.click(await screen.findByRole('menuitem', { name: 'Open in client area' }));
+        fireEvent.click(screen.getByRole('button', { name: 'Alpha 的更多操作' }));
+        fireEvent.click(await screen.findByRole('menuitem', { name: '在客户端打开' }));
 
         expect(onOpen).toHaveBeenCalledOnce();
     });
@@ -108,7 +108,7 @@ describe('actionsColumn', () => {
     it('renders an unsortable column with a screen-reader header and the row actions', () => {
         const columns = [
             { accessorKey: 'name', header: 'Name' },
-            actionsColumn<TestRow>(1, (row) => <EditAction aria-label={`Edit ${row.name}`} />),
+            actionsColumn<TestRow>(1, (row) => <EditAction aria-label={`编辑 ${row.name}`} />),
         ] satisfies ColumnDef<TestRow>[];
         const Table = () => {
             const table = useReactTable({ data: rows, columns, getCoreRowModel: getCoreRowModel() });
@@ -119,7 +119,7 @@ describe('actionsColumn', () => {
         render(<Table />);
 
         expect(columns[1]!.enableSorting).toBe(false);
-        expect(screen.getByRole('columnheader', { name: 'Actions' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Edit Alpha' })).toBeInTheDocument();
+        expect(screen.getByRole('columnheader', { name: '操作' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: '编辑 Alpha' })).toBeInTheDocument();
     });
 });

@@ -11,11 +11,11 @@ export type EggForm = AppForm<EggFormValues>;
 
 const validateEggName = (value: string): string | undefined => {
     if (value.length < 1) {
-        return 'An egg name must be provided.';
+        return '必须提供预设名称。';
     }
 
     if (value.length > 191) {
-        return 'An egg name must not exceed 191 characters.';
+        return '预设名称不得超过 191 个字符。';
     }
 
     return undefined;
@@ -67,7 +67,7 @@ const EggConfigurationFields = ({
     startupRef,
 }: Props) => (
     <div className='space-y-4'>
-        <TitledGreyBox title='Configuration'>
+        <TitledGreyBox title='配置'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 <div className='space-y-4'>
                     <form.AppField
@@ -80,33 +80,21 @@ const EggConfigurationFields = ({
                             <field.TextField
                                 type='text'
                                 id='name'
-                                label='Name'
-                                description={
-                                    'A simple, human-readable name to use as an identifier for this Egg. This is what ' +
-                                    'users will see as their game server type.'
-                                }
+                                label='名称'
+                                description='用于标识此预设的简短易读名称，即用户看到的游戏服务器类型。'
                             />
                         )}
                     </form.AppField>
                     <form.AppField name='description'>
                         {(field) => (
-                            <field.TextAreaField
-                                id='description'
-                                label='Description'
-                                rows={6}
-                                description='A description of this Egg.'
-                            />
+                            <field.TextAreaField id='description' label='描述' rows={6} description='此预设的描述。' />
                         )}
                     </form.AppField>
                     <form.AppField name='forceOutgoingIp'>
                         {(field) => (
                             <field.SwitchField
-                                label='Force Outgoing IP'
-                                description={
-                                    'Forces all outgoing network traffic to have its Source IP NATed to the IP of the ' +
-                                    "server's primary allocation IP. Enabling this disables internal networking for " +
-                                    'servers using this egg.'
-                                }
+                                label='强制出站 IP'
+                                description='强制将所有出站流量的源 IP 通过 NAT 转换为该服务器主分配的 IP。启用后将禁用使用此预设的服务器的内部网络。'
                             />
                         )}
                     </form.AppField>
@@ -115,37 +103,31 @@ const EggConfigurationFields = ({
                     <form.AppField
                         name='dockerImages'
                         validators={{
-                            onChange: ({ value }) =>
-                                value.length >= 1 ? undefined : 'At least one docker image must be provided.',
+                            onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供至少一个 Docker 镜像。'),
                         }}
                     >
                         {(field) => (
                             <field.TextAreaField
                                 id='dockerImages'
-                                label='Docker Images'
+                                label='Docker 镜像'
                                 rows={4}
                                 placeholder='ghcr.io/pterodactyl/yolks:debian'
-                                description={
-                                    'The docker images available to servers using this egg. Enter one per line. ' +
-                                    'Optionally provide a display name by prefixing the image with the name and a ' +
-                                    'pipe, e.g. Display Name|ghcr.io/my/egg.'
-                                }
+                                description='可供使用此预设的服务器使用的 Docker 镜像，每行一个。可通过「显示名称|镜像地址」的格式为镜像指定显示名称。'
                             />
                         )}
                     </form.AppField>
                     <form.AppField
                         name='startup'
                         validators={{
-                            onChange: ({ value }) =>
-                                value.length >= 1 ? undefined : 'A startup command must be provided.',
+                            onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供启动命令。'),
                         }}
                     >
                         {(field) => (
                             <field.TextAreaField
                                 id='startup'
-                                label='Startup Command'
+                                label='启动命令'
                                 rows={8}
-                                description='The default startup command used for new servers created with this Egg.'
+                                description='使用此预设创建的新服务器将默认使用的启动命令。'
                             />
                         )}
                     </form.AppField>
@@ -154,11 +136,8 @@ const EggConfigurationFields = ({
                             <field.TextField
                                 type='text'
                                 id='featuresText'
-                                label='Features'
-                                description={
-                                    'Additional features belonging to the egg, comma-separated. Useful for configuring ' +
-                                    'additional panel modifications.'
-                                }
+                                label='特性'
+                                description='此预设所属的附加特性，以逗号分隔。可用于配置额外的面板修改项。'
                             />
                         )}
                     </form.AppField>
@@ -166,21 +145,19 @@ const EggConfigurationFields = ({
             </div>
         </TitledGreyBox>
 
-        <TitledGreyBox title='Process Management'>
+        <TitledGreyBox title='进程管理'>
             <p className='text-xs text-warning mb-4'>
-                These options should not be edited unless you understand how this system works. All fields are required
-                unless you select an Egg from the &quot;Copy Settings From&quot; dropdown, in which case the process
-                fields may be left blank to inherit from that Egg.
+                除非您了解此系统的运作方式，否则不应修改这些选项。所有字段均为必填，除非您从「从以下预设复制设置」下拉中选择了预设，此时进程相关字段可以留空以继承该预设的配置。
             </p>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 <form.AppField name='configFrom'>
                     {(field) => (
                         <field.SelectField
                             id='configFrom'
-                            label='Copy Settings From'
-                            description='Default to the process settings from another Egg.'
+                            label='从以下预设复制设置'
+                            description='默认使用其他预设的进程设置。'
                             options={[
-                                { value: 0, label: 'None' },
+                                { value: 0, label: '无' },
                                 ...eggs.map((egg) => ({
                                     value: egg.attributes.id,
                                     label: `${egg.attributes.name} <${egg.attributes.author}>`,
@@ -194,37 +171,28 @@ const EggConfigurationFields = ({
                         <field.TextField
                             type='text'
                             id='configStop'
-                            label='Stop Command'
-                            description='The command sent to server processes to stop them gracefully. To send a SIGINT enter ^C.'
+                            label='停止命令'
+                            description='发送给服务器进程以正常停止的命令。要发送 SIGINT 请输入 ^C。'
                         />
                     )}
                 </form.AppField>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-4'>
                 <EggJsonField
-                    label='Log Configuration'
-                    description={
-                        'A JSON representation of where log files are stored and whether the daemon should ' +
-                        'create custom logs. Leave blank to inherit this block from the selected parent egg.'
-                    }
+                    label='日志配置'
+                    description='以 JSON 描述日志文件的存放位置，以及守护进程是否应创建自定义日志。留空则从所选父预设继承此部分。'
                     initialContent={initialConfigLogs}
                     editorRef={logRef}
                 />
                 <EggJsonField
-                    label='Configuration Files'
-                    description={
-                        'A JSON representation of configuration files to modify and what parts should be changed. ' +
-                        'Leave blank to inherit this block from the selected parent egg.'
-                    }
+                    label='配置文件'
+                    description='以 JSON 描述要修改的配置文件以及需要变更的部分。留空则从所选父预设继承此部分。'
                     initialContent={initialConfigFiles}
                     editorRef={filesRef}
                 />
                 <EggJsonField
-                    label='Start Configuration'
-                    description={
-                        'A JSON representation of the values the daemon should look for when booting a server ' +
-                        'to determine completion. Leave blank to inherit this block from the selected parent egg.'
-                    }
+                    label='启动配置'
+                    description='以 JSON 描述守护进程在启动服务器时用于判断是否启动完成的值。留空则从所选父预设继承此部分。'
                     initialContent={initialConfigStartup}
                     editorRef={startupRef}
                 />

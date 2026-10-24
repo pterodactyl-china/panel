@@ -39,7 +39,7 @@ interface SystemInformationValueProps {
 
 const SystemInformationValue = ({ info, error, children }: SystemInformationValueProps) => {
     if (error) {
-        return <span className='text-destructive'>Unavailable</span>;
+        return <span className='text-destructive'>不可用</span>;
     }
 
     if (!info) {
@@ -92,21 +92,21 @@ export default function NodeAboutTab() {
     return (
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
             <div className='lg:col-span-2 space-y-6'>
-                <TitledGreyBox title='Information'>
+                <TitledGreyBox title='信息'>
                     <div className='text-sm text-foreground space-y-3'>
                         <div className='flex justify-between items-center'>
-                            <span className='text-muted-foreground'>Daemon Version</span>
+                            <span className='text-muted-foreground'>守护进程版本</span>
                             <span>
                                 <SystemInformationValue info={info} error={infoError}>
                                     {(value) => <Code>{value.version}</Code>}
                                 </SystemInformationValue>
                                 {version && (
-                                    <span className='text-xs text-muted-foreground ml-2'>Latest: {version.daemon}</span>
+                                    <span className='text-xs text-muted-foreground ml-2'>最新：{version.daemon}</span>
                                 )}
                             </span>
                         </div>
                         <div className='flex justify-between items-center'>
-                            <span className='text-muted-foreground'>System Information</span>
+                            <span className='text-muted-foreground'>系统信息</span>
                             <span className='text-right'>
                                 <SystemInformationValue info={info} error={infoError}>
                                     {(value) => `${value.os} (${value.architecture}) ${value.kernel_version}`}
@@ -114,7 +114,7 @@ export default function NodeAboutTab() {
                             </span>
                         </div>
                         <div className='flex justify-between items-center'>
-                            <span className='text-muted-foreground'>Total CPU Threads</span>
+                            <span className='text-muted-foreground'>CPU 线程总数</span>
                             <span>
                                 <SystemInformationValue info={info} error={infoError}>
                                     {(value) => value.cpu_count}
@@ -124,26 +124,23 @@ export default function NodeAboutTab() {
                     </div>
                 </TitledGreyBox>
                 {attributes.description && (
-                    <TitledGreyBox title='Description'>
+                    <TitledGreyBox title='描述'>
                         <pre className='text-sm text-foreground whitespace-pre-wrap wrap-break-word'>
                             {attributes.description}
                         </pre>
                     </TitledGreyBox>
                 )}
-                <TitledGreyBox title='Delete Node'>
+                <TitledGreyBox title='删除节点'>
                     <p className='text-sm text-muted-foreground'>
-                        Deleting a node is irreversible and immediately removes it from the Panel. There must be no
-                        servers associated with this node to continue.
+                        删除节点不可撤销，且会立即将其从面板移除。继续前必须确保此节点没有关联的服务器。
                     </p>
                     {!canDelete && (
-                        <p className='mt-3 text-sm text-warning'>
-                            Move or delete all servers on this node before deleting it.
-                        </p>
+                        <p className='mt-3 text-sm text-warning'>删除此节点前请先迁移或删除其上的所有服务器。</p>
                     )}
                     <div className='mt-4 text-right'>
                         <Dialog.ConfirmTrigger
-                            title='Delete node'
-                            confirm='Delete Node'
+                            title='删除节点'
+                            confirm='删除节点'
                             pending={deleteNode.isPending}
                             onConfirmed={(_event, close) => onDelete(close)}
                             trigger={({ onClick }) => (
@@ -153,26 +150,26 @@ export default function NodeAboutTab() {
                                     disabled={!canDelete || deleteNode.isPending}
                                     onClick={onClick}
                                 >
-                                    Delete Node
+                                    删除节点
                                 </Button>
                             )}
                         >
-                            Deleting <strong>{attributes.name}</strong> is permanent and cannot be undone.
+                            删除 <strong>{attributes.name}</strong> 是不可撤销的操作。
                         </Dialog.ConfirmTrigger>
                     </div>
                 </TitledGreyBox>
             </div>
             <div className='space-y-6'>
                 {attributes.maintenance_mode && (
-                    <TitledGreyBox title='Maintenance'>
-                        <p className='text-sm text-warning'>This node is currently under maintenance.</p>
+                    <TitledGreyBox title='维护'>
+                        <p className='text-sm text-warning'>此节点当前处于维护状态。</p>
                     </TitledGreyBox>
                 )}
-                <UsageBox title='Disk Space Allocated' metric={utilization?.disk} />
-                <UsageBox title='Memory Allocated' metric={utilization?.memory} />
-                <TitledGreyBox title='Total Servers'>
+                <UsageBox title='已分配磁盘空间' metric={utilization?.disk} />
+                <UsageBox title='已分配内存' metric={utilization?.memory} />
+                <TitledGreyBox title='服务器总数'>
                     <p className='text-2xl text-foreground font-medium'>{attributes.servers_count}</p>
-                    <p className='text-sm text-muted-foreground'>See the Servers tab for the full server list.</p>
+                    <p className='text-sm text-muted-foreground'>完整服务器列表请见「服务器」标签页。</p>
                 </TitledGreyBox>
             </div>
         </div>

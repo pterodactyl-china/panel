@@ -139,19 +139,19 @@ describe('admin resource tables', () => {
     });
 
     it.each([
-        ['node', () => <SingleRowTable row={node} columns={nodeColumns} />, 'Edit Node One', '/panel/nodes/3/settings'],
-        ['user', () => <SingleRowTable row={user} columns={userColumns} />, 'Edit admin@example.com', '/panel/users/5'],
+        ['node', () => <SingleRowTable row={node} columns={nodeColumns} />, '编辑 Node One', '/panel/nodes/3/settings'],
+        ['user', () => <SingleRowTable row={user} columns={userColumns} />, '编辑 admin@example.com', '/panel/users/5'],
         [
             'location',
             () => <SingleRowTable row={location} columns={locationColumns} />,
-            'Edit us-east',
+            '编辑 us-east',
             '/panel/locations/2',
         ],
-        ['mount', () => <SingleRowTable row={mount} columns={mountColumns} />, 'Edit Shared Maps', '/panel/mounts/9'],
+        ['mount', () => <SingleRowTable row={mount} columns={mountColumns} />, '编辑 Shared Maps', '/panel/mounts/9'],
         [
             'database host',
             () => <SingleRowTable row={host} columns={databaseHostColumns} />,
-            'Edit Primary MySQL',
+            '编辑 Primary MySQL',
             '/panel/databases/4',
         ],
     ])('links the %s edit action to its detail page', (_resource, renderTable, label, href) => {

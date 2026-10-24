@@ -10,8 +10,8 @@ use Illuminate\Console\Command;
 use Pterodactyl\Contracts\Themes\ActivatesThemes;
 use Pterodactyl\Exceptions\Extensions\InvalidExtensionException;
 
-#[Description('Make an installed, enabled theme the active theme.')]
-#[Signature('p:theme:activate {id : The theme identifier, or "classic".}')]
+#[Description('将已安装且已启用的主题设为当前主题。')]
+#[Signature('p:theme:activate {id : 主题标识符，或「classic」。}')]
 class ActivateCommand extends Command
 {
     public function handle(ActivatesThemes $themes): int
@@ -24,7 +24,7 @@ class ActivateCommand extends Command
             return self::FAILURE;
         }
 
-        $this->components->info(sprintf('Theme "%s" is now active.', $this->argument('id')));
+        $this->components->info(sprintf('主题「%s」已激活。', $this->argument('id')));
 
         return self::SUCCESS;
     }

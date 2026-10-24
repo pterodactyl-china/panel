@@ -1,4 +1,4 @@
-name: React Doctor
+name: React Doctor 检查
 
 on:
   pull_request:

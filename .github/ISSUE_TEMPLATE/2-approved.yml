@@ -1,18 +1,17 @@
-name: Pre-Discussed and Approved Topics
-description: For topics already previously discussed and approved in the GitHub Discussions section.
+name: 已讨论并获批的主题
+description: 用于已在 GitHub Discussions 中讨论并获得批准的主题。
 body:
   - type: markdown
     attributes:
       value: |
-        **DO NOT** open a new issue for feature requests _without prior maintainer approval_ and corresponding
-        thread in the discussions section. You MUST link to the corresponding discussion thread when opening
-        this feature request issue or it will be closed without further consideration.
+        **请勿**在未获得维护者事先批准、且未在讨论区建立对应主题的情况下提交新的功能请求。
+        提交此类请求时必须附上对应的讨论链接，否则将在不予考虑的情况下直接关闭。
   - type: textarea
     attributes:
-      label: The Feature Request
+      label: 功能请求内容
   - type: input
     attributes:
-      label: GitHub Discussion Link
-      description: Link to the GitHub Discussions thread where the feature was previously discussed and approved.
+      label: GitHub 讨论链接
+      description: 指向此前讨论并批准该功能的 GitHub Discussions 主题链接。
     validations:
       required: true

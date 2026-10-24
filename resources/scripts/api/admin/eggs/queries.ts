@@ -170,11 +170,11 @@ export const useImportAdminEgg = () => {
         ...adminImportEggMutation(),
         onSuccess: async (egg) => {
             await invalidateGeneratedOperations(queryClient, adminEggListOperations);
-            toast.success('Egg imported', {
+            toast.success('预设已导入', {
                 description: `${egg.attributes.name} has been imported from the uploaded file.`,
             });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to import egg'),
+        onError: (error) => notifyHttpError(error, '无法导入预设'),
     });
 };
 
@@ -188,11 +188,11 @@ export const useCreateAdminEgg = () => {
                 invalidateGeneratedOperations(queryClient, adminEggListOperations),
                 queryClient.invalidateQueries({ queryKey: adminEggDetailKey(egg.attributes.id) }),
             ]);
-            const messages = resourceMutationMessages('egg', 'create', egg.attributes.name);
+            const messages = resourceMutationMessages('预设', 'create', egg.attributes.name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('egg', 'create').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('预设', 'create').errorTitle),
     });
 };
 
@@ -206,11 +206,11 @@ export const useUpdateAdminEgg = () => {
                 invalidateGeneratedOperations(queryClient, adminEggListOperations),
                 queryClient.invalidateQueries({ queryKey: adminEggDetailKey(egg.attributes.id) }),
             ]);
-            const messages = resourceMutationMessages('egg', 'update', egg.attributes.name);
+            const messages = resourceMutationMessages('预设', 'update', egg.attributes.name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('egg', 'update').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('预设', 'update').errorTitle),
     });
 };
 
@@ -224,11 +224,11 @@ export const useUpdateAdminEggScript = () => {
                 invalidateGeneratedOperations(queryClient, adminEggListOperations),
                 queryClient.invalidateQueries({ queryKey: adminEggDetailKey(egg.attributes.id) }),
             ]);
-            toast.success('Install script updated', {
+            toast.success('安装脚本已更新', {
                 description: `${egg.attributes.name} has a new install script.`,
             });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update install script'),
+        onError: (error) => notifyHttpError(error, '无法更新安装脚本'),
     });
 };
 
@@ -242,11 +242,11 @@ export const useUpdateAdminEggFromFile = () => {
                 invalidateGeneratedOperations(queryClient, adminEggListOperations),
                 queryClient.invalidateQueries({ queryKey: adminEggDetailKey(egg.attributes.id) }),
             ]);
-            toast.success('Egg updated', {
+            toast.success('预设已更新', {
                 description: `${egg.attributes.name} has been updated from the uploaded file.`,
             });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update egg from file'),
+        onError: (error) => notifyHttpError(error, '无法通过文件更新预设'),
     });
 };
 
@@ -265,11 +265,11 @@ export const useDeleteAdminEgg = () => {
             removeQueriesWhenUnobserved(queryClient, { queryKey: adminExportEggQueryKey({ path: { egg_id: eggId } }) });
             await invalidateGeneratedOperations(queryClient, adminEggListOperations);
             const name = variables.meta?.name;
-            const messages = resourceMutationMessages('egg', 'delete', name);
+            const messages = resourceMutationMessages('预设', 'delete', name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('egg', 'delete').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('预设', 'delete').errorTitle),
     });
 };
 
@@ -280,11 +280,11 @@ export const useCreateAdminEggVariable = () => {
         ...adminCreateEggVariableMutation(),
         onSuccess: async (variable, variables) => {
             await invalidateAdminEggVariables(queryClient, variables.path.egg_id);
-            const messages = resourceMutationMessages('variable', 'create', variable.attributes.name);
+            const messages = resourceMutationMessages('变量', 'create', variable.attributes.name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('variable', 'create').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('变量', 'create').errorTitle),
     });
 };
 
@@ -295,11 +295,11 @@ export const useUpdateAdminEggVariable = () => {
         ...adminUpdateEggVariableMutation(),
         onSuccess: async (variable, variables) => {
             await invalidateAdminEggVariables(queryClient, variables.path.egg_id);
-            const messages = resourceMutationMessages('variable', 'update', variable.attributes.name);
+            const messages = resourceMutationMessages('变量', 'update', variable.attributes.name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('variable', 'update').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('变量', 'update').errorTitle),
     });
 };
 
@@ -311,10 +311,10 @@ export const useDeleteAdminEggVariable = () => {
         onSuccess: async (_data, variables) => {
             await invalidateAdminEggVariables(queryClient, variables.path.egg_id);
             const name = variables.meta?.name;
-            const messages = resourceMutationMessages('variable', 'delete', name);
+            const messages = resourceMutationMessages('变量', 'delete', name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('variable', 'delete').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('变量', 'delete').errorTitle),
     });
 };

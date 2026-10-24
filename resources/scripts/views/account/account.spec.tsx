@@ -70,7 +70,7 @@ describe('account views from fixtures', () => {
     it('composes the overview from its cards, with the two-factor notice when required', () => {
         const { container, unmount } = renderView('page.account.overview', { fixture: 'twoFactorRequired' });
 
-        for (const title of ['Update Password', 'Update Email Address', 'Two-Step Verification', '2-Factor Required']) {
+        for (const title of ['更新密码', '更新电子邮箱地址', '两步验证', '需要两步验证']) {
             expect(container).toHaveTextContent(title);
         }
 
@@ -80,17 +80,17 @@ describe('account views from fixtures', () => {
     it('shows a list page error in place of its cards', () => {
         const { container, unmount } = renderView('page.account.api', { fixture: 'error' });
 
-        expect(container).toHaveTextContent('Request failed with status code 500.');
-        expect(container).not.toHaveTextContent('Create API Key');
+        expect(container).toHaveTextContent('请求失败，状态码 500。');
+        expect(container).not.toHaveTextContent('创建 API 密钥');
         unmount();
     });
 
     it('lists keys in a sortable table with their last use', () => {
         const { container, unmount } = renderView('account.apiKeys.list');
 
-        expect(container).toHaveTextContent('Deploy script');
-        expect(container).toHaveTextContent('Never');
-        expect(within(container).getByRole('button', { name: 'Sort Description ascending' })).toBeInTheDocument();
+        expect(container).toHaveTextContent('部署脚本');
+        expect(container).toHaveTextContent('从未使用');
+        expect(within(container).getByRole('button', { name: '按 描述 升序排序' })).toBeInTheDocument();
         unmount();
     });
 });
@@ -100,18 +100,18 @@ describe('account.password', () => {
         mocks.updatePassword.mockResolvedValue({});
         await renderLive(<View name='account.password' />);
 
-        expect(screen.getByLabelText('Current Password')).toHaveAttribute('autocomplete', 'current-password');
-        expect(screen.getByLabelText('New Password')).toHaveAttribute('autocomplete', 'new-password');
+        expect(screen.getByLabelText('当前密码')).toHaveAttribute('autocomplete', 'current-password');
+        expect(screen.getByLabelText('新密码')).toHaveAttribute('autocomplete', 'new-password');
 
-        fireEvent.change(screen.getByLabelText('Current Password'), { target: { value: 'old secret' } });
-        fireEvent.change(screen.getByLabelText('New Password'), { target: { value: 'new secret' } });
-        fireEvent.change(screen.getByLabelText('Confirm New Password'), { target: { value: 'new secrets' } });
+        fireEvent.change(screen.getByLabelText('当前密码'), { target: { value: 'old secret' } });
+        fireEvent.change(screen.getByLabelText('新密码'), { target: { value: 'new secret' } });
+        fireEvent.change(screen.getByLabelText('确认新密码'), { target: { value: 'new secrets' } });
 
-        expect(await screen.findByText('Password confirmation does not match the password you entered.')).toBeVisible();
+        expect(await screen.findByText('确认密码与您输入的密码不一致。')).toBeVisible();
 
-        fireEvent.change(screen.getByLabelText('Confirm New Password'), { target: { value: 'new secret' } });
+        fireEvent.change(screen.getByLabelText('确认新密码'), { target: { value: 'new secret' } });
         await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: 'Update Password' }));
+            fireEvent.click(screen.getByRole('button', { name: '更新密码' }));
         });
 
         expect(mocks.updatePassword).toHaveBeenCalledWith({
@@ -126,20 +126,20 @@ describe('account.twoFactor', () => {
         mocks.enableTwoFactor.mockResolvedValue({ attributes: { tokens: ['aaaa-1111', 'bbbb-2222'] } });
         await renderLive(<View name='account.twoFactor' />);
 
-        fireEvent.click(screen.getByRole('button', { name: 'Enable Two-Step' }));
+        fireEvent.click(screen.getByRole('button', { name: '启用两步验证' }));
 
         const dialog = await screen.findByRole('dialog');
 
         expect(within(dialog).getByText('JBSW Y3DP EHPK 3PXP')).toBeInTheDocument();
-        expect(within(dialog).getByRole('button', { name: 'Enable' })).toBeDisabled();
+        expect(within(dialog).getByRole('button', { name: '启用' })).toBeDisabled();
         fireEvent.change(within(dialog).getByPlaceholderText('000000'), { target: { value: '123456' } });
-        fireEvent.change(within(dialog).getByLabelText('Account Password'), { target: { value: 'secret' } });
+        fireEvent.change(within(dialog).getByLabelText('账户密码'), { target: { value: 'secret' } });
         await act(async () => {
-            fireEvent.click(within(dialog).getByRole('button', { name: 'Enable' }));
+            fireEvent.click(within(dialog).getByRole('button', { name: '启用' }));
         });
 
         expect(mocks.enableTwoFactor).toHaveBeenCalledWith({ body: { code: '123456', password: 'secret' } });
-        const recovery = (await screen.findByText('Two-Step Authentication Enabled')).closest('[role="dialog"]');
+        const recovery = (await screen.findByText('两步验证已启用')).closest('[role="dialog"]');
 
         expect(recovery).toHaveTextContent('aaaa-1111');
         expect(recovery).toHaveTextContent('bbbb-2222');
@@ -151,19 +151,19 @@ describe('account API keys', () => {
         mocks.createApiKey.mockResolvedValue({ attributes: { identifier: 'ptlc_abc' }, meta: { secret_token: 'xyz' } });
         await renderLive(<View name='account.apiKeys.create' />);
 
-        fireEvent.change(screen.getByLabelText('Description'), { target: { value: 'Deploys' } });
-        fireEvent.change(screen.getByLabelText('Allowed IPs'), { target: { value: '10.0.0.1\n10.0.0.2' } });
+        fireEvent.change(screen.getByLabelText('描述'), { target: { value: 'Deploys' } });
+        fireEvent.change(screen.getByLabelText('允许的 IP'), { target: { value: '10.0.0.1\n10.0.0.2' } });
         await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: 'Create' }));
+            fireEvent.click(screen.getByRole('button', { name: '创建' }));
         });
 
         expect(mocks.createApiKey).toHaveBeenCalledWith({
             body: { description: 'Deploys', allowed_ips: ['10.0.0.1', '10.0.0.2'] },
         });
         expect(await screen.findByText('ptlc_abcxyz')).toBeInTheDocument();
-        expect(screen.getByLabelText('Description')).toHaveValue('');
+        expect(screen.getByLabelText('描述')).toHaveValue('');
 
-        fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+        fireEvent.click(screen.getByRole('button', { name: '关闭' }));
         await waitFor(() => expect(screen.queryByText('ptlc_abcxyz')).not.toBeInTheDocument());
     });
 
@@ -186,9 +186,9 @@ describe('account API keys', () => {
         mocks.deleteApiKey.mockResolvedValue({});
         await renderLive(<View name='account.apiKeys.list' />);
 
-        fireEvent.click(screen.getByRole('button', { name: 'Delete Deploys API key' }));
+        fireEvent.click(screen.getByRole('button', { name: '删除 API 密钥 Deploys' }));
         await act(async () => {
-            fireEvent.click(await screen.findByRole('button', { name: 'Delete Key' }));
+            fireEvent.click(await screen.findByRole('button', { name: '删除密钥' }));
         });
 
         expect(mocks.deleteApiKey).toHaveBeenCalledWith({ path: { identifier: 'ptlc_abc' } });
@@ -205,9 +205,9 @@ describe('account SSH keys', () => {
         await renderLive(<View name='account.sshKeys.list' />);
 
         expect(screen.getAllByText('SHA256:abc')).not.toHaveLength(0);
-        fireEvent.click(screen.getByRole('button', { name: 'Delete Laptop' }));
+        fireEvent.click(screen.getByRole('button', { name: '删除 Laptop' }));
         await act(async () => {
-            fireEvent.click(await screen.findByRole('button', { name: 'Delete Key' }));
+            fireEvent.click(await screen.findByRole('button', { name: '删除密钥' }));
         });
 
         expect(mocks.deleteSshKey).toHaveBeenCalledWith({ body: { fingerprint: 'abc' } });

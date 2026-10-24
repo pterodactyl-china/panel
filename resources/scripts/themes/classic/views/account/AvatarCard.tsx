@@ -6,7 +6,7 @@ export default function AvatarCard({ model, className }: ViewProps<'account.avat
     const input = useRef<HTMLInputElement>(null);
 
     return (
-        <ContentBox className={className} title='Update Avatar'>
+        <ContentBox className={className} title='更新头像'>
             <SpinnerOverlay size='large' visible={model.submitting} />
             <div className='flex flex-col gap-4'>
                 <div className='flex items-start gap-4'>
@@ -14,8 +14,7 @@ export default function AvatarCard({ model, className }: ViewProps<'account.avat
                         <Avatar name={model.uuid} image={model.preview} />
                     </div>
                     <p className='m-0 text-sm'>
-                        You may select a custom avatar for your personal account. PNG, JPEG, SVG, WebP, AVIF, and ICO
-                        files are supported.
+                        您可以为个人账户选择自定义头像。支持 PNG、JPEG、SVG、WebP、AVIF 与 ICO 格式。
                     </p>
                 </div>
                 <div className='flex flex-wrap gap-2'>
@@ -24,7 +23,7 @@ export default function AvatarCard({ model, className }: ViewProps<'account.avat
                         type='file'
                         accept={model.accept}
                         className='hidden'
-                        aria-label='Avatar file'
+                        aria-label='头像文件'
                         onChange={(event) => model.select(event.target.files?.[0] ?? null)}
                     />
                     <Button
@@ -32,10 +31,10 @@ export default function AvatarCard({ model, className }: ViewProps<'account.avat
                         onClick={() => (model.selected ? model.submit() : input.current?.click())}
                         disabled={model.selected ? !model.canSubmit : false}
                     >
-                        {model.selected ? 'Save Changes' : 'Update Avatar'}
+                        {model.selected ? '保存更改' : '更新头像'}
                     </Button>
                     <Button.Danger type='button' disabled={!model.avatar || !!model.selected} onClick={model.remove}>
-                        Remove Avatar
+                        移除头像
                     </Button.Danger>
                 </div>
             </div>

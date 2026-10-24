@@ -35,35 +35,30 @@ export const databaseHostFormValues = (host: AdminDatabaseHost): DatabaseHostFor
     extensions: initialExtensionValues(),
 });
 
-const validateName = requiredWithMaxLength(191, 'A name must be provided.', 'The name must not exceed 191 characters.');
+const validateName = requiredWithMaxLength(191, '必须提供名称。', '名称不得超过 191 个字符。');
 
 const validateHost: TextValidator = ({ value }): string | undefined => {
     if (value.length < 1) {
-        return 'A host must be provided.';
+        return '必须提供主机。';
     }
 
     if (!/^[\w\-.]+$/.test(value)) {
-        return 'The host must be a valid hostname or IP address.';
+        return '主机必须是有效的主机名或 IP 地址。';
     }
 
     return undefined;
 };
 
-const validateUsername = requiredWithMaxLength(
-    32,
-    'A username must be provided.',
-    'The username must not exceed 32 characters.'
-);
+const validateUsername = requiredWithMaxLength(32, '必须提供用户名。', '用户名不得超过 32 个字符。');
 
-const validateRequiredPassword: TextValidator = ({ value }) =>
-    value.length >= 1 ? undefined : 'A password must be provided.';
+const validateRequiredPassword: TextValidator = ({ value }) => (value.length >= 1 ? undefined : '必须提供密码。');
 
 export const databaseHostValidators = {
     name: { onChange: validateName },
     host: { onChange: validateHost },
     port: {
-        onChange: requiredNumber('A port must be provided.', (value) =>
-            value >= 1 && value <= 65535 ? undefined : 'The port must be between 1 and 65535.'
+        onChange: requiredNumber('必须提供端口。', (value) =>
+            value >= 1 && value <= 65535 ? undefined : '端口必须介于 1 与 65535 之间。'
         ),
     },
     username: { onChange: validateUsername },

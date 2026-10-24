@@ -143,7 +143,7 @@ function useStartupPageModel(): StartupPageModel {
                       canChangeDockerImage: docker.allowed && !docker.custom,
                       setDockerImage: async (image) => {
                           if (!docker.allowed || docker.custom || !docker.images.some(({ value }) => value === image)) {
-                              throw new Error('This Docker image cannot be selected for the current server.');
+                              throw new Error('当前服务器无法选择此 Docker 镜像。');
                           }
 
                           await docker.select(image);
@@ -213,31 +213,31 @@ const variable = (options: Partial<StartupVariable> & Pick<StartupVariable, 'key
 const variables = [
     variable({
         key: 'SERVER_JARFILE',
-        name: 'Server Jar File',
-        description: 'The name of the server jarfile to run the server with.',
+        name: '服务器 Jar 文件',
+        description: '用于运行服务器的 jar 文件名。',
         value: 'server.jar',
         defaultValue: 'server.jar',
     }),
     variable({
         key: 'MINECRAFT_VERSION',
-        name: 'Minecraft Version',
-        description: 'The version of Minecraft to download.',
+        name: 'Minecraft 版本',
+        description: '要下载的 Minecraft 版本。',
         value: 'latest',
         defaultValue: 'latest',
         control: { kind: 'select', options: ['latest', 'snapshot', '1.21.4'] },
     }),
     variable({
         key: 'AUTO_UPDATE',
-        name: 'Auto Update',
-        description: 'Update the server on every start.',
+        name: '自动更新',
+        description: '每次启动时更新服务器。',
         value: '1',
         defaultValue: '0',
         control: { kind: 'switch', on: '1', off: '0' },
     }),
     variable({
         key: 'BUILD_NUMBER',
-        name: 'Build Number',
-        description: 'Set by the administrator.',
+        name: '构建号',
+        description: '由管理员设置。',
         value: '412',
         defaultValue: 'latest',
         editable: false,

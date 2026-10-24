@@ -133,10 +133,10 @@ const subuserSummary = ({ attributes }: Subuser, viewer: string): SubuserSummary
 
 const validateEmail = (value: string): string | undefined => {
     if (value.length > 191) {
-        return 'Email addresses must not exceed 191 characters.';
+        return '电子邮箱地址不得超过 191 个字符。';
     }
 
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? undefined : 'A valid email address must be provided.';
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? undefined : '必须提供有效的电子邮箱地址。';
 };
 
 /** The subusers, and the permission catalogue their forms list. */
@@ -157,7 +157,7 @@ function useSubuserListModel(): SubuserListModel {
                 !!subuser &&
                 attempt(async () => {
                     await mutateAsync(deleteServerSubuserInput(uuid, subuserUuid));
-                    toast.success('Subuser removed', {
+                    toast.success('子用户已移除', {
                         description: `${subuser.attributes.email} no longer has access to this server.`,
                     });
                 })
@@ -240,7 +240,7 @@ function useSubuserFormModel({ subuser, onClose }: SubuserFormInput): SubuserFor
 
                 const invited = await invite(createServerSubuserInput(uuid, body));
 
-                toast.success('Subuser invited', { description: `${invited.attributes.email} has been invited.` });
+                toast.success('子用户已邀请', { description: `${invited.attributes.email} 已邀请。` });
                 void navigate({ to: '/server/$id/users', params: { id: identifier } });
             });
         },
@@ -342,30 +342,30 @@ const listFixture = (options: Partial<SubuserListModel> = {}): SubuserListModel 
 const permissionCatalogue: readonly (readonly [string, string, Readonly<Record<string, string>>])[] = [
     [
         'control',
-        "Permissions that control a user's ability to control the power state of a server, or send commands.",
+        '控制用户能否管理服务器电源状态或发送命令的权限。',
         {
-            console: 'Allows a user to send commands to the server instance via the console.',
-            start: 'Allows a user to start the server if it is stopped.',
-            stop: 'Allows a user to stop a server if it is running.',
-            restart: 'Allows a user to perform a server restart.',
+            console: '允许用户通过控制台向服务器实例发送命令。',
+            start: '允许用户在服务器停止时启动它。',
+            stop: '允许用户在服务器运行时停止它。',
+            restart: '允许用户重启服务器。',
         },
     ],
     [
         'user',
-        'Permissions that allow a user to manage other subusers on a server.',
+        '允许用户管理服务器上其他子用户的权限。',
         {
-            create: 'Allows a user to create new subusers for the server.',
-            read: 'Allows the user to view subusers and their permissions for the server.',
-            update: 'Allows a user to modify other subusers.',
-            delete: 'Allows a user to delete a subuser from the server.',
+            create: '允许用户为服务器创建新的子用户。',
+            read: '允许用户查看服务器的子用户及其权限。',
+            update: '允许用户修改其他子用户。',
+            delete: '允许用户从服务器删除子用户。',
         },
     ],
     [
         'backup',
-        "Permissions that control a user's ability to generate and manage server backups.",
+        '控制用户能否生成和管理服务器备份的权限。',
         {
-            create: 'Allows a user to create new backups for this server.',
-            read: 'Allows a user to view all backups that exist for this server.',
+            create: '允许用户为此服务器创建新备份。',
+            read: '允许用户查看此服务器的所有备份。',
             delete: 'Allows a user to remove backups from the system.',
         },
     ],

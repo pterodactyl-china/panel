@@ -38,7 +38,7 @@ function DeleteEggDialog({ egg, onDeleted, open, onClose }: DeleteEggDialogProps
     return (
         <Dialog
             open={open}
-            title='Confirm egg deletion'
+            title='确认删除预设'
             preventExternalClose={isSubmitting}
             hideCloseIcon={isSubmitting}
             onClose={() => {
@@ -48,32 +48,31 @@ function DeleteEggDialog({ egg, onDeleted, open, onClose }: DeleteEggDialogProps
         >
             <SpinnerOverlay visible={isSubmitting} />
             <p className='text-sm'>
-                Deleting an egg is a permanent action, it cannot be undone. This will permanently delete the{' '}
-                <strong>{egg.attributes.name}</strong> egg. An egg with attached servers cannot be deleted.
+                删除预设是不可撤销的操作。这将永久删除预设 <strong>{egg.attributes.name}</strong>{' '}
+                。已关联服务器的预设无法删除。
             </p>
             <Form form={form} className='m-0 mt-6'>
                 <form.AppField
                     name='confirm'
                     validators={{
-                        onChange: ({ value }) =>
-                            value === egg.attributes.name ? undefined : 'The egg name must be provided.',
+                        onChange: ({ value }) => (value === egg.attributes.name ? undefined : '必须提供预设名称。'),
                     }}
                 >
                     {(field) => (
                         <field.TextField
                             type='text'
                             id='confirm_egg_name'
-                            label='Confirm Name'
-                            description='Enter the name of this egg to confirm deletion.'
+                            label='确认名称'
+                            description='输入此预设的名称以确认删除。'
                         />
                     )}
                 </form.AppField>
                 <div className='mt-6 text-right'>
                     <Button type='button' isSecondary className='mr-2' onClick={onClose}>
-                        Cancel
+                        取消
                     </Button>
                     <form.AppForm>
-                        <form.SubmitButton color='red'>Delete Egg</form.SubmitButton>
+                        <form.SubmitButton color='red'>删除预设</form.SubmitButton>
                     </form.AppForm>
                 </div>
             </Form>
@@ -86,7 +85,7 @@ export default function DeleteEggButton({ egg, onDeleted }: Props) {
         <Dialog.Trigger
             trigger={({ onClick }) => (
                 <Button color='red' isSecondary onClick={onClick}>
-                    Delete Egg
+                    删除预设
                 </Button>
             )}
         >

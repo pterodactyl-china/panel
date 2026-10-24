@@ -34,8 +34,7 @@ function useForgotPasswordFormModel(): ForgotPasswordFormModel {
         form,
         name: 'email',
         validators: {
-            onChange: ({ value }) =>
-                isEmail(value) ? undefined : 'A valid email address must be provided to continue.',
+            onChange: ({ value }) => (isEmail(value) ? undefined : '必须提供有效的电子邮箱地址才能继续。'),
         },
     });
     const canSubmit = useStore(form.store, (state) => state.canSubmit);
@@ -85,8 +84,7 @@ function useResetPasswordFormModel(): ResetPasswordFormModel {
         form,
         name: 'password',
         validators: {
-            onChange: ({ value }) =>
-                value.length >= 8 ? undefined : 'Your new password should be at least 8 characters in length.',
+            onChange: ({ value }) => (value.length >= 8 ? undefined : '新密码长度至少为 8 个字符。'),
         },
     });
     const confirmation = useField({
@@ -95,7 +93,7 @@ function useResetPasswordFormModel(): ResetPasswordFormModel {
         validators: {
             onChangeListenTo: ['password'],
             onChange: ({ value, fieldApi }) =>
-                value === fieldApi.form.getFieldValue('password') ? undefined : 'Your new password does not match.',
+                value === fieldApi.form.getFieldValue('password') ? undefined : '两次输入的新密码不一致。',
         },
     });
     const canSubmit = useStore(form.store, (state) => state.canSubmit);
@@ -133,7 +131,7 @@ const resetFixture = (mismatch: boolean): ResetPasswordFormModel => ({
             'passwordConfirmation',
             newPassword,
             mismatch ? 'correct horse battery' : '',
-            mismatch ? 'Your new password does not match.' : null
+            mismatch ? '两次输入的新密码不一致。' : null
         ),
     },
     submit: noop,
@@ -149,7 +147,7 @@ implementViews({
         use: useForgotPasswordFormModel,
         fixtures: {
             default: () => forgotFixture(),
-            invalid: () => forgotFixture('A valid email address must be provided to continue.'),
+            invalid: () => forgotFixture('必须提供有效的电子邮箱地址才能继续。'),
         },
     },
     'page.auth.passwordReset': {

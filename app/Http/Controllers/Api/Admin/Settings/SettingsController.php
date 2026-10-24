@@ -21,7 +21,7 @@ class SettingsController extends AdminApiController
             'app:name' => 'Pterodactyl',
             'pterodactyl:auth:2fa_required' => 0,
             'pterodactyl:client_features:avatars:enabled' => false,
-            'app:locale' => 'en',
+            'app:locale' => 'zh',
         ],
         'mail' => [
             'mail:default' => 'smtp',

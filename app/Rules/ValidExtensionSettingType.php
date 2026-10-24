@@ -35,10 +35,10 @@ final readonly class ValidExtensionSettingType implements ValidationRule
 
         if (! $valid) {
             $fail(match ($this->field) {
-                'number' => 'The :attribute must be a number.',
-                'toggle' => 'The :attribute must be true or false.',
-                'select' => 'The selected :attribute is not one of the options.',
-                default => 'The :attribute must be text.',
+                'number' => ':attribute 必须是数字。',
+                'toggle' => ':attribute 必须为 true 或 false。',
+                'select' => '所选的 :attribute 不在可选范围内。',
+                default => ':attribute 必须是文本。',
             });
         }
     }

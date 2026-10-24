@@ -77,7 +77,7 @@ export const useAdminThemeSettings = (theme: string, options?: { enabled?: boole
 const notifyReloadToApply = (title: string, description: string) =>
     toast.success(title, {
         description: `${description} Reload the page to see it.`,
-        action: { label: 'Reload', onClick: () => window.location.reload() },
+        action: { label: '重新加载', onClick: () => window.location.reload() },
     });
 
 const useThemeListMutation = () => {
@@ -93,9 +93,9 @@ export const useActivateAdminTheme = () => {
         ...adminActivateThemeMutation(),
         onSuccess: async (_data, variables) => {
             await invalidate();
-            notifyReloadToApply('Theme activated', `${String(variables.meta?.name ?? 'The theme')} is now active.`);
+            notifyReloadToApply('主题已激活', `${String(variables.meta?.name ?? 'The theme')} 已激活。`);
         },
-        onError: (error) => notifyHttpError(error, 'Unable to activate the theme'),
+        onError: (error) => notifyHttpError(error, '无法激活主题'),
     });
 };
 
@@ -107,11 +107,11 @@ export const usePreviewAdminTheme = () => {
         onSuccess: async (_data, variables) => {
             await invalidate();
             notifyReloadToApply(
-                'Previewing theme',
-                `You see ${String(variables.meta?.name ?? 'the theme')} until you stop the preview; nobody else does.`
+                '正在预览主题',
+                `在停止预览之前，只有您能看到 ${String(variables.meta?.name ?? '该主题')}。`
             );
         },
-        onError: (error) => notifyHttpError(error, 'Unable to preview the theme'),
+        onError: (error) => notifyHttpError(error, '无法预览主题'),
     });
 };
 
@@ -122,9 +122,9 @@ export const useStopAdminThemePreview = () => {
         ...adminStopThemePreviewMutation(),
         onSuccess: async () => {
             await invalidate();
-            notifyReloadToApply('Preview stopped', 'You see the active theme again.');
+            notifyReloadToApply('已停止预览', '已恢复显示当前启用的主题。');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to stop the preview'),
+        onError: (error) => notifyHttpError(error, '无法停止预览'),
     });
 };
 
@@ -143,9 +143,9 @@ export const useUpdateAdminThemeSettings = () => {
         ...adminUpdateThemeSettingsMutation(),
         onSuccess: (data, variables) => {
             store(data, variables.path.theme);
-            notifyReloadToApply('Theme settings saved', 'Pages render with them from now on.');
+            notifyReloadToApply('主题设置已保存', '此后页面将使用这些设置渲染。');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to save the theme settings'),
+        onError: (error) => notifyHttpError(error, '无法保存主题设置'),
     });
 };
 
@@ -156,9 +156,9 @@ export const useUploadAdminThemeImage = () => {
         ...adminUploadThemeImageMutation(),
         onSuccess: (data, variables) => {
             store(data, variables.path.theme);
-            notifyReloadToApply('Image uploaded', 'Pages render with it from now on.');
+            notifyReloadToApply('图片已上传', '此后页面将使用它渲染。');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to upload the image'),
+        onError: (error) => notifyHttpError(error, '无法上传图片'),
     });
 };
 
@@ -169,8 +169,8 @@ export const useClearAdminThemeImage = () => {
         ...adminClearThemeImageMutation(),
         onSuccess: (data, variables) => {
             store(data, variables.path.theme);
-            notifyReloadToApply('Image removed', 'Pages render without it from now on.');
+            notifyReloadToApply('Image removed', '此后页面将不再使用它渲染。');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to remove the image'),
+        onError: (error) => notifyHttpError(error, '无法移除图片'),
     });
 };

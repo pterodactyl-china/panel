@@ -19,9 +19,9 @@ afterEach(() => {
 describe('skin layers', () => {
     it('replaces a part recipe wholesale and keeps the parts a layer leaves out', () => {
         registerSkins('aurora', { Button: { root: 'rounded-full px-6' } });
-        render(<Button isLoading>Save</Button>);
+        render(<Button isLoading>保存</Button>);
 
-        const button = screen.getByRole('button', { name: 'Save' });
+        const button = screen.getByRole('button', { name: '保存' });
 
         expect(button).toHaveAttribute('class', 'rounded-full px-6');
         expect(button.querySelector('[data-part="spinner"]')).toHaveClass('absolute', 'justify-center');
@@ -40,15 +40,15 @@ describe('skin layers', () => {
 
         render(
             <Button color='green' isLoading>
-                Save
+                保存
             </Button>
         );
 
-        const button = screen.getByRole('button', { name: 'Save' });
+        const button = screen.getByRole('button', { name: '保存' });
 
         expect(button).toHaveAttribute('class', 'rounded-full bg-green shadow-xl');
         // `below` reads the state: classic hides a loading label.
-        expect(screen.getByText('Save')).toHaveAttribute(
+        expect(screen.getByText('保存')).toHaveAttribute(
             'class',
             'inline-flex items-center text-transparent gap-1 tracking-tight'
         );
@@ -83,11 +83,11 @@ describe('skin layers', () => {
     });
 
     it('re-renders primitives when the layers change', () => {
-        render(<Button>Save</Button>);
+        render(<Button>保存</Button>);
 
         act(() => registerSkins('aurora', { Button: { root: 'rounded-full' } }));
 
-        expect(screen.getByRole('button', { name: 'Save' })).toHaveAttribute('class', 'rounded-full');
+        expect(screen.getByRole('button', { name: '保存' })).toHaveAttribute('class', 'rounded-full');
     });
 
     it('resolves cva recipes with defaults, compound arrays and class or className', () => {
@@ -136,11 +136,11 @@ describe('primitive attributes', () => {
     it('marks the primitive, each part and the root state', () => {
         render(
             <Button color='red' size='xsmall' isSecondary isLoading>
-                Delete
+                删除
             </Button>
         );
 
-        const button = screen.getByRole('button', { name: 'Delete' });
+        const button = screen.getByRole('button', { name: '删除' });
 
         expect(button).toHaveAttribute('data-ui', 'button');
         expect(button).toHaveAttribute('data-part', 'root');
@@ -148,8 +148,8 @@ describe('primitive attributes', () => {
         expect(button).toHaveAttribute('data-size', 'xsmall');
         expect(button).toHaveAttribute('data-secondary', '');
         expect(button).toHaveAttribute('data-loading', '');
-        expect(screen.getByText('Delete')).toHaveAttribute('data-part', 'label');
-        expect(screen.getByText('Delete')).not.toHaveAttribute('data-color');
+        expect(screen.getByText('删除')).toHaveAttribute('data-part', 'label');
+        expect(screen.getByText('删除')).not.toHaveAttribute('data-color');
     });
 
     it('skins an uploaded avatar picture like the generated pattern', () => {
@@ -182,7 +182,7 @@ describe('primitive attributes', () => {
     });
 
     it('names multi-word primitives and state in kebab case', () => {
-        render(<Card title='Details' actions={<button type='button'>Edit</button>} />);
+        render(<Card title='Details' actions={<button type='button'>编辑</button>} />);
 
         expect(screen.getByRole('heading', { name: 'Details' }).closest('[data-part="root"]')).toHaveAttribute(
             'data-titled',
@@ -216,18 +216,18 @@ describe('replacement components', () => {
         });
         render(
             <Button color='green' isLoading onClick={onClick} className='w-full'>
-                Save
+                保存
             </Button>
         );
 
         expect(screen.queryByRole('button')).not.toBeInTheDocument();
-        expect(screen.getByText('Save').tagName).toBe('SPAN');
+        expect(screen.getByText('保存').tagName).toBe('SPAN');
         expect(received.at(-1)).toEqual({
             color: 'green',
             isLoading: true,
             onClick,
             className: 'w-full',
-            children: 'Save',
+            children: '保存',
         });
     });
 

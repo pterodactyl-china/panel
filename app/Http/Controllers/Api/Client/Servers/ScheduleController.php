@@ -40,7 +40,7 @@ class ScheduleController extends ClientApiController
             [
                 'code' => 'DisplayException',
                 'status' => '400',
-                'detail' => 'The cron data provided does not evaluate to a valid expression.',
+                'detail' => '提供的 Cron 表达式无效。',
             ],
         ],
     ];

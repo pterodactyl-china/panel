@@ -96,9 +96,9 @@ describe('NodeTagsTab', () => {
     it('frees a reserved tag before saving it as a game', async () => {
         const user = setup();
 
-        await user.deselectOptions(screen.getByLabelText('Reservations'), 'Premium (premium)');
-        await user.selectOptions(screen.getByLabelText('Games'), 'Premium (premium)');
-        await user.click(screen.getByRole('button', { name: 'Save tags' }));
+        await user.deselectOptions(screen.getByLabelText('预留'), 'Premium (premium)');
+        await user.selectOptions(screen.getByLabelText('游戏'), 'Premium (premium)');
+        await user.click(screen.getByRole('button', { name: '保存标签' }));
 
         await waitFor(() => expect(mocks.calls).toEqual(['games:1', 'reservations:', 'games:1,2']));
     });
@@ -106,7 +106,7 @@ describe('NodeTagsTab', () => {
     it('does not offer a tag that the other list holds', () => {
         setup();
 
-        expect(screen.getByLabelText('Games')).not.toHaveTextContent('Premium');
-        expect(screen.getByLabelText('Reservations')).not.toHaveTextContent('Minecraft');
+        expect(screen.getByLabelText('游戏')).not.toHaveTextContent('Premium');
+        expect(screen.getByLabelText('预留')).not.toHaveTextContent('Minecraft');
     });
 });

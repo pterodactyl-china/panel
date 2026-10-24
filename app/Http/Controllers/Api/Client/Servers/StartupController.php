@@ -42,7 +42,7 @@ class StartupController extends ClientApiController
     public function index(GetStartupRequest $request, Server $server): ApiResourceCollection
     {
         $startup = $server->startupCommand();
-        $egg = $server->egg ?? throw new UnexpectedValueException('The server does not have an egg relationship.');
+        $egg = $server->egg ?? throw new UnexpectedValueException('该服务器没有关联预设。');
 
         return EggVariableResource::collection($server->variables()->where('user_viewable', true)->get())->withMeta([
             'startup_command' => $startup,

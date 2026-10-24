@@ -111,11 +111,11 @@ export const useCreateAdminLocation = () => {
         ...adminCreateLocationMutation(),
         onSuccess: async (location) => {
             await invalidateGeneratedOperations(queryClient, ['adminListLocations']);
-            const messages = resourceMutationMessages('location', 'create', location.attributes.short);
+            const messages = resourceMutationMessages('地域', 'create', location.attributes.short);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('location', 'create').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('地域', 'create').errorTitle),
     });
 };
 
@@ -129,11 +129,11 @@ export const useUpdateAdminLocation = () => {
                 invalidateGeneratedOperations(queryClient, ['adminListLocations']),
                 queryClient.invalidateQueries({ queryKey: adminLocationDetailKey(variables.path.location_id) }),
             ]);
-            const messages = resourceMutationMessages('location', 'update', location.attributes.short);
+            const messages = resourceMutationMessages('地域', 'update', location.attributes.short);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('location', 'update').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('地域', 'update').errorTitle),
     });
 };
 
@@ -146,10 +146,10 @@ export const useDeleteAdminLocation = () => {
             removeQueriesWhenUnobserved(queryClient, { queryKey: adminLocationDetailKey(variables.path.location_id) });
             await invalidateGeneratedOperations(queryClient, ['adminListLocations']);
             const name = variables.meta?.short;
-            const messages = resourceMutationMessages('location', 'delete', name);
+            const messages = resourceMutationMessages('地域', 'delete', name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('location', 'delete').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('地域', 'delete').errorTitle),
     });
 };

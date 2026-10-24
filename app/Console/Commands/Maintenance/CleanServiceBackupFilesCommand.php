@@ -10,7 +10,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
 
-#[Description('Clean orphaned .bak files created when modifying services.')]
+#[Description('清理修改服务时产生的孤立 .bak 文件。')]
 #[Signature('p:maintenance:clean-service-backups')]
 class CleanServiceBackupFilesCommand extends Command
 {

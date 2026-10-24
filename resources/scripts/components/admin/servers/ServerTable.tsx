@@ -52,7 +52,7 @@ function DeleteServerDialog({ server, open, onClose }: DeleteServerDialogProps) 
     return (
         <Dialog
             open={open}
-            title='Confirm server deletion'
+            title='确认删除服务器'
             preventExternalClose={isSubmitting}
             hideCloseIcon={isSubmitting}
             onClose={() => {
@@ -62,32 +62,30 @@ function DeleteServerDialog({ server, open, onClose }: DeleteServerDialogProps) 
         >
             <SpinnerOverlay visible={isSubmitting} />
             <p className='text-sm'>
-                Deleting a server is permanent. This will remove <strong>{attributes.name}</strong> and all associated
-                data.
+                删除服务器是不可撤销的操作。这将移除 <strong>{attributes.name}</strong> 及其所有关联数据。
             </p>
             <Form form={form} className='m-0 mt-6'>
                 <form.AppField
                     name='confirm'
                     validators={{
-                        onChange: ({ value }) =>
-                            value === attributes.name ? undefined : 'The server name must be provided.',
+                        onChange: ({ value }) => (value === attributes.name ? undefined : '必须提供服务器名称。'),
                     }}
                 >
                     {(field) => (
                         <field.TextField
                             type='text'
                             id={`confirm_${attributes.uuid}`}
-                            label='Confirm Server Name'
-                            description='Enter the name of this server to confirm deletion.'
+                            label='确认服务器名称'
+                            description='输入此服务器的名称以确认删除。'
                         />
                     )}
                 </form.AppField>
                 <div className='mt-6 flex justify-end gap-2'>
                     <Button.Text type='button' isSecondary onClick={onClose}>
-                        Cancel
+                        取消
                     </Button.Text>
                     <form.AppForm>
-                        <form.SubmitButton color='red'>Delete server</form.SubmitButton>
+                        <form.SubmitButton color='red'>删除服务器</form.SubmitButton>
                     </form.AppForm>
                 </div>
             </Form>
@@ -119,7 +117,7 @@ const OwnerCell = ({ server }: { server: AdminServer }) => {
     const owner = relationshipAttributes(server.attributes.relationships?.user);
 
     if (!owner) {
-        return <span className='text-muted-foreground'>Unavailable</span>;
+        return <span className='text-muted-foreground'>不可用</span>;
     }
 
     const name = [owner.first_name, owner.last_name].filter(Boolean).join(' ') || owner.username;
@@ -158,7 +156,7 @@ const NodeCell = ({ server }: { server: AdminServer }) => {
                     {node.name}
                 </Link>
             ) : (
-                <span className='block text-muted-foreground'>Unavailable</span>
+                <span className='block text-muted-foreground'>不可用</span>
             )}
             {address ? (
                 <p className='mt-0.5 truncate font-mono text-xs text-muted-foreground' title={address}>
@@ -176,15 +174,15 @@ const ServerActionsCell = ({ server }: { server: AdminServer }) => {
     return (
         <RowActions>
             <ServerEditAction server={server} />
-            <Dialog.Trigger trigger={({ onClick }) => <DeleteAction aria-label={`Delete ${name}`} onClick={onClick} />}>
+            <Dialog.Trigger trigger={({ onClick }) => <DeleteAction aria-label={`删除 ${name}`} onClick={onClick} />}>
                 {({ open, onClose }) => <DeleteServerDialog server={server} open={open} onClose={onClose} />}
             </Dialog.Trigger>
-            <RowActionsMenu label={`More actions for ${name}`}>
+            <RowActionsMenu label={`${name} 的更多操作`}>
                 <DropdownMenu.Item
                     icon={ExternalLink}
                     onClick={() => navigate({ to: '/server/$id', params: { id: identifier } })}
                 >
-                    Open in client area
+                    在客户端打开
                 </DropdownMenu.Item>
             </RowActionsMenu>
         </RowActions>
@@ -195,28 +193,28 @@ export const serverColumns = [
     {
         id: 'name',
         accessorFn: (server) => server.attributes.name,
-        header: ({ column }) => <DataTableColumnHeader column={column} title='Server' />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title='服务器' />,
         cell: ({ row }) => <ServerIdentityCell server={row.original} />,
         enableSorting: true,
         meta: { headerClassName: 'min-w-40', cellClassName: 'min-w-40' },
     },
     {
         id: 'owner',
-        header: 'Owner',
+        header: '所有者',
         cell: ({ row }) => <OwnerCell server={row.original} />,
         enableSorting: false,
         meta: { headerClassName: 'hidden w-40 @xl:table-cell', cellClassName: 'hidden w-40 @xl:table-cell' },
     },
     {
         id: 'node',
-        header: 'Node',
+        header: '节点',
         cell: ({ row }) => <NodeCell server={row.original} />,
         enableSorting: false,
         meta: { headerClassName: 'hidden w-44 @3xl:table-cell', cellClassName: 'hidden w-44 @3xl:table-cell' },
     },
     {
         id: 'status',
-        header: 'Status',
+        header: '状态',
         cell: ({ row }) => (
             <ServerStatusBadge
                 status={getServerStatus(row.original.attributes.suspended, row.original.attributes.container.installed)}
@@ -228,13 +226,13 @@ export const serverColumns = [
     {
         id: 'created_at',
         accessorFn: (server) => server.attributes.created_at,
-        header: ({ column }) => <DataTableColumnHeader column={column} title='Created' />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title='创建时间' />,
         cell: ({ row }) => (
             <time
                 dateTime={row.original.attributes.created_at}
                 className='whitespace-nowrap text-xs text-muted-foreground'
             >
-                {dayjs(row.original.attributes.created_at).format('MMM D, YYYY')}
+                {dayjs(row.original.attributes.created_at).format('YYYY-MM-DD')}
             </time>
         ),
         enableSorting: true,

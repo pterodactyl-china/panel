@@ -7,7 +7,7 @@ interface IconProps {
     icon?: LucideIcon;
 }
 export type NewButtonProps = ButtonProps & IconProps;
-/** The panel's "create" action: a Plus icon and a sentence-case label such as "New node". */
+/** 面板的「创建」操作：一个加号图标与首字母大写的标签，例如「新建节点」。 */
 export declare function NewButton({ icon, className, children, ...props }: NewButtonProps): React.JSX.Element;
 export type NewLinkButtonProps = Omit<React.ComponentProps<typeof RouterLinkButton>, 'children'> & IconProps & {
     children: React.ReactNode;

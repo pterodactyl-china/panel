@@ -13,7 +13,7 @@ interface Props {
     action?: React.ReactNode;
 }
 
-/** Empty state for a searchable admin list: "No servers yet", or "No matching servers" with a way back. */
+/** 可搜索管理列表的空状态：「暂无结果」，或带返回入口的「没有匹配的服务器」。 */
 export default function AdminListEmpty({
     icon: ResourceIcon,
     noun,
@@ -24,7 +24,7 @@ export default function AdminListEmpty({
 }: Props) {
     const content = filter ? (
         <NewButton isSecondary icon={X} onClick={onClearFilter}>
-            Clear search
+            清除搜索
         </NewButton>
     ) : (
         action
@@ -36,11 +36,11 @@ export default function AdminListEmpty({
                 <EmptyMedia variant='icon'>
                     <ResourceIcon />
                 </EmptyMedia>
-                <EmptyTitle>{filter ? `No matching ${noun}` : `No ${noun} yet`}</EmptyTitle>
+                <EmptyTitle>{filter ? `没有匹配的${noun}` : `暂无${noun}`}</EmptyTitle>
                 <EmptyDescription>
                     {filter ? (
                         <>
-                            No {noun} match <span className='font-medium text-foreground'>{filter}</span>.
+                            没有找到与 <span className='font-medium text-foreground'>{filter}</span> 匹配的{noun}。
                         </>
                     ) : (
                         description

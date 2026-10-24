@@ -52,22 +52,22 @@ export default function EggTagsTab() {
     }
 
     return (
-        <ContentBox title='Egg Tags'>
+        <ContentBox title='预设标签'>
             {tags.length === 0 && <NoTagsYet />}
             <Form form={form} className='m-0'>
                 <form.AppField name='tags'>
                     {() => (
                         <TagsField
                             tags={tags}
-                            label='Assigned Tags'
-                            description='Tags organize eggs and match them with nodes configured to accept them.'
-                            emptyText='No tags are assigned to this egg.'
+                            label='已分配标签'
+                            description='标签用于组织预设，并将其与配置为接受这些标签的节点匹配。'
+                            emptyText='此预设未分配标签。'
                         />
                     )}
                 </form.AppField>
                 <div className='mt-6 flex justify-end'>
                     <form.AppForm>
-                        <form.SubmitButton>Save tags</form.SubmitButton>
+                        <form.SubmitButton>保存标签</form.SubmitButton>
                     </form.AppForm>
                 </div>
             </Form>

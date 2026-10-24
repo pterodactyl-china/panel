@@ -50,9 +50,9 @@ function useLoginFormModel(): LoginFormModel {
     const username = useField({
         form,
         name: 'username',
-        validators: required('A username or email must be provided.'),
+        validators: required('必须提供用户名或电子邮箱。'),
     });
-    const password = useField({ form, name: 'password', validators: required('Please enter your account password.') });
+    const password = useField({ form, name: 'password', validators: required('请输入您的账户密码。') });
     const canSubmit = useStore(form.store, (state) => state.canSubmit);
     const submitting = useStore(form.store, (state) => state.isSubmitting) || login.isPending;
 
@@ -171,8 +171,8 @@ implementViews({
                 return {
                     ...model,
                     fields: {
-                        username: { ...model.fields.username, error: 'A username or email must be provided.' },
-                        password: { ...model.fields.password, error: 'Please enter your account password.' },
+                        username: { ...model.fields.username, error: '必须提供用户名或电子邮箱。' },
+                        password: { ...model.fields.password, error: '请输入您的账户密码。' },
                     },
                     canSubmit: false,
                 };

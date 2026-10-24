@@ -32,14 +32,14 @@ const HeaderTable = ({
         onSortingChange: (updater) => onSortingChange(updater instanceof Function ? updater(sorting) : updater),
     });
 
-    return <DataTable table={table} emptyState='No nodes' />;
+    return <DataTable table={table} emptyState='没有节点' />;
 };
 
 describe('NodeTable', () => {
     it.each([
-        ['checking', 'Checking'],
-        ['online', 'Online'],
-        ['offline', 'Offline'],
+        ['checking', '检查中'],
+        ['online', '在线'],
+        ['offline', '离线'],
     ] as const)('renders the %s node status', (status, label) => {
         render(<NodeStatusBadge status={status} title={`${label} node`} />);
 
@@ -69,10 +69,10 @@ describe('NodeTable', () => {
 
         render(<HeaderTable sorting={[{ id: 'memory', desc: true }]} onSortingChange={onSortingChange} />);
 
-        expect(screen.queryByRole('columnheader', { name: 'Memory' })).not.toBeInTheDocument();
-        expect(screen.getByRole('columnheader', { name: /Memory.*Disk/ })).toHaveAttribute('aria-sort', 'descending');
+        expect(screen.queryByRole('columnheader', { name: '内存' })).not.toBeInTheDocument();
+        expect(screen.getByRole('columnheader', { name: /内存.*磁盘/ })).toHaveAttribute('aria-sort', 'descending');
 
-        await user.click(screen.getByRole('button', { name: 'Sort Disk descending' }));
+        await user.click(screen.getByRole('button', { name: '按 磁盘 降序排序' }));
 
         expect(onSortingChange).toHaveBeenCalledWith([{ id: 'disk', desc: true }]);
     });

@@ -5,11 +5,11 @@ const CARD_WIDTH = 'w-full sm:w-[calc(50%_-_1rem)] md:w-auto md:flex-1';
 
 export default function AccountOverview({ model, className }: ViewProps<'page.account.overview'>) {
     return (
-        <PageContentBlock title='Account Overview' className={className}>
-            <PageHeading title='Account' description='Manage your profile, credentials, and account security.' />
+        <PageContentBlock title='账户概览' className={className}>
+            <PageHeading title='账户' description='管理您的个人资料、凭据与账户安全。' />
             {model.twoFactorRequired && (
-                <Alert title='2-Factor Required' type='danger'>
-                    Your account must have two-factor authentication enabled in order to continue.
+                <Alert title='需要两步验证' type='danger'>
+                    您的账户必须启用两步验证才能继续。
                 </Alert>
             )}
             <Slot name='account.overview.before' />

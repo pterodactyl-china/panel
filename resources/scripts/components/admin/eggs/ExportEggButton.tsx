@@ -36,13 +36,13 @@ export default function ExportEggButton({ egg }: Props) {
             link.remove();
             window.URL.revokeObjectURL(url);
         } catch (error) {
-            notifyHttpError(error, 'Unable to export egg');
+            notifyHttpError(error, '无法导出预设');
         }
     };
 
     return (
         <Button isSecondary disabled={exportEgg.isFetching} isLoading={exportEgg.isFetching} onClick={download}>
-            Export
+            导出
         </Button>
     );
 }

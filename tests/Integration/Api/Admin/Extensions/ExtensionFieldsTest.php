@@ -316,7 +316,7 @@ test('an extension validates its values against its own rules, beside the core r
     $this->putJson(route('api.admin.users.update', ['user' => $user->id]), userPayload($user, ['extensions' => ['billing' => ['plan' => 'pro']]]))
         ->assertUnprocessable()
         ->assertJsonPath('errors.0.meta.source_field', 'extensions.billing.invoice_email')
-        ->assertJsonPath('errors.0.detail', 'The invoice email field is required when plan is pro.');
+        ->assertJsonPath('errors.0.detail', '当 plan 为 pro 时 invoice email 不能为空。');
 
     $this->putJson(route('api.admin.users.update', ['user' => $user->id]), userPayload($user, ['extensions' => ['billing' => ['plan' => 'pro', 'invoice_email' => 'bills@example.test']]]))
         ->assertOk()

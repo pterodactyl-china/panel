@@ -40,7 +40,7 @@ class ServerController extends ApplicationApiController
             [
                 'code' => 'NoViableNodeException',
                 'status' => '400',
-                'detail' => 'No nodes satisfying the requirements specified for automatic deployment could be found.',
+                'detail' => '找不到满足自动部署要求的节点。',
             ],
         ],
     ];

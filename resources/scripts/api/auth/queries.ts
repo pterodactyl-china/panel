@@ -16,26 +16,26 @@ export const useLogin = () =>
         onMutate: async () => {
             await authGetCsrfCookie();
         },
-        onError: (error) => notifyHttpError(error, 'Unable to log in'),
+        onError: (error) => notifyHttpError(error, '无法登录'),
     });
 
 export const useLoginCheckpoint = () =>
     useMutation({
         ...authCompleteLoginCheckpointMutation(),
-        onError: (error) => notifyHttpError(error, 'Unable to verify two-step code'),
+        onError: (error) => notifyHttpError(error, '无法验证两步验证码'),
     });
 
 export const useRequestPasswordResetEmail = () =>
     useMutation({
         ...authRequestPasswordResetEmailMutation(),
-        onSuccess: (response) => toast.success(response.status || 'Password reset email sent'),
-        onError: (error) => notifyHttpError(error, 'Unable to request password reset'),
+        onSuccess: (response) => toast.success(response.status || '密码重置邮件已发送'),
+        onError: (error) => notifyHttpError(error, '无法请求重置密码'),
     });
 
 export const usePerformPasswordReset = () =>
     useMutation({
         ...authResetPasswordMutation(),
-        onError: (error) => notifyHttpError(error, 'Unable to reset password'),
+        onError: (error) => notifyHttpError(error, '无法重置密码'),
     });
 
 export const useLogout = () =>

@@ -94,13 +94,13 @@ describe('server.power', () => {
         await renderServer(<View name='server.power' />);
         await status('offline');
 
-        fireEvent.click(screen.getByRole('button', { name: 'Start' }));
+        fireEvent.click(screen.getByRole('button', { name: '启动' }));
         expect(send).toHaveBeenCalledWith('set state', 'start');
-        expect(screen.getByRole('button', { name: 'Stop' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: '停止' })).toBeDisabled();
 
         await status('running');
-        expect(screen.getByRole('button', { name: 'Start' })).toBeDisabled();
-        fireEvent.click(screen.getByRole('button', { name: 'Restart' }));
+        expect(screen.getByRole('button', { name: '启动' })).toBeDisabled();
+        fireEvent.click(screen.getByRole('button', { name: '重启' }));
         expect(send).toHaveBeenLastCalledWith('set state', 'restart');
     });
 
@@ -108,11 +108,11 @@ describe('server.power', () => {
         await renderServer(<View name='server.power' />);
         await status('stopping');
 
-        fireEvent.click(screen.getByRole('button', { name: 'Kill' }));
+        fireEvent.click(screen.getByRole('button', { name: '强制停止' }));
         const dialog = await screen.findByRole('dialog');
 
         expect(send).not.toHaveBeenCalledWith('set state', 'kill');
-        fireEvent.click(within(dialog).getByRole('button', { name: 'Continue' }));
+        fireEvent.click(within(dialog).getByRole('button', { name: '继续' }));
         expect(send).toHaveBeenCalledWith('set state', 'kill');
     });
 
@@ -209,7 +209,7 @@ describe('server.terminal', () => {
     it('sends commands and steps through their history', async () => {
         vi.spyOn(console, 'error').mockImplementation(() => {});
         await renderServer(<View name='server.terminal' />);
-        const input = screen.getByRole('textbox', { name: 'Console command input.' });
+        const input = screen.getByRole('textbox', { name: '控制台命令输入。' });
 
         fireEvent.change(input, { target: { value: 'say hello' } });
         fireEvent.keyDown(input, { key: 'Enter' });
@@ -257,14 +257,14 @@ describe('page.server.console', () => {
     it('keeps the title while hidden, and composes the blocks', async () => {
         await renderServer(<View name='page.server.console' active={false} />);
 
-        await waitFor(() => expect(screen.getByRole('heading', { name: 'Test server' })).toBeInTheDocument());
-        expect(screen.getByRole('button', { name: 'Start' })).toBeInTheDocument();
-        expect(screen.getByText('CPU Load', { selector: 'h3' })).toBeInTheDocument();
+        await waitFor(() => expect(screen.getByRole('heading', { name: '测试服务器' })).toBeInTheDocument());
+        expect(screen.getByRole('button', { name: '启动' })).toBeInTheDocument();
+        expect(screen.getByText('CPU 负载', { selector: 'h3' })).toBeInTheDocument();
     });
 
     it('warns above the console while the server installs', async () => {
         await renderServer(<View name='page.server.console' active />, { status: 'installing' });
 
-        expect(await screen.findByText(/running its installation process/)).toBeVisible();
+        expect(await screen.findByText(/正在安装/)).toBeVisible();
     });
 });

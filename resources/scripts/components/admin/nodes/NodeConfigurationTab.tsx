@@ -27,7 +27,7 @@ const ConfigurationFile = ({ query }: { query: NodeConfigurationQuery }) => {
             <div className='space-y-4'>
                 <Alert type='danger'>{httpErrorToHuman(error)}</Alert>
                 <Button.Text type='button' onClick={() => refetch()}>
-                    Retry
+                    重试
                 </Button.Text>
             </div>
         );
@@ -44,7 +44,7 @@ const ConfigurationFile = ({ query }: { query: NodeConfigurationQuery }) => {
             <div className='flex items-center justify-between border-b border-border py-1.5 pr-1.5 pl-4 text-xs text-muted-foreground'>
                 <span className='font-mono'>config.yml</span>
                 <CopyOnClick text={yaml} showInNotification={false}>
-                    <Button.Text type='button' size='xsmall' isSecondary aria-label='Copy configuration file'>
+                    <Button.Text type='button' size='xsmall' isSecondary aria-label='复制配置文件'>
                         <Icon icon={Copy} className='h-3.5 w-3.5' />
                     </Button.Text>
                 </CopyOnClick>
@@ -75,9 +75,9 @@ export default function NodeConfigurationTab() {
 
     return (
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
-            <Dialog open={token !== null} title='Auto-deploy command generated' onClose={() => setToken(null)}>
+            <Dialog open={token !== null} title='已生成自动部署命令' onClose={() => setToken(null)}>
                 <p className='text-sm text-muted-foreground mb-4'>
-                    Run the following command on the target machine to automatically configure Wings for this node.
+                    在目标机器上运行以下命令，即可自动为此节点配置 Wings。
                 </p>
                 <div className='relative'>
                     <CopyOnClick text={command} showInNotification={false}>
@@ -85,7 +85,7 @@ export default function NodeConfigurationTab() {
                             type='button'
                             size='xsmall'
                             isSecondary
-                            aria-label='Copy auto-deploy command'
+                            aria-label='复制自动部署命令'
                             className='absolute right-2 top-2'
                         >
                             <Icon icon={Copy} className='h-3.5 w-3.5' />
@@ -97,19 +97,18 @@ export default function NodeConfigurationTab() {
                 </div>
             </Dialog>
             <div className='lg:col-span-2'>
-                <TitledGreyBox title='Configuration File'>
+                <TitledGreyBox title='配置文件'>
                     <ConfigurationFile query={query} />
                     <p className='text-xs text-muted-foreground mt-3'>
-                        Place this file in your daemon&apos;s root directory (usually <code>/etc/pterodactyl</code>) in
-                        a file called <code>config.yml</code>.
+                        将此文件放置到守护进程的根目录（通常为 <code>/etc/pterodactyl</code>）下，文件名为{' '}
+                        <code>config.yml</code>.
                     </p>
                 </TitledGreyBox>
             </div>
             <div>
-                <TitledGreyBox title='Auto-Deploy'>
+                <TitledGreyBox title='自动部署'>
                     <p className='text-sm text-muted-foreground mb-4'>
-                        Generate a custom deployment command that configures Wings on the target server with a single
-                        command.
+                        生成自定义部署命令，一条命令即可在目标服务器上完成 Wings 配置。
                     </p>
                     <Button
                         color='green'
@@ -118,7 +117,7 @@ export default function NodeConfigurationTab() {
                         onClick={generate}
                         className='w-full'
                     >
-                        Generate Token
+                        生成令牌
                     </Button>
                 </TitledGreyBox>
             </div>

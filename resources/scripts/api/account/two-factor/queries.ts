@@ -18,9 +18,9 @@ export const useEnableAccountTwoFactor = () => {
         ...clientEnableTwoFactorAuthenticationMutation(),
         onSuccess: () => {
             setCurrentUserQueryData(queryClient, { useTotp: true });
-            toast.success('Two-step verification enabled');
+            toast.success('两步验证已启用');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to enable two-step verification'),
+        onError: (error) => notifyHttpError(error, '无法启用两步验证'),
     });
 };
 
@@ -31,8 +31,8 @@ export const useDisableAccountTwoFactor = () => {
         ...clientDisableTwoFactorAuthenticationMutation(),
         onSuccess: () => {
             setCurrentUserQueryData(queryClient, { useTotp: false });
-            toast.success('Two-step verification disabled');
+            toast.success('两步验证已禁用');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to disable two-step verification'),
+        onError: (error) => notifyHttpError(error, '无法禁用两步验证'),
     });
 };

@@ -10,7 +10,7 @@ use Illuminate\Console\Command;
 use Pterodactyl\Services\Extensions\ExtensionManifest;
 use Pterodactyl\Services\Extensions\ExtensionRepository;
 
-#[Description('List every installed extension and its state.')]
+#[Description('列出所有已安装扩展及其状态。')]
 #[Signature('p:extension:list')]
 class ListCommand extends Command
 {
@@ -22,7 +22,7 @@ class ListCommand extends Command
             $record = $records->get($manifest->id);
 
             $state = match (true) {
-                $record === null => 'not registered',
+                $record === null => '未注册',
                 $record->enabled => 'enabled',
                 default => 'disabled',
             };
@@ -38,11 +38,11 @@ class ListCommand extends Command
         })->values()->all();
 
         foreach ($extensions->discoveryErrors() as $directory => $error) {
-            $rows[] = [$directory, '(invalid manifest)', '', '', 'error', $error];
+            $rows[] = [$directory, '（清单无效）', '', '', 'error', $error];
         }
 
         if (empty($rows)) {
-            $this->components->info('No extensions installed. Install one with p:extension:install.');
+            $this->components->info('未安装任何扩展。可使用 p:extension:install 安装。');
 
             return self::SUCCESS;
         }

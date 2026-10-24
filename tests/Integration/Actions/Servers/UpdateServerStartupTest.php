@@ -34,7 +34,7 @@ test('non admin can modify server variables', function (): void {
         expect($errors)->toHaveCount(1);
         expect($errors)->toHaveKey('environment.BUNGEE_VERSION');
         expect($errors['environment.BUNGEE_VERSION'])->toHaveCount(1);
-        expect($errors['environment.BUNGEE_VERSION'][0])->toBe('The Bungeecord Version variable may only contain letters and numbers.');
+        expect($errors['environment.BUNGEE_VERSION'][0])->toBe('Bungeecord Version 变量 只能由字母和数字组成。');
     }
 
     ServerVariable::query()->where('variable_id', $server->variables[1]->id)->delete();

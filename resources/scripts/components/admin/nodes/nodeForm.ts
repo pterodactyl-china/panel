@@ -77,11 +77,11 @@ export const nodeValuesFromForm = ({
 
 export const validateNodeName = (value: string): string | undefined => {
     if (value.length < 1) {
-        return 'A name must be provided.';
+        return '必须提供名称。';
     }
 
     if (value.length > 100) {
-        return 'A name must not exceed 100 characters.';
+        return '名称不得超过 100 个字符。';
     }
 
     return undefined;
@@ -89,18 +89,14 @@ export const validateNodeName = (value: string): string | undefined => {
 
 export const nodeNumberValidators = {
     memory: {
-        onChange: requiredNumber('A memory limit must be provided.', (value) =>
-            value >= 1 ? undefined : 'A memory limit must be provided.'
-        ),
+        onChange: requiredNumber('必须提供内存限制。', (value) => (value >= 1 ? undefined : '必须提供内存限制。')),
     },
-    memoryOverallocate: { onChange: requiredNumber('A memory overallocation must be provided.') },
+    memoryOverallocate: { onChange: requiredNumber('必须提供内存超额分配。') },
     disk: {
-        onChange: requiredNumber('A disk limit must be provided.', (value) =>
-            value >= 1 ? undefined : 'A disk limit must be provided.'
-        ),
+        onChange: requiredNumber('必须提供磁盘限制。', (value) => (value >= 1 ? undefined : '必须提供磁盘限制。')),
     },
-    diskOverallocate: { onChange: requiredNumber('A disk overallocation must be provided.') },
-    uploadSize: { onChange: requiredNumber('An upload size limit must be provided.') },
-    daemonListen: { onChange: requiredNumber('A daemon port must be provided.') },
-    daemonSftp: { onChange: requiredNumber('A daemon SFTP port must be provided.') },
+    diskOverallocate: { onChange: requiredNumber('必须提供磁盘超额分配。') },
+    uploadSize: { onChange: requiredNumber('必须提供上传大小限制。') },
+    daemonListen: { onChange: requiredNumber('必须提供守护进程端口。') },
+    daemonSftp: { onChange: requiredNumber('必须提供守护进程 SFTP 端口。') },
 };

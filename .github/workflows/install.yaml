@@ -1,4 +1,4 @@
-name: Install
+name: 安装
 
 # Follows the panel installation guide on every operating system it supports, so a
 # package, repository or step that stops working on one of them fails here first.

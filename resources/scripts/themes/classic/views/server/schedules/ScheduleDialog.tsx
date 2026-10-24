@@ -32,28 +32,22 @@ function ScheduleForm({ values, editing, onSubmit, onClose }: Omit<Props, 'open'
     return (
         <Form form={form}>
             <form.AppField name='name'>
-                {(field) => (
-                    <field.TextField
-                        label='Schedule name'
-                        description='A human readable identifier for this schedule.'
-                    />
-                )}
+                {(field) => <field.TextField label='计划名称' description='此计划的可读标识。' />}
             </form.AppField>
             <div className={cronFieldsClass}>
-                <form.AppField name='minute'>{(field) => <field.TextField label='Minute' />}</form.AppField>
-                <form.AppField name='hour'>{(field) => <field.TextField label='Hour' />}</form.AppField>
-                <form.AppField name='dayOfMonth'>{(field) => <field.TextField label='Day of month' />}</form.AppField>
-                <form.AppField name='month'>{(field) => <field.TextField label='Month' />}</form.AppField>
-                <form.AppField name='dayOfWeek'>{(field) => <field.TextField label='Day of week' />}</form.AppField>
+                <form.AppField name='minute'>{(field) => <field.TextField label='分钟' />}</form.AppField>
+                <form.AppField name='hour'>{(field) => <field.TextField label='小时' />}</form.AppField>
+                <form.AppField name='dayOfMonth'>{(field) => <field.TextField label='每月第几日' />}</form.AppField>
+                <form.AppField name='month'>{(field) => <field.TextField label='月' />}</form.AppField>
+                <form.AppField name='dayOfWeek'>{(field) => <field.TextField label='每周星期几' />}</form.AppField>
             </div>
             <p className='text-muted-foreground text-xs mt-2'>
-                The schedule system supports the use of Cronjob syntax when defining when tasks should begin running.
-                Use the fields above to specify when these tasks should begin running.
+                计划系统支持使用 Cron 表达式定义任务的执行时间。请使用上方的字段指定这些任务的运行时间。
             </p>
             <div className='mt-6 bg-card border border-border shadow-inner p-4 rounded-sm'>
                 <Switch
-                    label='Show Cheatsheet'
-                    description='Show the cron cheatsheet for some examples.'
+                    label='显示速查表'
+                    description='查看 cron 备忘单以了解示例。'
                     checked={showCheatsheet}
                     onChange={() => setShowCheatsheet((shown) => !shown)}
                 />
@@ -63,26 +57,21 @@ function ScheduleForm({ values, editing, onSubmit, onClose }: Omit<Props, 'open'
                 <form.AppField name='onlyWhenOnline'>
                     {(field) => (
                         <field.SwitchField
-                            description='Only execute this schedule when the server is in a running state.'
-                            label='Only When Server Is Online'
+                            description='仅在服务器处于运行状态时执行此计划。'
+                            label='仅当服务器在线时'
                         />
                     )}
                 </form.AppField>
             </div>
             <div className='mt-6 bg-card border border-border shadow-inner p-4 rounded-sm'>
                 <form.AppField name='enabled'>
-                    {(field) => (
-                        <field.SwitchField
-                            description='This schedule will be executed automatically if enabled.'
-                            label='Schedule Enabled'
-                        />
-                    )}
+                    {(field) => <field.SwitchField description='启用后此计划将自动执行。' label='计划已启用' />}
                 </form.AppField>
             </div>
             <div className='mt-6 text-right'>
                 <form.AppForm>
                     <form.SubmitButton className='w-full sm:w-auto'>
-                        {editing ? 'Save changes' : 'Create schedule'}
+                        {editing ? '保存更改' : '创建计划'}
                     </form.SubmitButton>
                 </form.AppForm>
             </div>
@@ -93,7 +82,7 @@ function ScheduleForm({ values, editing, onSubmit, onClose }: Omit<Props, 'open'
 /** Creates a schedule, or edits one, with its name, cron fields and switches. */
 export default function ScheduleDialog({ open, onClose, ...props }: Props) {
     return (
-        <Dialog open={open} title={props.editing ? 'Edit schedule' : 'Create schedule'} onClose={onClose}>
+        <Dialog open={open} title={props.editing ? '编辑计划' : '创建计划'} onClose={onClose}>
             <ScheduleForm {...props} onClose={onClose} />
         </Dialog>
     );

@@ -6,10 +6,10 @@ import { tabLabel } from './tabLabel';
 /** An icon in the row; it is named once the navigation collapses or moves it into the menu. */
 function AdminLinkLabel({ placement }: { placement: 'row' | 'menu' }) {
     return (
-        <span className='inline-flex items-center gap-2 align-top' title='Open server administration'>
+        <span className='inline-flex items-center gap-2 align-top' title='打开服务器管理'>
             <Icon icon={ExternalLink} aria-hidden />
             <span className={placement === 'row' ? 'sr-only in-data-collapsed:not-sr-only' : undefined}>
-                Open Admin Area
+                打开管理区
             </span>
         </span>
     );

@@ -35,38 +35,37 @@ function DeleteLocationDialog({ location, open, onClose }: LocationDialogProps) 
     return (
         <Dialog
             open={open}
-            title='Confirm location deletion'
+            title='确认删除地域'
             preventExternalClose={isSubmitting}
             hideCloseIcon={isSubmitting}
             onClose={onClose}
         >
             <SpinnerOverlay visible={isSubmitting} />
             <p className='text-sm'>
-                Deleting a location is permanent. This will remove <strong>{attributes.short}</strong>.
+                删除地域是不可撤销的操作。这将移除 <strong>{attributes.short}</strong>.
             </p>
             <Form form={form} className='m-0 mt-6'>
                 <form.AppField
                     name='confirm'
                     validators={{
-                        onChange: ({ value }) =>
-                            value === attributes.short ? undefined : 'The short code must be provided.',
+                        onChange: ({ value }) => (value === attributes.short ? undefined : '必须提供短代码。'),
                     }}
                 >
                     {(field) => (
                         <field.TextField
                             type='text'
                             id={`confirm_${attributes.id}`}
-                            label='Confirm short code'
-                            description='Enter the short code to confirm deletion.'
+                            label='确认短代码'
+                            description='输入短代码以确认删除。'
                         />
                     )}
                 </form.AppField>
                 <div className='mt-6 flex justify-end gap-2'>
                     <Button.Text type='button' isSecondary onClick={onClose}>
-                        Cancel
+                        取消
                     </Button.Text>
                     <form.AppForm>
-                        <form.SubmitButton color='red'>Delete location</form.SubmitButton>
+                        <form.SubmitButton color='red'>删除地域</form.SubmitButton>
                     </form.AppForm>
                 </div>
             </Form>
@@ -77,13 +76,13 @@ function DeleteLocationDialog({ location, open, onClose }: LocationDialogProps) 
 const LocationActionsCell = ({ location }: { location: AdminLocation }) => (
     <RowActions>
         <EditLinkAction
-            aria-label={`Edit ${location.attributes.short}`}
+            aria-label={`编辑 ${location.attributes.short}`}
             to='/panel/locations/$id'
             params={{ id: location.attributes.id }}
         />
         <Dialog.Trigger
             trigger={({ onClick }) => (
-                <DeleteAction aria-label={`Delete ${location.attributes.short}`} onClick={onClick} />
+                <DeleteAction aria-label={`删除 ${location.attributes.short}`} onClick={onClick} />
             )}
         >
             {({ open, onClose }) => <DeleteLocationDialog location={location} open={open} onClose={onClose} />}
@@ -95,7 +94,7 @@ export const locationColumns = [
     {
         id: 'short',
         accessorFn: (location) => location.attributes.short,
-        header: ({ column }) => <DataTableColumnHeader column={column} title='Location' />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title='地域' />,
         cell: ({ row }) => (
             <div className='w-0 min-w-full'>
                 <Link
@@ -118,14 +117,14 @@ export const locationColumns = [
     },
     {
         id: 'nodes_count',
-        header: 'Nodes',
+        header: '节点',
         cell: ({ row }) => <span className='tabular-nums'>{row.original.attributes.nodes_count}</span>,
         enableSorting: false,
         meta: { headerClassName: 'hidden w-20 @sm:table-cell', cellClassName: 'hidden w-20 @sm:table-cell' },
     },
     {
         id: 'servers_count',
-        header: 'Servers',
+        header: '服务器',
         cell: ({ row }) => <span className='tabular-nums'>{row.original.attributes.servers_count}</span>,
         enableSorting: false,
         meta: { headerClassName: 'hidden w-20 @lg:table-cell', cellClassName: 'hidden w-20 @lg:table-cell' },
@@ -133,13 +132,13 @@ export const locationColumns = [
     {
         id: 'created_at',
         accessorFn: (location) => location.attributes.created_at,
-        header: ({ column }) => <DataTableColumnHeader column={column} title='Created' />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title='创建时间' />,
         cell: ({ row }) => (
             <time
                 className='whitespace-nowrap text-xs text-muted-foreground'
                 dateTime={row.original.attributes.created_at}
             >
-                {dayjs(row.original.attributes.created_at).format('MMM D, YYYY')}
+                {dayjs(row.original.attributes.created_at).format('YYYY-MM-DD')}
             </time>
         ),
         enableSorting: true,

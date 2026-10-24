@@ -1,25 +1,22 @@
-# Contributing
+# 参与贡献
 
-Pterodactyl is a community project. All contributions to both Panel and Wings are welcome, whether it's new features or bug fixes.
+Pterodactyl 是一个社区项目。无论是新功能还是缺陷修复，我们都欢迎您向 Panel 与 Wings 提交贡献。
 
-## Responsible Disclosure
-This is an in-depth project making use of many moving pieces. While we strive to keep everything as secure as possible
-and welcome you to take a look at the code provided in this project yourself. We do ask that you be considerate of
-others who are using the software and not publicly disclose security issues. Please see [`SECURITY.md`](/SECURITY.md)
-for information on how to report security issues to the team.
+## 负责任的信息披露
 
-## Contact Us
-You can find us in a couple places online. First and foremost, we're active right here on GitHub. If you encounter a
-bug or other problems, open an issue on here for us to take a look at it. Please make use of
-our [GitHub Discussions](https://github.com/orgs/pterodactyl/discussions/categories/feature-requests)
-for any feature requests, general questions, or help with the software.
+本项目规模较大，涉及众多协作组件。我们会尽最大努力保证整体安全，也欢迎您自行审阅项目中的代码。同时，我们恳请您体谅其他正在使用本软件的用户，不要公开披露安全问题。关于如何向团队报告安全问题，请参阅 [`SECURITY.md`](/SECURITY.md)。
 
-You can also find us on [Discord](https://discord.gg/pterodactyl).
+## 联系我们
 
-## AI-assisted contributions
-AI and LLMs are awesome, they can truly 10x your productivity, help explore a large codebase, help with large changes, and write lots of test coverage. That said, they do not replace your responsibility for the result and output of an LLM tool.
+您可以在多个渠道找到我们。首先，我们在 GitHub 上非常活跃。若您遇到缺陷或其他问题，请在此提交 issue 以便我们查看。功能建议、一般性问题或使用求助，请使用我们的 [GitHub Discussions](https://github.com/orgs/pterodactyl/discussions/categories/feature-requests)。
 
-- Please keep the conversation in your own voice. Review, rewrite generated code comments, issue reports, and pull requests descriptions so they reflect the intent of what you mean.
-- Keep ownership of the of all decisions made, you have to understand every change, and you must verify the behavior with appropriate test coverage at the bare minimum, your code should reflect the style of the codebase.
-- Do not copy paste LLM output verbatim into the codebase and expect a contribution, you will treat generated output as a draft, and you, the human, are expected to check it's claims, adapt it to the repository, and remove anything that you yourself cannot justify. Issues that are entirely unreviewed LLM output will be closed without review.
-- AI-assisted contributions follow the same standards for quality, correctness, testing, etc as any other contribution.
+您也可以通过 [Discord](https://discord.gg/pterodactyl) 找到我们。
+
+## AI 辅助贡献
+
+AI 与 LLM 很强大，确实能让您的效率提升数倍，帮助理解大型代码库、完成大规模改动以及编写大量测试覆盖。但请注意，它们并不能替代您对 LLM 工具产出结果的责任。
+
+- 请以您自己的表达方式进行沟通。请审阅并重写生成代码中的注释、issue 报告以及拉取请求描述，使其准确反映您的真实意图。
+- 请对所有决策负责：您必须理解每一处改动，至少通过适当的测试覆盖验证其行为，并且代码风格应与本仓库保持一致。
+- 请勿将 LLM 的输出原样粘贴到代码库中并期望其被接受。生成内容应视为草稿，您作为人类需要核对其中的断言、将其适配到本仓库，并删除任何您自己无法解释的内容。完全未经审阅的 LLM 输出 issue 将被直接关闭。
+- AI 辅助贡献在质量、正确性、测试等方面需遵循与其他贡献完全相同的标准。

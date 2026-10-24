@@ -52,9 +52,9 @@ it('renders a themed editor canvas between the native notice and actions with a 
     });
 
     expect(screen.getByLabelText('.pteroignore')).toHaveValue('logs/*');
-    expect(screen.getByText(/excluded from backups/)).toBeVisible();
+    expect(screen.getByText(/排除在备份之外/)).toBeVisible();
     fireEvent.change(screen.getByLabelText('.pteroignore'), { target: { value: 'cache/*' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Save Content' }));
+    fireEvent.click(screen.getByRole('button', { name: '保存内容' }));
 
     expect(change).toHaveBeenCalledWith('cache/*');
     expect(save).toHaveBeenCalledTimes(1);
@@ -63,7 +63,7 @@ it('renders a themed editor canvas between the native notice and actions with a 
 it('hides the native save action from a read-only editor fixture', () => {
     rendered = renderView('server.files.editor', { fixture: 'readOnly' });
 
-    expect(screen.queryByRole('button', { name: 'Save Content' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: '保存内容' })).not.toBeInTheDocument();
 });
 
 it('renders the native file browser from a fixture model without issuing core queries', () => {
@@ -87,8 +87,8 @@ it('renders the native file browser from a fixture model without issuing core qu
         'href',
         '/server/test-server/files#/config/plugins'
     );
-    expect(screen.getByRole('button', { name: 'New file' })).toBeVisible();
-    expect(screen.getByRole('button', { name: 'Archive' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '新建文件' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '压缩' })).toBeVisible();
 
     fireEvent.click(screen.getAllByRole('checkbox')[0]);
     expect(select).toHaveBeenCalledWith(['plugins', 'app.yml']);
@@ -134,7 +134,7 @@ it('renders a view synchronously from fixtures with a theme layered over classic
     });
 
     expect(container.querySelector('[data-aurora-layout] main')).not.toBeNull();
-    expect(container.querySelector('a[aria-label="Admin"]')).toHaveAttribute('href', '/panel');
+    expect(container.querySelector('a[aria-label="管理"]')).toHaveAttribute('href', '/panel');
     unmount();
     expect(container.isConnected).toBe(false);
 });
@@ -156,7 +156,7 @@ it('renders the lazy views of a theme once they are preloaded', async () => {
 
     const { container, unmount } = renderView('page.dashboard', { themes: [theme], fixture: 'error' });
 
-    expect(container).toHaveTextContent('lazy dashboard Request failed with status code 500.');
+    expect(container).toHaveTextContent('lazy dashboard 请求失败，状态码 500。');
     unmount();
 });
 
@@ -192,16 +192,16 @@ it('stacks a chain of themes, so a child builds on its parent rather than classi
     const view = renderView('layout.app', { themes, fixture: 'admin' });
 
     expect(view.container.querySelector('[data-child-layout] > [data-parent-layout] main')).not.toBeNull();
-    expect(renderWithTheme(<Button>Save</Button>, { themes }).container.querySelector('button')).toHaveClass(
+    expect(renderWithTheme(<Button>保存</Button>, { themes }).container.querySelector('button')).toHaveClass(
         'parent-pill',
         'child-shadow'
     );
 });
 
 it('renders an element under a theme, replacing what was rendered before', () => {
-    const first = renderWithTheme(<Button color='red'>Save changes</Button>, { themes: [defineTheme({})] });
+    const first = renderWithTheme(<Button color='red'>保存更改</Button>, { themes: [defineTheme({})] });
 
-    expect(first.container.querySelector('button')).toHaveTextContent('Save changes');
+    expect(first.container.querySelector('button')).toHaveTextContent('保存更改');
 
     const second = renderWithTheme(<Alert type='warning'>Disk is nearly full.</Alert>);
 
@@ -213,7 +213,7 @@ it('renders an element under a theme, replacing what was rendered before', () =>
 it('renders a fixture of a view that takes inputs with the inputs it declares', () => {
     const { container, unmount } = renderView('dashboard.serverCard', { fixture: 'suspended' });
 
-    expect(container).toHaveTextContent('Test server');
+    expect(container).toHaveTextContent('测试服务器');
     expect(container).toHaveTextContent('Suspended');
     unmount();
 });
@@ -259,7 +259,7 @@ describe('failing layers', () => {
     it('falls back to classic, once, when not strict', () => {
         const { container, unmount } = renderView('server.graphs', { themes: [failing], strict: false });
 
-        expect(container).toHaveTextContent('CPU Load');
+        expect(container).toHaveTextContent('CPU 负载');
         unmount();
     });
 
@@ -355,16 +355,16 @@ it('gives the app layout the area it renders, from a fixture of each area', () =
 
     expect(kinds).toEqual([
         'dashboard undefined',
-        'account user-round:Account',
+        'account user-round:账户',
         'Survival is running square-terminal:Console',
-        'admin layout-dashboard:Overview',
+        'admin layout-dashboard:概览',
     ]);
 });
 
 it('renders a view measuring itself without stubbing browser APIs', () => {
     const { container, unmount } = renderView('server.graphs');
 
-    expect(container).toHaveTextContent('Memory');
+    expect(container).toHaveTextContent('内存');
     unmount();
 });
 

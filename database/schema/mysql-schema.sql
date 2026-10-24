@@ -662,7 +662,7 @@ CREATE TABLE `users` (
   `name_last` varchar(191) DEFAULT NULL,
   `password` text NOT NULL,
   `remember_token` varchar(191) DEFAULT NULL,
-  `language` char(5) NOT NULL DEFAULT 'en',
+  `language` char(5) NOT NULL DEFAULT 'zh',
   `root_admin` tinyint(3) unsigned NOT NULL DEFAULT 0,
   `use_totp` tinyint(3) unsigned NOT NULL,
   `totp_secret` text DEFAULT NULL,

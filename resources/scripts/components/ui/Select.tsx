@@ -355,7 +355,7 @@ function MultiSelectCombobox({
                         </>
                     )}
                 </Combobox.Value>
-                <Combobox.Trigger {...ui('trigger')} aria-label='Open popup'>
+                <Combobox.Trigger {...ui('trigger')} aria-label='打开弹窗'>
                     <ChevronIcon />
                 </Combobox.Trigger>
             </Combobox.InputGroup>
@@ -429,7 +429,7 @@ function SingleSelectCombobox({
                     onFocus={search.handleFocus}
                     onBlur={search.handleBlur}
                 />
-                <Combobox.Trigger {...ui('trigger')} aria-label='Open popup'>
+                <Combobox.Trigger {...ui('trigger')} aria-label='打开弹窗'>
                     <ChevronIcon />
                 </Combobox.Trigger>
             </Combobox.InputGroup>
@@ -451,7 +451,7 @@ export default function Select(props: SelectProps) {
         disabled,
         placeholder,
         searchPlaceholder = 'Search...',
-        emptyMessage = 'No results found.',
+        emptyMessage = '未找到结果。',
         hasError,
         onBlur,
         onSearchChange,

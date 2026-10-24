@@ -17,8 +17,8 @@ use Pterodactyl\Services\Extensions\ExtensionSettingsRegistry;
 use Pterodactyl\Services\Themes\ThemeRepository;
 use Pterodactyl\Services\Themes\ThemeSetting;
 
-#[Description('Generate literal screen ids, frontend configuration types and theme settings types for an extension or theme.')]
-#[Signature('p:extension:types {path : Unpacked package path.} {--output= : Generated TypeScript file; defaults to src/client/extension-types.ts, or src/theme-types.ts for a theme.}')]
+#[Description('为扩展或主题生成字面量页面 ID、前端配置类型与主题设置类型。')]
+#[Signature('p:extension:types {path : 已解压包的路径。} {--output= : 生成的 TypeScript 文件；默认为 src/client/extension-types.ts，主题则为 src/theme-types.ts。}')]
 class TypesCommand extends Command
 {
     public function handle(ExtensionManifestValidator $validator, ExtensionSettingsRegistry $settings, ExtensionPermissionRegistry $permissions, ThemeRepository $themes, ExtensionRepository $extensions): int
@@ -56,10 +56,10 @@ class TypesCommand extends Command
         File::replace($output, $source);
         // Only a provider declares settings, and only once it is loaded; a package without one has none to miss.
         if (! $definition instanceof ExtensionSettingsDefinition && $manifest->provider !== null && ! $extensions->isAvailable($manifest->id)) {
-            $this->components->warn("The extension's provider is not loaded; enable the extension to include the frontend configuration keys it declares.");
+            $this->components->warn('扩展的 Provider 未加载；启用该扩展即可包含其声明的前端配置项。');
         }
 
-        $this->components->info("Generated extension types: {$output}");
+        $this->components->info("已生成扩展类型：{$output}");
 
         return self::SUCCESS;
     }

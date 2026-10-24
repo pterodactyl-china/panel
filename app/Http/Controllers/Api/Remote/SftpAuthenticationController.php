@@ -143,7 +143,7 @@ class SftpAuthenticationController extends Controller
             $this->incrementLoginAttempts($request);
         }
 
-        throw new HttpForbiddenException('Authorization credentials were not correct, please try again.');
+        throw new HttpForbiddenException('授权凭据不正确，请重试。');
     }
 
     /**
@@ -155,7 +155,7 @@ class SftpAuthenticationController extends Controller
             if (! in_array(Permissions::FileSftp->value, $user->permissionsOn($server))) {
                 Activity::event('server:sftp.denied')->actor($user)->subject($server)->log();
 
-                throw new HttpForbiddenException('You do not have permission to access SFTP for this server.');
+                throw new HttpForbiddenException('您没有访问该服务器 SFTP 的权限。');
             }
         }
 

@@ -57,6 +57,6 @@ class ServerTransferController extends Controller
     {
         $server = Server::query()->with('node')->whereUuidOrShort($uuid)->firstOrFail();
 
-        return $server->transfer ?? throw new ConflictHttpException('Server is not being transferred.');
+        return $server->transfer ?? throw new ConflictHttpException('服务器未处于转移状态。');
     }
 }

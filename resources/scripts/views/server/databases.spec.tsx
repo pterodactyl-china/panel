@@ -59,20 +59,20 @@ async function renderDatabases(databases: ServerDatabase[], options: { limit?: n
         data: databases,
     });
     render(<View name='page.server.databases' />, { wrapper: host.Wrapper });
-    await screen.findByText(databases.length ? databases[0].attributes.name : 'No databases');
+    await screen.findByText(databases.length ? databases[0].attributes.name : '没有数据库');
 }
 
 it('lists the databases with their usage and creates another', async () => {
     await renderDatabases([database('survival', 'survival')]);
 
     expect(screen.getByText('1 of 2 databases have been allocated to this server.')).toBeVisible();
-    fireEvent.click(screen.getByRole('button', { name: 'New database' }));
+    fireEvent.click(screen.getByRole('button', { name: '新建数据库' }));
     const dialog = await screen.findByRole('dialog');
 
-    fireEvent.change(within(dialog).getByLabelText('Database Name'), { target: { value: 'x' } });
-    expect(await within(dialog).findByText('Database name must be at least 3 characters.')).toBeVisible();
-    fireEvent.change(within(dialog).getByLabelText('Database Name'), { target: { value: 'stats' } });
-    fireEvent.click(within(dialog).getByRole('button', { name: 'Create Database' }));
+    fireEvent.change(within(dialog).getByLabelText('数据库名称'), { target: { value: 'x' } });
+    expect(await within(dialog).findByText('数据库名称至少为 3 个字符。')).toBeVisible();
+    fireEvent.change(within(dialog).getByLabelText('数据库名称'), { target: { value: 'stats' } });
+    fireEvent.click(within(dialog).getByRole('button', { name: '创建数据库' }));
 
     await waitFor(() =>
         expect(requests).toContainEqual(
@@ -80,19 +80,19 @@ it('lists the databases with their usage and creates another', async () => {
         )
     );
     expect(await screen.findByText('s1_stats')).toBeVisible();
-    expect(screen.queryByRole('button', { name: 'New database' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: '新建数据库' })).not.toBeInTheDocument();
 });
 
 it('shows the connection details and rotates the password', async () => {
     await renderDatabases([database('survival', 'survival')]);
 
-    fireEvent.click(screen.getByRole('button', { name: 'View s1_survival connection details' }));
+    fireEvent.click(screen.getByRole('button', { name: '查看 s1_survival 的连接详情' }));
     const dialog = await screen.findByRole('dialog');
 
     expect(
         within(dialog).getByDisplayValue('jdbc:mysql://10.0.0.5:3306/s1_survival?user=u1_survival&password=secret')
     ).toBeVisible();
-    fireEvent.click(within(dialog).getByRole('button', { name: 'Rotate Password' }));
+    fireEvent.click(within(dialog).getByRole('button', { name: '轮换密码' }));
 
     await waitFor(() => expect(within(dialog).getByDisplayValue(/password=rotated$/)).toBeVisible());
     expect(requests.some((request) => request.path.endsWith('/databases/survival/rotate-password'))).toBe(true);
@@ -101,31 +101,31 @@ it('shows the connection details and rotates the password', async () => {
 it('deletes a database once its name is typed', async () => {
     await renderDatabases([database('survival', 'survival')]);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Delete s1_survival' }));
+    fireEvent.click(screen.getByRole('button', { name: '删除 s1_survival' }));
     const dialog = await screen.findByRole('dialog');
 
-    fireEvent.change(within(dialog).getByLabelText('Confirm Database Name'), { target: { value: 'survival' } });
-    fireEvent.click(within(dialog).getByRole('button', { name: 'Delete Database' }));
+    fireEvent.change(within(dialog).getByLabelText('确认数据库名称'), { target: { value: 'survival' } });
+    fireEvent.click(within(dialog).getByRole('button', { name: '删除数据库' }));
 
     await waitFor(() => expect(requests).toContainEqual(expect.objectContaining({ method: 'delete' })));
-    expect(await screen.findByText('No databases')).toBeVisible();
+    expect(await screen.findByText('没有数据库')).toBeVisible();
 });
 
 it('hides what the user may not do', async () => {
     await renderDatabases([database('survival', 'survival')], { permissions: ['database.read'] });
 
     expect(screen.queryByText(/databases have been allocated/)).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Delete s1_survival' })).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'View s1_survival connection details' }));
+    expect(screen.queryByRole('button', { name: '删除 s1_survival' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: '查看 s1_survival 的连接详情' }));
 
     const dialog = await screen.findByRole('dialog');
 
-    expect(within(dialog).queryByText('Password')).not.toBeInTheDocument();
-    expect(within(dialog).queryByRole('button', { name: 'Rotate Password' })).not.toBeInTheDocument();
+    expect(within(dialog).queryByText('密码')).not.toBeInTheDocument();
+    expect(within(dialog).queryByRole('button', { name: '轮换密码' })).not.toBeInTheDocument();
 });
 
 it('explains a database limit of zero', async () => {
     await renderDatabases([], { limit: 0 });
 
-    expect(screen.getByText("Databases can't be created because this server's database limit is 0.")).toBeVisible();
+    expect(screen.getByText('无法创建数据库，因为此服务器的数据库上限为 0。')).toBeVisible();
 });

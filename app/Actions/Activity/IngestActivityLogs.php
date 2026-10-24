@@ -85,7 +85,7 @@ final class IngestActivityLogs implements IngestsActivityLogs
 
             try {
                 $when = Date::createFromFormat(DateTimeInterface::RFC3339, preg_replace('/(\.\d+)Z$/', 'Z', $datum['timestamp']) ?? $datum['timestamp'], 'UTC')
-                    ?? throw new InvalidArgumentException('The activity timestamp could not be parsed.');
+                    ?? throw new InvalidArgumentException('无法解析活动时间戳。');
             } catch (Exception $exception) {
                 Log::warning($exception->getMessage(), ['exception' => $exception, 'timestamp' => $datum['timestamp']]);
                 $when = now();

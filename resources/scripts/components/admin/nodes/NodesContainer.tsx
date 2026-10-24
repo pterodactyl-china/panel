@@ -137,11 +137,7 @@ export default function NodesContainer() {
     }
 
     return (
-        <AdminContentBlock
-            title='Admin · Nodes'
-            heading='Nodes'
-            description='Manage Wings nodes, connectivity, allocations, and server capacity.'
-        >
+        <AdminContentBlock title='管理 · 节点' heading='节点' description='管理 Wings 节点、连接、分配与服务器容量。'>
             <form
                 className='mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between'
                 onSubmit={(event) => {
@@ -160,9 +156,9 @@ export default function NodesContainer() {
                     <TextInput
                         key={filter}
                         name='filter'
-                        aria-label='Search nodes'
+                        aria-label='搜索节点'
                         className='h-9 border-border bg-card pl-10'
-                        placeholder='Search nodes…'
+                        placeholder='搜索节点…'
                         defaultValue={filter}
                     />
                 </div>
@@ -176,10 +172,10 @@ export default function NodesContainer() {
                         emptyState={
                             <AdminListEmpty
                                 icon={HardDrive}
-                                noun='nodes'
+                                noun='节点'
                                 filter={filter}
                                 onClearFilter={() => navigateToSearch({ page: 1, filter: '' })}
-                                description='Add a node running Wings to start hosting servers.'
+                                description='添加运行 Wings 的节点以开始托管服务器。'
                                 action={<CreateNodeButton />}
                             />
                         }
@@ -188,7 +184,7 @@ export default function NodesContainer() {
                         table={table}
                         total={nodes.meta.pagination.total}
                         count={nodes.meta.pagination.count}
-                        itemLabel='nodes'
+                        itemLabel='节点'
                     />
                 </>
             ) : (

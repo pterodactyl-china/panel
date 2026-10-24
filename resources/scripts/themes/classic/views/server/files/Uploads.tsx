@@ -60,7 +60,7 @@ export function UploadButton({ model }: { model: FileManagerModel }) {
                             <div className='flex items-center space-x-4 bg-muted w-full ring-4 ring-ring/50 rounded-sm p-6 mx-10 max-w-sm'>
                                 <CloudUpload className='w-10 h-10 shrink-0' />
                                 <p className='font-header flex-1 text-lg text-foreground text-center'>
-                                    Drag and drop files to upload.
+                                    拖放文件以上传。
                                 </p>
                             </div>
                         </div>
@@ -71,7 +71,7 @@ export function UploadButton({ model }: { model: FileManagerModel }) {
                 type='file'
                 ref={input}
                 className='hidden'
-                aria-label='Upload files'
+                aria-label='上传文件'
                 onChange={(event) => {
                     if (!event.currentTarget.files) {
                         return;
@@ -83,7 +83,7 @@ export function UploadButton({ model }: { model: FileManagerModel }) {
                 multiple
             />
             <NewButton icon={CloudUpload} onClick={() => input.current?.click()}>
-                Upload
+                上传
             </NewButton>
         </>
     );
@@ -119,7 +119,7 @@ function UploadList({ model, onClose }: { model: FileManagerModel; onClose: () =
                     <Code className='flex-1 truncate'>{file.name}</Code>
                     <button
                         type='button'
-                        aria-label={`Cancel upload of ${file.name}`}
+                        aria-label={`取消上传 ${file.name}`}
                         onClick={() => model.actions.cancelUpload(file.id)}
                         className='text-muted-foreground hover:text-foreground transition-colors duration-75'
                     >
@@ -129,9 +129,9 @@ function UploadList({ model, onClose }: { model: FileManagerModel; onClose: () =
             ))}
             <Dialog.Footer>
                 <Button.Danger isSecondary onClick={model.actions.clearUploads}>
-                    Cancel Uploads
+                    取消上传
                 </Button.Danger>
-                <Button.Text onClick={onClose}>Close</Button.Text>
+                <Button.Text onClick={onClose}>关闭</Button.Text>
             </Dialog.Footer>
         </div>
     );
@@ -159,12 +159,7 @@ export function UploadStatus({ model }: { model: FileManagerModel }) {
             )}
         >
             {({ open, onClose }) => (
-                <Dialog
-                    open={open}
-                    onClose={onClose}
-                    title='File Uploads'
-                    description='The following files are being uploaded to your server.'
-                >
+                <Dialog open={open} onClose={onClose} title='文件上传' description='以下文件正在上传到您的服务器。'>
                     <UploadList model={model} onClose={onClose} />
                 </Dialog>
             )}

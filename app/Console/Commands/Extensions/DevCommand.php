@@ -13,8 +13,8 @@ use Pterodactyl\Exceptions\Extensions\InvalidExtensionException;
 use Pterodactyl\Services\Extensions\ExtensionAssetPublisher;
 use Pterodactyl\Services\Extensions\ExtensionManifestValidator;
 
-#[Description('Build and publish a local extension; --watch republishes each successful build.')]
-#[Signature('p:extension:dev {path : Path to the source package.} {--watch : Watch frontend sources for changes.} {--enable : Enable after the initial build.}')]
+#[Description('构建并发布本地扩展；--watch 会在每次构建成功后重新发布。')]
+#[Signature('p:extension:dev {path : 源码包路径。} {--watch : 监听前端源码变化。} {--enable : 首次构建后即启用。}')]
 class DevCommand extends Command
 {
     public function handle(ExtensionManifestValidator $validator, InstallsExtensions $installer, ExtensionAssetPublisher $assets): int
@@ -22,7 +22,7 @@ class DevCommand extends Command
         try {
             $manifest = $validator->fromDirectory($this->argument('path'));
             $publish = function () use ($installer, $manifest): void {
-                // Republishing its own source over the installed copy is what this command is for.
+                // Republishing its own source over 已安装的副本 is what this command is for.
                 $installer->install($manifest->directory, (bool) $this->option('enable'), replace: true);
                 $this->components->info('Published '.$manifest->id.'.');
             };

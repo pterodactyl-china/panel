@@ -40,7 +40,7 @@ function NotesCell({ model, allocation }: CellProps) {
     return (
         <InputSpinner visible={saving}>
             <TextArea
-                aria-label={`Notes for ${allocation.ip}:${allocation.port}`}
+                aria-label={`${allocation.ip}:${allocation.port} 的备注`}
                 className='min-h-9 resize-y bg-input hover:border-input-border border-transparent'
                 placeholder='Notes'
                 defaultValue={allocation.notes || undefined}
@@ -54,17 +54,14 @@ function NotesCell({ model, allocation }: CellProps) {
 function DeleteAllocationButton({ model, allocation }: CellProps) {
     return (
         <Dialog.ConfirmTrigger
-            title='Remove Allocation'
-            confirm='Delete'
+            title='移除分配'
+            confirm='删除'
             onConfirmed={(_event, close) => model.actions.remove(allocation.id).then(close)}
             trigger={({ onClick }) => (
-                <DeleteAction
-                    aria-label={`Delete allocation ${allocation.address}:${allocation.port}`}
-                    onClick={onClick}
-                />
+                <DeleteAction aria-label={`删除分配 ${allocation.address}:${allocation.port}`} onClick={onClick} />
             )}
         >
-            This allocation will be immediately removed from your server.
+            此分配将立即从您的服务器移除。
         </Dialog.ConfirmTrigger>
     );
 }
@@ -75,7 +72,7 @@ function ActionsCell({ model, allocation }: CellProps) {
     if (allocation.primary) {
         return (
             <Badge tone='info' className='inline-flex rounded-full font-medium'>
-                Primary
+                首选
             </Badge>
         );
     }
@@ -88,7 +85,7 @@ function ActionsCell({ model, allocation }: CellProps) {
                     disabled={settingPrimary}
                     onClick={() => track(model.actions.setPrimary(allocation.id))}
                 >
-                    Make Primary
+                    设为首选
                 </Button.Text>
             )}
             {model.permissions.delete && <DeleteAllocationButton model={model} allocation={allocation} />}
@@ -100,7 +97,7 @@ function allocationColumns(model: ServerAllocationsModel): TableColumn<ServerAll
     return [
         {
             id: 'address',
-            label: 'Address',
+            label: '地址',
             sortValue: (allocation) => allocation.address,
             cell: (allocation) => (
                 <CopyOnClick text={allocation.address}>
@@ -112,7 +109,7 @@ function allocationColumns(model: ServerAllocationsModel): TableColumn<ServerAll
         },
         {
             id: 'port',
-            label: 'Port',
+            label: '端口',
             sortValue: (allocation) => allocation.port,
             cell: (allocation) => <Code dark>{allocation.port}</Code>,
             headerClassName: 'w-24',
@@ -120,7 +117,7 @@ function allocationColumns(model: ServerAllocationsModel): TableColumn<ServerAll
         },
         {
             id: 'notes',
-            label: 'Notes',
+            label: '备注',
             cell: (allocation) => <NotesCell model={model} allocation={allocation} />,
             headerClassName: 'hidden md:table-cell',
             cellClassName: 'hidden md:table-cell min-w-56',
@@ -141,15 +138,13 @@ export default function Allocations({ model, className }: ViewProps<'server.allo
         );
     }
 
-    const newAllocationButton = <NewButton onClick={() => track(model.actions.create())}>New allocation</NewButton>;
+    const newAllocationButton = <NewButton onClick={() => track(model.actions.create())}>新建分配</NewButton>;
 
     return (
         <div className={className}>
             <SpinnerOverlay visible={creating} />
             {model.canManage && (
-                <ListToolbar
-                    summary={`You are currently using ${model.allocations.length} of ${model.limit} allowed allocations for this server.`}
-                >
+                <ListToolbar summary={`此服务器已使用 ${model.allocations.length} / ${model.limit} 个允许的分配。`}>
                     {model.canCreate && newAllocationButton}
                 </ListToolbar>
             )}
@@ -163,10 +158,8 @@ export default function Allocations({ model, className }: ViewProps<'server.allo
                             <EmptyMedia variant='icon'>
                                 <Network />
                             </EmptyMedia>
-                            <EmptyTitle>No allocations</EmptyTitle>
-                            <EmptyDescription>
-                                This server doesn&apos;t have any network allocations assigned.
-                            </EmptyDescription>
+                            <EmptyTitle>没有分配</EmptyTitle>
+                            <EmptyDescription>此服务器尚未分配任何网络分配。</EmptyDescription>
                         </EmptyHeader>
                         {model.canCreate && <EmptyContent>{newAllocationButton}</EmptyContent>}
                     </Empty>

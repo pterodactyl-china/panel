@@ -36,6 +36,6 @@ final readonly class ImportCatalogEgg implements ImportsCatalogEggs
             return $this->importer->importParsed($parsed);
         }
 
-        throw new NotFoundHttpException('The selected egg is no longer in the Pterodactyl catalog. Refresh the catalog and try again.');
+        throw new NotFoundHttpException('所选预设已不在 Pterodactyl 预设目录中，请刷新目录后重试。');
     }
 }

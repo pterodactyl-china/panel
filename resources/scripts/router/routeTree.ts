@@ -189,13 +189,13 @@ const accountChildren = [
     createRoute({
         getParentRoute: () => accountRoute,
         path: '/',
-        staticData: { nav: { label: 'Account', exact: true, icon: 'user-round' } },
+        staticData: { nav: { label: '账户', exact: true, icon: 'user-round' } },
         component: pageRoute('page.account.overview'),
     }),
     createRoute({
         getParentRoute: () => accountRoute,
         path: 'api',
-        staticData: { nav: { label: 'API Credentials', icon: 'key-round' } },
+        staticData: { nav: { label: 'API 凭据', icon: 'key-round' } },
         loader: async ({ context }) => {
             await context.queryClient.ensureQueryData({ ...accountApiKeysQueryOptions(), revalidateIfStale: true });
         },
@@ -204,7 +204,7 @@ const accountChildren = [
     createRoute({
         getParentRoute: () => accountRoute,
         path: 'ssh',
-        staticData: { nav: { label: 'SSH Keys', icon: 'terminal' } },
+        staticData: { nav: { label: 'SSH 密钥', icon: 'terminal' } },
         loader: async ({ context }) => {
             await context.queryClient.ensureQueryData({ ...accountSshKeysQueryOptions(), revalidateIfStale: true });
         },
@@ -213,7 +213,7 @@ const accountChildren = [
     createRoute({
         getParentRoute: () => accountRoute,
         path: 'activity',
-        staticData: { nav: { label: 'Activity', icon: 'history' } },
+        staticData: { nav: { label: '活动日志', icon: 'history' } },
         validateSearch: parseActivitySearch,
         loaderDeps: ({ search }) => ({ page: search.page ?? 1, event: search.event, user: search.user }),
         loader: async ({ context, deps }) => {
@@ -264,13 +264,13 @@ const serverChildren = [
     createRoute({
         getParentRoute: () => serverRoute,
         path: '/',
-        staticData: { nav: { label: 'Console', exact: true, icon: 'square-terminal' } },
+        staticData: { nav: { label: '控制台', exact: true, icon: 'square-terminal' } },
         component: () => null,
     }),
     createRoute({
         getParentRoute: () => serverRoute,
         path: 'files',
-        staticData: { nav: { label: 'Files', permission: 'file.*', hash: '/', icon: 'folder' } },
+        staticData: { nav: { label: '文件', permission: 'file.*', hash: '/', icon: 'folder' } },
         beforeLoad: requireServerPermission('file.*'),
         component: pageRoute('page.server.files', 'file.*'),
     }),
@@ -283,7 +283,7 @@ const serverChildren = [
     createRoute({
         getParentRoute: () => serverRoute,
         path: 'databases',
-        staticData: { nav: { label: 'Databases', permission: 'database.*', icon: 'database' } },
+        staticData: { nav: { label: '数据库', permission: 'database.*', icon: 'database' } },
         beforeLoad: requireServerPermission('database.*'),
         loader: async ({ context }) => {
             await context.queryClient.ensureQueryData({
@@ -296,7 +296,7 @@ const serverChildren = [
     createRoute({
         getParentRoute: () => serverRoute,
         path: 'schedules',
-        staticData: { nav: { label: 'Schedules', permission: 'schedule.*', icon: 'calendar-clock' } },
+        staticData: { nav: { label: '计划任务', permission: 'schedule.*', icon: 'calendar-clock' } },
         beforeLoad: requireServerPermission('schedule.*'),
         loader: async ({ context }) => {
             await context.queryClient.ensureQueryData({
@@ -331,7 +331,7 @@ const serverChildren = [
     createRoute({
         getParentRoute: () => serverRoute,
         path: 'users',
-        staticData: { nav: { label: 'Users', permission: 'user.*', icon: 'users' } },
+        staticData: { nav: { label: '用户', permission: 'user.*', icon: 'users' } },
         beforeLoad: requireServerPermission('user.*'),
         loader: async ({ context }) => {
             await Promise.all([
@@ -347,7 +347,7 @@ const serverChildren = [
     createRoute({
         getParentRoute: () => serverRoute,
         path: 'backups',
-        staticData: { nav: { label: 'Backups', permission: 'backup.*', icon: 'archive' } },
+        staticData: { nav: { label: '备份', permission: 'backup.*', icon: 'archive' } },
         validateSearch: parsePageSearch,
         beforeLoad: requireServerPermission('backup.*'),
         loaderDeps: ({ search }) => ({ page: search.page ?? 1 }),
@@ -362,7 +362,7 @@ const serverChildren = [
     createRoute({
         getParentRoute: () => serverRoute,
         path: 'network',
-        staticData: { nav: { label: 'Network', permission: 'allocation.*', icon: 'network' } },
+        staticData: { nav: { label: '网络', permission: 'allocation.*', icon: 'network' } },
         beforeLoad: requireServerPermission('allocation.*'),
         loader: async ({ context }) => {
             await context.queryClient.ensureQueryData({
@@ -375,7 +375,7 @@ const serverChildren = [
     createRoute({
         getParentRoute: () => serverRoute,
         path: 'startup',
-        staticData: { nav: { label: 'Startup', permission: 'startup.*', icon: 'rocket' } },
+        staticData: { nav: { label: '启动', permission: 'startup.*', icon: 'rocket' } },
         beforeLoad: requireServerPermission('startup.*'),
         loader: async ({ context }) => {
             await context.queryClient.ensureQueryData({
@@ -388,14 +388,14 @@ const serverChildren = [
     createRoute({
         getParentRoute: () => serverRoute,
         path: 'settings',
-        staticData: { nav: { label: 'Settings', permission: ['settings.*', 'file.sftp'], icon: 'settings' } },
+        staticData: { nav: { label: '设置', permission: ['settings.*', 'file.sftp'], icon: 'settings' } },
         beforeLoad: requireServerPermission(['settings.*', 'file.sftp']),
         component: pageRoute('page.server.settings', ['settings.*', 'file.sftp']),
     }),
     createRoute({
         getParentRoute: () => serverRoute,
         path: 'activity',
-        staticData: { nav: { label: 'Activity', permission: 'activity.*', icon: 'history' } },
+        staticData: { nav: { label: '活动日志', permission: 'activity.*', icon: 'history' } },
         validateSearch: parseActivitySearch,
         beforeLoad: requireServerPermission('activity.*'),
         loaderDeps: ({ search }) => ({ page: search.page ?? 1, event: search.event, user: search.user }),
@@ -426,7 +426,7 @@ const panelRoute = createRoute({
         const user = await context.queryClient.ensureQueryData(currentUserQueryOptions());
 
         if (!user.rootAdmin) {
-            throw new RouteAccessDenied('You do not have permission to access the administrative area.');
+            throw new RouteAccessDenied('您没有访问管理区域的权限。');
         }
     },
     component: layoutRoute('layout.admin'),
@@ -784,7 +784,7 @@ const panelChildren = [
     createRoute({
         getParentRoute: () => panelRoute,
         path: '/',
-        staticData: { nav: { label: 'Overview', exact: true, icon: 'layout-dashboard' } },
+        staticData: { nav: { label: '概览', exact: true, icon: 'layout-dashboard' } },
         loader: async ({ context }) => {
             await context.queryClient.ensureQueryData({ ...adminVersionQueryOptions(), revalidateIfStale: true });
         },
@@ -793,7 +793,7 @@ const panelChildren = [
     createRoute({
         getParentRoute: () => panelRoute,
         path: 'activity',
-        staticData: { nav: { label: 'Activity', icon: 'history' } },
+        staticData: { nav: { label: '活动日志', icon: 'history' } },
         validateSearch: parseActivitySearch,
         loaderDeps: ({ search }) => ({ page: search.page ?? 1, event: search.event, user: search.user }),
         loader: async ({ context, deps }) => {
@@ -817,7 +817,7 @@ const panelChildren = [
     createRoute({
         getParentRoute: () => panelRoute,
         path: 'settings',
-        staticData: { nav: { label: 'Settings', icon: 'settings' } },
+        staticData: { nav: { label: '设置', icon: 'settings' } },
         loader: async ({ context }) => {
             await context.queryClient.ensureQueryData({ ...adminSettingsQueryOptions(), revalidateIfStale: true });
         },
@@ -851,7 +851,7 @@ const panelChildren = [
     createRoute({
         getParentRoute: () => panelRoute,
         path: 'users',
-        staticData: { nav: { label: 'Users', icon: 'users' } },
+        staticData: { nav: { label: '用户', icon: 'users' } },
         validateSearch: parseUserListSearch,
         loaderDeps: ({ search }) => ({ page: search.page ?? 1, filter: search.filter ?? '', sort: search.sort }),
         loader: async ({ context, deps }) => {
@@ -876,7 +876,7 @@ const panelChildren = [
     createRoute({
         getParentRoute: () => panelRoute,
         path: 'locations',
-        staticData: { nav: { label: 'Locations', icon: 'map-pin' } },
+        staticData: { nav: { label: '地域', icon: 'map-pin' } },
         validateSearch: parseLocationListSearch,
         loaderDeps: ({ search }) => ({ page: search.page ?? 1, filter: search.filter ?? '', sort: search.sort }),
         loader: async ({ context, deps }) => {
@@ -894,7 +894,7 @@ const panelChildren = [
     createRoute({
         getParentRoute: () => panelRoute,
         path: 'nodes',
-        staticData: { nav: { label: 'Nodes', icon: 'network' } },
+        staticData: { nav: { label: '节点', icon: 'network' } },
         validateSearch: parseNodeListSearch,
         loaderDeps: ({ search }) => ({ page: search.page ?? 1, filter: search.filter ?? '', sort: search.sort }),
         loader: async ({ context, deps }) => {
@@ -919,7 +919,7 @@ const panelChildren = [
     createRoute({
         getParentRoute: () => panelRoute,
         path: 'servers',
-        staticData: { nav: { label: 'Servers', icon: 'server' } },
+        staticData: { nav: { label: '服务器', icon: 'server' } },
         validateSearch: parseServerListSearch,
         loaderDeps: ({ search }) => ({ page: search.page ?? 1, filter: search.filter ?? '', sort: search.sort }),
         loader: async ({ context, deps }) => {
@@ -961,7 +961,7 @@ const panelChildren = [
     createRoute({
         getParentRoute: () => panelRoute,
         path: 'databases',
-        staticData: { nav: { label: 'Database Hosts', icon: 'database' } },
+        staticData: { nav: { label: '数据库主机', icon: 'database' } },
         validateSearch: parseDatabaseHostListSearch,
         loaderDeps: ({ search }) => ({ page: search.page ?? 1, filter: search.filter ?? '', sort: search.sort }),
         loader: async ({ context, deps }) => {
@@ -987,7 +987,7 @@ const panelChildren = [
     createRoute({
         getParentRoute: () => panelRoute,
         path: 'mounts',
-        staticData: { nav: { label: 'Mounts', icon: 'folder-tree' } },
+        staticData: { nav: { label: '挂载', icon: 'folder-tree' } },
         validateSearch: parseMountListSearch,
         loaderDeps: ({ search }) => ({ page: search.page ?? 1, filter: search.filter ?? '', sort: search.sort }),
         loader: async ({ context, deps }) => {
@@ -1013,7 +1013,7 @@ const panelChildren = [
     createRoute({
         getParentRoute: () => panelRoute,
         path: 'eggs',
-        staticData: { nav: { label: 'Eggs', icon: 'egg' } },
+        staticData: { nav: { label: '预设', icon: 'egg' } },
         loader: async ({ context }) => {
             await context.queryClient.ensureQueryData({ ...adminEggsQueryOptions(), revalidateIfStale: true });
         },
@@ -1041,7 +1041,7 @@ const panelChildren = [
     createRoute({
         getParentRoute: () => panelRoute,
         path: 'tags',
-        staticData: { nav: { label: 'Tags', icon: 'tag' } },
+        staticData: { nav: { label: '标签', icon: 'tag' } },
         validateSearch: parseTagListSearch,
         loaderDeps: ({ search }) => ({ page: search.page ?? 1, filter: search.filter ?? '', sort: search.sort }),
         loader: async ({ context, deps }) => {
@@ -1058,7 +1058,7 @@ const panelChildren = [
     createRoute({
         getParentRoute: () => panelRoute,
         path: 'extensions',
-        staticData: { nav: { label: 'Extensions', icon: 'blocks' } },
+        staticData: { nav: { label: '扩展', icon: 'blocks' } },
         loader: async ({ context }) => {
             await context.queryClient.ensureQueryData({ ...adminExtensionsQueryOptions(), revalidateIfStale: true });
         },
@@ -1070,7 +1070,7 @@ const panelChildren = [
     createRoute({
         getParentRoute: () => panelRoute,
         path: 'themes',
-        staticData: { nav: { label: 'Themes', icon: 'palette' } },
+        staticData: { nav: { label: '主题', icon: 'palette' } },
         loader: async ({ context }) => {
             await context.queryClient.ensureQueryData({ ...adminThemesQueryOptions(), revalidateIfStale: true });
         },
@@ -1082,7 +1082,7 @@ const panelChildren = [
     createRoute({
         getParentRoute: () => panelRoute,
         path: 'api',
-        staticData: { nav: { label: 'API Keys', icon: 'key-round' } },
+        staticData: { nav: { label: 'API 密钥', icon: 'key-round' } },
         validateSearch: parseApiKeyListSearch,
         loaderDeps: ({ search }) => ({ page: search.page ?? 1, filter: search.filter ?? '', sort: search.sort }),
         loader: async ({ context, deps }) => {

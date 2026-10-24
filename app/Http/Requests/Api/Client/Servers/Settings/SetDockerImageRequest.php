@@ -29,7 +29,7 @@ class SetDockerImageRequest extends ClientApiRequest implements ClientPermission
         }
 
         $server = $this->parameter('server', Server::class);
-        $egg = $server->egg ?? throw new UnexpectedValueException('The server does not have an egg relationship.');
+        $egg = $server->egg ?? throw new UnexpectedValueException('该服务器没有关联预设。');
 
         // Only one of the images the server's egg offers can be chosen.
         return ['docker_image' => [...CreateEgg::DOCKER_IMAGE, Rule::in(array_values($egg->docker_images))]];

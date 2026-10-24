@@ -50,7 +50,7 @@ describe('server settings', () => {
     it('lays the page out from its blocks', async () => {
         await renderInServer(<View name='page.server.settings' />);
 
-        for (const title of ['SFTP Details', 'Debug Information', 'Change Server Details', 'Reinstall Server']) {
+        for (const title of ['SFTP 详情', '调试信息', '修改服务器详情', '重装服务器']) {
             expect(screen.getAllByText(title)[0]).toBeVisible();
         }
     });
@@ -60,7 +60,7 @@ describe('server settings', () => {
 
         expect(screen.getByDisplayValue('sftp://[2001:db8::10]:2022')).toBeVisible();
         expect(screen.getByDisplayValue('Alex.a1b2c3d4')).toBeVisible();
-        expect(screen.getByRole('link', { name: 'Launch SFTP' })).toHaveAttribute(
+        expect(screen.getByRole('link', { name: '启动 SFTP' })).toHaveAttribute(
             'href',
             'sftp://Alex.a1b2c3d4@[2001:db8::10]:2022'
         );
@@ -69,18 +69,18 @@ describe('server settings', () => {
     it('leaves out the blocks the viewer may not use', async () => {
         await renderInServer(<View name='page.server.settings' />, {}, ['settings.rename']);
 
-        expect(screen.queryByText('SFTP Details')).not.toBeInTheDocument();
-        expect(screen.queryByText('Reinstall Server')).not.toBeInTheDocument();
-        expect(screen.getByText('Change Server Details')).toBeVisible();
-        expect(screen.getByText('Debug Information')).toBeVisible();
+        expect(screen.queryByText('SFTP 详情')).not.toBeInTheDocument();
+        expect(screen.queryByText('重装服务器')).not.toBeInTheDocument();
+        expect(screen.getByText('修改服务器详情')).toBeVisible();
+        expect(screen.getByText('调试信息')).toBeVisible();
     });
 
     it('renames the server', async () => {
         const server = await renderInServer(<View name='server.rename' />, { name: 'Survival', description: null });
 
-        fireEvent.change(screen.getByLabelText('Server Name'), { target: { value: 'Creative' } });
+        fireEvent.change(screen.getByLabelText('服务器名称'), { target: { value: 'Creative' } });
         await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: 'Save' }));
+            fireEvent.click(screen.getByRole('button', { name: '保存' }));
         });
 
         await waitFor(() =>
@@ -99,15 +99,15 @@ describe('server settings', () => {
         await renderInServer(<View name='server.reinstall' />, { skip_scripts: true });
 
         expect(screen.getByText(SKIPPED_INSTALL_SCRIPT_MESSAGE)).toBeVisible();
-        expect(screen.getByRole('button', { name: 'Reinstall Server' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: '重装服务器' })).toBeDisabled();
     });
 
     it('reinstalls the server once confirmed', async () => {
         const server = await renderInServer(<View name='server.reinstall' />);
 
-        fireEvent.click(screen.getByRole('button', { name: 'Reinstall Server' }));
+        fireEvent.click(screen.getByRole('button', { name: '重装服务器' }));
         await act(async () => {
-            fireEvent.click(await screen.findByRole('button', { name: 'Yes, reinstall server' }));
+            fireEvent.click(await screen.findByRole('button', { name: '是，重装服务器' }));
         });
 
         await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
@@ -121,11 +121,11 @@ describe('server settings', () => {
 
 describe('server.conflict', () => {
     it.each([
-        [{ status: 'install_failed' }, 'Running Installer'],
-        [{ status: 'suspended' }, 'Server Suspended'],
-        [{ status: null, is_node_under_maintenance: true }, 'Node under Maintenance'],
-        [{ status: null, is_transferring: true }, 'Transferring'],
-        [{ status: 'restoring_backup' }, 'Restoring from Backup'],
+        [{ status: 'install_failed' }, '正在运行安装程序'],
+        [{ status: 'suspended' }, '服务器已冻结'],
+        [{ status: null, is_node_under_maintenance: true }, '节点维护中'],
+        [{ status: null, is_transferring: true }, '传输中'],
+        [{ status: 'restoring_backup' }, '正在从备份恢复'],
     ] satisfies [Attributes, string][])('names the conflict of %o', async (attributes, title) => {
         await renderInServer(<View name='server.conflict' />, attributes);
 

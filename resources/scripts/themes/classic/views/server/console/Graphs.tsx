@@ -16,7 +16,7 @@ export default function Graphs({ model, className }: ViewProps<'server.graphs'>)
 
     return (
         <div className={cn('grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-4', className)}>
-            <ChartCard title='CPU Load'>
+            <ChartCard title='CPU 负载'>
                 <AreaChart
                     data={model.cpu.points}
                     series={VALUE_SERIES}
@@ -26,7 +26,7 @@ export default function Graphs({ model, className }: ViewProps<'server.graphs'>)
                     tickFormatter={(value) => `${value.toFixed(2)}%`}
                 />
             </ChartCard>
-            <ChartCard title='Memory'>
+            <ChartCard title='内存'>
                 <AreaChart
                     data={model.memory.points}
                     series={VALUE_SERIES}
@@ -37,7 +37,7 @@ export default function Graphs({ model, className }: ViewProps<'server.graphs'>)
                 />
             </ChartCard>
             <ChartCard
-                title='Network'
+                title='网络'
                 legend={
                     <>
                         <Tooltip arrow content='Inbound'>

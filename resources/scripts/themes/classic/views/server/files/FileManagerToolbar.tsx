@@ -19,7 +19,7 @@ export default function FileManagerToolbar({ model, className }: ViewProps<'serv
                 <Breadcrumbs crumbs={model.breadcrumbs}>
                     <Checkbox
                         className='mx-4'
-                        aria-label='Select all files'
+                        aria-label='全选文件'
                         checked={entries.length > 0 && selection.length === entries.length}
                         indeterminate={selection.length > 0 && selection.length < entries.length}
                         onChange={(checked) => model.actions.select(checked ? entries.map((entry) => entry.name) : [])}
@@ -31,7 +31,7 @@ export default function FileManagerToolbar({ model, className }: ViewProps<'serv
                         <NewDirectoryButton model={model} />
                         {model.permissions.update && <UploadButton model={model} />}
                         <PanelLink destination={model.newFileDestination}>
-                            <NewButton>New file</NewButton>
+                            <NewButton>新建文件</NewButton>
                         </PanelLink>
                     </div>
                 )}

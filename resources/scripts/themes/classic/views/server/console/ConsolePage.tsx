@@ -2,9 +2,9 @@ import { Alert, ServerContentBlock } from '@/sdk';
 import { Slot, View, type ServerConsoleModel, type ViewProps } from '@/sdk/theme';
 
 const notices = {
-    maintenance: 'The node of this server is currently under maintenance and all actions are unavailable.',
-    installing: 'This server is currently running its installation process and most actions are unavailable.',
-    transferring: 'This server is currently being transferred to another node and all actions are unavailable.',
+    maintenance: '此服务器所在节点正在维护，所有操作均不可用。',
+    installing: '此服务器正在安装中，大部分操作不可用。',
+    transferring: '此服务器正在转移到其他节点，所有操作均不可用。',
 } satisfies Record<NonNullable<ServerConsoleModel['notice']>, string>;
 
 export default function ConsolePage({ model, active, className }: ViewProps<'page.server.console'>) {

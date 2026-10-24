@@ -17,12 +17,12 @@ use Pterodactyl\Services\Extensions\ExtensionManifestValidator;
 use Pterodactyl\Services\Themes\ThemeRepository;
 use ZipArchive;
 
-#[Description('Package the runtime files of a built extension into a .pteroext archive.')]
+#[Description('将已构建扩展的运行时文件打包为 .pteroext 归档。')]
 #[Signature('p:extension:pack
-                            {path : Path to the unpacked extension.}
-                            {--output= : Archive filename.}
-                            {--force : Overwrite an existing archive.}
-                            {--sourcemaps : Include *.map files, which can embed the full sources.}')]
+                            {path : 已解压扩展的路径。}
+                            {--output= : 归档文件名。}
+                            {--force : 覆盖已存在的归档。}
+                            {--sourcemaps : 包含 *.map 文件，其中可能嵌入完整源码。}')]
 class PackCommand extends Command
 {
     public function handle(ExtensionManifestValidator $validator, ExtensionAssetPublisher $assets, ExtensionComposerInspector $composer, ThemeRepository $themes): int
@@ -35,18 +35,18 @@ class PackCommand extends Command
             }
 
             $output = $this->option('output') ?: getcwd().DIRECTORY_SEPARATOR.$manifest->id.'-'.$manifest->version.'.pteroext';
-            throw_if(is_file($output) && ! $this->option('force'), InvalidExtensionException::class, 'Archive exists; pass --force to overwrite it.');
+            throw_if(is_file($output) && ! $this->option('force'), InvalidExtensionException::class, '归档已存在；使用 --force 覆盖。');
             File::ensureDirectoryExists(dirname($output));
             $temporary = dirname($output).DIRECTORY_SEPARATOR.'.extension-'.Str::uuid();
             $zip = new ZipArchive;
             $opened = false;
             try {
-                throw_unless($zip->open($temporary, ZipArchive::CREATE | ZipArchive::EXCL) === true, InvalidExtensionException::class, 'Unable to open archive.');
+                throw_unless($zip->open($temporary, ZipArchive::CREATE | ZipArchive::EXCL) === true, InvalidExtensionException::class, '无法打开归档。');
                 $opened = true;
-                throw_unless($zip->addFile($manifest->path(ExtensionManifest::FILENAME), ExtensionManifest::FILENAME), InvalidExtensionException::class, 'Unable to add extension manifest to archive.');
+                throw_unless($zip->addFile($manifest->path(ExtensionManifest::FILENAME), ExtensionManifest::FILENAME), InvalidExtensionException::class, '无法将扩展清单写入归档。');
                 // The panel reads the PSR-4 map from composer.json when the manifest has none.
                 if (is_file($manifest->path('composer.json'))) {
-                    throw_unless($zip->addFile($manifest->path('composer.json'), 'composer.json'), InvalidExtensionException::class, 'Unable to add composer.json to archive.');
+                    throw_unless($zip->addFile($manifest->path('composer.json'), 'composer.json'), InvalidExtensionException::class, '无法将 composer.json 写入归档。');
                 }
 
                 $directories = array_unique(['routes', 'database', 'resources', 'dist', 'vendor', ...array_values($manifest->autoload)]);
@@ -74,9 +74,9 @@ class PackCommand extends Command
                     throw_unless($zip->addFile($manifest->path($icon), $icon), InvalidExtensionException::class, "Unable to add {$icon} to archive.");
                 }
 
-                throw_unless($zip->close(), InvalidExtensionException::class, 'Unable to finish archive.');
+                throw_unless($zip->close(), InvalidExtensionException::class, '无法完成归档。');
                 $opened = false;
-                throw_unless(File::move($temporary, $output), InvalidExtensionException::class, 'Unable to save archive.');
+                throw_unless(File::move($temporary, $output), InvalidExtensionException::class, '无法保存归档。');
             } finally {
                 if ($opened) {
                     $zip->close();

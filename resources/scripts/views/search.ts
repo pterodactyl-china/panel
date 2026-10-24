@@ -48,7 +48,7 @@ declare module './registry' {
     }
 }
 
-const SHORT = 'Please enter at least three characters to begin searching.';
+const SHORT = '请至少输入三个字符以开始搜索。';
 
 const searchResult = ({ attributes }: Server): AppSearchResult => ({
     identifier: attributes.identifier,
@@ -125,7 +125,7 @@ implementViews({
             loading: () => searchFixture({ results: [], loading: true, searched: false }),
             none: () => searchFixture({ field: fixtureField('term', {}, 'zzz'), results: [] }),
             short: () => searchFixture({ field: fixtureField('term', {}, 'su', SHORT), results: [], searched: false }),
-            error: () => searchFixture({ results: [], searched: false, error: 'Request failed with status code 500.' }),
+            error: () => searchFixture({ results: [], searched: false, error: '请求失败，状态码 500。' }),
         },
     },
 });

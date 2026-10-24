@@ -127,7 +127,7 @@ class ServerResource extends AdminResource
      */
     private function includeAllocation(): ApiResource
     {
-        $allocation = $this->resource->loadMissing('allocation')->allocation ?? throw new UnexpectedValueException('The server does not have a primary allocation.');
+        $allocation = $this->resource->loadMissing('allocation')->allocation ?? throw new UnexpectedValueException('该服务器没有主分配。');
 
         return $this->item($allocation, AllocationResource::class, Allocation::RESOURCE_NAME);
     }
@@ -150,7 +150,7 @@ class ServerResource extends AdminResource
      */
     private function includeLocation(): ApiResource
     {
-        $location = $this->resource->loadMissing('location')->location ?? throw new UnexpectedValueException('The server does not have a location.');
+        $location = $this->resource->loadMissing('location')->location ?? throw new UnexpectedValueException('该服务器没有关联地域。');
 
         return $this->item($location, LocationResource::class, 'location');
     }
@@ -173,7 +173,7 @@ class ServerResource extends AdminResource
      */
     private function includeEgg(): ApiResource
     {
-        $egg = $this->resource->loadMissing('egg')->egg ?? throw new UnexpectedValueException('The server does not have an egg.');
+        $egg = $this->resource->loadMissing('egg')->egg ?? throw new UnexpectedValueException('该服务器没有关联预设。');
 
         return $this->item($egg, EggResource::class, 'egg');
     }

@@ -114,7 +114,7 @@ function Custom({ model }: ViewProps<'server.files.manager'>) {
             <button onClick={() => actions.select(['b.txt', 'missing'])}>Select</button>
             <button onClick={() => run(actions.open('plugins'))}>Open plugins</button>
             <button onClick={() => run(actions.navigate('..'))}>Up</button>
-            <button onClick={() => run(actions.remove(['b.txt']))}>Remove</button>
+            <button onClick={() => run(actions.remove(['b.txt']))}>移除</button>
             <button onClick={() => actions.select([...manyNames, 'a.zip', 'b.txt'])}>Select all</button>
             <button onClick={() => run(actions.refresh())}>Refresh</button>
             <div data-testid='drop' onDrop={(event) => run(actions.upload(event.dataTransfer))} />
@@ -151,7 +151,7 @@ it('gives a replacement the listing and runs selection, navigation and deletion 
     fireEvent.click(screen.getByRole('button', { name: 'Select' }));
     expect(state().selection).toEqual(['b.txt']);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Remove' }));
+    fireEvent.click(screen.getByRole('button', { name: '移除' }));
     await waitFor(() => expect(state().entries).toEqual(['directory:/config/plugins', 'archive:/config/a.zip']));
     expect(JSON.parse(String(deletes()[0].body))).toEqual({ root: '/config', files: ['b.txt'] });
     expect(state().selection).toEqual([]);
@@ -170,9 +170,9 @@ it('refuses a mutation the user has no permission for before any request is sent
 
     await waitFor(() => expect(state().loading).toBe(false));
     expect(state().permissions).toEqual({ create: false, update: false, delete: false, archive: false });
-    fireEvent.click(screen.getByRole('button', { name: 'Remove' }));
+    fireEvent.click(screen.getByRole('button', { name: '移除' }));
 
-    expect(await screen.findByText('This action requires the file.delete permission.')).toBeVisible();
+    expect(await screen.findByText('此操作需要 file.delete 权限。')).toBeVisible();
     expect(deletes()).toEqual([]);
 });
 
@@ -188,7 +188,7 @@ it('refuses a dropped folder in core, whatever view the drop came through', asyn
         },
     });
 
-    expect(await screen.findByText('Folder uploads are not supported.')).toBeVisible();
+    expect(await screen.findByText('不支持上传文件夹。')).toBeVisible();
     expect(requests.filter((request) => request.path.includes('/files/upload'))).toEqual([]);
 });
 
@@ -219,13 +219,13 @@ it('replaces one nested view and keeps the native browser when a replacement fai
         'href',
         '/server/test-server/files/edit#/config/b.txt'
     );
-    expect(screen.getByRole('button', { name: 'New file' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '新建文件' })).toBeVisible();
     expect(screen.getByText('0 selected')).toBeVisible();
 
     fireEvent.click(screen.getAllByRole('checkbox')[0]);
 
     expect(await screen.findByText(/^[1-9]\d* selected$/)).toBeVisible();
-    expect(screen.queryByRole('button', { name: 'Archive' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: '压缩' })).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'plugins' })).toBeVisible();
     expect(registry.getExtensionStates()[0].error).toContain('browser crashed');
 });
@@ -266,7 +266,7 @@ it('selects the row whose box is ticked and offers the selection actions', async
     open();
     fireEvent.click(await checkboxOf('b.txt'));
 
-    expect(await screen.findByRole('button', { name: 'Archive' })).toBeVisible();
+    expect(await screen.findByRole('button', { name: '压缩' })).toBeVisible();
     expect(await checkboxOf('b.txt')).toHaveAttribute('aria-checked', 'true');
     expect(await checkboxOf('a.zip')).not.toHaveAttribute('aria-checked', 'true');
 });
@@ -275,20 +275,20 @@ it('removes a file deleted from its row menu from the selection, keeping the res
     open();
     fireEvent.click(await checkboxOf('a.zip'));
     fireEvent.click(await checkboxOf('b.txt'));
-    expect(await screen.findByRole('button', { name: 'Archive' })).toBeVisible();
+    expect(await screen.findByRole('button', { name: '压缩' })).toBeVisible();
 
     // Directories list first, then files by name, so b.txt is the last row.
-    fireEvent.click(screen.getAllByRole('button', { name: 'Open file options' }).at(-1)!);
-    fireEvent.click(await screen.findByRole('menuitem', { name: /Delete/ }));
+    fireEvent.click(screen.getAllByRole('button', { name: '打开文件选项' }).at(-1)!);
+    fireEvent.click(await screen.findByRole('menuitem', { name: /删除/ }));
     const dialog = await screen.findByRole('dialog');
 
-    fireEvent.click(within(dialog).getByRole('button', { name: 'Delete' }));
+    fireEvent.click(within(dialog).getByRole('button', { name: '删除' }));
 
     await waitFor(() => expect(deletes()).toHaveLength(1));
     expect(JSON.parse(String(deletes()[0].body))).toEqual({ root: '/config', files: ['b.txt'] });
     await waitFor(() => expect(screen.queryByRole('link', { name: 'b.txt' })).not.toBeInTheDocument());
     expect(await checkboxOf('a.zip')).toHaveAttribute('aria-checked', 'true');
-    expect(screen.getByRole('button', { name: 'Archive' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '压缩' })).toBeVisible();
 });
 
 it('keeps the core link, checkbox and menu of a row whose details a replacement draws', async () => {
@@ -302,7 +302,7 @@ it('keeps the core link, checkbox and menu of a row whose details a replacement 
     );
     fireEvent.click(await checkboxOf('config.json'));
     expect(await checkboxOf('config.json')).toHaveAttribute('aria-checked', 'true');
-    expect(screen.getByRole('button', { name: 'Open file options' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '打开文件选项' })).toBeVisible();
 });
 
 it('does not link a file the user may not read', async () => {
@@ -325,7 +325,7 @@ it('restores native details after a renderer failure with core controls intact',
 
     expect(await screen.findByText('config.json')).toBeVisible();
     expect(screen.getByRole('link', { name: 'config.json' })).toBeVisible();
-    expect(screen.getByRole('button', { name: 'Open file options' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '打开文件选项' })).toBeVisible();
     expect(registry.getExtensionStates().find((state) => state.id === 'browser')?.error).toContain('bad details');
 });
 
@@ -338,6 +338,6 @@ it('shows the listing error with a retry in place of the page', async () => {
     host.queryClient.setDefaultOptions({ queries: { retry: false } });
     render(<View name='page.server.files' />, { wrapper: host.Wrapper });
 
-    expect(await screen.findByRole('button', { name: 'Retry' })).toBeVisible();
-    expect(screen.queryByRole('button', { name: 'New file' })).not.toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: '重试' })).toBeVisible();
+    expect(screen.queryByRole('button', { name: '新建文件' })).not.toBeInTheDocument();
 });

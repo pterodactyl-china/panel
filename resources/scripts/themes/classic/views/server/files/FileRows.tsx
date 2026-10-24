@@ -48,7 +48,7 @@ function useRowActions(): RowActions {
     const actions = use(RowActionsContext);
 
     if (!actions) {
-        throw new Error('File rows render inside the file list.');
+        throw new Error('文件行应在文件列表中渲染。');
     }
 
     return actions;
@@ -94,14 +94,14 @@ export function RowActionsProvider({ model, children }: { model: FileManagerMode
                 <Dialog.Confirm
                     open={dialog === 'delete'}
                     onClose={close}
-                    title={`Delete ${target?.kind === 'directory' ? 'Directory' : 'File'}`}
-                    confirm='Delete'
+                    title={`删除 ${target?.kind === 'directory' ? '目录' : '文件'}`}
+                    confirm='删除'
                     onConfirmed={() => {
                         close();
                         void actions.remove([name]).catch(() => {});
                     }}
                 >
-                    You will not be able to recover the contents of&nbsp;
+                    您将无法恢复以下内容：&nbsp;
                     <span className='font-semibold text-foreground'>{name}</span> once deleted.
                 </Dialog.Confirm>
                 {target && dialog === 'chmod' && (
@@ -137,32 +137,24 @@ function ActionItems({ entry }: { entry: FileManagerEntry }) {
         <>
             {permissions.update && (
                 <>
-                    <DropdownMenuItem
-                        onClick={() => open('rename', entry)}
-                        icon={Pencil}
-                        description='Change item name'
-                    >
-                        Rename
+                    <DropdownMenuItem onClick={() => open('rename', entry)} icon={Pencil} description='修改项目名称'>
+                        重命名
                     </DropdownMenuItem>
                     <DropdownMenuItem
                         onClick={() => open('move', entry)}
                         icon={CornerLeftUp}
-                        description='Move to a path'
+                        description='移动到指定路径'
                     >
-                        Move
+                        移动
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => open('chmod', entry)} icon={FileCode} description='Edit mode bits'>
-                        Permissions
+                    <DropdownMenuItem onClick={() => open('chmod', entry)} icon={FileCode} description='编辑权限位'>
+                        权限
                     </DropdownMenuItem>
                 </>
             )}
             {isFile && permissions.create && (
-                <DropdownMenuItem
-                    onClick={() => run(actions.copy(entry.name))}
-                    icon={Copy}
-                    description='Duplicate in place'
-                >
-                    Copy
+                <DropdownMenuItem onClick={() => run(actions.copy(entry.name))} icon={Copy} description='原地复制'>
+                    复制
                 </DropdownMenuItem>
             )}
             {entry.extractable
@@ -171,27 +163,27 @@ function ActionItems({ entry }: { entry: FileManagerEntry }) {
                       <DropdownMenuItem
                           onClick={() => run(actions.extract(entry.name))}
                           icon={PackageOpen}
-                          description='Extract contents'
+                          description='解压内容'
                       >
-                          Unarchive
+                          解压
                       </DropdownMenuItem>
                   )
                 : permissions.archive && (
                       <DropdownMenuItem
                           onClick={() => run(actions.archive([entry.name]))}
                           icon={FileArchive}
-                          description='Compress item'
+                          description='压缩项目'
                       >
-                          Archive
+                          压缩
                       </DropdownMenuItem>
                   )}
             {isFile && (
                 <DropdownMenuItem
                     onClick={() => run(actions.download(entry.name))}
                     icon={FileDown}
-                    description='Save locally'
+                    description='保存到本地'
                 >
-                    Download
+                    下载
                 </DropdownMenuItem>
             )}
             {permissions.delete && (
@@ -199,10 +191,10 @@ function ActionItems({ entry }: { entry: FileManagerEntry }) {
                     onClick={() => open('delete', entry)}
                     icon={Trash2}
                     danger
-                    description='Permanently remove'
+                    description='永久删除'
                     className='mt-1 border-t border-border/70 pt-3'
                 >
-                    Delete
+                    删除
                 </DropdownMenuItem>
             )}
         </>
@@ -256,7 +248,7 @@ export const FileRow = memo(({ entry, selected }: { entry: FileManagerEntry; sel
                 triggerContent={
                     <>
                         <Icon icon={MoreHorizontal} className='h-4 w-4' />
-                        <span className='sr-only'>Open file options</span>
+                        <span className='sr-only'>打开文件选项</span>
                     </>
                 }
             >

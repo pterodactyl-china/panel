@@ -13,30 +13,30 @@ const examples: Row[] = [
     { token: '0 8-12 * * *', meaning: 'hour range' },
     { token: '0,30 * * * *', meaning: 'on the hour and half past' },
     { token: '0 0 * * *', meaning: 'once a day' },
-    { token: '0 0 * * MON', meaning: 'every Monday' },
-    { token: '0 0 * * MON,FRI', meaning: 'every Monday and Friday' },
+    { token: '0 0 * * MON', meaning: '每周一' },
+    { token: '0 0 * * MON,FRI', meaning: '每周一和周五' },
 ];
 
 const specialCharacters: Row[] = [
     {
         token: '*',
         meaning: 'any value',
-        detail: 'Matches every value in that field. An hour of * runs the task every hour.',
+        detail: '匹配该字段的任意值。小时位为 * 表示每小时执行一次。',
     },
     {
         token: ',',
         meaning: 'value list separator',
-        detail: 'Picks several exact values. A minute of 0,30 runs on the hour and at half past.',
+        detail: '选择多个具体值。分钟位为 0,30 表示整点和半点执行。',
     },
     {
         token: '-',
         meaning: 'range values',
-        detail: 'Covers everything between two values. An hour of 8-12 runs at 8, 9, 10, 11 and 12.',
+        detail: '覆盖两个值之间的所有取值。小时位为 8-12 表示在 8、9、10、11、12 点执行。',
     },
     {
         token: '/',
         meaning: 'step values',
-        detail: 'Repeats every nth value. A minute of */15 runs four times an hour.',
+        detail: '每隔 N 个值重复。分钟位为 */15 表示每小时执行四次。',
     },
 ];
 
@@ -83,8 +83,8 @@ const CheatsheetCard = ({ title, rows, tokenClass }: { title: string; rows: Row[
 export default function ScheduleCheatsheet() {
     return (
         <div className='mt-4 grid items-start gap-4 sm:grid-cols-2'>
-            <CheatsheetCard title='Examples' rows={examples} tokenClass='w-32' />
-            <CheatsheetCard title='Special characters' rows={specialCharacters} tokenClass='w-6 text-center' />
+            <CheatsheetCard title='示例' rows={examples} tokenClass='w-32' />
+            <CheatsheetCard title='特殊字符' rows={specialCharacters} tokenClass='w-6 text-center' />
         </div>
     );
 }

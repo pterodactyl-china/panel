@@ -229,5 +229,5 @@ it('reports unsaved changes above the native file editor', () => {
     });
 
     expect(screen.getByRole('status').textContent).toBe('server.properties has unsaved changes.');
-    expect(screen.getByRole('button', { name: 'Save Content' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: '保存内容' })).toBeTruthy();
 });

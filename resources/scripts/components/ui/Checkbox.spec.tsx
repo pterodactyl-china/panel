@@ -11,9 +11,9 @@ describe('Checkbox', () => {
     it('exposes an accessible name, forwarded attributes and a ref', () => {
         const ref = createRef<HTMLElement>();
 
-        render(<Checkbox ref={ref} aria-label='Select all files' data-row='1' checked={false} onChange={vi.fn()} />);
+        render(<Checkbox ref={ref} aria-label='全选文件' data-row='1' checked={false} onChange={vi.fn()} />);
 
-        const checkbox = screen.getByRole('checkbox', { name: 'Select all files' });
+        const checkbox = screen.getByRole('checkbox', { name: '全选文件' });
 
         expect(checkbox).toHaveAttribute('data-row', '1');
         expect(ref.current).toBe(checkbox);

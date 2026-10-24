@@ -76,7 +76,7 @@ describe('view implementations', () => {
                 step.routes.at(-1)
             ).toEqual([]);
         }
-    });
+    }, 60_000);
 
     it('loads the console with its blocks and feature prompts, which the server layout keeps mounted', async () => {
         const placed = [

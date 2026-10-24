@@ -56,7 +56,7 @@ class ServerResource extends ClientResource
 
         $server->loadMissing(['egg.tags', 'node', 'transfer']);
 
-        $egg = $server->egg ?? throw new UnexpectedValueException('The server does not have an egg relationship.');
+        $egg = $server->egg ?? throw new UnexpectedValueException('该服务器没有关联预设。');
 
         return [
             'server_owner' => $user->id === $server->owner_id,
@@ -124,7 +124,7 @@ class ServerResource extends ClientResource
         // This allows us to avoid too much permission regression, without also hiding information that
         // is generally needed for the frontend to make sense when browsing or searching results.
         if (! $this->getUser()->can(Permissions::AllocationRead->value, $this->resource)) {
-            $primary = clone ($this->resource->allocation ?? throw new UnexpectedValueException('The server does not have a primary allocation.'));
+            $primary = clone ($this->resource->allocation ?? throw new UnexpectedValueException('该服务器没有主分配。'));
             $primary->notes = null;
 
             return $this->items([$primary], AllocationResource::class, Allocation::RESOURCE_NAME);
@@ -151,7 +151,7 @@ class ServerResource extends ClientResource
      */
     private function includeEgg(): ApiResource
     {
-        $egg = $this->resource->egg ?? throw new UnexpectedValueException('The server does not have an egg relationship.');
+        $egg = $this->resource->egg ?? throw new UnexpectedValueException('该服务器没有关联预设。');
 
         return $this->item($egg, EggResource::class, Egg::RESOURCE_NAME);
     }

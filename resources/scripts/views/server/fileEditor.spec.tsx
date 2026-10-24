@@ -270,8 +270,8 @@ it('names a new file in the core dialog before creating it', async () => {
     fireEvent.change(screen.getByLabelText('Buffer'), { target: { value: 'fresh' } });
     fireEvent.click(screen.getByRole('button', { name: 'Custom save' }));
 
-    fireEvent.change(await screen.findByLabelText('File Name'), { target: { value: 'new.txt' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Create File' }));
+    fireEvent.change(await screen.findByLabelText('文件名'), { target: { value: 'new.txt' } });
+    fireEvent.click(screen.getByRole('button', { name: '创建文件' }));
 
     await waitFor(() =>
         expect(screen.getByLabelText('Location')).toHaveTextContent('/server/test-server/files/edit#/config/new.txt')
@@ -300,7 +300,7 @@ it('saves a replaced editor canvas with the native action', async () => {
     open('/server/test-server/files/edit#/config/app.yml');
 
     fireEvent.change(await screen.findByLabelText('Canvas buffer'), { target: { value: 'from canvas' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Save Content' }));
+    fireEvent.click(screen.getByRole('button', { name: '保存内容' }));
 
     await waitFor(() => expect(writes()).toEqual([expect.objectContaining({ body: 'from canvas' })]));
 });
@@ -319,7 +319,7 @@ it('keeps the page and the buffer when the replacement fails to render', async (
 
     fireEvent.change(await screen.findByLabelText('Buffer'), { target: { value: 'kept' } });
     expect(await screen.findByLabelText('Native buffer')).toHaveValue('kept');
-    fireEvent.click(screen.getByRole('button', { name: 'Save Content' }));
+    fireEvent.click(screen.getByRole('button', { name: '保存内容' }));
 
     await waitFor(() => expect(writes()).toEqual([expect.objectContaining({ body: 'kept' })]));
     expect(loaded.registry.getExtensionStates()[0].error).toContain('editor crashed');
@@ -332,7 +332,7 @@ it('shows the path above the native editor', async () => {
     expect(screen.getByRole('link', { name: 'container' })).toHaveAttribute('href', '/server/test-server/files#/');
     expect(screen.getByRole('link', { name: 'config' })).toHaveAttribute('href', '/server/test-server/files#/config');
     expect(screen.getByText('app.yml')).toBeVisible();
-    expect(screen.getByRole('button', { name: 'Save Content' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '保存内容' })).toBeVisible();
 });
 
 it('shows a file that cannot be loaded as an error with a way back', async () => {
@@ -343,6 +343,6 @@ it('shows a file that cannot be loaded as an error with a way back', async () =>
 
     open('/server/test-server/files/edit#/config/missing.yml');
 
-    expect(await screen.findByRole('button', { name: 'Go back' })).toBeVisible();
-    expect(screen.queryByRole('button', { name: 'Save Content' })).not.toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: '返回' })).toBeVisible();
+    expect(screen.queryByRole('button', { name: '保存内容' })).not.toBeInTheDocument();
 });

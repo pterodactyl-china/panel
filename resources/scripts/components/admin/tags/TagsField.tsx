@@ -26,7 +26,7 @@ export default function TagsField({ tags, label, description, emptyText, exclude
         const value = tagValueForName(tags, name);
 
         if (value === null) {
-            toast.error('A tag name cannot be only a number.');
+            toast.error('标签名称不能仅为数字。');
         } else if (excluded.has(value)) {
             toast.error(`${name} is already in the other list.`);
         } else if (!values.includes(value)) {
@@ -39,8 +39,8 @@ export default function TagsField({ tags, label, description, emptyText, exclude
             <MultiSelectField
                 label={label}
                 description={description}
-                placeholder='Select or type tags'
-                searchPlaceholder='Search or create tags…'
+                placeholder='选择或输入标签'
+                searchPlaceholder='搜索或创建标签…'
                 onCreate={create}
                 options={[
                     ...tags

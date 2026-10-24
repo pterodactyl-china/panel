@@ -63,17 +63,17 @@ function showFailureNotice(notificationId: string, extensionId: string, mounts: 
         duration: Infinity,
         action: retryable
             ? {
-                  label: 'Retry extension',
+                  label: '重试扩展',
                   onClick: () => {
                       for (const mount of mounts) {
                           mount.retry?.();
                       }
                   },
               }
-            : { label: 'Reload page', onClick: () => window.location.reload() },
+            : { label: '重新加载页面', onClick: () => window.location.reload() },
         description: retryable ? (
             <Button type='button' onClick={() => window.location.reload()}>
-                Reload page
+                重新加载页面
             </Button>
         ) : undefined,
     });
@@ -122,11 +122,11 @@ export function ExtensionFailure({
             <p>The "{extensionId}" extension could not display this content.</p>
             {retry && (
                 <Button type='button' onClick={retry}>
-                    Retry extension
+                    重试扩展
                 </Button>
             )}
             <Button type='button' onClick={() => window.location.reload()}>
-                Reload page
+                重新加载页面
             </Button>
         </div>
     );

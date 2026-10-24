@@ -45,17 +45,13 @@ export default function CreateUserForm() {
     });
 
     return (
-        <AdminContentBlock
-            title='Admin · Create User'
-            heading='Create User'
-            description='Create a panel account and configure its access.'
-        >
+        <AdminContentBlock title='管理 · 创建用户' heading='创建用户' description='创建面板账户并配置其访问权限。'>
             <Link
                 to='/panel/users'
                 className='inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4'
             >
                 <Icon icon={ArrowLeft} className='mr-2' />
-                Back to Users
+                返回用户
             </Link>
             <Form form={form}>
                 <div className='space-y-6'>
@@ -69,7 +65,7 @@ export default function CreateUserForm() {
                     </form.AppField>
                     <div className='flex justify-end'>
                         <form.AppForm>
-                            <form.SubmitButton>Create User</form.SubmitButton>
+                            <form.SubmitButton>创建用户</form.SubmitButton>
                         </form.AppForm>
                     </div>
                 </div>

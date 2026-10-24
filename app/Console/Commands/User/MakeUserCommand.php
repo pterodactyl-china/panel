@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 use Pterodactyl\Contracts\Users\CreatesUsers;
 use Throwable;
 
-#[Description('Creates a user on the system via the CLI.')]
+#[Description('通过命令行在系统中创建用户。')]
 #[Signature('p:user:make {--email=} {--username=} {--name-first=} {--name-last=} {--password=} {--admin=} {--no-password}')]
 class MakeUserCommand extends Command
 {

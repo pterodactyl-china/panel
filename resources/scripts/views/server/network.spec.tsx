@@ -79,13 +79,13 @@ const notes = () => requests.filter((request) => request.method === 'post' && re
 
 it('saves the notes as soon as the field loses focus', async () => {
     await renderAllocations([allocation(7, 25565)]);
-    const field = screen.getByRole('textbox', { name: 'Notes for 10.0.0.1:25565' });
+    const field = screen.getByRole('textbox', { name: '10.0.0.1:25565 的备注' });
 
-    fireEvent.change(field, { target: { value: 'Game port' } });
+    fireEvent.change(field, { target: { value: '游戏端口' } });
     fireEvent.blur(field);
     await settle();
 
-    expect(notes().map((request) => request.body)).toEqual([{ notes: 'Game port' }]);
+    expect(notes().map((request) => request.body)).toEqual([{ notes: '游戏端口' }]);
     await act(async () => {
         await vi.advanceTimersByTimeAsync(750);
     });
@@ -105,14 +105,14 @@ it('saves pending notes when the table unmounts', async () => {
 it('marks the primary allocation and lets another one become primary or be removed', async () => {
     await renderAllocations([allocation(1, 25565, true), allocation(7, 25575)], 4);
 
-    expect(screen.getByText('Primary')).toHaveAttribute('data-ui', 'badge');
-    expect(screen.getByText('You are currently using 2 of 4 allowed allocations for this server.')).toBeVisible();
-    expect(screen.getAllByRole('button', { name: 'New allocation' })).toHaveLength(1);
+    expect(screen.getByText('首选')).toHaveAttribute('data-ui', 'badge');
+    expect(screen.getByText('此服务器已使用 2 / 4 个允许的分配。')).toBeVisible();
+    expect(screen.getAllByRole('button', { name: '新建分配' })).toHaveLength(1);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Delete allocation 10.0.0.1:25575' }));
+    fireEvent.click(screen.getByRole('button', { name: /^删除分配/ }));
     const dialog = await screen.findByRole('dialog');
 
-    fireEvent.click(within(dialog).getByRole('button', { name: 'Delete' }));
+    fireEvent.click(within(dialog).getByRole('button', { name: '删除' }));
     await waitFor(() =>
         expect(requests).toContainEqual(
             expect.objectContaining({ method: 'delete', path: expect.stringMatching(/\/allocations\/7$/) })
@@ -123,15 +123,15 @@ it('marks the primary allocation and lets another one become primary or be remov
 it('makes another allocation the primary one', async () => {
     await renderAllocations([allocation(1, 25565, true), allocation(7, 25575)]);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Make Primary' }));
-    await waitFor(() => expect(screen.getAllByText('Primary')).toHaveLength(1));
+    fireEvent.click(screen.getByRole('button', { name: '设为首选' }));
+    await waitFor(() => expect(screen.getAllByText('首选')).toHaveLength(1));
     expect(requests.some((request) => request.path.endsWith('/allocations/7/primary'))).toBe(true);
-    expect(screen.getByRole('button', { name: 'Make Primary' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '设为首选' })).toBeVisible();
 });
 
 it('leaves allocations to an administrator when the server has no limit', async () => {
     await renderAllocations([allocation(1, 25565, true)], 0);
 
     expect(screen.queryByText(/allowed allocations/)).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'New allocation' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: '新建分配' })).not.toBeInTheDocument();
 });

@@ -30,7 +30,7 @@ export function localeLoadPath(namespaces: string[]): string {
     return revision ? `${localePath}&revision=${revision}` : localePath;
 }
 
-export const initialLanguage = (): string => getBootstrapUser()?.language || getBootstrapSiteSettings()?.locale || 'en';
+export const initialLanguage = (): string => getBootstrapUser()?.language || getBootstrapSiteSettings()?.locale || 'zh';
 
 export function followCurrentUserLanguage(queryClient: QueryClient, instance: I18n = i18n): () => void {
     const currentUserHash = hashKey(currentUserQueryKey);

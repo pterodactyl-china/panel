@@ -21,7 +21,7 @@ it('renders one main landmark however many layouts nest', () => {
         <Main>
             <nav>Account navigation</nav>
             <Main>
-                <p>Page</p>
+                <p>页</p>
             </Main>
         </Main>
     );
@@ -59,7 +59,7 @@ it('moves focus to the main content from the skip link without touching the URL 
         </>
     );
 
-    const link = screen.getByRole('link', { name: 'Skip to content' });
+    const link = screen.getByRole('link', { name: '跳至内容' });
 
     expect(document.body.querySelector('a, button')).toBe(link);
     fireEvent.click(link);

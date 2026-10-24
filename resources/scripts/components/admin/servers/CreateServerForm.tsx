@@ -101,37 +101,37 @@ const createServerValues = (values: Values): CreateServerValues => ({
 });
 
 const CoreDetailsBox = ({ form, users }: { form: ServerForm; users: AdminUser[] }) => (
-    <TitledGreyBox title='Core Details'>
+    <TitledGreyBox title='核心详情'>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
             <div className='space-y-6'>
                 <form.AppField
                     name='name'
                     validators={{
-                        onChange: ({ value }) => (value.length >= 1 ? undefined : 'A server name must be provided.'),
+                        onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供服务器名称。'),
                     }}
                 >
                     {(field) => (
                         <field.TextField
                             type='text'
                             id='name'
-                            label='Server Name'
-                            description='Character limits: a-z A-Z 0-9 _ - . and [Space].'
+                            label='服务器名称'
+                            description='字符限制：a-z A-Z 0-9 _ - . 以及 [空格]。'
                         />
                     )}
                 </form.AppField>
                 <form.AppField
                     name='ownerId'
                     validators={{
-                        onChange: ({ value }) => (value >= 1 ? undefined : 'A server owner must be selected.'),
+                        onChange: ({ value }) => (value >= 1 ? undefined : '必须选择服务器所有者。'),
                     }}
                 >
                     {(field) => (
                         <field.SelectField
                             id='ownerId'
-                            label='Server Owner'
-                            description='The user that this server will belong to.'
+                            label='服务器所有者'
+                            description='此服务器所属的用户。'
                             options={[
-                                { value: 0, label: 'Select a server owner…', disabled: true },
+                                { value: 0, label: '选择服务器所有者…', disabled: true },
                                 ...users.map((user) => ({
                                     value: user.attributes.id ?? 0,
                                     label: `${user.attributes.email} (${user.attributes.username})`,
@@ -147,8 +147,8 @@ const CoreDetailsBox = ({ form, users }: { form: ServerForm; users: AdminUser[] 
                         <field.TextField
                             type='text'
                             id='description'
-                            label='Server Description'
-                            description='A brief description of this server.'
+                            label='服务器描述'
+                            description='此服务器的简要描述。'
                         />
                     )}
                 </form.AppField>
@@ -156,8 +156,8 @@ const CoreDetailsBox = ({ form, users }: { form: ServerForm; users: AdminUser[] 
                     <form.AppField name='startOnCompletion'>
                         {(field) => (
                             <field.SwitchField
-                                label='Start Server when Installed'
-                                description='Start this server automatically once the installation completes.'
+                                label='安装完成后启动服务器'
+                                description='安装完成后自动启动此服务器。'
                             />
                         )}
                     </form.AppField>
@@ -191,15 +191,15 @@ const AllocationBox = ({
     const additionalOptions = allocationOptions.filter((option) => option.value !== defaultAllocationId);
 
     return (
-        <TitledGreyBox title='Allocation Management'>
+        <TitledGreyBox title='分配管理'>
             <div className='relative grid grid-cols-1 md:grid-cols-3 gap-6'>
                 {loading && <Spinner size='small' centered />}
                 <div>
-                    <Label htmlFor='nodeId'>Node</Label>
+                    <Label htmlFor='nodeId'>节点</Label>
                     <Select
                         id='nodeId'
                         value={nodeId}
-                        placeholder='Select a node…'
+                        placeholder='选择节点…'
                         onChange={(value) => {
                             onNodeChange(Number(value));
                             form.setFieldValue('allocationId', 0);
@@ -212,26 +212,22 @@ const AllocationBox = ({
                             options: group.nodes.map((node) => ({ value: node.id, label: node.name })),
                         }))}
                     />
-                    <p className='input-help'>The node which this server will be deployed to.</p>
+                    <p className='input-help'>此服务器将部署到的节点。</p>
                 </div>
                 <div>
                     <form.AppField
                         name='allocationId'
                         validators={{
-                            onChange: ({ value }) =>
-                                value >= 1 ? undefined : 'A default allocation must be selected.',
+                            onChange: ({ value }) => (value >= 1 ? undefined : '必须选择默认分配。'),
                         }}
                     >
                         {(field) => (
                             <field.SelectField
                                 id='allocationId'
-                                label='Default Allocation'
-                                description='The main allocation that will be assigned to this server.'
+                                label='默认分配'
+                                description='将分配给此服务器的主分配。'
                                 disabled={nodeId <= 0}
-                                options={[
-                                    { value: 0, label: 'Select an allocation…', disabled: true },
-                                    ...allocationOptions,
-                                ]}
+                                options={[{ value: 0, label: '选择分配…', disabled: true }, ...allocationOptions]}
                                 onChange={(value) =>
                                     form.setFieldValue('allocationAdditional', (current) =>
                                         current.filter((id) => id !== Number(value))
@@ -246,8 +242,8 @@ const AllocationBox = ({
                         {(field) => (
                             <field.MultiSelectField
                                 id='allocationAdditional'
-                                label='Additional Allocation(s)'
-                                description='Additional allocations to assign to this server on creation.'
+                                label='额外分配'
+                                description='创建时额外分配给此服务器的分配。'
                                 disabled={nodeId <= 0}
                                 options={additionalOptions}
                             />
@@ -260,44 +256,35 @@ const AllocationBox = ({
 };
 
 const FeatureLimitsBox = ({ form }: { form: ServerForm }) => (
-    <TitledGreyBox title='Application Feature Limits'>
+    <TitledGreyBox title='应用功能限制'>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-            <form.AppField
-                name='databaseLimit'
-                validators={{ onChange: requiredNumber('A database limit must be provided.') }}
-            >
+            <form.AppField name='databaseLimit' validators={{ onChange: requiredNumber('必须提供数据库限制。') }}>
                 {(field) => (
                     <field.NumberField
                         id='databaseLimit'
-                        label='Database Limit'
+                        label='数据库限制'
                         min={0}
-                        description='The total number of databases a user is allowed to create for this server.'
+                        description='用户可为此服务器创建的数据库总数。'
                     />
                 )}
             </form.AppField>
-            <form.AppField
-                name='allocationLimit'
-                validators={{ onChange: requiredNumber('An allocation limit must be provided.') }}
-            >
+            <form.AppField name='allocationLimit' validators={{ onChange: requiredNumber('必须提供分配限制。') }}>
                 {(field) => (
                     <field.NumberField
                         id='allocationLimit'
-                        label='Allocation Limit'
+                        label='分配限制'
                         min={0}
-                        description='The total number of allocations a user is allowed to create for this server.'
+                        description='用户可为此服务器创建的分配总数。'
                     />
                 )}
             </form.AppField>
-            <form.AppField
-                name='backupLimit'
-                validators={{ onChange: requiredNumber('A backup limit must be provided.') }}
-            >
+            <form.AppField name='backupLimit' validators={{ onChange: requiredNumber('必须提供备份限制。') }}>
                 {(field) => (
                     <field.NumberField
                         id='backupLimit'
-                        label='Backup Limit'
+                        label='备份限制'
                         min={0}
-                        description='The total number of backups that can be created for this server.'
+                        description='此服务器可创建的备份总数。'
                     />
                 )}
             </form.AppField>
@@ -306,15 +293,15 @@ const FeatureLimitsBox = ({ form }: { form: ServerForm }) => (
 );
 
 const ResourceManagementBox = ({ form }: { form: ServerForm }) => (
-    <TitledGreyBox title='Resource Management'>
+    <TitledGreyBox title='资源管理'>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-            <form.AppField name='cpu' validators={{ onChange: requiredNumber('A CPU limit must be provided.') }}>
+            <form.AppField name='cpu' validators={{ onChange: requiredNumber('必须提供 CPU 限制。') }}>
                 {(field) => (
                     <field.NumberField
                         id='cpu'
-                        label='CPU Limit (%)'
+                        label='CPU 限制 (%)'
                         min={0}
-                        description='Set to 0 to allow unlimited CPU usage. 100% equals one thread.'
+                        description='设为 0 表示不限制 CPU 使用。100% 相当于一个线程。'
                     />
                 )}
             </form.AppField>
@@ -323,56 +310,56 @@ const ResourceManagementBox = ({ form }: { form: ServerForm }) => (
                     <field.TextField
                         type='text'
                         id='threads'
-                        label='CPU Pinning'
-                        description='Advanced: specific CPU threads (e.g. 0, 0-1,3) or leave blank for all.'
+                        label='CPU 绑定'
+                        description='高级：指定 CPU 线程（例如 0, 0-1,3），留空表示全部。'
                     />
                 )}
             </form.AppField>
-            <form.AppField name='memory' validators={{ onChange: requiredNumber('A memory limit must be provided.') }}>
+            <form.AppField name='memory' validators={{ onChange: requiredNumber('必须提供内存限制。') }}>
                 {(field) => (
                     <field.NumberField
                         id='memory'
-                        label='Memory (MiB)'
+                        label='内存 (MiB)'
                         min={0}
-                        description='The maximum amount of memory allowed. Set to 0 for unlimited.'
+                        description='允许的最大内存。设为 0 表示不限制。'
                     />
                 )}
             </form.AppField>
-            <form.AppField name='swap' validators={{ onChange: requiredNumber('A swap limit must be provided.') }}>
+            <form.AppField name='swap' validators={{ onChange: requiredNumber('必须提供交换分区限制。') }}>
                 {(field) => (
                     <field.NumberField
                         id='swap'
-                        label='Swap (MiB)'
+                        label='交换分区 (MiB)'
                         min={-1}
-                        description='Set to 0 to disable swap, or -1 to allow unlimited swap.'
+                        description='设为 0 禁用交换分区，设为 -1 表示不限制。'
                     />
                 )}
             </form.AppField>
-            <form.AppField name='disk' validators={{ onChange: requiredNumber('A disk limit must be provided.') }}>
+            <form.AppField name='disk' validators={{ onChange: requiredNumber('必须提供磁盘限制。') }}>
                 {(field) => (
                     <field.NumberField
                         id='disk'
-                        label='Disk Space (MiB)'
+                        label='磁盘空间 (MiB)'
                         min={0}
-                        description='Set to 0 to allow unlimited disk usage.'
+                        description='设为 0 表示不限制磁盘使用。'
                     />
                 )}
             </form.AppField>
             <form.AppField
                 name='io'
                 validators={{
-                    onChange: requiredNumber('A block IO weight must be provided.', (value) =>
-                        value >= 10 && value <= 1000 ? undefined : 'Block IO weight must be between 10 and 1000.'
+                    onChange: requiredNumber('必须提供块 IO 权重。', (value) =>
+                        value >= 10 && value <= 1000 ? undefined : '块 IO 权重必须介于 10 与 1000 之间。'
                     ),
                 }}
             >
                 {(field) => (
                     <field.NumberField
                         id='io'
-                        label='Block IO Weight'
+                        label='块 IO 权重'
                         min={10}
                         max={1000}
-                        description='Advanced: IO performance relative to other containers (10 to 1000).'
+                        description='高级：相对于其他容器的 IO 性能（10 到 1000）。'
                     />
                 )}
             </form.AppField>
@@ -381,11 +368,8 @@ const ResourceManagementBox = ({ form }: { form: ServerForm }) => (
             <form.AppField name='enableOomKiller'>
                 {(field) => (
                     <field.SwitchField
-                        label='Enable OOM Killer'
-                        description={
-                            'Terminates the server if it breaches its memory limits. Enabling the OOM killer may ' +
-                            'cause server processes to exit unexpectedly.'
-                        }
+                        label='启用 OOM Killer'
+                        description='当服务器超出内存限制时终止它。启用 OOM Killer 可能导致服务器进程意外退出。'
                     />
                 )}
             </form.AppField>
@@ -407,15 +391,15 @@ const EggConfigurationBox = ({
     const eggId = useStore(form.store, (state) => Number(state.values.eggId ?? 0));
 
     return (
-        <TitledGreyBox title='Egg Configuration'>
+        <TitledGreyBox title='预设配置'>
             <div className='relative space-y-6'>
                 {loading && <Spinner size='small' centered />}
                 <div>
-                    <Label htmlFor='eggId'>Egg</Label>
+                    <Label htmlFor='eggId'>预设</Label>
                     <Select
                         id='eggId'
                         value={eggId}
-                        placeholder='Select an egg…'
+                        placeholder='选择预设…'
                         options={eggs.map((egg) => ({ value: egg.attributes.id, label: egg.attributes.name }))}
                         onChange={(value) => {
                             const nextEggId = Number(value);
@@ -424,14 +408,14 @@ const EggConfigurationBox = ({
                             loadEgg(nextEggId);
                         }}
                     />
-                    <p className='input-help'>Select the egg that will define how this server should operate.</p>
+                    <p className='input-help'>选择用于定义此服务器运行方式的预设。</p>
                 </div>
                 <div>
                     <form.AppField name='skipScripts'>
                         {(field) => (
                             <field.SwitchField
-                                label='Skip Egg Install Script'
-                                description='Skip the egg install script during installation if one is attached.'
+                                label='跳过预设安装脚本'
+                                description='如果关联了安装脚本，则在安装时跳过它。'
                             />
                         )}
                     </form.AppField>
@@ -447,10 +431,10 @@ const DockerImageBox = ({ form, egg }: { form: ServerForm; egg: EggForServer | n
     const isCustom = !images.some(([, value]) => value === image);
 
     return (
-        <TitledGreyBox title='Docker Configuration'>
+        <TitledGreyBox title='Docker 配置'>
             <div className='space-y-4'>
                 <div>
-                    <Label htmlFor='image'>Docker Image</Label>
+                    <Label htmlFor='image'>Docker 镜像</Label>
                     <Select
                         id='image'
                         value={isCustom ? 'custom' : image}
@@ -458,7 +442,7 @@ const DockerImageBox = ({ form, egg }: { form: ServerForm; egg: EggForServer | n
                         onChange={(value) => form.setFieldValue('image', value === 'custom' ? '' : String(value))}
                         options={[
                             ...images.map(([name, value]) => ({ value, label: `${name} (${value})` })),
-                            { value: 'custom', label: 'Custom Image…' },
+                            { value: 'custom', label: '自定义镜像…' },
                         ]}
                     />
                 </div>
@@ -466,17 +450,16 @@ const DockerImageBox = ({ form, egg }: { form: ServerForm; egg: EggForServer | n
                     <form.AppField
                         name='image'
                         validators={{
-                            onChange: ({ value }) =>
-                                value.length >= 1 ? undefined : 'A Docker image must be provided.',
+                            onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供 Docker 镜像。'),
                         }}
                     >
                         {(field) => (
                             <field.TextField
                                 type='text'
                                 id='customImage'
-                                label='Custom Image'
-                                placeholder='Or enter a custom image…'
-                                description='The default Docker image used to run this server.'
+                                label='自定义镜像'
+                                placeholder='或输入自定义镜像…'
+                                description='运行此服务器使用的默认 Docker 镜像。'
                             />
                         )}
                     </form.AppField>
@@ -490,25 +473,25 @@ const StartupBox = ({ form, egg }: { form: ServerForm; egg: EggForServer | null 
     const variables = relationshipData(egg?.attributes.relationships?.variables);
 
     return (
-        <TitledGreyBox title='Startup Configuration'>
+        <TitledGreyBox title='启动配置'>
             <form.AppField
                 name='startup'
                 validators={{
-                    onChange: ({ value }) => (value.length >= 1 ? undefined : 'A startup command must be provided.'),
+                    onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供启动命令。'),
                 }}
             >
                 {(field) => (
                     <field.TextField
                         type='text'
                         id='startup'
-                        label='Startup Command'
-                        description='The following substitutes are available: {{SERVER_MEMORY}}, {{SERVER_IP}}, and {{SERVER_PORT}}.'
+                        label='启动命令'
+                        description='可用的替换变量：{{SERVER_MEMORY}}、{{SERVER_IP}} 和 {{SERVER_PORT}}。'
                     />
                 )}
             </form.AppField>
             {variables.length > 0 && (
                 <div className='mt-6'>
-                    <p className='text-sm uppercase text-muted-foreground mb-4'>Service Variables</p>
+                    <p className='text-sm uppercase text-muted-foreground mb-4'>服务变量</p>
                     <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                         {variables.map(({ attributes }) => (
                             <form.AppField key={attributes.id} name={`environment.${attributes.env_variable}`}>
@@ -607,12 +590,7 @@ const TagCheck = ({
 
     if (rejection?.nodeId === nodeId && rejection.eggId === eggId) {
         return (
-            <TagCheckAlert
-                message={rejection.message}
-                action='Create anyway'
-                pending={pending}
-                onAction={onCreateAnyway}
-            />
+            <TagCheckAlert message={rejection.message} action='仍然创建' pending={pending} onAction={onCreateAnyway} />
         );
     }
 
@@ -628,9 +606,9 @@ const TagCheck = ({
 const NoNodesAlert = () => (
     <Alert type='warning' className='text-sm'>
         <span>
-            You must have at least one node configured before you can add a server to this panel.{' '}
+            在为面板添加服务器之前，至少需要配置一个节点。{' '}
             <Link to='/panel/nodes' className='font-medium underline'>
-                Manage Nodes
+                管理节点
             </Link>
         </span>
     </Alert>
@@ -697,16 +675,16 @@ export default function CreateServerForm() {
 
     return (
         <AdminContentBlock
-            title='Admin · Create Server'
-            heading='Create Server'
-            description='Create a game server on one of your nodes.'
+            title='管理 · 创建服务器'
+            heading='创建服务器'
+            description='在您的某个节点上创建游戏服务器。'
         >
             <Link
                 to='/panel/servers'
                 className='inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4'
             >
                 <Icon icon={ArrowLeft} className='mr-2' />
-                Back to Servers
+                返回服务器
             </Link>
             <CreateServerBody loading={loading} hasNodes={hasNodes}>
                 <Form form={form}>
@@ -735,7 +713,7 @@ export default function CreateServerForm() {
                         />
                         <div className='flex justify-end'>
                             <form.AppForm>
-                                <form.SubmitButton>Create Server</form.SubmitButton>
+                                <form.SubmitButton>创建服务器</form.SubmitButton>
                             </form.AppForm>
                         </div>
                     </div>

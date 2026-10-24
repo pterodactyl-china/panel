@@ -23,7 +23,7 @@ import type { ViewProps } from '@/sdk/theme';
 const apiKeyColumns = (onDelete: (identifier: string) => void): TableColumn<ApiKeyItem>[] => [
     {
         id: 'description',
-        label: 'Description',
+        label: '描述',
         sortValue: (key) => key.description,
         cell: (key) => (
             <div className='min-w-40'>
@@ -34,7 +34,7 @@ const apiKeyColumns = (onDelete: (identifier: string) => void): TableColumn<ApiK
     },
     {
         id: 'identifier',
-        label: 'Identifier',
+        label: '标识符',
         sortValue: (key) => key.identifier,
         cell: (key) => <code className='font-mono text-xs text-muted-foreground'>{key.identifier}</code>,
         headerClassName: 'hidden md:table-cell',
@@ -42,11 +42,11 @@ const apiKeyColumns = (onDelete: (identifier: string) => void): TableColumn<ApiK
     },
     {
         id: 'last_used_at',
-        label: 'Last used',
+        label: '上次使用',
         sortValue: (key) => key.lastUsedAt,
         cell: (key) => (
             <span className='whitespace-nowrap text-xs text-muted-foreground'>
-                {key.lastUsedAt ? formatDate(key.lastUsedAt, 'MMM D, YYYY HH:mm') : 'Never'}
+                {key.lastUsedAt ? formatDate(key.lastUsedAt, 'YYYY-MM-DD HH:mm') : '从未使用'}
             </span>
         ),
         headerClassName: 'hidden lg:table-cell w-40',
@@ -54,11 +54,11 @@ const apiKeyColumns = (onDelete: (identifier: string) => void): TableColumn<ApiK
     },
     {
         id: 'actions',
-        label: <span className='sr-only'>Actions</span>,
+        label: <span className='sr-only'>操作</span>,
         cell: (key) => (
             <RowActions>
                 <DeleteAction
-                    aria-label={`Delete ${key.description} API key`}
+                    aria-label={`删除 API 密钥 ${key.description}`}
                     onClick={() => onDelete(key.identifier)}
                 />
             </RowActions>
@@ -73,17 +73,17 @@ export default function ApiKeyList({ model, className }: ViewProps<'account.apiK
     const columns = useMemo(() => apiKeyColumns(setDeleteIdentifier), []);
 
     return (
-        <ContentBox title='API Keys' className={className}>
+        <ContentBox title='API 密钥' className={className}>
             <SpinnerOverlay visible={model.deleting} />
             <Dialog.Confirm
-                title='Delete API Key'
-                confirm='Delete Key'
+                title='删除 API 密钥'
+                confirm='删除密钥'
                 open={!!deleteIdentifier}
                 pending={model.deleting}
                 onClose={() => setDeleteIdentifier('')}
                 onConfirmed={() => void model.remove(deleteIdentifier).then(() => setDeleteIdentifier(''))}
             >
-                All requests using the <Code>{deleteIdentifier}</Code> key will be invalidated.
+                所有使用以下内容的请求： <Code>{deleteIdentifier}</Code> 密钥将失效。
             </Dialog.Confirm>
             {model.loading ? (
                 <Spinner size='large' centered />
@@ -98,9 +98,9 @@ export default function ApiKeyList({ model, className }: ViewProps<'account.apiK
                                 <EmptyMedia variant='icon'>
                                     <KeyRound />
                                 </EmptyMedia>
-                                <EmptyTitle>No API keys</EmptyTitle>
+                                <EmptyTitle>没有 API 密钥</EmptyTitle>
                                 <EmptyDescription>
-                                    Create a key to use the client API from your own scripts and tools.
+                                    创建密钥，以便在您自己的脚本和工具中使用客户端 API。
                                 </EmptyDescription>
                             </EmptyHeader>
                         </Empty>

@@ -33,14 +33,14 @@ export default function GeneralSettingsForm({ settings }: { settings: AdminSetti
 
     return (
         <Form form={form}>
-            <TitledGreyBox title='General'>
+            <TitledGreyBox title='常规'>
                 <form.AppField name='name'>
                     {(field) => (
                         <field.TextField
                             type='text'
                             id='app_name'
-                            label='Company Name'
-                            description='The name of your company, used throughout the Panel.'
+                            label='公司名称'
+                            description='您的公司名称，将在整个面板中显示。'
                             disabled={readOnly}
                         />
                     )}
@@ -50,11 +50,11 @@ export default function GeneralSettingsForm({ settings }: { settings: AdminSetti
                         {(field) => (
                             <field.SelectField
                                 id='twoFactorRequired'
-                                label='Require 2-Factor Authentication'
+                                label='要求两步验证'
                                 options={[
-                                    { value: 0, label: 'Not Required' },
-                                    { value: 1, label: 'Required for Admins' },
-                                    { value: 2, label: 'Required for All Users' },
+                                    { value: 0, label: '非必需' },
+                                    { value: 1, label: '仅管理员必需' },
+                                    { value: 2, label: '所有用户必需' },
                                 ]}
                                 disabled={readOnly}
                             />
@@ -66,11 +66,11 @@ export default function GeneralSettingsForm({ settings }: { settings: AdminSetti
                         {(field) => (
                             <field.SelectField
                                 id='app_locale'
-                                label='Default Language'
+                                label='默认语言'
                                 options={languagesList}
                                 disabled={readOnly || (languagesLoading && !languages)}
-                                placeholder='Select a language'
-                                description='The default language used for the Panel.'
+                                placeholder='选择语言'
+                                description='面板使用的默认语言。'
                             />
                         )}
                     </form.AppField>
@@ -79,8 +79,8 @@ export default function GeneralSettingsForm({ settings }: { settings: AdminSetti
                     <form.AppField name='userAvatarsEnabled'>
                         {(field) => (
                             <field.SwitchField
-                                label='User Avatars'
-                                description='Should users be allowed to use custom avatars on their profiles?'
+                                label='用户头像'
+                                description='是否允许用户在其个人资料中使用自定义头像？'
                                 disabled={readOnly}
                             />
                         )}
@@ -88,7 +88,7 @@ export default function GeneralSettingsForm({ settings }: { settings: AdminSetti
                 </div>
                 <div className='flex justify-end mt-4'>
                     <form.AppForm>
-                        <form.SubmitButton disabled={readOnly}>Save Changes</form.SubmitButton>
+                        <form.SubmitButton disabled={readOnly}>保存更改</form.SubmitButton>
                     </form.AppForm>
                 </div>
             </TitledGreyBox>

@@ -37,7 +37,7 @@ test('totp token cannot be reused', function (int $seconds) {
     $user = User::factory()->create(['use_totp' => true, 'totp_secret' => encrypt(str_repeat('a', 16)), 'totp_authenticated_at' => now()->addSeconds($seconds)]);
     Session::put('auth_confirmation_token', new LoginCheckpoint($user->id, 'token', now()->addMinutes(5)));
     $totp = $this->app->make(Google2FA::class)->getCurrentOtp(str_repeat('a', 16));
-    $this->postJson(route('auth.login-checkpoint', ['confirmation_token' => 'token', 'authentication_code' => $totp]))->assertBadRequest()->assertJsonPath('errors.0.detail', 'The two-factor authentication token was invalid.');
+    $this->postJson(route('auth.login-checkpoint', ['confirmation_token' => 'token', 'authentication_code' => $totp]))->assertBadRequest()->assertJsonPath('errors.0.detail', '动态口令无效。');
     $this->assertGuest();
     expect($user->refresh()->totp_authenticated_at)->toEqual(now()->addSeconds($seconds));
     Event::assertDispatched(fn (Failed $event) => $event->guard === 'auth' && $event->user->is($user));

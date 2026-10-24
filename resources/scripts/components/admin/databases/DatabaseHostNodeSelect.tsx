@@ -13,8 +13,8 @@ export default function DatabaseHostNodeSelect({ id, value, onChange }: Props) {
 
     const groups = [
         {
-            label: 'Global',
-            options: [{ value: '', label: 'None' }],
+            label: '全局',
+            options: [{ value: '', label: '无' }],
         },
         ...(locations ?? []).map((group) => ({
             label: `${group.location.attributes.long || group.location.attributes.short} (${group.location.attributes.short})`,
@@ -27,7 +27,7 @@ export default function DatabaseHostNodeSelect({ id, value, onChange }: Props) {
 
     return (
         <div>
-            <Label htmlFor={id}>Linked Node</Label>
+            <Label htmlFor={id}>关联节点</Label>
             <Select
                 id={id}
                 value={value}
@@ -36,9 +36,7 @@ export default function DatabaseHostNodeSelect({ id, value, onChange }: Props) {
                 disabled={locations === undefined}
                 onChange={(value) => onChange(String(value))}
             />
-            <p className='input-help'>
-                Default to this database host when adding databases to servers on selected node.
-            </p>
+            <p className='input-help'>为所选节点上的服务器添加数据库时，默认使用此数据库主机。</p>
         </div>
     );
 }

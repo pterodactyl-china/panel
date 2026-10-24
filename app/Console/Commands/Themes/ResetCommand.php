@@ -9,7 +9,7 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Pterodactyl\Services\Themes\ThemeRepository;
 
-#[Description('Make the built-in classic theme active again.')]
+#[Description('重新启用内置经典主题。')]
 #[Signature('p:theme:reset')]
 class ResetCommand extends Command
 {
@@ -17,7 +17,7 @@ class ResetCommand extends Command
     {
         $themes->setActive(ThemeRepository::CLASSIC);
 
-        $this->components->info('The panel is back on the classic theme.');
+        $this->components->info('面板已恢复为经典主题。');
 
         return self::SUCCESS;
     }

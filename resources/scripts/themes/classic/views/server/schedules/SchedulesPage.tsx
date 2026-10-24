@@ -5,7 +5,7 @@ import PageStatus from '../../shared/PageStatus';
 export default function SchedulesPage({ model, className }: ViewProps<'page.server.schedules'>) {
     return (
         <PageStatus model={model} className={className}>
-            <ServerContentBlock title='Schedules' className={className}>
+            <ServerContentBlock title='计划任务' className={className}>
                 <View name='server.schedules' />
             </ServerContentBlock>
         </PageStatus>

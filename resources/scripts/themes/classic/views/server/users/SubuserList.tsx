@@ -24,7 +24,7 @@ import {
 import { View, type ViewProps } from '@/sdk/theme';
 
 const NewUserButton = ({ model }: { model: SubuserListModel }) => (
-    <NewLinkButton to={`/server/${model.serverId}/users/new`}>New user</NewLinkButton>
+    <NewLinkButton to={`/server/${model.serverId}/users/new`}>新建用户</NewLinkButton>
 );
 
 function SubuserActions({ model, subuser }: { model: SubuserListModel; subuser: SubuserSummary }) {
@@ -36,7 +36,7 @@ function SubuserActions({ model, subuser }: { model: SubuserListModel; subuser: 
         <RowActions>
             {model.canUpdate && (
                 <Dialog.Trigger
-                    trigger={({ onClick }) => <EditAction aria-label={`Edit ${subuser.email}`} onClick={onClick} />}
+                    trigger={({ onClick }) => <EditAction aria-label={`编辑 ${subuser.email}`} onClick={onClick} />}
                 >
                     {({ open, onClose }) =>
                         open && <View name='server.subuserForm' subuser={subuser} onClose={onClose} />
@@ -45,18 +45,17 @@ function SubuserActions({ model, subuser }: { model: SubuserListModel; subuser: 
             )}
             {model.canDelete && (
                 <Dialog.ConfirmTrigger
-                    title='Delete this subuser?'
-                    confirm='Yes, remove subuser'
+                    title='删除此子用户？'
+                    confirm='是，移除子用户'
                     preventExternalClose={model.deleting}
                     pending={model.deleting}
                     onConfirmed={(_event, close) => {
                         void model.remove(subuser.uuid).then(close);
                     }}
-                    trigger={({ onClick }) => <DeleteAction aria-label={`Delete ${subuser.email}`} onClick={onClick} />}
+                    trigger={({ onClick }) => <DeleteAction aria-label={`删除 ${subuser.email}`} onClick={onClick} />}
                 >
                     <SpinnerOverlay visible={model.deleting} />
-                    Are you sure you wish to remove this subuser? They will have all access to this server revoked
-                    immediately.
+                    确定要移除此子用户吗？其对服务器的所有访问权限将立即被撤销。
                 </Dialog.ConfirmTrigger>
             )}
         </RowActions>
@@ -67,7 +66,7 @@ function columns(model: SubuserListModel): TableColumn<SubuserSummary>[] {
     return [
         {
             id: 'email',
-            label: 'User',
+            label: '用户',
             sortValue: (subuser) => subuser.email,
             cell: (subuser) => (
                 <div className='flex min-w-44 items-center gap-3'>
@@ -98,7 +97,7 @@ function columns(model: SubuserListModel): TableColumn<SubuserSummary>[] {
         },
         {
             id: 'permissions',
-            label: 'Permissions',
+            label: '权限',
             sortValue: (subuser) => subuser.permissionCount,
             cell: (subuser) => String(subuser.permissionCount),
             headerClassName: 'hidden md:table-cell w-32',
@@ -128,10 +127,8 @@ export default function SubuserList({ model, className }: ViewProps<'server.subu
                             <EmptyMedia variant='icon'>
                                 <Users />
                             </EmptyMedia>
-                            <EmptyTitle>No subusers</EmptyTitle>
-                            <EmptyDescription>
-                                Add users to give them access to this server with the permissions you choose.
-                            </EmptyDescription>
+                            <EmptyTitle>没有子用户</EmptyTitle>
+                            <EmptyDescription>添加用户并为其分配您选择的权限，使其可以访问此服务器。</EmptyDescription>
                         </EmptyHeader>
                         {model.canCreate && (
                             <EmptyContent>

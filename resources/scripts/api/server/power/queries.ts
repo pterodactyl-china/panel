@@ -28,11 +28,11 @@ export const sendServerCommandInput = (uuid: string, command: string): Options<C
 export const useSendPowerAction = () =>
     useMutation({
         ...clientSendPowerActionMutation(),
-        onError: (error) => notifyHttpError(error, 'Unable to send power action'),
+        onError: (error) => notifyHttpError(error, '无法发送电源操作'),
     });
 
 export const useSendServerCommand = () =>
     useMutation({
         ...clientSendServerCommandMutation(),
-        onError: (error) => notifyHttpError(error, 'Unable to send command'),
+        onError: (error) => notifyHttpError(error, '无法发送命令'),
     });

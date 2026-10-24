@@ -82,20 +82,20 @@ describe('list field', () => {
 
         fireEvent.change(screen.getByRole('textbox', { name: 'Probe item 2' }), { target: { value: 'c' } });
         expect(onChange).toHaveBeenLastCalledWith(['a', 'c']);
-        fireEvent.click(screen.getByRole('button', { name: 'Move item 2 up' }));
+        fireEvent.click(screen.getByRole('button', { name: '上移第 2 项' }));
         expect(onChange).toHaveBeenLastCalledWith(['b', 'a']);
-        fireEvent.click(screen.getByRole('button', { name: 'Remove item 1' }));
+        fireEvent.click(screen.getByRole('button', { name: '移除第 1 项' }));
         expect(onChange).toHaveBeenLastCalledWith(['b']);
-        fireEvent.click(screen.getByRole('button', { name: 'Add item' }));
+        fireEvent.click(screen.getByRole('button', { name: '添加项目' }));
         expect(onChange).toHaveBeenLastCalledWith(['a', 'b', '']);
-        expect(screen.getByRole('button', { name: 'Move item 1 up' })).toBeDisabled();
-        expect(screen.getByRole('button', { name: 'Move item 2 down' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: '上移第 1 项' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: '下移第 2 项' })).toBeDisabled();
     });
 
     it('stops adding at the maximum and submits without blank rows', () => {
         render(<SettingField field={list} value={['a', 'b', 'c']} onChange={vi.fn()} />);
 
-        expect(screen.getByRole('button', { name: 'Add item' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: '添加项目' })).toBeDisabled();
         expect(submittedItems([' a ', '', '  ', 'b'])).toEqual(['a', 'b']);
         expect(submittedItems('a | b')).toEqual([]);
     });
@@ -119,7 +119,7 @@ describe('file field', () => {
 
         expect(input).toHaveAttribute('accept', 'image/png,image/webp');
         expect(container.querySelector('img')).toHaveAttribute('src', file.value);
-        expect(screen.getByText('Visible to guests')).toBeInTheDocument();
+        expect(screen.getByText('对访客可见')).toBeInTheDocument();
         expect(screen.getByText(/image\/png, image\/webp · up to 64 KB/)).toBeInTheDocument();
 
         const upload = new File(['png'], 'logo.png', { type: 'image/png' });
@@ -127,7 +127,7 @@ describe('file field', () => {
         fireEvent.change(input, { target: { files: [upload] } });
         expect(actions.onUpload).toHaveBeenCalledWith(upload);
 
-        fireEvent.click(screen.getByRole('button', { name: 'Remove' }));
+        fireEvent.click(screen.getByRole('button', { name: '移除' }));
         expect(actions.onClear).toHaveBeenCalledOnce();
     });
 
@@ -141,7 +141,7 @@ describe('file field', () => {
             />
         );
 
-        expect(screen.queryByRole('button', { name: 'Remove' })).toBeNull();
+        expect(screen.queryByRole('button', { name: '移除' })).toBeNull();
     });
 
     it('is disabled while an upload is pending', () => {
@@ -155,6 +155,6 @@ describe('file field', () => {
         );
 
         expect(screen.getByLabelText('Probe')).toBeDisabled();
-        expect(screen.getByRole('button', { name: 'Remove' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: '移除' })).toBeDisabled();
     });
 });

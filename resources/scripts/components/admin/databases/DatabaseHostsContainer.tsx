@@ -110,9 +110,9 @@ export default function DatabaseHostsContainer() {
 
     return (
         <AdminContentBlock
-            title='Admin · Database Hosts'
-            heading='Database Hosts'
-            description='Manage the database hosts available to your servers.'
+            title='管理 · 数据库主机'
+            heading='数据库主机'
+            description='管理可供服务器使用的数据库主机。'
         >
             <form
                 className='mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between'
@@ -132,9 +132,9 @@ export default function DatabaseHostsContainer() {
                     <TextInput
                         key={filter}
                         name='filter'
-                        aria-label='Search database hosts'
+                        aria-label='搜索数据库主机'
                         className='h-9 border-border bg-card pl-10'
-                        placeholder='Search database hosts…'
+                        placeholder='搜索数据库主机…'
                         defaultValue={filter}
                     />
                 </div>
@@ -148,10 +148,10 @@ export default function DatabaseHostsContainer() {
                         emptyState={
                             <AdminListEmpty
                                 icon={Database}
-                                noun='database hosts'
+                                noun='数据库主机'
                                 filter={filter}
                                 onClearFilter={() => navigateToSearch({ page: 1, filter: '' })}
-                                description='Add a MySQL or MariaDB host so servers can create databases.'
+                                description='添加 MySQL 或 MariaDB 主机，以便服务器创建数据库。'
                                 action={<CreateDatabaseHostButton />}
                             />
                         }
@@ -160,7 +160,7 @@ export default function DatabaseHostsContainer() {
                         table={table}
                         total={hosts.meta.pagination.total}
                         count={hosts.meta.pagination.count}
-                        itemLabel='database hosts'
+                        itemLabel='数据库主机'
                     />
                 </>
             ) : (

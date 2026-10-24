@@ -13,17 +13,17 @@ import { ExtensionResourceProvider, type ExtensionResourceContext } from '@/exte
 import Slot from '@/extensions/Slot';
 import { resourceNavigation, type ResourceTab } from '@/views/navigation';
 
-const aboutTab: ResourceTab = { id: 'about', label: 'About', to: '/panel/servers/$id', exact: true };
+const aboutTab: ResourceTab = { id: 'about', label: '关于', to: '/panel/servers/$id', exact: true };
 const installedTabs: ResourceTab[] = [
-    { id: 'details', label: 'Details', to: '/panel/servers/$id/details' },
-    { id: 'build', label: 'Build', to: '/panel/servers/$id/build' },
-    { id: 'startup', label: 'Startup', to: '/panel/servers/$id/startup' },
-    { id: 'database', label: 'Database', to: '/panel/servers/$id/database' },
-    { id: 'mounts', label: 'Mounts', to: '/panel/servers/$id/mounts' },
+    { id: 'details', label: '详情', to: '/panel/servers/$id/details' },
+    { id: 'build', label: '构建', to: '/panel/servers/$id/build' },
+    { id: 'startup', label: '启动', to: '/panel/servers/$id/startup' },
+    { id: 'database', label: '数据库', to: '/panel/servers/$id/database' },
+    { id: 'mounts', label: '挂载', to: '/panel/servers/$id/mounts' },
 ];
 const manageTabs: ResourceTab[] = [
-    { id: 'manage', label: 'Manage', to: '/panel/servers/$id/manage' },
-    { id: 'delete', label: 'Delete', to: '/panel/servers/$id/delete' },
+    { id: 'manage', label: '管理', to: '/panel/servers/$id/manage' },
+    { id: 'delete', label: '删除', to: '/panel/servers/$id/delete' },
 ];
 
 export default function ServerDetailContainer() {
@@ -51,7 +51,7 @@ export default function ServerDetailContainer() {
     return (
         <ExtensionResourceProvider.Provider value={resourceContext}>
             <AdminContentBlock
-                title={`Admin · ${attributes.name}`}
+                title={`管理 · ${attributes.name}`}
                 heading={attributes.name}
                 description={attributes.identifier}
             >
@@ -61,7 +61,7 @@ export default function ServerDetailContainer() {
                         className='inline-flex items-center text-sm text-muted-foreground hover:text-foreground'
                     >
                         <Icon icon={ArrowLeft} className='mr-2' />
-                        Back to Servers
+                        返回服务器
                     </Link>
                     <Link
                         to='/server/$id'
@@ -69,7 +69,7 @@ export default function ServerDetailContainer() {
                         className='inline-flex items-center text-sm text-muted-foreground hover:text-foreground'
                     >
                         <Icon icon={ExternalLink} className='mr-2' />
-                        Open Client Area
+                        打开客户端
                     </Link>
                 </div>
                 <Slot name='panel.servers.detail.actions' data={resourceContext} />

@@ -142,11 +142,11 @@ export const useCreateAdminDatabaseHost = () => {
         ...adminCreateDatabaseHostMutation(),
         onSuccess: async (host) => {
             await invalidateGeneratedOperations(queryClient, ['adminListDatabaseHosts']);
-            const messages = resourceMutationMessages('database host', 'create', host.attributes.name);
+            const messages = resourceMutationMessages('数据库主机', 'create', host.attributes.name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('database host', 'create').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('数据库主机', 'create').errorTitle),
     });
 };
 
@@ -162,11 +162,11 @@ export const useUpdateAdminDatabaseHost = () => {
                     queryKey: adminDatabaseHostDetailKey(variables.path.databaseHost_id),
                 }),
             ]);
-            const messages = resourceMutationMessages('database host', 'update', host.attributes.name);
+            const messages = resourceMutationMessages('数据库主机', 'update', host.attributes.name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('database host', 'update').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('数据库主机', 'update').errorTitle),
     });
 };
 
@@ -182,10 +182,10 @@ export const useDeleteAdminDatabaseHost = () => {
             removeQueriesWhenUnobserved(queryClient, { queryKey: adminDatabaseHostDatabasesKey(id) });
             await invalidateGeneratedOperations(queryClient, ['adminListDatabaseHosts']);
             const name = variables.meta?.name;
-            const messages = resourceMutationMessages('database host', 'delete', name);
+            const messages = resourceMutationMessages('数据库主机', 'delete', name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('database host', 'delete').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('数据库主机', 'delete').errorTitle),
     });
 };

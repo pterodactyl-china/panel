@@ -4,24 +4,18 @@ import { Close } from './parts';
 
 export default function SteamDiskSpacePrompt({ model }: ViewProps<'server.feature.steamDiskSpace'>) {
     return (
-        <Dialog open={model.open} title='Out of available disk space' onClose={model.close}>
+        <Dialog open={model.open} title='可用磁盘空间不足' onClose={model.close}>
             {model.admin ? (
                 <>
+                    <p className='mt-4'>此服务器可用磁盘空间已耗尽，无法完成安装或更新过程。</p>
                     <p className='mt-4'>
-                        This server has run out of available disk space and cannot complete the install or update
-                        process.
-                    </p>
-                    <p className='mt-4'>
-                        Ensure the machine has enough disk space by typing{' '}
-                        <code className='font-mono bg-muted rounded-sm py-1 px-2'>df -h</code> on the machine hosting
-                        this server. Delete files or increase the available disk space to resolve the issue.
+                        请在托管此服务器的机器上执行{' '}
+                        <code className='font-mono bg-muted rounded-sm py-1 px-2'>df -h</code>{' '}
+                        查看磁盘空间，删除文件或扩大可用空间以解决问题。
                     </p>
                 </>
             ) : (
-                <p className='mt-4'>
-                    This server has run out of available disk space and cannot complete the install or update process.
-                    Please get in touch with the administrator(s) and inform them of disk space issues.
-                </p>
+                <p className='mt-4'>此服务器可用磁盘空间已耗尽，无法完成安装或更新。请联系管理员并告知磁盘空间问题。</p>
             )}
             <Close onClick={model.close} />
         </Dialog>

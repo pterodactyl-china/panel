@@ -10,7 +10,7 @@ use Illuminate\Console\Command;
 use Pterodactyl\Services\Telemetry\TelemetryCollectionService;
 use Symfony\Component\VarDumper\VarDumper;
 
-#[Description('Displays all the data that would be sent to the Pterodactyl Telemetry Service if telemetry collection is enabled.')]
+#[Description('显示在启用遥测采集时会发送给 Pterodactyl 遥测服务的全部数据。')]
 #[Signature('p:telemetry')]
 class TelemetryCommand extends Command
 {
@@ -19,7 +19,7 @@ class TelemetryCommand extends Command
      */
     public function handle(TelemetryCollectionService $telemetryCollectionService): void
     {
-        $this->output->info('Collecting telemetry data, this may take a while...');
+        $this->output->info('正在采集遥测数据，这可能需要一些时间...');
 
         VarDumper::dump($telemetryCollectionService->collect());
     }

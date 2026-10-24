@@ -10,11 +10,11 @@ use Illuminate\Console\Command;
 use Pterodactyl\Exceptions\PterodactylException;
 use Pterodactyl\Traits\Commands\EnvironmentWriterTrait;
 
-#[Description('Set or update the email sending configuration for the Panel.')]
+#[Description('设置或更新面板的邮件发送配置。')]
 #[Signature('p:environment:mail
-                            {--driver= : The mail driver to use.}
-                            {--email= : Email address that messages from the Panel will originate from.}
-                            {--from= : The name emails from the Panel will appear to be from.}
+                            {--driver= : 使用的邮件驱动。}
+                            {--email= : 面板发出邮件所使用的发件地址。}
+                            {--from= : 面板发出邮件所显示的发件人名称。}
                             {--encryption=}
                             {--host=}
                             {--port=}
@@ -38,16 +38,16 @@ class EmailSettingsCommand extends Command
         $driver = $this->option('driver') ?? $this->choice(
             trans('command/messages.environment.mail.ask_driver'),
             [
-                'smtp' => 'SMTP Server',
-                'sendmail' => 'sendmail Binary',
-                'mailgun' => 'Mailgun Transactional Email',
-                'mandrill' => 'Mandrill Transactional Email',
-                'postmark' => 'Postmark Transactional Email',
+                'smtp' => 'SMTP 服务器',
+                'sendmail' => 'sendmail 可执行文件',
+                'mailgun' => 'Mailgun 事务邮件',
+                'mandrill' => 'Mandrill 事务邮件',
+                'postmark' => 'Postmark 事务邮件',
             ],
             $this->configured('mail.default', 'smtp')
         );
 
-        throw_unless(is_string($driver), PterodactylException::class, 'The mail driver selection must resolve to a single value.');
+        throw_unless(is_string($driver), PterodactylException::class, '邮件驱动必须解析为单一值。');
 
         $this->variables['MAIL_DRIVER'] = $driver;
 
@@ -78,7 +78,7 @@ class EmailSettingsCommand extends Command
 
         $this->writeToEnvironment($this->variables);
 
-        $this->line('Updating stored environment configuration file.');
+        $this->line('正在更新已保存的环境配置文件。');
         $this->line('');
     }
 
@@ -112,7 +112,7 @@ class EmailSettingsCommand extends Command
             $this->configured('mail.mailers.smtp.encryption', 'tls')
         );
 
-        throw_unless(is_string($encryption), PterodactylException::class, 'The mail encryption selection must resolve to a single value.');
+        throw_unless(is_string($encryption), PterodactylException::class, '邮件加密方式必须解析为单一值。');
 
         $this->variables['MAIL_ENCRYPTION'] = $encryption;
     }

@@ -45,7 +45,7 @@ class UserController extends AdminApiController
             [
                 'code' => 'DisplayException',
                 'status' => '400',
-                'detail' => 'You cannot delete your own account.',
+                'detail' => '您无法删除自己的账户。',
             ],
         ],
     ];

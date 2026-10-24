@@ -6,7 +6,7 @@ export default function FilesPage({ model, className }: ViewProps<'page.server.f
     // The file manager keeps its toolbar up and shows its own spinner while each directory lists.
     return (
         <PageStatus model={{ ...model, loading: false }} className={className}>
-            <ServerContentBlock title='File Manager' className={className}>
+            <ServerContentBlock title='文件管理器' className={className}>
                 <Slot name='server.files.before' />
                 <View name='server.files.manager' />
                 <Slot name='server.files.after' />

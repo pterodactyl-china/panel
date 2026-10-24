@@ -35,7 +35,7 @@ describe('ErrorBoundary', () => {
         expect(screen.getByRole('alert')).toBeInTheDocument();
 
         failure.active = false;
-        fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
+        fireEvent.click(screen.getByRole('button', { name: '重试' }));
 
         expect(screen.getByText('Loaded')).toBeInTheDocument();
     });
@@ -74,7 +74,7 @@ describe('ErrorBoundary', () => {
         expect(screen.getByRole('alert')).toBeInTheDocument();
 
         failure.active = false;
-        fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
+        fireEvent.click(screen.getByRole('button', { name: '重试' }));
 
         expect(screen.getByText('Loaded')).toBeInTheDocument();
     });

@@ -81,7 +81,7 @@ describe('server.backups', () => {
         ]);
 
         expect(screen.getByText('1 of 5 backups have been created for this server.')).toBeVisible();
-        expect(screen.queryByRole('button', { name: 'Delete Nightly backup' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: '删除 Nightly backup' })).not.toBeInTheDocument();
 
         act(() =>
             host!.emitWebsocket(
@@ -91,7 +91,7 @@ describe('server.backups', () => {
         );
 
         expect(await screen.findByText('sha1:f00')).toBeVisible();
-        expect(screen.getByRole('button', { name: 'Delete Nightly backup' })).toBeVisible();
+        expect(screen.getByRole('button', { name: '删除 Nightly backup' })).toBeVisible();
     });
 
     it('deletes a backup once confirmed and names it', async () => {
@@ -99,9 +99,9 @@ describe('server.backups', () => {
 
         await renderBackups(<View name='server.backups' />, [backup('b1', 'World')]);
 
-        fireEvent.click(screen.getByRole('button', { name: 'Delete World' }));
+        fireEvent.click(screen.getByRole('button', { name: '删除 World' }));
         await act(async () => {
-            fireEvent.click(within(await screen.findByRole('dialog')).getByRole('button', { name: 'Continue' }));
+            fireEvent.click(within(await screen.findByRole('dialog')).getByRole('button', { name: '继续' }));
         });
 
         await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
@@ -110,7 +110,7 @@ describe('server.backups', () => {
             url: `/api/client/servers/${uuid}/backups/b1`,
             body: undefined,
         });
-        expect(success).toHaveBeenCalledWith('Backup deleted', { description: 'World has been removed.' });
+        expect(success).toHaveBeenCalledWith('备份已删除', { description: 'World 已移除。' });
     });
 
     it('restores a backup, deleting files first when asked, and marks the server restoring', async () => {
@@ -118,16 +118,16 @@ describe('server.backups', () => {
 
         await renderBackups(<View name='server.backups' />, [backup('b1', 'World')]);
 
-        fireEvent.click(screen.getByRole('button', { name: 'More actions for World' }));
-        fireEvent.click(await screen.findByRole('menuitem', { name: 'Restore' }));
+        fireEvent.click(screen.getByRole('button', { name: /更多操作/ }));
+        fireEvent.click(await screen.findByRole('menuitem', { name: '恢复' }));
         const dialog = await screen.findByRole('dialog');
 
         fireEvent.click(within(dialog).getByRole('checkbox'));
         await act(async () => {
-            fireEvent.click(within(dialog).getByRole('button', { name: 'Restore' }));
+            fireEvent.click(within(dialog).getByRole('button', { name: '恢复' }));
         });
 
-        await waitFor(() => expect(success).toHaveBeenCalledWith('Backup restore started', expect.anything()));
+        await waitFor(() => expect(success).toHaveBeenCalledWith('备份恢复已开始', expect.anything()));
         expect(requests).toContainEqual({
             method: 'post',
             url: `/api/client/servers/${uuid}/backups/b1/restore`,
@@ -141,8 +141,8 @@ describe('server.backups', () => {
     it('asks before unlocking a locked backup, and cannot delete it', async () => {
         await renderBackups(<View name='server.backups' />, [backup('b1', 'World', { is_locked: true })]);
 
-        expect(screen.getByRole('button', { name: 'Delete World' })).toBeDisabled();
-        fireEvent.click(screen.getByRole('button', { name: 'More actions for World' }));
+        expect(screen.getByRole('button', { name: '删除 World' })).toBeDisabled();
+        fireEvent.click(screen.getByRole('button', { name: /更多操作/ }));
         fireEvent.click(await screen.findByRole('menuitem', { name: 'Unlock' }));
 
         expect(within(await screen.findByRole('dialog')).getByText('Unlock "World"')).toBeVisible();
@@ -173,8 +173,8 @@ describe('classic server.backups', () => {
 
         await renderFixture({ ...paged, actions: { ...paged.actions, setPage } });
 
-        expect(screen.getByLabelText('Showing 5 to 8 of 9 backups')).toBeVisible();
-        fireEvent.click(screen.getByRole('button', { name: 'Next page' }));
+        expect(screen.getByLabelText('显示第 5 至 8 条，共 9 条')).toBeVisible();
+        fireEvent.click(screen.getByRole('button', { name: '下一页' }));
         expect(setPage).toHaveBeenCalledWith(3);
     });
 
@@ -184,15 +184,15 @@ describe('classic server.backups', () => {
 
         await renderFixture({ ...pastEnd, actions: { ...pastEnd.actions, setPage } });
 
-        expect(screen.getByText('No backups on this page')).toBeVisible();
-        fireEvent.click(screen.getByText('First page'));
+        expect(screen.getByText('此页没有备份')).toBeVisible();
+        fireEvent.click(screen.getByText('第一页'));
         expect(setPage).toHaveBeenCalledWith(1);
     });
 
     it('explains a backup limit of zero', async () => {
         await renderFixture(model('noLimit'));
 
-        expect(screen.getByText("Backups can't be created because this server's backup limit is 0.")).toBeVisible();
-        expect(screen.queryByRole('button', { name: 'New backup' })).not.toBeInTheDocument();
+        expect(screen.getByText('无法创建备份，因为此服务器的备份上限为 0。')).toBeVisible();
+        expect(screen.queryByRole('button', { name: '新建备份' })).not.toBeInTheDocument();
     });
 });

@@ -274,7 +274,7 @@ class Server extends Model implements Identifiable
     public function startupCommand(bool $hideAllValues = false): string
     {
         $this->loadMissing('allocation');
-        $allocation = $this->allocation ?? throw new UnexpectedValueException('The server does not have a primary allocation.');
+        $allocation = $this->allocation ?? throw new UnexpectedValueException('该服务器没有主分配。');
 
         $find = ['{{SERVER_MEMORY}}', '{{SERVER_IP}}', '{{SERVER_PORT}}'];
         $replace = [(string) $this->memory, $allocation->ip, (string) $allocation->port];

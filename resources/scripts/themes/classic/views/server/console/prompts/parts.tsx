@@ -6,7 +6,7 @@ export const cancelClass = 'w-full sm:w-auto border-transparent';
 export const Close = ({ onClick }: { onClick: () => void }) => (
     <div className='mt-8 sm:flex items-center justify-end'>
         <Button onClick={onClick} className={cancelClass}>
-            Close
+            关闭
         </Button>
     </div>
 );

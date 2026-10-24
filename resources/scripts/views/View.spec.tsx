@@ -177,12 +177,12 @@ describe('<View>', () => {
 
         render(<engine.LooseView name='test.chain' />);
 
-        expect(screen.getByRole('alert')).toHaveTextContent('An error was encountered');
+        expect(screen.getByRole('alert')).toHaveTextContent('渲染此视图时应用发生错误');
         expect(classic).toBe(1);
 
         const before = theme;
 
-        fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
+        fireEvent.click(screen.getByRole('button', { name: '重试' }));
         expect(theme).toBeGreaterThan(before);
         expect(classic).toBe(2);
         expect(screen.getByRole('alert')).toBeVisible();
@@ -208,7 +208,7 @@ describe('<View>', () => {
 
         render(<engine.LooseView name='test.default-chain' />);
 
-        expect(screen.getByRole('alert')).toHaveTextContent('An error was encountered');
+        expect(screen.getByRole('alert')).toHaveTextContent('渲染此视图时应用发生错误');
         expect(classic).toBe(2);
     });
 

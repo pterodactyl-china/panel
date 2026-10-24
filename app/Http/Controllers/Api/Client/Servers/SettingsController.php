@@ -83,7 +83,7 @@ class SettingsController extends ClientApiController
     #[ScribeResponse(self::BAD_REQUEST_ERROR, status: 400, description: 'The server image was manually set by an administrator and cannot be changed through this endpoint.')]
     public function dockerImage(SetDockerImageRequest $request, UpdatesServerDockerImage $dockerImage, Server $server): JsonResponse
     {
-        $egg = $server->egg ?? throw new UnexpectedValueException('The server does not have an egg relationship.');
+        $egg = $server->egg ?? throw new UnexpectedValueException('该服务器没有关联预设。');
         throw_unless(in_array($server->image, $egg->docker_images, true), BadRequestHttpException::class, "This server's Docker image has been manually set by an administrator and cannot be updated.");
 
         $dockerImage->update($server, $request->string('docker_image')->toString());

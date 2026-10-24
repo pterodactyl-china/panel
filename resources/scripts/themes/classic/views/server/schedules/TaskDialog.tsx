@@ -55,7 +55,7 @@ function TaskForm({ form: config, task, onSubmit, onClose }: Omit<Props, 'open'>
                     <form.AppField name='action'>
                         {(field) => (
                             <field.SelectField
-                                label='Action'
+                                label='操作'
                                 options={[...config.actions]}
                                 onChange={(value) =>
                                     form.setFieldValue('payload', config.payloadFor(value as ScheduleTaskAction, task))
@@ -71,10 +71,10 @@ function TaskForm({ form: config, task, onSubmit, onClose }: Omit<Props, 'open'>
                     >
                         {(field) => (
                             <field.NumberField
-                                label='Time offset (in seconds)'
+                                label='时间偏移（秒）'
                                 min={0}
                                 max={900}
-                                description='The amount of time to wait after the previous task executes before running this one. If this is the first task on a schedule this will not be applied.'
+                                description='上一个任务执行后等待多久再运行此任务。如果这是计划中的第一个任务，则不会应用此设置。'
                             />
                         )}
                     </form.AppField>
@@ -86,23 +86,21 @@ function TaskForm({ form: config, task, onSubmit, onClose }: Omit<Props, 'open'>
                         <>
                             {action === 'command' && (
                                 <form.AppField name='payload' validators={payloadValidators}>
-                                    {(field) => <field.TextAreaField label='Payload' rows={6} />}
+                                    {(field) => <field.TextAreaField label='载荷' rows={6} />}
                                 </form.AppField>
                             )}
                             {action === 'power' && (
                                 <form.AppField name='payload' validators={payloadValidators}>
-                                    {(field) => (
-                                        <field.SelectField label='Payload' options={[...config.powerSignals]} />
-                                    )}
+                                    {(field) => <field.SelectField label='载荷' options={[...config.powerSignals]} />}
                                 </form.AppField>
                             )}
                             {action === 'backup' && (
                                 <form.AppField name='payload' validators={payloadValidators}>
                                     {(field) => (
                                         <field.TextAreaField
-                                            label='Ignored Files'
+                                            label='忽略的文件'
                                             rows={6}
-                                            description='Optional. Include the files and folders to be excluded in this backup. By default, the contents of your .pteroignore file will be used. If you have reached your backup limit, the oldest backup will be rotated.'
+                                            description='可选。填写此备份要排除的文件和文件夹，默认使用 .pteroignore 的内容。达到备份上限时最旧的备份会被轮换。'
                                         />
                                     )}
                                 </form.AppField>
@@ -113,17 +111,12 @@ function TaskForm({ form: config, task, onSubmit, onClose }: Omit<Props, 'open'>
             </div>
             <div className='mt-6 bg-card border border-border shadow-inner p-4 rounded-sm'>
                 <form.AppField name='continueOnFailure'>
-                    {(field) => (
-                        <field.SwitchField
-                            description='Future tasks will be run when this task fails.'
-                            label='Continue on Failure'
-                        />
-                    )}
+                    {(field) => <field.SwitchField description='此任务失败时将继续运行后续任务。' label='失败后继续' />}
                 </form.AppField>
             </div>
             <div className='flex justify-end mt-6'>
                 <form.AppForm>
-                    <form.SubmitButton>{task ? 'Save Changes' : 'Create Task'}</form.SubmitButton>
+                    <form.SubmitButton>{task ? '保存更改' : '创建任务'}</form.SubmitButton>
                 </form.AppForm>
             </div>
         </Form>
@@ -133,7 +126,7 @@ function TaskForm({ form: config, task, onSubmit, onClose }: Omit<Props, 'open'>
 /** Creates a task, or edits one: its action, delay, payload and failure behaviour. */
 export default function TaskDialog({ open, onClose, ...props }: Props) {
     return (
-        <Dialog open={open} title={props.task ? 'Edit task' : 'Create task'} onClose={onClose}>
+        <Dialog open={open} title={props.task ? '编辑任务' : '创建任务'} onClose={onClose}>
             <TaskForm key={props.task?.id ?? 'new'} {...props} onClose={onClose} />
         </Dialog>
     );

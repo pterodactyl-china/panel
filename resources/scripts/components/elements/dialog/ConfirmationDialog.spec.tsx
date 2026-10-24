@@ -36,7 +36,7 @@ describe('Dialog.Confirm', () => {
 
         expect(confirm).toBeDisabled();
         expect(confirm).toHaveAttribute('aria-busy', 'true');
-        expect(screen.getByRole('button', { name: 'Cancel' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: '取消' })).toBeDisabled();
 
         fireEvent.click(confirm);
         fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' });
@@ -137,7 +137,7 @@ describe('Dialog.ConfirmTrigger', () => {
         await act(async () => request.reject(new Error('Request failed')));
 
         expect(confirm).toBeEnabled();
-        expect(screen.getByRole('button', { name: 'Cancel' })).toBeEnabled();
+        expect(screen.getByRole('button', { name: '取消' })).toBeEnabled();
         fireEvent.click(confirm);
         expect(onConfirmed).toHaveBeenCalledTimes(2);
     });

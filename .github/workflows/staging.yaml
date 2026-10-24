@@ -1,4 +1,4 @@
-name: Staging
+name: 预发布
 
 on:
   push:

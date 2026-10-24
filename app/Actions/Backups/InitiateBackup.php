@@ -79,7 +79,7 @@ final class InitiateBackup implements InitiatesBackups
                         ->nonFailed()
                         ->where('created_at', '>=', CarbonImmutable::now()->subSeconds($period))
                         ->orderByDesc('created_at')
-                        ->first() ?? throw new UnexpectedValueException('The backup throttle query returned an empty result set.');
+                        ->first() ?? throw new UnexpectedValueException('备份限流查询返回了空结果集。');
 
                     throw new TooManyRequestsHttpException((int) CarbonImmutable::now()->diffInSeconds($latest->created_at?->addSeconds($period)), $message);
                 }

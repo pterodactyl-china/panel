@@ -9,8 +9,8 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Pterodactyl\Models\User;
 
-#[Description('Disable two-factor authentication for a specific user in the Panel.')]
-#[Signature('p:user:disable2fa {--email= : The email of the user to disable 2-Factor for.}')]
+#[Description('为面板中的指定用户禁用两步验证。')]
+#[Signature('p:user:disable2fa {--email= : 要禁用两步验证的用户的电子邮箱。}')]
 class DisableTwoFactorCommand extends Command
 {
     /**

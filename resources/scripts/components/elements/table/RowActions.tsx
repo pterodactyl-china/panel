@@ -16,7 +16,7 @@ type RowActionCount = 1 | 2 | 3;
 
 export const actionWidths = { 1: 'w-14', 2: 'w-24', 3: 'w-32' } satisfies Record<RowActionCount, string>;
 
-/** The trailing, always-visible "Actions" column sized for `actions` icon buttons; `width` overrides the size. */
+/** 位于末尾、始终可见的「更多」列，宽度按 `actions` 图标按钮数量计算；`width` 可覆盖该宽度。 */
 export function actionsColumn<TData>(
     actions: RowActionCount,
     cell: (row: TData) => ReactNode,
@@ -26,7 +26,7 @@ export function actionsColumn<TData>(
 
     return {
         id: 'actions',
-        header: () => <span className='sr-only'>Actions</span>,
+        header: () => <span className='sr-only'>操作</span>,
         cell: ({ row }) => cell(row.original),
         enableSorting: false,
         meta: { headerClassName: className, cellClassName: className },
@@ -72,9 +72,9 @@ export function RowActionButton({ icon, label, danger, disabled, disabledReason,
     );
 }
 
-export const EditAction = (props: PresetActionProps) => <RowActionButton icon={Pencil} label='Edit' {...props} />;
+export const EditAction = (props: PresetActionProps) => <RowActionButton icon={Pencil} label='编辑' {...props} />;
 
-export const DeleteAction = ({ label = 'Delete', ...props }: PresetActionProps & { label?: string }) => (
+export const DeleteAction = ({ label = '删除', ...props }: PresetActionProps & { label?: string }) => (
     <RowActionButton icon={Trash2} label={label} danger {...props} />
 );
 
@@ -89,7 +89,7 @@ export function EditLinkAction<
     const button = useActionButton();
 
     return (
-        <ActionTooltip content='Edit'>
+        <ActionTooltip content='编辑'>
             <Link {...props} {...button('root')}>
                 <Icon icon={Pencil} className={iconClassName} />
             </Link>

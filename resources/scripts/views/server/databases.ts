@@ -73,26 +73,26 @@ const noDatabases: ServerDatabase[] = [];
 
 function validateName(value: string): string | undefined {
     if (value.length < 1) {
-        return 'A database name must be provided.';
+        return '必须提供数据库名称。';
     }
 
     if (value.length < 3) {
-        return 'Database name must be at least 3 characters.';
+        return '数据库名称至少为 3 个字符。';
     }
 
     if (value.length > 48) {
-        return 'Database name must not exceed 48 characters.';
+        return '数据库名称不得超过 48 个字符。';
     }
 
     if (!/^[\w\-.]{3,48}$/.test(value)) {
-        return 'Database name should only contain alphanumeric characters, underscores, dashes, and/or periods.';
+        return '数据库名称只能包含字母、数字、下划线、短划线和/或句点。';
     }
 
     return undefined;
 }
 
 const validateConnectionsFrom = (value: string): string | undefined =>
-    /^[\w\-/.%:]*$/.test(value) ? undefined : 'A valid host address must be provided.';
+    /^[\w\-/.%:]*$/.test(value) ? undefined : '必须提供有效的主机地址。';
 
 function databaseItem({ attributes }: ServerDatabase): ServerDatabaseItem {
     const endpoint = `${attributes.host.address}:${attributes.host.port}`;

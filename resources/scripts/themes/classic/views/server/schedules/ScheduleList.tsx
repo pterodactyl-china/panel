@@ -46,7 +46,7 @@ function columns(model: ScheduleListModel): TableColumn<ScheduleSummary>[] {
     return [
         {
             id: 'name',
-            label: 'Schedule',
+            label: '计划',
             sortValue: (schedule) => schedule.name,
             cell: (schedule) => (
                 <div className='min-w-40'>
@@ -64,18 +64,18 @@ function columns(model: ScheduleListModel): TableColumn<ScheduleSummary>[] {
         },
         {
             id: 'cron',
-            label: 'Cron',
+            label: 'Cron 表达式',
             cell: (schedule) => <ScheduleCronRow cron={schedule.cron} />,
             headerClassName: 'hidden lg:table-cell',
             cellClassName: 'hidden lg:table-cell',
         },
         {
             id: 'last_run_at',
-            label: 'Last run',
+            label: '上次运行',
             sortValue: (schedule) => schedule.lastRunAt ?? '',
             cell: (schedule) => (
                 <span className='whitespace-nowrap text-xs text-muted-foreground'>
-                    {schedule.lastRunAt ? formatDate(schedule.lastRunAt, 'MMM D, YYYY HH:mm') : 'Never'}
+                    {schedule.lastRunAt ? formatDate(schedule.lastRunAt, 'YYYY-MM-DD HH:mm') : '从未运行'}
                 </span>
             ),
             headerClassName: 'hidden md:table-cell w-40',
@@ -83,7 +83,7 @@ function columns(model: ScheduleListModel): TableColumn<ScheduleSummary>[] {
         },
         {
             id: 'status',
-            label: 'Status',
+            label: '状态',
             sortValue: scheduleStatus,
             cell: (schedule) => {
                 const status = scheduleStatus(schedule);
@@ -107,7 +107,7 @@ function columns(model: ScheduleListModel): TableColumn<ScheduleSummary>[] {
             model.canUpdate ? (
                 <RowActions>
                     <EditLinkAction
-                        aria-label={`Edit ${schedule.name}`}
+                        aria-label={`编辑 ${schedule.name}`}
                         destination={scheduleDestination(model, schedule)}
                     />
                 </RowActions>
@@ -118,7 +118,7 @@ function columns(model: ScheduleListModel): TableColumn<ScheduleSummary>[] {
 
 function CreateScheduleButton({ model }: { model: ScheduleListModel }) {
     return (
-        <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>New schedule</NewButton>}>
+        <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>新建计划</NewButton>}>
             {(dialog) => <ScheduleDialog {...dialog} values={model.defaults} editing={false} onSubmit={model.create} />}
         </Dialog.Trigger>
     );
@@ -152,10 +152,8 @@ export default function ScheduleList({ model, className }: ViewProps<'server.sch
                             <EmptyMedia variant='icon'>
                                 <CalendarClock />
                             </EmptyMedia>
-                            <EmptyTitle>No schedules</EmptyTitle>
-                            <EmptyDescription>
-                                Schedules run commands, power actions and backups automatically.
-                            </EmptyDescription>
+                            <EmptyTitle>没有计划</EmptyTitle>
+                            <EmptyDescription>计划可自动执行命令、电源操作与备份。</EmptyDescription>
                         </EmptyHeader>
                         {model.canCreate && (
                             <EmptyContent>

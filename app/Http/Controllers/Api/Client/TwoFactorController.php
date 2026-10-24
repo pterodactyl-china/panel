@@ -48,7 +48,7 @@ class TwoFactorController extends ClientApiController
             [
                 'code' => 'InvalidPasswordProvidedException',
                 'status' => '400',
-                'detail' => 'The password provided was invalid for this account.',
+                'detail' => '此账户的密码无效。',
             ],
         ],
     ];
@@ -115,7 +115,7 @@ class TwoFactorController extends ClientApiController
      *
      * @throws Throwable
      */
-    #[Endpoint('Disable two-factor authentication', 'Disables two-factor authentication for the authenticated user after verifying their password.')]
+    #[Endpoint('禁用两步验证', 'Disables two-factor authentication for the authenticated user after verifying their password.')]
     #[BodyParam('password', 'string', 'The current account password.', required: true, example: 'current-password')]
     #[ScribeResponse(status: 204, description: 'Two-factor authentication disabled.')]
     #[ScribeResponse(self::BAD_REQUEST_ERROR, status: 400, description: 'The password is invalid.')]

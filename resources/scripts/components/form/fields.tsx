@@ -244,7 +244,7 @@ export function MultiSelectField({
     light,
     options,
     disabled,
-    placeholder = 'None selected',
+    placeholder = '未选择',
     searchPlaceholder,
     onCreate,
 }: MultiSelectFieldProps) {

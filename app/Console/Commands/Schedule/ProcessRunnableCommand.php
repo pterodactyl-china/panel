@@ -13,7 +13,7 @@ use Pterodactyl\Contracts\Schedules\ProcessesSchedules;
 use Pterodactyl\Models\Schedule;
 use Throwable;
 
-#[Description('Process schedules in the database and determine which are ready to run.')]
+#[Description('处理数据库中的计划并确定哪些可以运行。')]
 #[Signature('p:schedule:process')]
 class ProcessRunnableCommand extends Command
 {
@@ -31,7 +31,7 @@ class ProcessRunnableCommand extends Command
             ->get();
 
         if ($schedules->count() < 1) {
-            $this->line('There are no scheduled tasks for servers that need to be run.');
+            $this->line('没有需要运行的服务器计划任务。');
 
             return 0;
         }
@@ -72,7 +72,7 @@ class ProcessRunnableCommand extends Command
         } catch (Throwable $throwable) {
             Log::error($throwable->getMessage(), ['exception' => $throwable, 'schedule_id' => $schedule->id]);
 
-            $this->error("An error was encountered while processing Schedule #$schedule->id: ".$throwable->getMessage());
+            $this->error("处理计划 #$schedule->id 时发生错误： ".$throwable->getMessage());
         }
     }
 }

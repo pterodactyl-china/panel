@@ -17,6 +17,6 @@ export interface NavigationBlockerOptions {
     /** Decide instead of the default confirmation; resolve true to leave the page. */
     confirm?: (transition: NavigationTransition) => boolean | Promise<boolean>;
 }
-export declare const UNSAVED_CHANGES_MESSAGE = "You have unsaved changes. Leave this page and discard them?";
+export declare const UNSAVED_CHANGES_MESSAGE = "\u60A8\u6709\u672A\u4FDD\u5B58\u7684\u66F4\u6539\u3002\u8981\u79BB\u5F00\u6B64\u9875\u9762\u5E76\u653E\u5F03\u8FD9\u4E9B\u66F4\u6539\u5417\uFF1F";
 /** Asks before leaving while `shouldBlock` holds, including back/forward and tab close. */
 export declare function useNavigationBlocker(shouldBlock: boolean | (() => boolean), options?: NavigationBlockerOptions): void;

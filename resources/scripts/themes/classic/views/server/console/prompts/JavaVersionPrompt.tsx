@@ -5,7 +5,7 @@ export default function JavaVersionPrompt({ model }: ViewProps<'server.feature.j
     return (
         <Dialog
             open={model.open}
-            title='Unsupported Java version'
+            title='不支持的 Java 版本'
             onClose={model.close}
             preventExternalClose={model.pending}
             hideCloseIcon={model.pending}
@@ -31,11 +31,11 @@ export default function JavaVersionPrompt({ model }: ViewProps<'server.feature.j
             )}
             <div className='mt-8 flex flex-col sm:flex-row justify-end sm:space-x-4 space-y-4 sm:space-y-0'>
                 <Button isSecondary onClick={model.close} className='w-full sm:w-auto'>
-                    Cancel
+                    取消
                 </Button>
                 {model.canChangeImage && (
                     <Button onClick={() => void model.update().catch(() => {})} className='w-full sm:w-auto'>
-                        Update Docker Image
+                        更新 Docker 镜像
                     </Button>
                 )}
             </div>

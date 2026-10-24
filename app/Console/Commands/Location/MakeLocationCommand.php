@@ -10,10 +10,10 @@ use Illuminate\Console\Command;
 use Illuminate\Validation\ValidationException;
 use Pterodactyl\Contracts\Locations\CreatesLocations;
 
-#[Description('Creates a new location on the system via the CLI.')]
+#[Description('通过命令行在系统中创建新地域。')]
 #[Signature('p:location:make
-                            {--short= : The shortcode name of this location (ex. us1).}
-                            {--long= : A longer description of this location.}')]
+                            {--short= : 该地域的短代码名称（例如 us1）。}
+                            {--long= : 该地域的详细描述。}')]
 class MakeLocationCommand extends Command
 {
     /**

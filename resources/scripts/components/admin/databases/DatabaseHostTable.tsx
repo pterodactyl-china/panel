@@ -41,39 +41,37 @@ function DeleteDatabaseHostDialog({ host, open, onClose }: DatabaseHostDialogPro
     return (
         <Dialog
             open={open}
-            title='Confirm database host deletion'
+            title='确认删除数据库主机'
             preventExternalClose={isSubmitting}
             hideCloseIcon={isSubmitting}
             onClose={onClose}
         >
             <SpinnerOverlay visible={isSubmitting} />
             <p className='text-sm'>
-                Deleting a database host is permanent. This will permanently delete{' '}
-                <strong>{host.attributes.name}</strong>.
+                删除数据库主机是不可撤销的操作。这将永久删除 <strong>{host.attributes.name}</strong>.
             </p>
             <Form form={deleteForm} className='m-0 mt-6'>
                 <deleteForm.AppField
                     name='confirm'
                     validators={{
-                        onChange: ({ value }) =>
-                            value === host.attributes.name ? undefined : 'The host name must be provided.',
+                        onChange: ({ value }) => (value === host.attributes.name ? undefined : '必须提供主机名称。'),
                     }}
                 >
                     {(field) => (
                         <field.TextField
                             type='text'
                             id={`confirm_${host.attributes.id}`}
-                            label='Confirm host name'
-                            description='Enter the name of this host to confirm deletion.'
+                            label='确认主机名称'
+                            description='输入此主机的名称以确认删除。'
                         />
                     )}
                 </deleteForm.AppField>
                 <div className='mt-6 flex justify-end gap-2'>
                     <Button.Text type='button' isSecondary onClick={onClose}>
-                        Cancel
+                        取消
                     </Button.Text>
                     <deleteForm.AppForm>
-                        <deleteForm.SubmitButton color='red'>Delete host</deleteForm.SubmitButton>
+                        <deleteForm.SubmitButton color='red'>删除主机</deleteForm.SubmitButton>
                     </deleteForm.AppForm>
                 </div>
             </Form>
@@ -120,7 +118,7 @@ const HostNodeCell = ({ host }: { host: AdminDatabaseHost }) => {
 
     return (
         <span className='text-muted-foreground'>
-            {host.attributes.node_id === null ? 'Global host' : `Node #${host.attributes.node_id}`}
+            {host.attributes.node_id === null ? '全局主机' : `Node #${host.attributes.node_id}`}
         </span>
     );
 };
@@ -128,12 +126,12 @@ const HostNodeCell = ({ host }: { host: AdminDatabaseHost }) => {
 const HostActionsCell = ({ host }: { host: AdminDatabaseHost }) => (
     <RowActions>
         <EditLinkAction
-            aria-label={`Edit ${host.attributes.name}`}
+            aria-label={`编辑 ${host.attributes.name}`}
             to='/panel/databases/$id'
             params={{ id: host.attributes.id }}
         />
         <Dialog.Trigger
-            trigger={({ onClick }) => <DeleteAction aria-label={`Delete ${host.attributes.name}`} onClick={onClick} />}
+            trigger={({ onClick }) => <DeleteAction aria-label={`删除 ${host.attributes.name}`} onClick={onClick} />}
         >
             {({ open, onClose }) => <DeleteDatabaseHostDialog host={host} open={open} onClose={onClose} />}
         </Dialog.Trigger>
@@ -144,21 +142,21 @@ export const databaseHostColumns = [
     {
         id: 'name',
         accessorFn: (host) => host.attributes.name,
-        header: ({ column }) => <DataTableColumnHeader column={column} title='Database host' />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title='数据库主机' />,
         cell: ({ row }) => <HostIdentityCell host={row.original} />,
         enableSorting: true,
         meta: { headerClassName: 'min-w-48', cellClassName: 'min-w-48' },
     },
     {
         id: 'node',
-        header: 'Node',
+        header: '节点',
         cell: ({ row }) => <HostNodeCell host={row.original} />,
         enableSorting: false,
         meta: { headerClassName: 'hidden w-36 @lg:table-cell', cellClassName: 'hidden w-36 @lg:table-cell' },
     },
     {
         id: 'databases_count',
-        header: 'Databases',
+        header: '数据库',
         cell: ({ row }) => <span className='tabular-nums'>{row.original.attributes.databases_count}</span>,
         enableSorting: false,
         meta: { headerClassName: 'hidden w-28 @xl:table-cell', cellClassName: 'hidden w-28 @xl:table-cell' },
@@ -166,13 +164,13 @@ export const databaseHostColumns = [
     {
         id: 'created_at',
         accessorFn: (host) => host.attributes.created_at,
-        header: ({ column }) => <DataTableColumnHeader column={column} title='Created' />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title='创建时间' />,
         cell: ({ row }) => (
             <time
                 dateTime={row.original.attributes.created_at}
                 className='whitespace-nowrap text-xs text-muted-foreground'
             >
-                {dayjs(row.original.attributes.created_at).format('MMM D, YYYY')}
+                {dayjs(row.original.attributes.created_at).format('YYYY-MM-DD')}
             </time>
         ),
         enableSorting: true,

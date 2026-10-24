@@ -22,7 +22,7 @@ export default function EggVariablesTab() {
                     <div className='space-y-4'>
                         <Alert type='danger'>{httpErrorToHuman(error)}</Alert>
                         <Button.Text type='button' onClick={() => refetch()}>
-                            Retry
+                            重试
                         </Button.Text>
                     </div>
                 );
@@ -33,16 +33,14 @@ export default function EggVariablesTab() {
 
         if (variables.data.length === 0) {
             return (
-                <TitledGreyBox title='Egg Variables'>
+                <TitledGreyBox title='预设变量'>
                     <Empty size='compact'>
                         <EmptyHeader>
                             <EmptyMedia variant='icon'>
                                 <Variable />
                             </EmptyMedia>
-                            <EmptyTitle>No variables</EmptyTitle>
-                            <EmptyDescription>
-                                Variables let server owners configure the startup command and environment.
-                            </EmptyDescription>
+                            <EmptyTitle>没有变量</EmptyTitle>
+                            <EmptyDescription>变量让服务器所有者可以配置启动命令与环境。</EmptyDescription>
                         </EmptyHeader>
                         <EmptyContent>
                             <CreateEggVariableButton eggId={egg.attributes.id} />

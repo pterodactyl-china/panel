@@ -13,10 +13,10 @@ describe('ServerError', () => {
 
         render(<ServerError message='Request failed with status 500.' onRetry={onRetry} />);
 
-        expect(screen.getByRole('heading', { name: 'Something went wrong' })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: '出错了' })).toBeInTheDocument();
         expect(screen.getByText('Request failed with status 500.')).toBeInTheDocument();
 
-        fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
+        fireEvent.click(screen.getByRole('button', { name: '重试' }));
 
         expect(onRetry).toHaveBeenCalledOnce();
     });
@@ -27,7 +27,7 @@ describe('ServerError', () => {
         render(<ServerError title='Oops!' message='Not readable.' onBack={onBack} />);
 
         expect(screen.getByRole('heading', { name: 'Oops!' })).toBeInTheDocument();
-        fireEvent.click(screen.getByRole('button', { name: 'Go back' }));
+        fireEvent.click(screen.getByRole('button', { name: '返回' }));
 
         expect(onBack).toHaveBeenCalledOnce();
     });

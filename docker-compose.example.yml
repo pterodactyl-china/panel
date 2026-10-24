@@ -1,6 +1,8 @@
 x-panel-environment: &panel-environment
   APP_URL: "http://example.com"
-  APP_TIMEZONE: "UTC"
+  APP_TIMEZONE: "Asia/Shanghai"
+  APP_LOCALE: "zh"
+  TZ: "Asia/Shanghai"
   APP_SERVICE_AUTHOR: "noreply@example.com"
   APP_ENV: "production"
   APP_DEBUG: "false"
@@ -39,6 +41,7 @@ services:
     volumes:
       - "/srv/pterodactyl/database:/var/lib/mysql"
     environment:
+      TZ: "Asia/Shanghai"
       MARIADB_PASSWORD: *db-password
       MARIADB_RANDOM_ROOT_PASSWORD: "yes"
       MARIADB_DATABASE: "panel"
@@ -61,7 +64,7 @@ services:
       timeout: 5s
       retries: 5
   panel:
-    image: ghcr.io/pterodactyl/panel:latest
+    image: pterodactylchina/panel:latest
     restart: unless-stopped
     # Longer than the worker timeout; lets running jobs finish before shutdown.
     stop_grace_period: 90s

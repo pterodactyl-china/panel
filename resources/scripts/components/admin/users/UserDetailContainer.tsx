@@ -53,7 +53,7 @@ import { resourceNavigation, type ResourceTab } from '@/views/navigation';
 
 type UserForm = AppForm<UserValues>;
 
-const tabs: ResourceTab[] = [{ id: 'about', label: 'About', to: '/panel/users/$id', exact: true }];
+const tabs: ResourceTab[] = [{ id: 'about', label: '关于', to: '/panel/users/$id', exact: true }];
 
 const IdentityCard = ({
     form,
@@ -64,14 +64,14 @@ const IdentityCard = ({
     languageOptions: SelectOption[];
     languagesLoading: boolean;
 }) => (
-    <TitledGreyBox title='Identity'>
+    <TitledGreyBox title='身份'>
         <form.AppField name='email' validators={{ onChange: validateUserEmail }}>
             {(field) => (
                 <field.TextField
                     type='email'
                     id='email'
-                    label='Email Address'
-                    description='The email address this user will sign in and receive notifications with.'
+                    label='电子邮箱地址'
+                    description='此用户用于登录和接收通知的电子邮箱地址。'
                 />
             )}
         </form.AppField>
@@ -81,8 +81,8 @@ const IdentityCard = ({
                     <field.TextField
                         type='text'
                         id='username'
-                        label='Username'
-                        description='A unique username used to identify this account.'
+                        label='用户名'
+                        description='用于标识此账户的唯一用户名。'
                     />
                 )}
             </form.AppField>
@@ -90,12 +90,12 @@ const IdentityCard = ({
         <div className='mt-6 flex flex-wrap'>
             <div className='w-full sm:w-1/2 sm:pr-2'>
                 <form.AppField name='nameFirst' validators={{ onChange: validateFirstName }}>
-                    {(field) => <field.TextField type='text' id='name_first' label='First Name' />}
+                    {(field) => <field.TextField type='text' id='name_first' label='名字' />}
                 </form.AppField>
             </div>
             <div className='w-full mt-6 sm:w-1/2 sm:mt-0 sm:pl-2'>
                 <form.AppField name='nameLast' validators={{ onChange: validateLastName }}>
-                    {(field) => <field.TextField type='text' id='name_last' label='Last Name' />}
+                    {(field) => <field.TextField type='text' id='name_last' label='姓氏' />}
                 </form.AppField>
             </div>
         </div>
@@ -103,58 +103,50 @@ const IdentityCard = ({
             <form.AppField
                 name='language'
                 validators={{
-                    onChange: ({ value }) => (value.length >= 1 ? undefined : 'A language must be provided.'),
+                    onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供语言。'),
                 }}
             >
                 {(field) => (
                     <field.SelectField
                         id='language'
-                        label='Language'
+                        label='语言'
                         options={languageOptions}
                         disabled={languagesLoading}
-                        placeholder='Select a language'
-                        description='The default language to use when rendering the Panel.'
+                        placeholder='选择语言'
+                        description='渲染面板时使用的默认语言。'
                     />
                 )}
             </form.AppField>
         </div>
         <div className='mt-6'>
             <form.AppField name='rootAdmin'>
-                {(field) => (
-                    <field.SwitchField
-                        label='Administrator'
-                        description='Grant this account full administrative access to the Panel.'
-                    />
-                )}
+                {(field) => <field.SwitchField label='管理员' description='授予此账户对面板的完整管理权限。' />}
             </form.AppField>
         </div>
         <div className='flex justify-end mt-6'>
             <form.AppForm>
-                <form.SubmitButton>Save Changes</form.SubmitButton>
+                <form.SubmitButton>保存更改</form.SubmitButton>
             </form.AppForm>
         </div>
     </TitledGreyBox>
 );
 
 const PasswordCard = ({ form }: { form: UserForm }) => (
-    <TitledGreyBox title='Password'>
+    <TitledGreyBox title='密码'>
         <form.AppField name='password' validators={{ onChange: validateUserPassword }}>
             {(field) => (
                 <field.TextField
                     type='password'
                     id='password'
-                    label='Password'
-                    description={
-                        "Leave blank to keep this user's password the same. The user will not " +
-                        'receive any notification if their password is changed.'
-                    }
+                    label='密码'
+                    description='留空则保持该用户的密码不变。密码变更时不会向该用户发送任何通知。'
                     autoComplete='new-password'
                 />
             )}
         </form.AppField>
         <div className='flex justify-end mt-6'>
             <form.AppForm>
-                <form.SubmitButton>Save Changes</form.SubmitButton>
+                <form.SubmitButton>保存更改</form.SubmitButton>
             </form.AppForm>
         </div>
     </TitledGreyBox>
@@ -169,23 +161,20 @@ const DeleteUserCard = ({
     email: string;
     onDelete: (close: () => void) => Promise<void>;
 }) => (
-    <TitledGreyBox title='Delete User'>
-        <p className='text-sm text-muted-foreground'>
-            There must be no servers associated with this account in order for it to be deleted.
-        </p>
+    <TitledGreyBox title='删除用户'>
+        <p className='text-sm text-muted-foreground'>删除此账户前，必须确保没有服务器与之关联。</p>
         <div className='flex justify-end mt-6'>
             <Dialog.ConfirmTrigger
-                title='Delete user'
-                confirm='Delete User'
+                title='删除用户'
+                confirm='删除用户'
                 trigger={({ onClick }) => (
                     <Button type='button' color='red' disabled={disabled} onClick={onClick}>
-                        Delete User
+                        删除用户
                     </Button>
                 )}
                 onConfirmed={(_event, close) => onDelete(close)}
             >
-                Deleting <strong>{email}</strong> is a permanent action and cannot be undone. This will remove the
-                account and all of its associated data.
+                删除 <strong>{email}</strong> 是不可撤销的操作。这将移除该账户及其所有关联数据。
             </Dialog.ConfirmTrigger>
         </div>
     </TitledGreyBox>
@@ -194,7 +183,7 @@ const DeleteUserCard = ({
 const ownedServerColumns = [
     {
         id: 'name',
-        header: 'Server',
+        header: '服务器',
         cell: ({ row }) => (
             <div className='min-w-0'>
                 <Link
@@ -235,7 +224,7 @@ const OwnedServersCard = ({ servers }: { servers: AdminUserServer[] }) => {
     });
 
     return (
-        <TitledGreyBox title='Servers' className='mt-4'>
+        <TitledGreyBox title='服务器' className='mt-4'>
             <DataTable
                 table={table}
                 emptyState={
@@ -244,8 +233,8 @@ const OwnedServersCard = ({ servers }: { servers: AdminUserServer[] }) => {
                             <EmptyMedia variant='icon'>
                                 <Server />
                             </EmptyMedia>
-                            <EmptyTitle>No servers</EmptyTitle>
-                            <EmptyDescription>This user doesn&apos;t own any servers.</EmptyDescription>
+                            <EmptyTitle>没有服务器</EmptyTitle>
+                            <EmptyDescription>此用户不拥有任何服务器。</EmptyDescription>
                         </EmptyHeader>
                     </Empty>
                 }
@@ -311,7 +300,7 @@ const UserDetailContent = ({ user }: { user: AdminUserWithServers }) => {
                             resource={user}
                             error={updateUser.error}
                             boxed
-                            submitLabel='Save Changes'
+                            submitLabel='保存更改'
                             className='mt-4'
                         />
                     )}
@@ -339,7 +328,7 @@ export function UserDetailLayout() {
 
     if (!user) {
         return (
-            <AdminContentBlock title='Admin · User' heading='User'>
+            <AdminContentBlock title='管理 · 用户' heading='User'>
                 <Spinner size='large' centered />
             </AdminContentBlock>
         );
@@ -348,7 +337,7 @@ export function UserDetailLayout() {
     return (
         <ExtensionResourceProvider.Provider value={resourceContext}>
             <AdminContentBlock
-                title={`Admin · User · ${user.attributes.email}`}
+                title={`管理 · 用户 · ${user.attributes.email}`}
                 heading={user.attributes.email}
                 description={
                     `${user.attributes.first_name ?? ''} ${user.attributes.last_name ?? ''}`.trim() ||
@@ -360,7 +349,7 @@ export function UserDetailLayout() {
                     className='inline-flex items-center text-sm text-muted-foreground mb-4 hover:text-accent'
                 >
                     <Icon icon={ArrowLeft} className='mr-2' />
-                    Back to Users
+                    返回用户
                 </Link>
                 <Slot name='panel.users.detail.actions' data={resourceContext} />
                 <SubNavigation

@@ -11,12 +11,12 @@ export default function Power({ model, className }: ViewProps<'server.power'>) {
                 <div className='flex sm:justify-end space-x-2'>
                     {permissions.start && (
                         <Button className='flex-1' disabled={!enabled.start} onClick={actions.start}>
-                            Start
+                            启动
                         </Button>
                     )}
                     {permissions.restart && (
                         <Button.Text className='flex-1' disabled={!enabled.restart} onClick={actions.restart}>
-                            Restart
+                            重启
                         </Button.Text>
                     )}
                     {permissions.stop &&
@@ -24,11 +24,11 @@ export default function Power({ model, className }: ViewProps<'server.power'>) {
                             <Dialog.ConfirmTrigger
                                 key='killable'
                                 hideCloseIcon
-                                title='Forcibly Stop Process'
-                                confirm='Continue'
+                                title='强制停止进程'
+                                confirm='继续'
                                 trigger={({ onClick }) => (
                                     <Button.Danger className='flex-1' disabled={!enabled.kill} onClick={onClick}>
-                                        Kill
+                                        强制停止
                                     </Button.Danger>
                                 )}
                                 onConfirmed={(_event, close) => {
@@ -36,7 +36,7 @@ export default function Power({ model, className }: ViewProps<'server.power'>) {
                                     actions.kill();
                                 }}
                             >
-                                Forcibly stopping a server can lead to data corruption.
+                                强制停止服务器可能导致数据损坏。
                             </Dialog.ConfirmTrigger>
                         ) : (
                             <Button.Danger
@@ -45,7 +45,7 @@ export default function Power({ model, className }: ViewProps<'server.power'>) {
                                 disabled={!enabled.stop}
                                 onClick={actions.stop}
                             >
-                                Stop
+                                停止
                             </Button.Danger>
                         ))}
                 </div>

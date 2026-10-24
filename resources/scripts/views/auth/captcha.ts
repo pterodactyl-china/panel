@@ -28,7 +28,7 @@ export function useCaptcha(): AuthCaptcha {
         const value = (await ref.current?.execute()) ?? '';
 
         if (!value) {
-            toast.error('Captcha verification failed, please try again.');
+            toast.error('验证码校验失败，请重试。');
 
             return null;
         }

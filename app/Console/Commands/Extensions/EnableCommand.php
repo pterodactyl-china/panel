@@ -10,8 +10,8 @@ use Illuminate\Console\Command;
 use Pterodactyl\Contracts\Extensions\SetsExtensionEnabled;
 use Pterodactyl\Exceptions\Extensions\InvalidExtensionException;
 
-#[Description('Enable an installed extension, publishing its assets and running its migrations.')]
-#[Signature('p:extension:enable {id : The extension identifier.}')]
+#[Description('启用已安装的扩展，发布其资源并执行迁移。')]
+#[Signature('p:extension:enable {id : 扩展标识符。}')]
 class EnableCommand extends Command
 {
     public function handle(SetsExtensionEnabled $installer): int

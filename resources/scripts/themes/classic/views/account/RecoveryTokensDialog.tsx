@@ -13,8 +13,8 @@ export default function RecoveryTokensDialog({ tokens, onClose }: { tokens: read
         <Dialog
             open={tokens.length > 0}
             onClose={onClose}
-            title='Two-Step Authentication Enabled'
-            description='Store the codes below somewhere safe. If you lose access to your phone you can use these backup codes to sign in.'
+            title='两步验证已启用'
+            description='请将这些恢复代码妥善保存。如果无法使用手机，可使用这些备用代码登录。'
             hideCloseIcon
             preventExternalClose
         >
@@ -32,10 +32,10 @@ export default function RecoveryTokensDialog({ tokens, onClose }: { tokens: read
                 </pre>
             </CopyOnClick>
             <Alert type='danger' className='mt-3'>
-                These codes will not be shown again.
+                这些代码不会再次显示。
             </Alert>
             <Dialog.Footer>
-                <Button.Text onClick={onClose}>Done</Button.Text>
+                <Button.Text onClick={onClose}>完成</Button.Text>
             </Dialog.Footer>
         </Dialog>
     );

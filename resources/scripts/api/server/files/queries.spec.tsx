@@ -115,7 +115,7 @@ describe('useUploadFiles', () => {
 
         expect(summary.uploaded.map((uploaded) => uploaded.name)).toEqual(['a.txt', 'a.txt', 'b.txt', 'c.txt']);
         expect(settled.map(([, outcome]) => outcome)).toEqual(['uploaded', 'uploaded', 'uploaded', 'uploaded']);
-        expect(mocks.success).toHaveBeenCalledWith('Upload complete');
+        expect(mocks.success).toHaveBeenCalledWith('上传完成');
         expect(client.getQueryState(listing)?.isInvalidated).toBe(true);
     });
 
@@ -140,7 +140,7 @@ describe('useUploadFiles', () => {
                 [queued[2].id, 'failed'],
             ])
         );
-        expect(mocks.error).toHaveBeenCalledExactlyOnceWith(expect.anything(), 'Unable to upload c.txt');
+        expect(mocks.error).toHaveBeenCalledExactlyOnceWith(expect.anything(), '无法上传 c.txt');
         expect(mocks.success).not.toHaveBeenCalled();
         expect(client.getQueryState(listing)?.isInvalidated).toBe(true);
     });

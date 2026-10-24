@@ -62,7 +62,7 @@ test('server is created with deployment object', function () {
     } catch (ValidationException $exception) {
         expect($exception->errors())->toHaveCount(1);
         expect($exception->errors())->toHaveKey('environment.BUNGEE_VERSION');
-        expect($exception->errors()['environment.BUNGEE_VERSION'][0])->toBe('The Bungeecord Version variable field is required.');
+        expect($exception->errors()['environment.BUNGEE_VERSION'][0])->toBe('Bungeecord Version 变量 不能为空。');
     }
     $response = getService()->create($data, $deployment);
     $this->daemonServerRepository->assertCreatedWith(true);

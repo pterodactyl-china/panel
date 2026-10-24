@@ -10,15 +10,15 @@ use Illuminate\Console\Command;
 use Pterodactyl\Contracts\Extensions\RemovesExtensions;
 use Pterodactyl\Exceptions\Extensions\InvalidExtensionException;
 
-#[Description("Remove an extension's files, published assets, and install record.")]
-#[Signature('p:extension:remove {id : The extension identifier.}')]
+#[Description('移除扩展的文件、已发布资源与安装记录。')]
+#[Signature('p:extension:remove {id : 扩展标识符。}')]
 class RemoveCommand extends Command
 {
     public function handle(RemovesExtensions $installer): int
     {
         $id = $this->argument('id');
 
-        if ($this->input->isInteractive() && ! $this->confirm("Remove extension \"{$id}\"? Its files and published assets are deleted.")) {
+        if ($this->input->isInteractive() && ! $this->confirm("是否移除扩展「{$id}」？其文件与已发布资源将被删除。")) {
             return self::SUCCESS;
         }
 
@@ -31,7 +31,7 @@ class RemoveCommand extends Command
         }
 
         $this->components->info(sprintf(
-            'Extension "%s" removed. Database tables it created and its settings were left in place.',
+            '扩展「%s」已移除。其创建的数据库表与设置保留未动。',
             $id,
         ));
 

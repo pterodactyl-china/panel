@@ -100,18 +100,18 @@ describe('server.subusers', () => {
     it('offers actions for everyone but the viewer', async () => {
         await renderInServer(<View name='server.subusers' />);
 
-        expect(screen.getByRole('button', { name: 'Edit sam@example.test' })).toBeVisible();
-        expect(screen.queryByRole('button', { name: 'Edit alex@example.test' })).not.toBeInTheDocument();
-        expect(screen.getByRole('link', { name: 'New user' })).toHaveAttribute('href', '/server/a1b2c3d4/users/new');
+        expect(screen.getByRole('button', { name: '编辑 sam@example.test' })).toBeVisible();
+        expect(screen.queryByRole('button', { name: '编辑 alex@example.test' })).not.toBeInTheDocument();
+        expect(screen.getByRole('link', { name: '新建用户' })).toHaveAttribute('href', '/server/a1b2c3d4/users/new');
     });
 
     it('removes a subuser and says who lost access', async () => {
         const success = vi.spyOn(toast, 'success');
         const server = await renderInServer(<View name='server.subusers' />);
 
-        fireEvent.click(screen.getByRole('button', { name: 'Delete sam@example.test' }));
+        fireEvent.click(screen.getByRole('button', { name: '删除 sam@example.test' }));
         await act(async () => {
-            fireEvent.click(await screen.findByRole('button', { name: 'Yes, remove subuser' }));
+            fireEvent.click(await screen.findByRole('button', { name: '是，移除子用户' }));
         });
 
         await waitFor(() => expect(screen.queryByText('sam@example.test')).not.toBeInTheDocument());
@@ -120,7 +120,7 @@ describe('server.subusers', () => {
             url: `/api/client/servers/${server.attributes.uuid}/users/22222222-2222-4222-8222-222222222222`,
             body: undefined,
         });
-        expect(success).toHaveBeenCalledWith('Subuser removed', {
+        expect(success).toHaveBeenCalledWith('子用户已移除', {
             description: 'sam@example.test no longer has access to this server.',
         });
     });
@@ -128,13 +128,13 @@ describe('server.subusers', () => {
     it('edits a subuser in a dialog', async () => {
         const server = await renderInServer(<View name='server.subusers' />);
 
-        fireEvent.click(screen.getByRole('button', { name: 'Edit sam@example.test' }));
+        fireEvent.click(screen.getByRole('button', { name: '编辑 sam@example.test' }));
         const dialog = await screen.findByRole('dialog');
 
         expect(within(dialog).getByRole('heading', { name: 'Modify permissions for sam@example.test' })).toBeVisible();
         fireEvent.click(within(dialog).getByRole('checkbox', { name: /^stop/ }));
         await act(async () => {
-            fireEvent.click(within(dialog).getAllByRole('button', { name: 'Save' })[0]);
+            fireEvent.click(within(dialog).getAllByRole('button', { name: '保存' })[0]);
         });
 
         await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
@@ -171,7 +171,7 @@ describe('server.subuserForm', () => {
             '/server/a1b2c3d4/users/new'
         );
 
-        expect(screen.getByText(/Only permissions which your account is currently assigned/)).toBeVisible();
+        expect(screen.getByText(/创建或修改其他用户时/)).toBeVisible();
         expect(screen.getByRole('checkbox', { name: /^stop/ })).toHaveAttribute('aria-disabled', 'true');
         expect(slot).toMatchObject({
             mode: 'create',
@@ -191,10 +191,10 @@ describe('server.subuserForm', () => {
         const success = vi.spyOn(toast, 'success');
         const server = await renderInServer(<View name='server.subuserForm' />, {}, '/server/a1b2c3d4/users/new');
 
-        fireEvent.change(screen.getByLabelText('User Email'), { target: { value: 'new@example.test' } });
-        fireEvent.click(screen.getByRole('checkbox', { name: 'Select all control permissions' }));
+        fireEvent.change(screen.getByLabelText('用户邮箱'), { target: { value: 'new@example.test' } });
+        fireEvent.click(screen.getByRole('checkbox', { name: '全选 control 权限' }));
         await act(async () => {
-            fireEvent.click(screen.getAllByRole('button', { name: 'Invite User' })[0]);
+            fireEvent.click(screen.getAllByRole('button', { name: '邀请用户' })[0]);
         });
 
         await waitFor(() => expect(host!.location().pathname).toBe('/server/a1b2c3d4/users'));
@@ -203,6 +203,6 @@ describe('server.subuserForm', () => {
             url: `/api/client/servers/${server.attributes.uuid}/users`,
             body: { email: 'new@example.test', permissions: ['control.console', 'control.start', 'control.stop'] },
         });
-        expect(success).toHaveBeenCalledWith('Subuser invited', { description: 'new@example.test has been invited.' });
+        expect(success).toHaveBeenCalledWith('子用户已邀请', { description: 'new@example.test 已邀请。' });
     });
 });

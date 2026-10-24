@@ -51,7 +51,7 @@ class DeployTokenController extends AdminApiController
         if (! $key) {
             $key = $keyCreator->create(ApiKey::TYPE_APPLICATION, [
                 'user_id' => $request->user()->id,
-                'memo' => 'Automatically generated node deployment key.',
+                'memo' => '自动生成的节点部署密钥。',
                 'allowed_ips' => [],
             ], $permissions);
         }

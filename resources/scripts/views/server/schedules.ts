@@ -215,15 +215,15 @@ const orderedTasks = (schedule: Schedule): ScheduleTask[] =>
 
 const validateTimeOffset = (value: number | null): string | undefined => {
     if (value === null) {
-        return 'A time offset must be provided.';
+        return '必须提供时间偏移。';
     }
 
     if (value < 0) {
-        return 'The time offset must be at least 0 seconds.';
+        return '时间偏移不能小于 0 秒。';
     }
 
     if (value > 900) {
-        return 'The time offset must be less than 900 seconds.';
+        return '时间偏移必须小于 900 秒。';
     }
 
     return undefined;
@@ -235,15 +235,15 @@ export function scheduleTaskForm(backupLimit: number | null): ScheduleTaskForm {
 
     return {
         actions: [
-            { value: 'command', label: 'Send command' },
-            { value: 'power', label: 'Send power action' },
-            { value: 'backup', label: 'Create backup' },
+            { value: 'command', label: '发送命令' },
+            { value: 'power', label: '发送电源操作' },
+            { value: 'backup', label: '创建备份' },
         ],
         powerSignals: [
-            { value: 'start', label: 'Start the server' },
-            { value: 'restart', label: 'Restart the server' },
-            { value: 'stop', label: 'Stop the server' },
-            { value: 'kill', label: 'Terminate the server' },
+            { value: 'start', label: '启动服务器' },
+            { value: 'restart', label: '重启服务器' },
+            { value: 'stop', label: '停止服务器' },
+            { value: 'kill', label: '终止服务器' },
         ],
         values: (task) => ({
             action: initialAction(task),
@@ -260,11 +260,9 @@ export function scheduleTaskForm(backupLimit: number | null): ScheduleTaskForm {
         },
         validateTimeOffset,
         validatePayload: (action, payload) =>
-            action !== 'command' || payload.length > 0 ? undefined : 'A task payload must be provided.',
+            action !== 'command' || payload.length > 0 ? undefined : '必须提供任务内容。',
         validate: ({ action }) =>
-            backupLimit === 0 && action === 'backup'
-                ? "A backup task cannot be created when the server's backup limit is set to 0."
-                : null,
+            backupLimit === 0 && action === 'backup' ? '当服务器的备份上限为 0 时无法创建备份任务。' : null,
     };
 }
 

@@ -21,7 +21,7 @@ final readonly class IncludeSet
     public static function fromRequest(Request $request, array $forced = [], int $limit = 2): self
     {
         $names = $request->collect('include')
-            ->map(fn (mixed $value): string => is_string($value) ? $value : throw new UnexpectedValueException('The requested includes must be strings.'))
+            ->map(fn (mixed $value): string => is_string($value) ? $value : throw new UnexpectedValueException('请求的 includes 必须为字符串。'))
             ->flatMap(fn (string $value): array => explode(',', $value))
             ->map(fn (string $value): string => mb_trim($value))
             ->filter()

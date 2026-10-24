@@ -130,9 +130,9 @@ describe('ServerStartupTab', () => {
         render(<ServerStartupTab />);
 
         await user.selectOptions(screen.getByTestId('eggId'), '2');
-        await user.click(screen.getByRole('button', { name: 'Save Modifications' }));
+        await user.click(screen.getByRole('button', { name: '保存修改' }));
         expect(await screen.findByText('node-alpha only accepts eggs tagged Minecraft.')).toBeInTheDocument();
-        await user.click(screen.getByRole('button', { name: 'Change anyway' }));
+        await user.click(screen.getByRole('button', { name: '仍然更改' }));
 
         await waitFor(() => expect(screen.queryByRole('alert')).not.toBeInTheDocument());
         expect(mocks.updateStartup).toHaveBeenCalledTimes(2);

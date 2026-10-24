@@ -84,7 +84,7 @@ export const useCreateSubuser = () => {
     return useMutation({
         ...clientCreateServerSubuserMutation(),
         onSuccess: (subuser, { path }) => upsertSubuser(queryClient, path.server_uuid, subuser),
-        onError: (error) => notifyHttpError(error, 'Unable to invite subuser'),
+        onError: (error) => notifyHttpError(error, '无法邀请子用户'),
     });
 };
 
@@ -94,7 +94,7 @@ export const useUpdateSubuser = () => {
     return useMutation({
         ...clientUpdateServerSubuserMutation(),
         onSuccess: (subuser, { path }) => upsertSubuser(queryClient, path.server_uuid, subuser),
-        onError: (error) => notifyHttpError(error, 'Unable to update subuser'),
+        onError: (error) => notifyHttpError(error, '无法更新子用户'),
     });
 };
 
@@ -105,6 +105,6 @@ export const useDeleteSubuser = () => {
     return useMutation({
         ...clientDeleteServerSubuserMutation(),
         onSuccess: (_data, { path }) => removeSubuser(queryClient, path.server_uuid, path.user),
-        onError: (error) => notifyHttpError(error, 'Unable to remove subuser'),
+        onError: (error) => notifyHttpError(error, '无法移除子用户'),
     });
 };

@@ -60,18 +60,18 @@ export default function Stats({ model, className }: ViewProps<'server.stats'>) {
     return (
         <div className={cn('grid grid-cols-6 gap-2 md:gap-4', className)}>
             <CopyOnClick text={address}>
-                <Stat icon={Wifi} label='Address' value={address} className={tile} />
+                <Stat icon={Wifi} label='地址' value={address} className={tile} />
             </CopyOnClick>
             <Stat
                 icon={Clock}
-                label='Uptime'
+                label='运行时长'
                 value={<Uptime state={model.state} uptime={model.uptime} />}
                 tone={uptimeTone(model.state)}
                 className={tile}
             />
             <Stat
                 icon={Cpu}
-                label='CPU Load'
+                label='CPU 负载'
                 value={offline ? 'Offline' : `${cpu.value.toFixed(2)}%`}
                 limit={offline ? undefined : limitText(cpu.limit ? `${cpu.limit}%` : null)}
                 tone={tone(cpu)}
@@ -80,7 +80,7 @@ export default function Stats({ model, className }: ViewProps<'server.stats'>) {
             />
             <Stat
                 icon={MemoryStick}
-                label='Memory'
+                label='内存'
                 value={offline ? 'Offline' : bytesToString(memory.value)}
                 limit={offline ? undefined : limitText(bytesLimit(memory.limit))}
                 tone={tone(memory)}
@@ -89,7 +89,7 @@ export default function Stats({ model, className }: ViewProps<'server.stats'>) {
             />
             <Stat
                 icon={HardDrive}
-                label='Disk'
+                label='磁盘'
                 value={bytesToString(disk.value)}
                 limit={limitText(bytesLimit(disk.limit))}
                 tone={tone(disk)}
@@ -97,14 +97,14 @@ export default function Stats({ model, className }: ViewProps<'server.stats'>) {
             />
             <Stat
                 icon={CloudDownload}
-                label='Network (Inbound)'
+                label='网络（入站）'
                 value={offline ? 'Offline' : bytesToString(model.network.rx)}
                 unavailable={offline}
                 className={tile}
             />
             <Stat
                 icon={CloudUpload}
-                label='Network (Outbound)'
+                label='网络（出站）'
                 value={offline ? 'Offline' : bytesToString(model.network.tx)}
                 unavailable={offline}
                 className={tile}

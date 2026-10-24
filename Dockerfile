@@ -47,6 +47,10 @@ FROM php-base AS runtime
 
 ENV APP_ENV=production \
     APP_DEBUG=false \
+    TZ=Asia/Shanghai \
+    LANG=C.UTF-8 \
+    APP_TIMEZONE=Asia/Shanghai \
+    APP_LOCALE=zh \
     QUEUE_WORKER_ENABLED=true \
     SCHEDULER_ENABLED=true \
     LARAVEL_OPTIMIZE=true \
@@ -67,6 +71,8 @@ RUN apk add --no-cache su-exec icu-data-full \
         '* * * * * /usr/local/bin/php /app/artisan schedule:run >> /app/storage/logs/scheduler.log 2>&1' > /var/spool/cron/crontabs/nginx \
     && printf '%s\n' '0 23 * * * certbot renew --nginx --quiet' > /var/spool/cron/crontabs/root \
     && chmod 600 /var/spool/cron/crontabs/root /var/spool/cron/crontabs/nginx \
+    && ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime \
+    && echo "$TZ" > /etc/timezone \
     && sed -i 's/ssl_session_cache/#ssl_session_cache/g' /etc/nginx/nginx.conf
 
 COPY .github/docker/default.conf /etc/nginx/http.d/default.conf

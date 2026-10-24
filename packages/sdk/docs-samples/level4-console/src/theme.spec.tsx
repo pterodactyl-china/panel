@@ -16,18 +16,18 @@ test('puts the power controls in the server header', () => {
 
     const header = screen.getByRole('heading', { name: 'Survival' }).closest('header');
 
-    expect(header?.textContent).toContain('Restart');
+    expect(header?.textContent).toContain('重启');
 });
 // #endregion tests
 
 test('hides them while the server installs', () => {
     rendered = renderView('layout.server', { themes, fixture: 'installing' });
 
-    expect(screen.queryByRole('button', { name: 'Restart' })).toBeNull();
+    expect(screen.queryByRole('button', { name: '重启' })).toBeNull();
 });
 
 test('leaves them out of the console page', () => {
     rendered = renderView('page.server.console', { themes, input: { active: true } });
 
-    expect(screen.queryByRole('button', { name: 'Restart' })).toBeNull();
+    expect(screen.queryByRole('button', { name: '重启' })).toBeNull();
 });

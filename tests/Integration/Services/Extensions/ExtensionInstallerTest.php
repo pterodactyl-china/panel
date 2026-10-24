@@ -582,10 +582,10 @@ test('the install command replaces an installed extension only once that is conf
     $source = writeExtension('eventful');
     $this->artisan('p:extension:install', ['path' => $source, '--enable' => true])->assertSuccessful();
     File::put($source.'/extension.json', json_encode(['id' => 'eventful', 'name' => 'Eventful', 'version' => '2.0.0'], JSON_THROW_ON_ERROR));
-    $question = 'Extension "eventful" is already installed. Replace v1.0.0 with v2.0.0? It stays enabled and its migrations run.';
+    $question = '扩展「eventful」已安装，是否用 v2.0.0 替换 v1.0.0？ 它将保持启用状态并执行其迁移。';
 
     $this->artisan('p:extension:install', ['path' => $source, '--no-interaction' => true])
-        ->expectsOutputToContain('Pass --replace to replace it.')
+        ->expectsOutputToContain('请使用 --replace 参数进行替换。')
         ->assertFailed();
     $this->artisan('p:extension:install', ['path' => $source])->expectsConfirmation($question, 'no')->assertFailed();
     $this->assertDatabaseHas('extensions', ['identifier' => 'eventful', 'version' => '1.0.0', 'enabled' => true]);

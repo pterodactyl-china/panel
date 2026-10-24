@@ -56,7 +56,7 @@ test('email is not updated when password is invalid', function (): void {
     $response = $this->actingAs($user)->putJson('/api/client/account/email', ['email' => 'hodor@example.com', 'password' => 'invalid']);
     $response->assertStatus(Response::HTTP_BAD_REQUEST);
     $response->assertJsonPath('errors.0.code', 'InvalidPasswordProvidedException');
-    $response->assertJsonPath('errors.0.detail', 'The password provided was invalid for this account.');
+    $response->assertJsonPath('errors.0.detail', '提供的密码对此帐户无效。');
 });
 test('email change only reveals that an address is taken to someone with the password', function (): void {
     $user = User::factory()->create();
@@ -76,11 +76,11 @@ test('email is not updated when not valid', function (): void {
     $response = $this->actingAs($user)->putJson('/api/client/account/email', ['email' => '', 'password' => 'password']);
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     $response->assertJsonPath('errors.0.meta.rule', 'required');
-    $response->assertJsonPath('errors.0.detail', 'The email field is required.');
+    $response->assertJsonPath('errors.0.detail', 'email 不能为空。');
     $response = $this->actingAs($user)->putJson('/api/client/account/email', ['email' => 'invalid', 'password' => 'password']);
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     $response->assertJsonPath('errors.0.meta.rule', 'email');
-    $response->assertJsonPath('errors.0.detail', 'The email must be a valid email address.');
+    $response->assertJsonPath('errors.0.detail', 'email 不是一个合法的邮箱。');
 });
 test('email must be a strict address that does not start with a dash', function (string $email): void {
     $user = User::factory()->create();
@@ -120,7 +120,7 @@ test('password is not updated if current password is invalid', function (): void
     $response = $this->actingAs($user)->putJson('/api/client/account/password', ['current_password' => 'invalid', 'password' => 'New_Password1', 'password_confirmation' => 'New_Password1']);
     $response->assertStatus(Response::HTTP_BAD_REQUEST);
     $response->assertJsonPath('errors.0.code', 'InvalidPasswordProvidedException');
-    $response->assertJsonPath('errors.0.detail', 'The password provided was invalid for this account.');
+    $response->assertJsonPath('errors.0.detail', '提供的密码对此帐户无效。');
 });
 test('error is returned for invalid request data', function (): void {
     $user = User::factory()->create();
@@ -133,7 +133,7 @@ test('error is returned if password is not confirmed', function (): void {
     $response = $this->actingAs($user)->putJson('/api/client/account/password', ['current_password' => 'password', 'password' => 'New_Password1', 'password_confirmation' => 'Invalid_New_Password']);
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     $response->assertJsonPath('errors.0.meta.rule', 'confirmed');
-    $response->assertJsonPath('errors.0.detail', 'The password confirmation does not match.');
+    $response->assertJsonPath('errors.0.detail', 'password 两次输入不一致。');
 });
 
 test('malformed account credentials return 422 without changing the account', function (string $endpoint, string $field, array $credential): void {

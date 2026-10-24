@@ -5,17 +5,16 @@ export default function OverviewVersionCard({ version }: { version: AdminVersion
     return (
         <Alert
             type={version.is_latest ? 'success' : 'warning'}
-            title={version.is_latest ? 'Your panel is up-to-date.' : 'A panel update is available.'}
+            title={version.is_latest ? '面板已是最新版本。' : '面板有可用更新。'}
             className='mb-6'
         >
             {version.is_latest ? (
                 <>
-                    You are running version <code className='font-mono'>{version.current}</code>.
+                    您正在运行版本 <code className='font-mono'>{version.current}</code>。
                 </>
             ) : (
                 <>
-                    You are running version <code className='font-mono'>{version.current}</code>; the latest available
-                    is{' '}
+                    您正在运行版本 <code className='font-mono'>{version.current}</code>；最新可用版本为{' '}
                     <a
                         href={`https://github.com/pterodactyl/panel/releases/v${version.latest}`}
                         target='_blank'

@@ -164,9 +164,9 @@ export const useUpdateAdminExtensionSettings = () => {
             });
             const name = variables.meta?.name ?? 'the extension';
 
-            toast.success('Settings saved', { description: `Settings for ${name} have been updated.` });
+            toast.success('设置已保存', { description: `${name} 的设置已更新。` });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update extension settings'),
+        onError: (error) => notifyHttpError(error, '无法更新扩展设置'),
     });
 };
 
@@ -180,9 +180,9 @@ export const useUploadAdminExtensionSettingFile = () => {
                 adminGetExtensionSettingsQueryKey({ path: { extension: variables.path.extension } }),
                 data
             );
-            toast.success('File uploaded');
+            toast.success('文件已上传');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to upload the file'),
+        onError: (error) => notifyHttpError(error, '无法上传文件'),
     });
 };
 
@@ -196,16 +196,16 @@ export const useClearAdminExtensionSettingFile = () => {
                 adminGetExtensionSettingsQueryKey({ path: { extension: variables.path.extension } }),
                 data
             );
-            toast.success('File removed');
+            toast.success('文件已删除');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to remove the file'),
+        onError: (error) => notifyHttpError(error, '无法删除该文件'),
     });
 };
 
 const notifyReloadToApply = (title: string, description: string) =>
     toast.success(title, {
         description: `${description} Reload the page to apply it.`,
-        action: { label: 'Reload', onClick: () => window.location.reload() },
+        action: { label: '重新加载', onClick: () => window.location.reload() },
     });
 
 export const useInstallAdminExtension = () => {
@@ -218,15 +218,15 @@ export const useInstallAdminExtension = () => {
             const description = `${data.data?.name ?? 'The extension'} has been installed.`;
 
             if (data.data?.enabled) {
-                notifyReloadToApply('Extension installed', description);
+                notifyReloadToApply('扩展已安装', description);
             } else {
-                toast.success('Extension installed', { description });
+                toast.success('扩展已安装', { description });
             }
         },
         onError: (error) => {
             // The install dialog asks the admin to confirm a replacement instead.
             if (!extensionReplacement(error)) {
-                notifyHttpError(error, 'Unable to install extension');
+                notifyHttpError(error, '无法安装扩展');
             }
         },
     });
@@ -241,9 +241,9 @@ export const useEnableAdminExtension = () => {
             await queryClient.invalidateQueries({ queryKey: adminListExtensionsQueryKey() });
             const fallback = variables.meta?.name ?? 'The extension';
 
-            notifyReloadToApply('Extension enabled', `${data.data?.name ?? fallback} has been enabled.`);
+            notifyReloadToApply('扩展已启用', `${data.data?.name ?? fallback} 已启用。`);
         },
-        onError: (error) => notifyHttpError(error, 'Unable to enable extension'),
+        onError: (error) => notifyHttpError(error, '无法启用扩展'),
     });
 };
 
@@ -256,9 +256,9 @@ export const useDisableAdminExtension = () => {
             await queryClient.invalidateQueries({ queryKey: adminListExtensionsQueryKey() });
             const fallback = variables.meta?.name ?? 'The extension';
 
-            notifyReloadToApply('Extension disabled', `${data.data?.name ?? fallback} has been disabled.`);
+            notifyReloadToApply('扩展已禁用', `${data.data?.name ?? fallback} 已禁用。`);
         },
-        onError: (error) => notifyHttpError(error, 'Unable to disable extension'),
+        onError: (error) => notifyHttpError(error, '无法禁用扩展'),
     });
 };
 
@@ -271,8 +271,8 @@ export const useRemoveAdminExtension = () => {
             await queryClient.invalidateQueries({ queryKey: adminListExtensionsQueryKey() });
             const name = variables.meta?.name ?? 'The extension';
 
-            notifyReloadToApply('Extension removed', `${name} has been removed.`);
+            notifyReloadToApply('扩展已移除', `${name} has been removed.`);
         },
-        onError: (error) => notifyHttpError(error, 'Unable to remove extension'),
+        onError: (error) => notifyHttpError(error, '无法移除扩展'),
     });
 };

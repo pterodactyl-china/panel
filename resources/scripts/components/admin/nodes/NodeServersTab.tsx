@@ -22,7 +22,7 @@ import { relationshipAttributes } from '@/api/relationships';
 const nodeServerColumns = [
     {
         id: 'name',
-        header: 'Server',
+        header: '服务器',
         cell: ({ row }) => (
             <div className='w-0 min-w-full'>
                 <Link
@@ -45,7 +45,7 @@ const nodeServerColumns = [
     },
     {
         id: 'owner',
-        header: 'Owner',
+        header: '所有者',
         cell: ({ row }) => {
             const owner = relationshipAttributes(row.original.attributes.relationships?.user);
 
@@ -64,14 +64,14 @@ const nodeServerColumns = [
                     </p>
                 </div>
             ) : (
-                <span className='text-sm text-muted-foreground'>User #{row.original.attributes.user}</span>
+                <span className='text-sm text-muted-foreground'>用户 #{row.original.attributes.user}</span>
             );
         },
         meta: { headerClassName: 'hidden w-44 @xl:table-cell', cellClassName: 'hidden w-44 @xl:table-cell' },
     },
     {
         id: 'service',
-        header: 'Service',
+        header: '服务',
         cell: ({ row }) => {
             const attributes = row.original.attributes;
             const egg = relationshipAttributes(attributes.relationships?.egg);
@@ -87,7 +87,7 @@ const nodeServerColumns = [
     },
     {
         id: 'identifier',
-        header: 'Identifier',
+        header: '标识符',
         cell: ({ row }) => (
             <div className='text-right'>
                 <Code>{row.original.attributes.identifier}</Code>
@@ -121,7 +121,7 @@ const NodeServerList = ({ query, table }: NodeServerListProps) => {
             <div className='space-y-4'>
                 <Alert type='danger'>{httpErrorToHuman(error)}</Alert>
                 <Button.Text type='button' onClick={() => refetch()}>
-                    Retry
+                    重试
                 </Button.Text>
             </div>
         );
@@ -142,8 +142,8 @@ const NodeServerList = ({ query, table }: NodeServerListProps) => {
                             <EmptyMedia variant='icon'>
                                 <Server />
                             </EmptyMedia>
-                            <EmptyTitle>No servers</EmptyTitle>
-                            <EmptyDescription>No servers are running on this node yet.</EmptyDescription>
+                            <EmptyTitle>没有服务器</EmptyTitle>
+                            <EmptyDescription>此节点上尚未运行任何服务器。</EmptyDescription>
                         </EmptyHeader>
                     </Empty>
                 }
@@ -152,7 +152,7 @@ const NodeServerList = ({ query, table }: NodeServerListProps) => {
                 table={table}
                 total={servers.meta.pagination.total}
                 count={servers.meta.pagination.count}
-                itemLabel='servers'
+                itemLabel='服务器'
             />
         </>
     );
@@ -193,7 +193,7 @@ export default function NodeServersTab() {
 
     return (
         <div>
-            <TitledGreyBox title='Server List'>
+            <TitledGreyBox title='服务器列表'>
                 <NodeServerList query={query} table={table} />
             </TitledGreyBox>
         </div>

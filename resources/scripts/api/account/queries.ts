@@ -64,9 +64,9 @@ export const useUpdateAccountEmail = () => {
         ...clientUpdateAccountEmailMutation(),
         onSuccess: (_data, variables) => {
             setCurrentUserQueryData(queryClient, { email: variables.body.email });
-            toast.success('Email address updated');
+            toast.success('电子邮箱地址已更新');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update email address'),
+        onError: (error) => notifyHttpError(error, '无法更新电子邮箱地址'),
     });
 };
 
@@ -74,7 +74,7 @@ export const useUpdateAccountPassword = () =>
     useMutation({
         ...clientUpdateAccountPasswordMutation(),
         onSuccess: () => window.location.assign('/auth/login'),
-        onError: (error) => notifyHttpError(error, 'Unable to update password'),
+        onError: (error) => notifyHttpError(error, '无法更新密码'),
     });
 
 export const useUpdateAccountAvatar = () => {
@@ -85,9 +85,9 @@ export const useUpdateAccountAvatar = () => {
         onSuccess: async ({ attributes }) => {
             setCurrentUserQueryData(queryClient, { avatar: attributes.avatar });
             await queryClient.invalidateQueries({ queryKey: currentUserQueryKey });
-            toast.success('Avatar updated');
+            toast.success('头像已更新');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update avatar'),
+        onError: (error) => notifyHttpError(error, '无法更新头像'),
     });
 };
 
@@ -99,8 +99,8 @@ export const useDeleteAccountAvatar = () => {
         onSuccess: async () => {
             setCurrentUserQueryData(queryClient, { avatar: null });
             await queryClient.invalidateQueries({ queryKey: currentUserQueryKey });
-            toast.success('Avatar removed');
+            toast.success('头像已移除');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to remove avatar'),
+        onError: (error) => notifyHttpError(error, '无法移除头像'),
     });
 };

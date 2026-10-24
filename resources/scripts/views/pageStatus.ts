@@ -38,5 +38,5 @@ const noop = () => {};
 export const pageStatusFixtures = {
     default: (): PageStatusModel => ({ loading: false, error: null, retry: noop }),
     loading: (): PageStatusModel => ({ loading: true, error: null, retry: noop }),
-    error: (): PageStatusModel => ({ loading: false, error: 'Request failed with status code 500.', retry: noop }),
+    error: (): PageStatusModel => ({ loading: false, error: '请求失败，状态码 500。', retry: noop }),
 };

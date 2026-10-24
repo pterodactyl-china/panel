@@ -398,11 +398,11 @@ export const useCreateAdminNode = () => {
         ...adminCreateNodeMutation(),
         onSuccess: async (node) => {
             await invalidateGeneratedOperations(queryClient, ['adminListNodes']);
-            const messages = resourceMutationMessages('node', 'create', node.attributes.name);
+            const messages = resourceMutationMessages('节点', 'create', node.attributes.name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('node', 'create').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('节点', 'create').errorTitle),
     });
 };
 
@@ -419,11 +419,11 @@ export const useUpdateAdminNode = () => {
                     queryKey: adminGetNodeConfigurationQueryKey({ path: { node_id: variables.path.node_id } }),
                 }),
             ]);
-            const messages = resourceMutationMessages('node', 'update', node.attributes.name);
+            const messages = resourceMutationMessages('节点', 'update', node.attributes.name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('node', 'update').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('节点', 'update').errorTitle),
     });
 };
 
@@ -439,18 +439,18 @@ export const useDeleteAdminNode = () => {
 
             await invalidateGeneratedOperations(queryClient, ['adminListNodes']);
             const name = variables.meta?.name;
-            const messages = resourceMutationMessages('node', 'delete', name);
+            const messages = resourceMutationMessages('节点', 'delete', name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('node', 'delete').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('节点', 'delete').errorTitle),
     });
 };
 
 export const useGenerateAdminNodeDeployToken = () =>
     useMutation({
         ...adminCreateNodeDeployTokenMutation(),
-        onError: (error) => notifyHttpError(error, 'Unable to generate deploy token'),
+        onError: (error) => notifyHttpError(error, '无法生成部署令牌'),
     });
 
 export const useCreateAdminNodeAllocations = () => {
@@ -460,9 +460,9 @@ export const useCreateAdminNodeAllocations = () => {
         ...adminCreateNodeAllocationsMutation(),
         onSuccess: async (_data, variables) => {
             await invalidateAdminNodeAllocations(queryClient, [variables.path.node_id]);
-            toast.success('Allocations assigned', { description: 'New allocations have been assigned.' });
+            toast.success('分配已指派', { description: '已分配新的分配。' });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to assign allocations'),
+        onError: (error) => notifyHttpError(error, '无法分配'),
     });
 };
 
@@ -472,7 +472,7 @@ export const useUpdateAdminNodeAllocationAlias = () => {
     return useMutation({
         ...adminUpdateNodeAllocationMutation(),
         onSuccess: (_data, variables) => invalidateAdminNodeAllocations(queryClient, [variables.path.node_id]),
-        onError: (error) => notifyHttpError(error, 'Unable to update allocation alias'),
+        onError: (error) => notifyHttpError(error, '无法更新分配别名'),
     });
 };
 
@@ -482,7 +482,7 @@ export const useDeleteAdminNodeAllocation = () => {
     return useMutation({
         ...adminDeleteNodeAllocationMutation(),
         onSuccess: (_data, variables) => invalidateAdminNodeAllocations(queryClient, [variables.path.node_id]),
-        onError: (error) => notifyHttpError(error, 'Unable to delete allocation'),
+        onError: (error) => notifyHttpError(error, '无法删除分配'),
     });
 };
 
@@ -493,9 +493,9 @@ export const useBulkDeleteAdminNodeAllocations = () => {
         ...adminBulkDeleteNodeAllocationsMutation(),
         onSuccess: async (_data, variables) => {
             await invalidateAdminNodeAllocations(queryClient, [variables.path.node_id]);
-            toast.success('Allocations deleted', { description: 'Selected allocations have been deleted.' });
+            toast.success('分配已删除', { description: '所选分配已删除。' });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to delete allocations'),
+        onError: (error) => notifyHttpError(error, '无法删除分配'),
     });
 };
 
@@ -506,10 +506,10 @@ export const useDeleteAdminNodeIpBlockAllocations = () => {
         ...adminDeleteNodeAllocationIpBlockMutation(),
         onSuccess: async (_data, variables) => {
             await invalidateAdminNodeAllocations(queryClient, [variables.path.node_id]);
-            toast.success('Allocations deleted', {
-                description: `All unassigned allocations for ${variables.body.ip} have been deleted.`,
+            toast.success('分配已删除', {
+                description: `${variables.body.ip} 上所有未分配的分配已删除。`,
             });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to delete allocations'),
+        onError: (error) => notifyHttpError(error, '无法删除分配'),
     });
 };

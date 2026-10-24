@@ -53,7 +53,7 @@ function CreateDatabaseDialog({ model, onClose }: { model: ServerDatabasesModel;
             {(isSubmitting) => (
                 <Dialog
                     open
-                    title='Create new database'
+                    title='创建新数据库'
                     preventExternalClose={isSubmitting}
                     hideCloseIcon={isSubmitting}
                     onClose={() => {
@@ -71,8 +71,8 @@ function CreateDatabaseDialog({ model, onClose }: { model: ServerDatabasesModel;
                                 <field.TextField
                                     type='string'
                                     id='database_name'
-                                    label='Database Name'
-                                    description='A descriptive name for your database instance.'
+                                    label='数据库名称'
+                                    description='数据库实例的描述性名称。'
                                 />
                             )}
                         </form.AppField>
@@ -85,19 +85,19 @@ function CreateDatabaseDialog({ model, onClose }: { model: ServerDatabasesModel;
                                     <field.TextField
                                         type='string'
                                         id='connections_from'
-                                        label='Connections From'
-                                        description='Where connections should be allowed from. Leave blank to allow connections from anywhere.'
+                                        label='允许连接来源'
+                                        description='允许连接的来源。留空则允许任意来源连接。'
                                     />
                                 )}
                             </form.AppField>
                         </div>
                         <div className='flex flex-wrap justify-end mt-6'>
                             <Button type='button' isSecondary className='w-full sm:w-auto sm:mr-2' onClick={onClose}>
-                                Cancel
+                                取消
                             </Button>
                             <form.AppForm>
                                 <form.SubmitButton className='w-full mt-4 sm:w-auto sm:mt-0'>
-                                    Create Database
+                                    创建数据库
                                 </form.SubmitButton>
                             </form.AppForm>
                         </div>
@@ -109,7 +109,7 @@ function CreateDatabaseDialog({ model, onClose }: { model: ServerDatabasesModel;
 }
 
 const CreateDatabaseButton = ({ model }: { model: ServerDatabasesModel }) => (
-    <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>New database</NewButton>}>
+    <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>新建数据库</NewButton>}>
         {({ open, onClose }) => open && <CreateDatabaseDialog model={model} onClose={onClose} />}
     </Dialog.Trigger>
 );
@@ -137,15 +137,14 @@ function DeleteDatabaseDialog({ model, database, open, onClose }: DatabaseDialog
             {(isSubmitting) => (
                 <Dialog
                     open={open}
-                    title='Confirm database deletion'
+                    title='确认删除数据库'
                     preventExternalClose={isSubmitting}
                     hideCloseIcon={isSubmitting}
                     onClose={close}
                 >
                     <SpinnerOverlay visible={isSubmitting} />
                     <p className='text-sm'>
-                        Deleting a database is permanent. This will delete <strong>{database.name}</strong> and all
-                        associated data.
+                        删除数据库是不可撤销的操作。这将删除 <strong>{database.name}</strong> 及其所有关联数据。
                     </p>
                     <Form form={form} className='m-0 mt-6'>
                         <form.AppField
@@ -154,24 +153,24 @@ function DeleteDatabaseDialog({ model, database, open, onClose }: DatabaseDialog
                                 onChange: ({ value }) =>
                                     value === database.name || value === database.shortName
                                         ? undefined
-                                        : 'The database name must be provided.',
+                                        : '必须提供数据库名称。',
                             }}
                         >
                             {(field) => (
                                 <field.TextField
                                     type='text'
                                     id='confirm_name'
-                                    label='Confirm Database Name'
-                                    description='Enter the database name to confirm deletion.'
+                                    label='确认数据库名称'
+                                    description='请输入数据库名称以确认删除。'
                                 />
                             )}
                         </form.AppField>
                         <div className='mt-6 text-right'>
                             <Button type='button' isSecondary className='mr-2' onClick={close}>
-                                Cancel
+                                取消
                             </Button>
                             <form.AppForm>
-                                <form.SubmitButton color='red'>Delete Database</form.SubmitButton>
+                                <form.SubmitButton color='red'>删除数据库</form.SubmitButton>
                             </form.AppForm>
                         </div>
                     </Form>
@@ -183,31 +182,31 @@ function DeleteDatabaseDialog({ model, database, open, onClose }: DatabaseDialog
 
 function ConnectionDialog({ model, database, open, onClose }: DatabaseDialogProps) {
     return (
-        <Dialog open={open} title='Database connection details' onClose={onClose}>
+        <Dialog open={open} title='数据库连接详情' onClose={onClose}>
             <div>
-                <Label>Endpoint</Label>
+                <Label>端点</Label>
                 <CopyOnClick text={database.endpoint}>
                     <Input type='text' readOnly value={database.endpoint} />
                 </CopyOnClick>
             </div>
             <div className='mt-6'>
-                <Label>Connections from</Label>
+                <Label>允许连接来源</Label>
                 <Input type='text' readOnly value={database.connectionsFrom} />
             </div>
             <div className='mt-6'>
-                <Label>Username</Label>
+                <Label>用户名</Label>
                 <CopyOnClick text={database.username}>
                     <Input type='text' readOnly value={database.username} />
                 </CopyOnClick>
             </div>
             {model.permissions.viewPassword && (
                 <div className='mt-6'>
-                    <Label>Password</Label>
-                    <SecretInput value={database.password} label='Password' />
+                    <Label>密码</Label>
+                    <SecretInput value={database.password} label='密码' />
                 </div>
             )}
             <div className='mt-6'>
-                <Label>JDBC Connection String</Label>
+                <Label>JDBC 连接字符串</Label>
                 <CopyOnClick text={database.jdbc} showInNotification={false}>
                     <Input type='text' readOnly value={database.jdbc} />
                 </CopyOnClick>
@@ -221,11 +220,11 @@ function ConnectionDialog({ model, database, open, onClose }: DatabaseDialogProp
                         onClick={() => void model.actions.rotatePassword(database.id).catch(() => {})}
                         isLoading={model.rotating.includes(database.id)}
                     >
-                        Rotate Password
+                        轮换密码
                     </Button>
                 )}
                 <Button isSecondary onClick={onClose}>
-                    Close
+                    关闭
                 </Button>
             </div>
         </Dialog>
@@ -239,8 +238,8 @@ function DatabaseActions({ model, database }: { model: ServerDatabasesModel; dat
                 trigger={({ onClick }) => (
                     <RowActionButton
                         icon={Eye}
-                        label='Connection details'
-                        aria-label={`View ${database.name} connection details`}
+                        label='连接详情'
+                        aria-label={`查看 ${database.name} 的连接详情`}
                         onClick={onClick}
                     />
                 )}
@@ -251,7 +250,7 @@ function DatabaseActions({ model, database }: { model: ServerDatabasesModel; dat
             </Dialog.Trigger>
             {model.permissions.delete && (
                 <Dialog.Trigger
-                    trigger={({ onClick }) => <DeleteAction aria-label={`Delete ${database.name}`} onClick={onClick} />}
+                    trigger={({ onClick }) => <DeleteAction aria-label={`删除 ${database.name}`} onClick={onClick} />}
                 >
                     {({ open, onClose }) => (
                         <DeleteDatabaseDialog model={model} database={database} open={open} onClose={onClose} />
@@ -266,7 +265,7 @@ function databaseColumns(model: ServerDatabasesModel): TableColumn<ServerDatabas
     return [
         {
             id: 'name',
-            label: 'Database',
+            label: '数据库',
             sortValue: (database) => database.name,
             cell: (database) => (
                 <CopyOnClick text={database.name}>
@@ -276,7 +275,7 @@ function databaseColumns(model: ServerDatabasesModel): TableColumn<ServerDatabas
         },
         {
             id: 'endpoint',
-            label: 'Endpoint',
+            label: '端点',
             sortValue: (database) => database.endpoint,
             cell: (database) => (
                 <CopyOnClick text={database.endpoint}>
@@ -288,7 +287,7 @@ function databaseColumns(model: ServerDatabasesModel): TableColumn<ServerDatabas
         },
         {
             id: 'connections_from',
-            label: 'Connections from',
+            label: '允许连接来源',
             sortValue: (database) => database.connectionsFrom,
             cell: (database) => database.connectionsFrom,
             headerClassName: 'hidden lg:table-cell',
@@ -296,7 +295,7 @@ function databaseColumns(model: ServerDatabasesModel): TableColumn<ServerDatabas
         },
         {
             id: 'username',
-            label: 'Username',
+            label: '用户名',
             sortValue: (database) => database.username,
             cell: (database) => (
                 <CopyOnClick text={database.username}>
@@ -316,11 +315,9 @@ const EmptyState = ({ model }: { model: ServerDatabasesModel }) => (
             <EmptyMedia variant='icon'>
                 <Database />
             </EmptyMedia>
-            <EmptyTitle>No databases</EmptyTitle>
+            <EmptyTitle>没有数据库</EmptyTitle>
             <EmptyDescription>
-                {model.limit > 0
-                    ? "This server doesn't have any databases yet."
-                    : "Databases can't be created because this server's database limit is 0."}
+                {model.limit > 0 ? '此服务器还没有任何数据库。' : '无法创建数据库，因为此服务器的数据库上限为 0。'}
             </EmptyDescription>
         </EmptyHeader>
         {model.canCreate && (

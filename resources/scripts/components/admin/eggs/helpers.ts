@@ -30,11 +30,11 @@ const envVariableRegex = /^[\w]{1,191}$/;
 
 export const validateVariableName = (value: string): string | undefined => {
     if (value.length < 1) {
-        return 'A variable name must be provided.';
+        return '必须提供变量名称。';
     }
 
     if (value.length > 191) {
-        return 'A variable name must not exceed 191 characters.';
+        return '变量名称不得超过 191 个字符。';
     }
 
     return undefined;
@@ -42,11 +42,11 @@ export const validateVariableName = (value: string): string | undefined => {
 
 export const validateEnvVariable = (value: string): string | undefined => {
     if (value.length < 1) {
-        return 'An environment variable must be provided.';
+        return '必须提供环境变量。';
     }
 
     if (!envVariableRegex.test(value)) {
-        return 'The environment variable may only contain letters, numbers, and underscores.';
+        return '环境变量只能包含字母、数字和下划线。';
     }
 
     return undefined;

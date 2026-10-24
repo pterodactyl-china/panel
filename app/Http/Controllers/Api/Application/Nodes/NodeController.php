@@ -37,7 +37,7 @@ class NodeController extends ApplicationApiController
             [
                 'code' => 'HasActiveServersException',
                 'status' => '400',
-                'detail' => 'A node must have no servers linked to it in order to be deleted.',
+                'detail' => '删除节点前必须先解除其上所有服务器。',
             ],
         ],
     ];
@@ -47,7 +47,7 @@ class NodeController extends ApplicationApiController
             [
                 'code' => 'ConfigurationNotPersistedException',
                 'status' => '400',
-                'detail' => 'The daemon configuration has been updated, however there was an error encountered while attempting to automatically update the configuration file on the Daemon. You will need to manually update the configuration file (config.yml) for the daemon to apply these changes.',
+                'detail' => '守护进程配置已更新，但自动更新守护进程配置文件时出错。您需要手动更新 config.yml 才能使更改生效。',
             ],
         ],
     ];

@@ -13,7 +13,7 @@ const DraftDialog = ({ open, onClose }: { open: boolean; onClose: () => void }) 
         <div data-testid='dialog' data-open={open}>
             <input aria-label='Draft' value={draft} onChange={(event) => setDraft(event.currentTarget.value)} />
             <button type='button' onClick={onClose}>
-                Cancel
+                取消
             </button>
         </div>
     );
@@ -58,7 +58,7 @@ describe('DialogTrigger', () => {
 
         await user.click(screen.getByRole('button', { name: 'Open' }));
         await user.type(screen.getByLabelText('Draft'), 'secret');
-        await user.click(screen.getByRole('button', { name: 'Cancel' }));
+        await user.click(screen.getByRole('button', { name: '取消' }));
 
         expect(screen.getByTestId('dialog')).toHaveAttribute('data-open', 'false');
         expect(screen.getByLabelText('Draft')).toHaveValue('secret');
@@ -71,7 +71,7 @@ describe('DialogTrigger', () => {
 
         await user.click(screen.getByRole('button', { name: 'Open' }));
         await user.type(screen.getByLabelText('Draft'), 'secret');
-        await user.click(screen.getByRole('button', { name: 'Cancel' }));
+        await user.click(screen.getByRole('button', { name: '取消' }));
         await user.click(screen.getByRole('button', { name: 'Open' }));
 
         expect(screen.getByTestId('dialog')).toHaveAttribute('data-open', 'true');

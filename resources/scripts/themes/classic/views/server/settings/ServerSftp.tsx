@@ -9,15 +9,15 @@ export default function ServerSftp({ model, className }: ViewProps<'server.sftp'
     const host = `${ip(model.ip)}:${model.port}`;
 
     return (
-        <Card title='SFTP Details' className={className}>
+        <Card title='SFTP 详情' className={className}>
             <div>
-                <Label>Server Address</Label>
+                <Label>服务器地址</Label>
                 <CopyOnClick text={`sftp://${host}`}>
                     <Input type='text' value={`sftp://${host}`} readOnly />
                 </CopyOnClick>
             </div>
             <div className='mt-6'>
-                <Label>Username</Label>
+                <Label>用户名</Label>
                 <CopyOnClick text={model.username}>
                     <Input type='text' value={model.username} readOnly />
                 </CopyOnClick>
@@ -25,14 +25,12 @@ export default function ServerSftp({ model, className }: ViewProps<'server.sftp'
             <div className='mt-6 flex items-center'>
                 <div className='flex-1'>
                     <div className='border-l-4 border-accent p-3'>
-                        <p className='text-xs text-foreground'>
-                            Your SFTP password is the same as the password you use to access this panel.
-                        </p>
+                        <p className='text-xs text-foreground'>您的 SFTP 密码与访问此面板所用的密码相同。</p>
                     </div>
                 </div>
                 <div className='ml-4'>
                     <a href={`sftp://${model.username}@${host}`}>
-                        <Button.Text isSecondary>Launch SFTP</Button.Text>
+                        <Button.Text isSecondary>启动 SFTP</Button.Text>
                     </a>
                 </div>
             </div>

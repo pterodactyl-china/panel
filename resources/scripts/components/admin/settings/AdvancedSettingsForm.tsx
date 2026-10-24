@@ -65,16 +65,15 @@ export default function AdvancedSettingsForm({ settings }: { settings: AdminSett
                 {settings.meta.show_recaptcha_warning && (
                     <Alert type='warning' className='mb-6 text-sm'>
                         <span>
-                            You are using reCAPTCHA keys that shipped with this Panel. Generate new invisible reCAPTCHA
-                            keys for this website to improve security.
+                            您正在使用面板自带的 reCAPTCHA 密钥。请为本站生成新的隐形 reCAPTCHA 密钥以提升安全性。
                         </span>
                     </Alert>
                 )}
                 <form.AppField name='recaptchaEnabled'>
                     {(field) => (
                         <field.SwitchField
-                            label='reCAPTCHA Enabled'
-                            description='Protect login and registration forms with reCAPTCHA.'
+                            label='已启用 reCAPTCHA'
+                            description='使用 reCAPTCHA 保护登录与注册表单。'
                             disabled={readOnly}
                         />
                     )}
@@ -85,7 +84,7 @@ export default function AdvancedSettingsForm({ settings }: { settings: AdminSett
                             <field.TextField
                                 type='text'
                                 id='recaptcha_website_key'
-                                label='reCAPTCHA Website Key'
+                                label='reCAPTCHA 站点密钥'
                                 disabled={readOnly}
                             />
                         )}
@@ -97,44 +96,38 @@ export default function AdvancedSettingsForm({ settings }: { settings: AdminSett
                             <field.TextField
                                 type='password'
                                 id='recaptcha_secret_key'
-                                label='reCAPTCHA Secret Key'
-                                description='Leave blank to keep the existing secret key.'
+                                label='reCAPTCHA 密钥'
+                                description='留空则保留现有的密钥。'
                                 disabled={readOnly}
                             />
                         )}
                     </form.AppField>
                 </div>
             </TitledGreyBox>
-            <TitledGreyBox title='HTTP Connections' className='mt-6'>
+            <TitledGreyBox title='HTTP 连接' className='mt-6'>
                 <div className='grid grid-cols-2 gap-4'>
                     <form.AppField
                         name='guzzleTimeout'
-                        validators={{ onChange: requiredNumber('An HTTP request timeout must be provided.') }}
+                        validators={{ onChange: requiredNumber('必须提供 HTTP 请求超时时间。') }}
                     >
-                        {(field) => (
-                            <field.NumberField id='guzzle_timeout' label='HTTP Request Timeout' disabled={readOnly} />
-                        )}
+                        {(field) => <field.NumberField id='guzzle_timeout' label='HTTP 请求超时' disabled={readOnly} />}
                     </form.AppField>
                     <form.AppField
                         name='guzzleConnectTimeout'
-                        validators={{ onChange: requiredNumber('An HTTP connection timeout must be provided.') }}
+                        validators={{ onChange: requiredNumber('必须提供 HTTP 连接超时时间。') }}
                     >
                         {(field) => (
-                            <field.NumberField
-                                id='guzzle_connect_timeout'
-                                label='HTTP Connection Timeout'
-                                disabled={readOnly}
-                            />
+                            <field.NumberField id='guzzle_connect_timeout' label='HTTP 连接超时' disabled={readOnly} />
                         )}
                     </form.AppField>
                 </div>
             </TitledGreyBox>
-            <TitledGreyBox title='Automatic Allocation Creation' className='mt-6'>
+            <TitledGreyBox title='自动创建分配' className='mt-6'>
                 <form.AppField name='allocationsEnabled'>
                     {(field) => (
                         <field.SwitchField
-                            label='Auto Create Allocations Enabled'
-                            description='Allow users to automatically create new allocations for their server.'
+                            label='已启用自动创建分配'
+                            description='允许用户为其服务器自动创建新的分配。'
                             disabled={readOnly}
                         />
                     )}
@@ -145,7 +138,7 @@ export default function AdvancedSettingsForm({ settings }: { settings: AdminSett
                             <field.TextField
                                 type='number'
                                 id='allocations_range_start'
-                                label='Starting Port'
+                                label='起始端口'
                                 disabled={readOnly}
                             />
                         )}
@@ -155,7 +148,7 @@ export default function AdvancedSettingsForm({ settings }: { settings: AdminSett
                             <field.TextField
                                 type='number'
                                 id='allocations_range_end'
-                                label='Ending Port'
+                                label='结束端口'
                                 disabled={readOnly}
                             />
                         )}
@@ -164,7 +157,7 @@ export default function AdvancedSettingsForm({ settings }: { settings: AdminSett
             </TitledGreyBox>
             <div className='flex justify-end mt-6'>
                 <form.AppForm>
-                    <form.SubmitButton disabled={readOnly}>Save Changes</form.SubmitButton>
+                    <form.SubmitButton disabled={readOnly}>保存更改</form.SubmitButton>
                 </form.AppForm>
             </div>
         </Form>

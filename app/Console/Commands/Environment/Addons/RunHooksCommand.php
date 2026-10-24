@@ -11,9 +11,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 
-#[Description('Execute addon lifecycle hook scripts for the given event.')]
+#[Description('为指定事件执行附加组件的生命周期钩子脚本。')]
 #[Signature('p:environment:addons:run-hooks
-                            {event : The lifecycle event to run hooks for (e.g. post-install).}')]
+                            {event : 要执行钩子的生命周期事件（例如 post-install）。}')]
 class RunHooksCommand extends Command
 {
     /**
@@ -27,7 +27,7 @@ class RunHooksCommand extends Command
 
         $event = $this->argument('event');
         if (! Str::isMatch('/^[a-z0-9-]+$/', $event)) {
-            $this->components->error("Invalid hook event name: {$event}");
+            $this->components->error("无效的钩子事件名：{$event}");
 
             return self::INVALID;
         }
@@ -41,7 +41,7 @@ class RunHooksCommand extends Command
         }
 
         if ($this->input->isInteractive() && ! $this->confirm(
-            sprintf('Execute %d addon hook script(s) for the "%s" event? They run with the privileges of this process.', $hooks->count(), $event)
+            sprintf('是否为事件「%2$s」执行 %1$d 个附加组件钩子脚本？它们将以本进程的权限运行。', $hooks->count(), $event)
         )) {
             return self::SUCCESS;
         }
@@ -56,14 +56,14 @@ class RunHooksCommand extends Command
      */
     private function runHook(string $hook): void
     {
-        $this->components->info("Running addon hook: {$hook}");
+        $this->components->info("正在执行附加组件钩子：{$hook}");
 
         $result = Process::path(base_path())
             ->forever()
             ->run([$hook], fn (string $type, string $output) => $this->output->write($output));
 
         if ($result->failed()) {
-            $this->components->warn("Addon hook exited with an error: {$hook}");
+            $this->components->warn("附加组件钩子以错误退出：{$hook}");
         }
     }
 }

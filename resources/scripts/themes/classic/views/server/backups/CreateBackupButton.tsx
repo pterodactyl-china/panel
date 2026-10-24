@@ -1,9 +1,9 @@
 import { Dialog, Form, NewButton, SpinnerOverlay, useAppForm, type BackupListModel } from '@/sdk';
 
 const ignoredDescription = [
-    'Enter the files or folders to ignore while generating this backup.',
-    'Leave blank to use the contents of the .pteroignore file in the root of the server directory if present.',
-    'Wildcard matching of files and folders is supported in addition to negating a rule by prefixing the path',
+    '请输入生成此备份时要忽略的文件或文件夹。',
+    '留空则使用服务器根目录下 .pteroignore 文件的内容（如存在）。',
+    '除支持通过路径前缀取反规则外，也支持对文件和文件夹使用通配符匹配。',
     'with an exclamation point.',
 ].join(' ');
 
@@ -22,7 +22,7 @@ function CreateBackupDialog({ model, onClose }: { model: BackupListModel; onClos
             {(submitting) => (
                 <Dialog
                     open
-                    title='Create server backup'
+                    title='创建服务器备份'
                     onClose={onClose}
                     preventExternalClose={submitting}
                     hideCloseIcon={submitting}
@@ -31,17 +31,14 @@ function CreateBackupDialog({ model, onClose }: { model: BackupListModel; onClos
                     <Form form={form}>
                         <form.AppField name='name' validators={{ onChange: ({ value }) => model.validateName(value) }}>
                             {(field) => (
-                                <field.TextField
-                                    label='Backup name'
-                                    description='If provided, the name that should be used to reference this backup.'
-                                />
+                                <field.TextField label='备份名称' description='如填写，将作为引用此备份的名称。' />
                             )}
                         </form.AppField>
                         <div className='mt-6'>
                             <form.AppField name='ignored'>
                                 {(field) => (
                                     <field.TextAreaField
-                                        label='Ignored Files & Directories'
+                                        label='忽略的文件与目录'
                                         rows={6}
                                         description={ignoredDescription}
                                     />
@@ -53,8 +50,8 @@ function CreateBackupDialog({ model, onClose }: { model: BackupListModel; onClos
                                 <form.AppField name='isLocked'>
                                     {(field) => (
                                         <field.SwitchField
-                                            label='Locked'
-                                            description='Prevents this backup from being deleted until explicitly unlocked.'
+                                            label='已锁定'
+                                            description='在显式解锁之前，阻止删除此备份。'
                                         />
                                     )}
                                 </form.AppField>
@@ -62,7 +59,7 @@ function CreateBackupDialog({ model, onClose }: { model: BackupListModel; onClos
                         )}
                         <div className='flex justify-end mt-6'>
                             <form.AppForm>
-                                <form.SubmitButton>Start backup</form.SubmitButton>
+                                <form.SubmitButton>开始备份</form.SubmitButton>
                             </form.AppForm>
                         </div>
                     </Form>
@@ -74,7 +71,7 @@ function CreateBackupDialog({ model, onClose }: { model: BackupListModel; onClos
 
 export default function CreateBackupButton({ model }: { model: BackupListModel }) {
     return (
-        <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>New backup</NewButton>}>
+        <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>新建备份</NewButton>}>
             {({ open, onClose }) => open && <CreateBackupDialog model={model} onClose={onClose} />}
         </Dialog.Trigger>
     );

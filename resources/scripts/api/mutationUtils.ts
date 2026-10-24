@@ -4,12 +4,10 @@ import { hasGeneratedOperationId } from '@/api/queryKeyGuards';
 export type ResourceMutationAction = 'create' | 'update' | 'delete';
 
 const resourceMutationCopy = {
-    create: { verb: 'create', pastTense: 'created' },
-    update: { verb: 'update', pastTense: 'updated' },
-    delete: { verb: 'delete', pastTense: 'deleted' },
+    create: { verb: '创建', pastTense: '已创建' },
+    update: { verb: '更新', pastTense: '已更新' },
+    delete: { verb: '删除', pastTense: '已删除' },
 } satisfies Record<ResourceMutationAction, { verb: string; pastTense: string }>;
-
-const sentenceCase = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
 
 export const invalidateGeneratedOperations = (
     queryClient: QueryClient,
@@ -60,10 +58,10 @@ export const resourceMutationMessages = (resource: string, action: ResourceMutat
     const copy = resourceMutationCopy[action];
 
     return {
-        errorTitle: `Unable to ${copy.verb} ${resource}`,
+        errorTitle: `无法${copy.verb}${resource}`,
         success: {
-            title: `${sentenceCase(resource)} ${copy.pastTense}`,
-            description: name ? `${name} has been ${copy.pastTense}.` : `The ${resource} has been ${copy.pastTense}.`,
+            title: `${resource}${copy.pastTense}`,
+            description: name ? `${name}${copy.pastTense}。` : `该${resource}${copy.pastTense}。`,
         },
     };
 };

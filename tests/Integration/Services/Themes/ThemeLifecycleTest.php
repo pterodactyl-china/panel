@@ -66,7 +66,7 @@ test('a stylesheet-only theme publishes, activates, lists and resets from the co
     app(InstallsExtensions::class)->install(themePackage('aurora'), enable: true);
 
     expect(app(ExtensionAssetPublisher::class)->currentVersion('aurora'))->not->toBeNull();
-    $this->artisan('p:theme:activate', ['id' => 'aurora'])->expectsOutputToContain('Theme "aurora" is now active.')->assertSuccessful();
+    $this->artisan('p:theme:activate', ['id' => 'aurora'])->expectsOutputToContain('主题「aurora」已激活。')->assertSuccessful();
     expect(app(ThemeRepository::class)->active())->toBe('aurora');
 
     $this->artisan('p:theme:list')->expectsTable(['ID', 'Name', 'Extends', 'State'], [

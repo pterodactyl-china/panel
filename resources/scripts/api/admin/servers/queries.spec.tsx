@@ -148,7 +148,7 @@ describe('admin server cache', () => {
             headers: {},
             status: 200,
             statusText: 'OK',
-            data: { object: 'node', attributes: { id: 3, name: 'Node' } },
+            data: { object: 'node', attributes: { id: 3, name: '节点' } },
         }));
         const update = renderHook(() => useUpdateAdminNode(), { wrapper });
 

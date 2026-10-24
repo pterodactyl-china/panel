@@ -7,21 +7,21 @@ export default function LoginPage({ model, className }: ViewProps<'page.auth.log
     const { fields, Captcha } = model;
 
     return (
-        <AuthCard title='Login to Continue' submit={model.submit} className={className}>
-            <TextField field={fields.username} light label='Username or Email' />
+        <AuthCard title='登录以继续' submit={model.submit} className={className}>
+            <TextField field={fields.username} light label='用户名或电子邮箱' />
             <div className='mt-6'>
-                <TextField field={fields.password} light label='Password' />
+                <TextField field={fields.password} light label='密码' />
             </div>
             <div className='mt-6'>
                 <Button type='submit' size='xlarge' disabled={!model.canSubmit} isLoading={model.submitting}>
-                    Login
+                    登录
                 </Button>
             </div>
             <Slot name='auth.login.form.after' data={model.route} />
             {Captcha && <Captcha />}
             <div className='mt-6 text-center'>
                 <PanelLink destination={model.forgotPassword} className={authLinkClass}>
-                    Forgot password?
+                    忘记密码？
                 </PanelLink>
             </div>
         </AuthCard>

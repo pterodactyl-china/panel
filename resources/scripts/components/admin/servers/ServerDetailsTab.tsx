@@ -125,19 +125,19 @@ function ServerDetailsForm({ server }: Props) {
 
     return (
         <Form form={form}>
-            <TitledGreyBox title='Base Information'>
+            <TitledGreyBox title='基本信息'>
                 <form.AppField
                     name='name'
                     validators={{
-                        onChange: ({ value }) => (value.length >= 1 ? undefined : 'A server name must be provided.'),
+                        onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供服务器名称。'),
                     }}
                 >
                     {(field) => (
                         <field.TextField
                             type='text'
                             id='name'
-                            label='Server Name'
-                            description='Character limits: a-zA-Z0-9_- and [Space].'
+                            label='服务器名称'
+                            description='字符限制：a-zA-Z0-9_- 以及 [空格]。'
                         />
                     )}
                 </form.AppField>
@@ -147,11 +147,8 @@ function ServerDetailsForm({ server }: Props) {
                             <field.TextField
                                 type='text'
                                 id='external_id'
-                                label='External Identifier'
-                                description={
-                                    'Leave empty to not assign an external identifier for this server. The external ID ' +
-                                    'should be unique to this server and not be in use by any other server.'
-                                }
+                                label='外部标识符'
+                                description='留空则不为该服务器分配外部标识符。外部 ID 应在该服务器上唯一，且不被其他服务器使用。'
                             />
                         )}
                     </form.AppField>
@@ -161,17 +158,15 @@ function ServerDetailsForm({ server }: Props) {
                         {(field) => (
                             <field.SelectField
                                 id='user'
-                                label='Server Owner'
-                                placeholder='Search users by name, username or email…'
+                                label='服务器所有者'
+                                placeholder='按姓名、用户名或电子邮箱搜索用户…'
                                 emptyMessage={
-                                    isSearching || search !== debouncedSearch
-                                        ? 'Searching…'
-                                        : 'No matching users found.'
+                                    isSearching || search !== debouncedSearch ? 'Searching…' : '没有找到匹配的用户。'
                                 }
                                 options={users.map(ownerSelectOption)}
                                 onChange={pickOwner}
                                 onSearchChange={setSearch}
-                                description='Changing the owner will generate a new daemon security token automatically.'
+                                description='更改所有者将自动生成新的守护进程安全令牌。'
                             />
                         )}
                     </form.AppField>
@@ -182,8 +177,8 @@ function ServerDetailsForm({ server }: Props) {
                             <field.TextField
                                 type='text'
                                 id='description'
-                                label='Server Description'
-                                description='A brief description of this server.'
+                                label='服务器描述'
+                                description='此服务器的简要描述。'
                             />
                         )}
                     </form.AppField>
@@ -201,7 +196,7 @@ function ServerDetailsForm({ server }: Props) {
                 </form.AppField>
                 <div className='flex justify-end mt-6'>
                     <form.AppForm>
-                        <form.SubmitButton>Update Details</form.SubmitButton>
+                        <form.SubmitButton>更新详情</form.SubmitButton>
                     </form.AppForm>
                 </div>
             </TitledGreyBox>
@@ -213,7 +208,7 @@ export default function ServerDetailsTab() {
     const { server } = useServerDetail();
 
     if (server.attributes.container.installed !== 1) {
-        return <ServerError message='Access to this resource is not allowed due to the current installation state.' />;
+        return <ServerError message='由于当前安装状态，不允许访问此资源。' />;
     }
 
     return <ServerDetailsForm key={`${server.attributes.id}:${server.attributes.updated_at}`} server={server} />;

@@ -28,7 +28,7 @@ class ThemeResource extends AdminResource
             'id' => $theme->id ?? ThemeRepository::CLASSIC,
             'name' => $theme->name ?? 'Classic',
             'version' => $theme?->version,
-            'description' => $theme === null ? "The panel's own look, built into every installation." : $theme->description,
+            'description' => $theme === null ? '面板自带的外观，内置于每一个安装中。' : $theme->description,
             'author' => $theme?->author,
             'icon' => $theme?->iconName(),
             'icon_url' => $this->resource['icon_url'],

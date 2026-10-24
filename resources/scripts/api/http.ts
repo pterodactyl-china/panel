@@ -87,7 +87,7 @@ export function httpErrorToHuman(cause: unknown): string {
         }
     }
 
-    return cause instanceof Error ? cause.message : 'An unexpected error occurred.';
+    return cause instanceof Error ? cause.message : '发生意外错误。';
 }
 
 /** Validation messages keyed by the request path of the field they are about. */

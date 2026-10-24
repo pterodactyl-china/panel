@@ -6,23 +6,23 @@ export default function ScheduleCronRow({ cron, className }: { cron: ScheduleCro
         <div className={cn('flex', className)}>
             <div className='w-1/5 sm:w-auto text-center'>
                 <p className='font-medium'>{cron.minute}</p>
-                <p className='text-xs text-muted-foreground uppercase'>Minute</p>
+                <p className='text-xs text-muted-foreground uppercase'>分钟</p>
             </div>
             <div className='w-1/5 sm:w-auto text-center ml-4'>
                 <p className='font-medium'>{cron.hour}</p>
-                <p className='text-xs text-muted-foreground uppercase'>Hour</p>
+                <p className='text-xs text-muted-foreground uppercase'>小时</p>
             </div>
             <div className='w-1/5 sm:w-auto text-center ml-4'>
                 <p className='font-medium'>{cron.dayOfMonth}</p>
-                <p className='text-xs text-muted-foreground uppercase'>Day (Month)</p>
+                <p className='text-xs text-muted-foreground uppercase'>日（月）</p>
             </div>
             <div className='w-1/5 sm:w-auto text-center ml-4'>
                 <p className='font-medium'>{cron.month}</p>
-                <p className='text-xs text-muted-foreground uppercase'>Month</p>
+                <p className='text-xs text-muted-foreground uppercase'>月</p>
             </div>
             <div className='w-1/5 sm:w-auto text-center ml-4'>
                 <p className='font-medium'>{cron.dayOfWeek}</p>
-                <p className='text-xs text-muted-foreground uppercase'>Day (Week)</p>
+                <p className='text-xs text-muted-foreground uppercase'>星期（周）</p>
             </div>
         </div>
     );

@@ -6,21 +6,21 @@ import SetupTwoFactorDialog from './SetupTwoFactorDialog';
 
 export default function TwoFactorCard({ model, className }: ViewProps<'account.twoFactor'>) {
     return (
-        <ContentBox className={className} title='Two-Step Verification'>
+        <ContentBox className={className} title='两步验证'>
             <div>
                 <SetupTwoFactorDialog model={model} />
                 <RecoveryTokensDialog tokens={model.recoveryTokens} onClose={model.dismissRecoveryTokens} />
                 <DisableTwoFactorDialog model={model} />
                 <p className='text-sm'>
                     {model.enabled
-                        ? 'Two-step verification is currently enabled on your account.'
-                        : 'You do not currently have two-step verification enabled on your account. Click the button below to begin configuring it.'}
+                        ? '您的账户目前已启用两步验证。'
+                        : '您的账户尚未启用两步验证。点击下方按钮开始配置。'}
                 </p>
                 <div className='mt-6'>
                     {model.enabled ? (
-                        <Button.Danger onClick={() => model.openDialog('disable')}>Disable Two-Step</Button.Danger>
+                        <Button.Danger onClick={() => model.openDialog('disable')}>禁用两步验证</Button.Danger>
                     ) : (
-                        <Button onClick={() => model.openDialog('enable')}>Enable Two-Step</Button>
+                        <Button onClick={() => model.openDialog('enable')}>启用两步验证</Button>
                     )}
                 </div>
             </div>

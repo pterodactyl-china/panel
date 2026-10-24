@@ -50,7 +50,7 @@ class AllocationController extends ApplicationApiController
             [
                 'code' => 'ServerUsingAllocationException',
                 'status' => '400',
-                'detail' => 'A server is currently assigned to this allocation. An allocation can only be deleted if no server is currently assigned.',
+                'detail' => '此分配仍有服务器在使用。只有在没有任何服务器使用该分配时才能删除。',
             ],
         ],
     ];

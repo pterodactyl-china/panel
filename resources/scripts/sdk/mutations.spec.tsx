@@ -67,5 +67,5 @@ it('rejects and reports through the core notification when Wings refuses a comma
         await expect(command.result.current.mutateAsync({ command: 'list' })).rejects.toThrow('Bad Gateway');
     });
 
-    expect(notifyHttpError).toHaveBeenCalledWith(expect.anything(), 'Unable to send command');
+    expect(notifyHttpError).toHaveBeenCalledWith(expect.anything(), '无法发送命令');
 });

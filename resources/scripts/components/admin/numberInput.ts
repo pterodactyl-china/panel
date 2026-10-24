@@ -8,7 +8,7 @@ export const requiredNumber =
 
 export const submittedNumber = (value: NumberInputValue): number => {
     if (value === null) {
-        throw new Error('A required number input was submitted while empty.');
+        throw new Error('必填的数字输入为空时被提交。');
     }
 
     return value;

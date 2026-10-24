@@ -19,7 +19,7 @@ export default function UpdateEggFromFileButton({ egg }: Props) {
         <Dialog.Trigger
             trigger={({ onClick }) => (
                 <Button isSecondary onClick={onClick}>
-                    Update From File
+                    从文件更新
                 </Button>
             )}
         >
@@ -27,9 +27,9 @@ export default function UpdateEggFromFileButton({ egg }: Props) {
                 <EggFileDialog
                     open={open}
                     onClose={onClose}
-                    title='Update egg from file'
-                    description="Upload a new egg JSON file to replace this egg's settings. This will not change any existing startup strings or docker images for servers already using this egg."
-                    submitLabel='Update Egg'
+                    title='通过文件更新预设'
+                    description='上传新的预设 JSON 文件以替换此预设的设置。不会更改已使用此预设的服务器的现有启动命令或 Docker 镜像。'
+                    submitLabel='更新预设'
                     submitColor='red'
                     submitting={updateEggFromFile.isPending}
                     onSubmit={submit}

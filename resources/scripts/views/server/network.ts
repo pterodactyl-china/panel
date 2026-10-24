@@ -145,7 +145,7 @@ const allocation = (id: number, port: number, options: Partial<ServerAllocationI
 
 const allocationsFixture = (options: Partial<ServerAllocationsModel> = {}): ServerAllocationsModel => ({
     allocations: [
-        allocation(1, 25565, { primary: true, notes: 'Game port' }),
+        allocation(1, 25565, { primary: true, notes: '游戏端口' }),
         allocation(2, 25575, { notes: 'RCON' }),
         allocation(3, 8123, { alias: 'play.example.com', address: 'play.example.com' }),
     ],

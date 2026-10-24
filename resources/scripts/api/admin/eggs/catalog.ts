@@ -32,9 +32,9 @@ export const useImportAdminCatalogEgg = () => {
         ...adminImportCatalogEggMutation(),
         onSuccess: async (egg) => {
             await invalidateGeneratedOperations(queryClient, ['adminListEggs']);
-            toast.success('Egg imported', { description: `${egg.attributes.name} has been added from the catalog.` });
+            toast.success('预设已导入', { description: `${egg.attributes.name} 已从预设目录添加。` });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to import catalog egg'),
+        onError: (error) => notifyHttpError(error, '无法导入预设目录中的预设'),
     });
 };
 
@@ -44,6 +44,6 @@ export const useRefreshAdminEggCatalog = () => {
     return useMutation({
         ...adminRefreshEggCatalogMutation(),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: adminListEggCatalogQueryKey() }),
-        onError: (error) => notifyHttpError(error, 'Unable to refresh egg catalog'),
+        onError: (error) => notifyHttpError(error, '无法刷新预设目录'),
     });
 };

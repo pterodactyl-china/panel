@@ -180,7 +180,7 @@ test('request is denied if user lacks sftp permission', function () {
     [$user, $server] = $this->generateTestAccount([Permissions::FileRead->value]);
     $user->update(['password' => 'foobar']);
     setAuthorization($server->node);
-    $this->postJson('/api/remote/sftp/auth', ['username' => $user->username.'.'.$server->uuidShort, 'password' => 'foobar'])->assertForbidden()->assertJsonPath('errors.0.detail', 'You do not have permission to access SFTP for this server.');
+    $this->postJson('/api/remote/sftp/auth', ['username' => $user->username.'.'.$server->uuidShort, 'password' => 'foobar'])->assertForbidden()->assertJsonPath('errors.0.detail', '您没有访问该服务器 SFTP 的权限。');
 });
 test('invalid server state returns conflict error', function (string $status) {
     $this->server->update(['status' => $status]);

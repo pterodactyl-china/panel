@@ -104,6 +104,6 @@ class StoreSSHKeyRequest extends ClientApiRequest
 
     private function loadedKey(): PublicKey
     {
-        return $this->key ?? throw new UnexpectedValueException('The public key was not properly loaded for this request.');
+        return $this->key ?? throw new UnexpectedValueException('此请求未能正确加载公钥。');
     }
 }

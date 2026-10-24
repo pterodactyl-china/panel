@@ -122,7 +122,7 @@ final readonly class UpdateServerBuild implements UpdatesServerBuild
         if ($remove !== []) {
             foreach ($remove as $allocation) {
                 if ($allocation === ($attributes['allocation_id'] ?? $server->allocation_id)) {
-                    throw_if(empty($freshlyAllocated), DisplayException::class, 'You are attempting to delete the default allocation for this server but there is no fallback allocation to use.');
+                    throw_if(empty($freshlyAllocated), DisplayException::class, '您正在试图删除此服务器的默认分配，但没有可供使用的备用分配。');
                     $attributes['allocation_id'] = $freshlyAllocated;
                 }
             }

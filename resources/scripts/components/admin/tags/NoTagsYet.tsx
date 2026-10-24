@@ -9,9 +9,9 @@ export default function NoTagsYet() {
                 <EmptyMedia variant='icon'>
                     <Tags />
                 </EmptyMedia>
-                <EmptyTitle>No tags yet</EmptyTitle>
+                <EmptyTitle>暂无标签</EmptyTitle>
                 <EmptyDescription>
-                    Type a name below to create one, or manage tags on the <Link to='/panel/tags'>Tags page</Link>.
+                    在下方输入名称即可创建，或前往以下页面管理标签： <Link to='/panel/tags'>标签页面</Link>.
                 </EmptyDescription>
             </EmptyHeader>
         </Empty>

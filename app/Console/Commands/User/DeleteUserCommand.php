@@ -11,7 +11,7 @@ use InvalidArgumentException;
 use Pterodactyl\Contracts\Users\DeletesUsers;
 use Pterodactyl\Models\User;
 
-#[Description('Deletes a user from the Panel if no servers are attached to their account.')]
+#[Description('若账户未关联服务器，则从面板删除该用户。')]
 #[Signature('p:user:delete {--user=}')]
 class DeleteUserCommand extends Command
 {
@@ -19,7 +19,7 @@ class DeleteUserCommand extends Command
     {
         $search = $this->option('user') ?? $this->ask(trans('command/messages.user.search_users'));
         if (! is_string($search) || empty($search)) {
-            throw new InvalidArgumentException(sprintf('Search term should be an email address, got: %s.', get_debug_type($search)));
+            throw new InvalidArgumentException(sprintf('搜索内容应为电子邮箱地址，实际为：%s。', get_debug_type($search)));
         }
 
         $results = User::query()
@@ -62,7 +62,7 @@ class DeleteUserCommand extends Command
                 $user = $deleteUser;
             } else {
                 $id = filter_var($deleteUser, FILTER_VALIDATE_INT);
-                throw_if($id === false, InvalidArgumentException::class, 'Expected a numeric user id.');
+                throw_if($id === false, InvalidArgumentException::class, '需要数字用户 ID。');
                 $user = User::query()->findOrFail($id);
             }
 

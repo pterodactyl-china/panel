@@ -78,15 +78,15 @@ describe('egg catalog', () => {
 
         await user.click(screen.getByRole('button', { name: '2' }));
         expect(screen.getByRole('heading', { name: 'Paper' })).toBeInTheDocument();
-        await user.type(screen.getByLabelText('Search eggs'), 'MINECRAFT');
+        await user.type(screen.getByLabelText('搜索预设'), 'MINECRAFT');
         expect(screen.getAllByRole('article')).toHaveLength(1);
         expect(screen.getByRole('heading', { name: 'Paper' })).toBeInTheDocument();
-        await user.clear(screen.getByLabelText('Search eggs'));
-        await user.click(screen.getByLabelText('Category'));
+        await user.clear(screen.getByLabelText('搜索预设'));
+        await user.click(screen.getByLabelText('分类'));
         await user.click(await screen.findByRole('option', { name: 'games' }));
         expect(screen.getAllByRole('article')).toHaveLength(1);
-        await user.type(screen.getByLabelText('Search eggs'), 'unmatched');
-        expect(screen.getByText('No eggs match your search.')).toBeInTheDocument();
+        await user.type(screen.getByLabelText('搜索预设'), 'unmatched');
+        expect(screen.getByText('没有预设匹配您的搜索。')).toBeInTheDocument();
         expect(request).toHaveBeenCalledOnce();
     });
 
@@ -111,20 +111,20 @@ describe('egg catalog', () => {
             data: [],
             meta: { pagination: { total: 0, count: 0, per_page: 100, current_page: 1, total_pages: 1 } },
         });
-        await user.click(await screen.findByRole('button', { name: 'Import' }));
+        await user.click(await screen.findByRole('button', { name: '导入' }));
         const dialog = await screen.findByRole('dialog', { name: 'Import Paper' });
-        const submit = within(dialog).getByRole('button', { name: 'Import Egg' });
+        const submit = within(dialog).getByRole('button', { name: '导入预设' });
 
         await user.click(submit);
         await waitFor(() => expect(request).toHaveBeenCalledTimes(2));
         expect(request.mock.calls[1]![0].url).toBe('/api/admin/eggs/catalog/import');
         expect(request.mock.calls[1]![0].data).toBe('{"catalog_id":"games-paper"}');
-        expect(within(dialog).getByRole('button', { name: 'Cancel' })).toBeDisabled();
+        expect(within(dialog).getByRole('button', { name: '取消' })).toBeDisabled();
         await user.keyboard('{Escape}');
         expect(dialog).toBeInTheDocument();
 
         await act(async () => failImport(error));
-        await waitFor(() => expect(mocks.notifyError).toHaveBeenCalledWith(error, 'Unable to import catalog egg'));
+        await waitFor(() => expect(mocks.notifyError).toHaveBeenCalledWith(error, '无法导入预设目录中的预设'));
         expect(mocks.navigate).not.toHaveBeenCalled();
         await waitFor(() => expect(submit).toBeEnabled());
         await user.click(submit);
@@ -132,7 +132,7 @@ describe('egg catalog', () => {
             expect(mocks.navigate).toHaveBeenCalledWith({ to: '/panel/eggs/$eggId', params: { eggId: 42 } })
         );
         expect(queryClient.getQueryState(adminEggsQueryOptions().queryKey)?.isInvalidated).toBe(true);
-        expect(mocks.toastSuccess).toHaveBeenCalledWith('Egg imported', expect.anything());
+        expect(mocks.toastSuccess).toHaveBeenCalledWith('预设已导入', expect.anything());
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
 
@@ -145,10 +145,10 @@ describe('egg catalog', () => {
         const { user } = setup();
 
         expect(await screen.findByRole('alert')).toHaveTextContent('Catalog unavailable');
-        await user.click(screen.getByRole('button', { name: 'Retry' }));
+        await user.click(screen.getByRole('button', { name: '重试' }));
         await screen.findByRole('heading', { name: 'Paper' });
-        await user.click(screen.getByRole('button', { name: 'Refresh Catalog' }));
-        await screen.findByText('The catalog is empty');
+        await user.click(screen.getByRole('button', { name: '刷新目录' }));
+        await screen.findByText('预设目录为空');
         expect(request.mock.calls.map(([config]) => [config.method, config.url])).toEqual([
             ['get', '/api/admin/eggs/catalog'],
             ['get', '/api/admin/eggs/catalog'],

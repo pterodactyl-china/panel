@@ -9,9 +9,9 @@ afterEach(cleanup);
 
 describe('ServerTable', () => {
     it.each([
-        ['active', 'Active'],
-        ['installing', 'Installing'],
-        ['suspended', 'Suspended'],
+        ['active', '启用中'],
+        ['installing', '安装中'],
+        ['suspended', '已暂停'],
     ] as const)('renders the %s server status', (status, label) => {
         render(<ServerStatusBadge status={status} />);
 

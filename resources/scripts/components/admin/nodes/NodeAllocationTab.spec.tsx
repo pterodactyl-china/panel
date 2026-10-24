@@ -67,27 +67,27 @@ describe('NodeAllocationTab', () => {
         const user = userEvent.setup();
         const { rerender } = render(<NodeAllocationTab />);
 
-        const input = screen.getByLabelText('Alias for 10.0.0.1:25565');
+        const input = screen.getByLabelText('10.0.0.1:25565 的别名');
 
         await user.type(input, 'lobby');
         await user.click(screen.getAllByRole('checkbox')[2]!);
 
-        expect(screen.getByLabelText('Alias for 10.0.0.1:25565')).toBe(input);
+        expect(screen.getByLabelText('10.0.0.1:25565 的别名')).toBe(input);
         expect(input).toHaveValue('lobby');
 
         page = allocationPage([allocation(1, 25565, null), allocation(2, 25566, 'bungee')]);
         rerender(<NodeAllocationTab />);
 
-        expect(screen.getByLabelText('Alias for 10.0.0.1:25565')).toBe(input);
+        expect(screen.getByLabelText('10.0.0.1:25565 的别名')).toBe(input);
         expect(input).toHaveValue('lobby');
-        expect(screen.getByLabelText('Alias for 10.0.0.1:25566')).toHaveValue('bungee');
+        expect(screen.getByLabelText('10.0.0.1:25566 的别名')).toHaveValue('bungee');
     });
 
     it('saves the typed alias on blur and then shows the saved value', async () => {
         const user = userEvent.setup();
         const { rerender } = render(<NodeAllocationTab />);
 
-        const input = screen.getByLabelText('Alias for 10.0.0.1:25565');
+        const input = screen.getByLabelText('10.0.0.1:25565 的别名');
 
         await user.type(input, 'lobby');
         await user.tab();
@@ -103,7 +103,7 @@ describe('NodeAllocationTab', () => {
 
         options.onSuccess();
         rerender(<NodeAllocationTab />);
-        expect(screen.getByLabelText('Alias for 10.0.0.1:25565')).toHaveValue('lobby-1');
+        expect(screen.getByLabelText('10.0.0.1:25565 的别名')).toHaveValue('lobby-1');
     });
 
     it('does not save an alias that was not changed', async () => {
@@ -111,7 +111,7 @@ describe('NodeAllocationTab', () => {
 
         render(<NodeAllocationTab />);
 
-        await user.click(screen.getByLabelText('Alias for 10.0.0.1:25566'));
+        await user.click(screen.getByLabelText('10.0.0.1:25566 的别名'));
         await user.tab();
 
         expect(state.updateAlias).not.toHaveBeenCalled();
@@ -120,8 +120,8 @@ describe('NodeAllocationTab', () => {
     it('only shows the pager when the allocations span more than one page', () => {
         const { rerender } = render(<NodeAllocationTab />);
 
-        expect(screen.getByText('2 allocations')).toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: 'Next page' })).not.toBeInTheDocument();
+        expect(screen.getByText('2 个分配')).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: '下一页' })).not.toBeInTheDocument();
 
         page = {
             ...page,
@@ -129,6 +129,6 @@ describe('NodeAllocationTab', () => {
         };
         rerender(<NodeAllocationTab />);
 
-        expect(screen.getByRole('button', { name: 'Next page' })).toBeEnabled();
+        expect(screen.getByRole('button', { name: '下一页' })).toBeEnabled();
     });
 });

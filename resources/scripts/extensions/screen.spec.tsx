@@ -97,7 +97,7 @@ it('renders core navigation before imports settle and recovers resource-specific
     await act(async () => {
         await router.navigate({ to: '/mod/first' } as never);
     });
-    expect(await screen.findByRole('button', { name: 'Retry extension' })).toBeVisible();
+    expect(await screen.findByRole('button', { name: '重试扩展' })).toBeVisible();
     expect(screen.getByRole('button', { name: 'Core navigation' })).toBeVisible();
     broken = false;
     await act(async () => {
@@ -141,8 +141,8 @@ it('offers page reload for a rejected lazy screen without looping imports', asyn
             <RouterProvider router={router} />
         </QueryClientProvider>
     );
-    expect(await screen.findByRole('button', { name: 'Reload page' })).toBeVisible();
-    expect(screen.queryByRole('button', { name: 'Retry extension' })).not.toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: '重新加载页面' })).toBeVisible();
+    expect(screen.queryByRole('button', { name: '重试扩展' })).not.toBeInTheDocument();
     await waitFor(() => expect(importer).toHaveBeenCalledTimes(1));
 });
 

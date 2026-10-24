@@ -36,15 +36,14 @@ export default function UserAvatarCard({ user }: { user: AdminUser }) {
     };
 
     return (
-        <TitledGreyBox title='Avatar'>
+        <TitledGreyBox title='头像'>
             <div className='flex flex-col gap-4'>
                 <div className='flex items-start gap-4'>
                     <div className='h-[72px] w-[72px] shrink-0'>
                         <Avatar name={user.attributes.username} image={preview} size='100%' />
                     </div>
                     <p className='m-0 text-sm text-muted-foreground'>
-                        The avatar which will appear under the user&apos;s personal account. PNG, JPEG, SVG, WebP, AVIF,
-                        and ICO files are supported.
+                        将显示在用户个人账户中的头像。支持 PNG、JPEG、SVG、WebP、AVIF 与 ICO 格式。
                     </p>
                 </div>
                 <input
@@ -64,7 +63,7 @@ export default function UserAvatarCard({ user }: { user: AdminUser }) {
                         isLoading={update.isPending}
                         onClick={() => (selected ? void save() : input.current?.click())}
                     >
-                        {selected ? 'Save Changes' : 'Update Avatar'}
+                        {selected ? '保存更改' : '更新头像'}
                     </Button>
                     <Button.Danger
                         type='button'
@@ -76,7 +75,7 @@ export default function UserAvatarCard({ user }: { user: AdminUser }) {
                                 .then(() => setSelected(null))
                         }
                     >
-                        Remove Avatar
+                        移除头像
                     </Button.Danger>
                 </div>
             </div>

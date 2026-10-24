@@ -81,7 +81,7 @@ test('subuser with excessively long email cannot be created', function (): void 
     $this->actingAs($user)->postJson($this->link($server).'/users', ['email' => $email, 'permissions' => [Permissions::UserCreate->value]])->assertOk();
     $response = $this->actingAs($user)->postJson($this->link($server).'/users', ['email' => "{$local}@{$label}.{$label}.com", 'permissions' => [Permissions::UserCreate->value]]);
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
-    $response->assertJsonPath('errors.0.detail', 'The email must be between 1 and 191 characters.');
+    $response->assertJsonPath('errors.0.detail', 'email 必须介于 1 - 191 个字符之间。');
     $response->assertJsonPath('errors.0.meta.source_field', 'email');
 });
 test('subuser email must be a strict address that does not start with a dash', function (string $email): void {
@@ -111,5 +111,5 @@ test('adding subuser that already is assigned returns error', function (): void 
     $response = $this->actingAs($user)->postJson($this->link($server).'/users', ['email' => $email, 'permissions' => [Permissions::UserCreate->value]]);
     $response->assertStatus(Response::HTTP_BAD_REQUEST);
     $response->assertJsonPath('errors.0.code', 'ServerSubuserExistsException');
-    $response->assertJsonPath('errors.0.detail', 'A user with that email address is already assigned as a subuser for this server.');
+    $response->assertJsonPath('errors.0.detail', '具有该电子邮箱地址的用户已被指定为该服务器的子用户。');
 });

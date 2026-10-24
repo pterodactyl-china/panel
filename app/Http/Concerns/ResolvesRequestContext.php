@@ -14,7 +14,7 @@ trait ResolvesRequestContext
 {
     protected function authenticatedUser(Request $request): User
     {
-        return $request->user() ?? throw new AuthenticationException('This endpoint requires an authenticated user.');
+        return $request->user() ?? throw new AuthenticationException('此接口需要已登录用户。');
     }
 
     /**
@@ -22,6 +22,6 @@ trait ResolvesRequestContext
      */
     protected function resolvedRoute(Request $request)
     {
-        return $request->route() ?? throw new LogicException('Request middleware requires a resolved route.');
+        return $request->route() ?? throw new LogicException('请求中间件需要已解析的路由。');
     }
 }

@@ -18,7 +18,7 @@ import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTi
 const eggColumns = [
     {
         id: 'name',
-        header: 'Egg',
+        header: '预设',
         cell: ({ row }) => (
             <div className='min-w-0'>
                 <Link
@@ -39,7 +39,7 @@ const eggColumns = [
     },
     {
         id: 'author',
-        header: 'Author',
+        header: '作者',
         cell: ({ row }) => (
             <span className='block max-w-64 truncate text-sm' title={row.original.attributes.author}>
                 {row.original.attributes.author}
@@ -56,7 +56,7 @@ const eggColumns = [
     actionsColumn<AdminEggListItem>(1, (egg) => (
         <RowActions>
             <EditLinkAction
-                aria-label={`Edit ${egg.attributes.name}`}
+                aria-label={`编辑 ${egg.attributes.name}`}
                 to='/panel/eggs/$eggId'
                 params={{ eggId: egg.attributes.id }}
             />
@@ -81,21 +81,16 @@ export default function EggsContainer() {
     }
 
     return (
-        <AdminContentBlock
-            title='Admin · Eggs'
-            heading='Eggs'
-            description='Manage server templates, startup configuration, variables, and install scripts.'
-        >
+        <AdminContentBlock title='管理 · 预设' heading='预设' description='管理服务器模板、启动配置、变量与安装脚本。'>
             <Alert type='danger' className='mb-6 text-sm'>
-                Eggs are powerful and can break servers when edited incorrectly. Avoid editing official eggs unless you
-                are certain of the change.
+                预设功能强大，编辑不当可能损坏服务器。除非您确信所做修改，否则请勿编辑官方预设。
             </Alert>
             <ListToolbar>
                 <NewLinkButton to='/panel/eggs/catalog' isSecondary icon={Search}>
-                    Browse catalog
+                    浏览预设目录
                 </NewLinkButton>
                 <ImportEggButton />
-                <NewLinkButton to='/panel/eggs/new'>New egg</NewLinkButton>
+                <NewLinkButton to='/panel/eggs/new'>新建预设</NewLinkButton>
             </ListToolbar>
             <DataTable
                 table={table}
@@ -106,14 +101,13 @@ export default function EggsContainer() {
                             <EmptyMedia variant='icon'>
                                 <Egg />
                             </EmptyMedia>
-                            <EmptyTitle>No eggs yet</EmptyTitle>
+                            <EmptyTitle>暂无预设</EmptyTitle>
                             <EmptyDescription>
-                                Eggs are the templates servers are built from. Browse the catalog for ready-made eggs or
-                                create your own.
+                                预设是构建服务器所用的模板。可从预设目录浏览现成的预设，或自行创建。
                             </EmptyDescription>
                         </EmptyHeader>
                         <EmptyContent>
-                            <NewLinkButton to='/panel/eggs/new'>New egg</NewLinkButton>
+                            <NewLinkButton to='/panel/eggs/new'>新建预设</NewLinkButton>
                         </EmptyContent>
                     </Empty>
                 }

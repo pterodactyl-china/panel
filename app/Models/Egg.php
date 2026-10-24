@@ -313,11 +313,11 @@ class Egg extends Model implements Identifiable
 
     private function copiedScriptEgg(): self
     {
-        return $this->scriptFrom ?? throw new RuntimeException('The configured script source egg does not exist.');
+        return $this->scriptFrom ?? throw new RuntimeException('配置的脚本源预设不存在。');
     }
 
     private function inheritedConfigurationEgg(): self
     {
-        return $this->configFrom ?? throw new RuntimeException('The configured parent egg does not exist.');
+        return $this->configFrom ?? throw new RuntimeException('配置的父预设不存在。');
     }
 }

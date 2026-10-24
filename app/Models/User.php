@@ -72,7 +72,7 @@ class User extends Authenticatable implements Identifiable
     protected $attributes = [
         'external_id' => null,
         'root_admin' => false,
-        'language' => 'en',
+        'language' => 'zh',
         'use_totp' => false,
         'totp_secret' => null,
         'avatar' => null,

@@ -12,8 +12,8 @@ use Pterodactyl\Contracts\Locations\DeletesLocations;
 use Pterodactyl\Exceptions\Service\Location\HasActiveNodesException;
 use Pterodactyl\Models\Location;
 
-#[Description('Deletes a location from the Panel.')]
-#[Signature('p:location:delete {--short= : The short code of the location to delete.}')]
+#[Description('从面板删除地域。')]
+#[Signature('p:location:delete {--short= : 要删除地域的短代码。}')]
 class DeleteLocationCommand extends Command
 {
     /** @var Collection<int, Location> */

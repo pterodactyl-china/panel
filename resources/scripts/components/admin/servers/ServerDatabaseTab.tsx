@@ -25,7 +25,7 @@ function ServerDatabaseContent({ server }: { server: AdminServer }) {
             [
                 {
                     id: 'name',
-                    header: 'Database',
+                    header: '数据库',
                     cell: ({ row }) => (
                         <CopyOnClick text={row.original.attributes.name}>
                             <span className='font-mono text-sm'>{row.original.attributes.name}</span>
@@ -34,7 +34,7 @@ function ServerDatabaseContent({ server }: { server: AdminServer }) {
                 },
                 {
                     id: 'endpoint',
-                    header: 'Endpoint',
+                    header: '端点',
                     cell: ({ row }) => (
                         <CopyOnClick
                             text={`${row.original.attributes.host.address}:${row.original.attributes.host.port}`}
@@ -48,7 +48,7 @@ function ServerDatabaseContent({ server }: { server: AdminServer }) {
                 },
                 {
                     id: 'username',
-                    header: 'Username',
+                    header: '用户名',
                     cell: ({ row }) => (
                         <CopyOnClick text={row.original.attributes.username}>
                             <span className='text-xs'>{row.original.attributes.username}</span>
@@ -58,9 +58,9 @@ function ServerDatabaseContent({ server }: { server: AdminServer }) {
                 },
                 {
                     id: 'max',
-                    header: 'Max',
+                    header: '上限',
                     cell: ({ row }) => (
-                        <span className='text-xs'>{row.original.attributes.max_connections ?? 'Unlimited'}</span>
+                        <span className='text-xs'>{row.original.attributes.max_connections ?? '无限制'}</span>
                     ),
                     meta: {
                         headerClassName: 'hidden xl:table-cell w-20 text-right',
@@ -87,13 +87,11 @@ function ServerDatabaseContent({ server }: { server: AdminServer }) {
     const databaseLimit = attributes.feature_limits.databases ?? 0;
     const canCreate = databaseLimit > 0 && data.length < databaseLimit;
     const usage =
-        databaseLimit > 0 && data.length > 0
-            ? `${data.length} of ${databaseLimit} databases have been allocated to this server.`
-            : null;
+        databaseLimit > 0 && data.length > 0 ? `已为此服务器分配 ${data.length} / ${databaseLimit} 个数据库。` : null;
 
     return (
         <div>
-            <TitledGreyBox title='Databases'>
+            <TitledGreyBox title='数据库'>
                 {databases ? (
                     <>
                         {(canCreate || usage) && (
@@ -110,11 +108,11 @@ function ServerDatabaseContent({ server }: { server: AdminServer }) {
                                         <EmptyMedia variant='icon'>
                                             <Database />
                                         </EmptyMedia>
-                                        <EmptyTitle>No databases</EmptyTitle>
+                                        <EmptyTitle>没有数据库</EmptyTitle>
                                         <EmptyDescription>
                                             {databaseLimit > 0
-                                                ? "This server doesn't have any databases yet."
-                                                : "This server's database limit is 0. Raise it in the build settings to create databases."}
+                                                ? '此服务器还没有任何数据库。'
+                                                : '此服务器的数据库上限为 0。请在构建设置中提高上限以创建数据库。'}
                                         </EmptyDescription>
                                     </EmptyHeader>
                                     <EmptyContent>
@@ -126,7 +124,7 @@ function ServerDatabaseContent({ server }: { server: AdminServer }) {
                                                 isSecondary
                                                 icon={SlidersHorizontal}
                                             >
-                                                Build settings
+                                                构建设置
                                             </NewLinkButton>
                                         )}
                                     </EmptyContent>
@@ -146,7 +144,7 @@ export default function ServerDatabaseTab() {
     const { server } = useServerDetail();
 
     if (server.attributes.container.installed !== 1) {
-        return <ServerError message='Access to this resource is not allowed due to the current installation state.' />;
+        return <ServerError message='由于当前安装状态，不允许访问此资源。' />;
     }
 
     return <ServerDatabaseContent server={server} />;

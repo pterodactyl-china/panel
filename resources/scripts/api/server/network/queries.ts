@@ -87,11 +87,11 @@ export const useCreateServerAllocation = () => {
         ...clientCreateServerAllocationMutation(),
         onSuccess: async (allocation, { path }) => {
             await upsertAllocation(queryClient, path.server_uuid, allocation);
-            toast.success('Allocation created', {
+            toast.success('分配已创建', {
                 description: `${allocation.attributes.ip}:${allocation.attributes.port} is available.`,
             });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to create allocation'),
+        onError: (error) => notifyHttpError(error, '无法创建分配'),
     });
 };
 
@@ -101,7 +101,7 @@ export const useUpdateAllocationNotes = () => {
     return useMutation({
         ...clientUpdateAllocationNotesMutation(),
         onSuccess: (allocation, { path }) => upsertAllocation(queryClient, path.server_uuid, allocation),
-        onError: (error) => notifyHttpError(error, 'Unable to update allocation notes'),
+        onError: (error) => notifyHttpError(error, '无法更新分配备注'),
     });
 };
 
@@ -126,9 +126,9 @@ export const useSetPrimaryAllocation = () => {
                     }))
             );
             await queryClient.invalidateQueries(serverQueryFilters(path.server_uuid));
-            toast.success('Primary allocation updated');
+            toast.success('首选分配已更新');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update primary allocation'),
+        onError: (error) => notifyHttpError(error, '无法更新首选分配'),
     });
 };
 
@@ -139,8 +139,8 @@ export const useDeleteServerAllocation = () => {
         ...clientDeleteServerAllocationMutation(),
         onSuccess: async (_data, { path }) => {
             await removeAllocation(queryClient, path.server_uuid, path.allocation_id);
-            toast.success('Allocation deleted');
+            toast.success('分配已删除');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to delete allocation'),
+        onError: (error) => notifyHttpError(error, '无法删除分配'),
     });
 };

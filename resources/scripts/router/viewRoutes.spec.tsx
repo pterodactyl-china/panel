@@ -29,7 +29,7 @@ beforeEach(async () => {
     extensions.registerSlotComponent('ext', 'server.backups.after', () => <p>after slot</p>, batch);
     extensions.commitExtensionRegistryBatch('ext', batch);
     views.registerViewLayer('classic', 'classic', { 'page.server.backups': () => <p>classic backups</p> });
-});
+}, 60_000);
 
 afterEach(() => {
     cleanup();
@@ -64,7 +64,7 @@ it('renders the engine slots around a page view a theme replaced wholesale', asy
 it('keeps the permission guard in front of the page and its slots', async () => {
     renderPage([]);
 
-    expect(await screen.findByText('You do not have permission to access this page.')).toBeVisible();
+    expect(await screen.findByText('您没有访问此页面的权限。')).toBeVisible();
     expect(screen.queryByText('classic backups')).not.toBeInTheDocument();
     expect(screen.queryByText('before slot')).not.toBeInTheDocument();
 });

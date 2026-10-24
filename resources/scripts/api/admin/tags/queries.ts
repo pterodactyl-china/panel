@@ -117,11 +117,11 @@ export const useCreateAdminTag = () => {
         ...adminCreateTagMutation(),
         onSuccess: async (tag) => {
             await invalidateGeneratedOperations(queryClient, tagListOperations);
-            const messages = resourceMutationMessages('tag', 'create', tag.attributes.name);
+            const messages = resourceMutationMessages('标签', 'create', tag.attributes.name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('tag', 'create').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('标签', 'create').errorTitle),
     });
 };
 
@@ -132,11 +132,11 @@ export const useUpdateAdminTag = () => {
         ...adminUpdateTagMutation(),
         onSuccess: async (tag) => {
             await invalidateGeneratedOperations(queryClient, assignedTagOperations);
-            const messages = resourceMutationMessages('tag', 'update', tag.attributes.name);
+            const messages = resourceMutationMessages('标签', 'update', tag.attributes.name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('tag', 'update').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('标签', 'update').errorTitle),
     });
 };
 
@@ -147,11 +147,11 @@ export const useDeleteAdminTag = () => {
         ...adminDeleteTagMutation(),
         onSuccess: async (_data, variables) => {
             await invalidateGeneratedOperations(queryClient, assignedTagOperations);
-            const messages = resourceMutationMessages('tag', 'delete', variables.meta?.name);
+            const messages = resourceMutationMessages('标签', 'delete', variables.meta?.name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('tag', 'delete').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('标签', 'delete').errorTitle),
     });
 };
 
@@ -162,9 +162,9 @@ export const useSyncAdminEggTags = () => {
         ...adminSyncEggTagsMutation(),
         onSuccess: async () => {
             await invalidateGeneratedOperations(queryClient, ['adminGetEgg', 'adminListEggs', 'adminListTags']);
-            toast.success('Egg tags updated', { description: 'The egg tag assignments have been saved.' });
+            toast.success('预设标签已更新', { description: '预设标签分配已保存。' });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update egg tags'),
+        onError: (error) => notifyHttpError(error, '无法更新预设标签'),
     });
 };
 
@@ -174,9 +174,9 @@ const onNodeTagsSynced = async (queryClient: QueryClient, nodeId: number) => {
         invalidateGeneratedOperations(queryClient, ['adminListNodes', 'adminListTags']),
     ]);
     // Games and reservations save together, so both syncs update one toast.
-    toast.success('Node tags updated', {
+    toast.success('节点标签已更新', {
         id: `admin-node-tags-${nodeId}`,
-        description: 'The node tag assignments have been saved.',
+        description: '节点标签分配已保存。',
     });
 };
 
@@ -186,7 +186,7 @@ export const useSyncAdminNodeGameTags = () => {
     return useMutation({
         ...adminSyncNodeGameTagsMutation(),
         onSuccess: (_tags, variables) => onNodeTagsSynced(queryClient, variables.path.node_id),
-        onError: (error) => notifyHttpError(error, 'Unable to update node tags'),
+        onError: (error) => notifyHttpError(error, '无法更新节点标签'),
     });
 };
 
@@ -196,6 +196,6 @@ export const useSyncAdminNodeDeploymentTags = () => {
     return useMutation({
         ...adminSyncNodeDeploymentTagsMutation(),
         onSuccess: (_tags, variables) => onNodeTagsSynced(queryClient, variables.path.node_id),
-        onError: (error) => notifyHttpError(error, 'Unable to update node tags'),
+        onError: (error) => notifyHttpError(error, '无法更新节点标签'),
     });
 };

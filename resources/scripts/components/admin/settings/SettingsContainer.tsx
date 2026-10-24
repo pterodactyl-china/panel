@@ -16,9 +16,9 @@ type SettingsSearch = {
 };
 
 const tabs: { key: Tab; label: string }[] = [
-    { key: 'general', label: 'General' },
-    { key: 'mail', label: 'Mail' },
-    { key: 'advanced', label: 'Advanced' },
+    { key: 'general', label: '常规' },
+    { key: 'mail', label: '邮件' },
+    { key: 'advanced', label: '高级' },
 ];
 
 const tabPaths = {
@@ -55,16 +55,11 @@ export default function SettingsContainer() {
     }
 
     return (
-        <AdminContentBlock
-            title='Admin · Settings'
-            heading='Settings'
-            description="Manage your panel's general, mail, and advanced settings."
-        >
+        <AdminContentBlock title='管理 · 设置' heading='设置' description='管理面板的常规、邮件与高级设置。'>
             {settings?.meta.load_environment_only && (
                 <Alert type='danger' className='mb-6 text-sm'>
                     <span>
-                        This Panel reads settings from the environment only. Set <code>APP_ENVIRONMENT_ONLY=false</code>{' '}
-                        in your environment file to load settings dynamically.
+                        此面板仅从环境变量读取设置。请设置 <code>APP_ENVIRONMENT_ONLY=false</code>，以便动态加载设置。
                     </span>
                 </Alert>
             )}

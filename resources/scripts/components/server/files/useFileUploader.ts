@@ -37,8 +37,8 @@ export default function useFileUploader(): (source: UploadSource) => Promise<voi
             const dropped = 'items' in source;
 
             if (dropped && holdsFolder(source)) {
-                toast.error('Folder uploads are not supported.');
-                throw new Error('Folder uploads are not supported.');
+                toast.error('不支持上传文件夹。');
+                throw new Error('不支持上传文件夹。');
             }
 
             const files = dropped ? [...source.files] : [...source];
@@ -75,9 +75,7 @@ export default function useFileUploader(): (source: UploadSource) => Promise<voi
 
             if (failed.length > 0) {
                 throw new Error(
-                    failed.length === 1
-                        ? `Unable to upload ${failed[0].name}.`
-                        : `Unable to upload ${failed.length} files.`
+                    failed.length === 1 ? `无法上传 ${failed[0].name}。` : `无法上传 ${failed.length} 个文件。`
                 );
             }
         },

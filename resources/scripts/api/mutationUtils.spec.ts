@@ -62,18 +62,18 @@ describe('mutation utilities', () => {
     });
 
     it('builds consistent resource mutation copy with and without a resource name', () => {
-        expect(resourceMutationMessages('database host', 'update', 'primary')).toEqual({
-            errorTitle: 'Unable to update database host',
+        expect(resourceMutationMessages('数据库主机', 'update', 'primary')).toEqual({
+            errorTitle: '无法更新数据库主机',
             success: {
-                title: 'Database host updated',
-                description: 'primary has been updated.',
+                title: '数据库主机已更新',
+                description: 'primary已更新。',
             },
         });
-        expect(resourceMutationMessages('egg', 'delete')).toEqual({
-            errorTitle: 'Unable to delete egg',
+        expect(resourceMutationMessages('预设', 'delete')).toEqual({
+            errorTitle: '无法删除预设',
             success: {
-                title: 'Egg deleted',
-                description: 'The egg has been deleted.',
+                title: '预设已删除',
+                description: '该预设已删除。',
             },
         });
     });

@@ -50,7 +50,7 @@ const sortFiles = (files: FileObject[]): FileObject[] => {
 
 function allow(granted: boolean, permission: string): void {
     if (!granted) {
-        throw new Error(`This action requires the ${permission} permission.`);
+        throw new Error(`此操作需要 ${permission} 权限。`);
     }
 }
 

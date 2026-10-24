@@ -33,7 +33,7 @@ describe('CopyOnClick', () => {
         await act(async () => fireEvent.click(screen.getByRole('button', { name: 'ptlc_secret' })));
 
         expect(clipboard.copy).toHaveBeenCalledWith('ptlc_secret');
-        expect(screen.getByRole('status')).toHaveTextContent('Copied text to clipboard.');
+        expect(screen.getByRole('status')).toHaveTextContent('文本已复制到剪贴板。');
     });
 
     it('echoes the value only when asked to', async () => {
@@ -45,7 +45,7 @@ describe('CopyOnClick', () => {
 
         await act(async () => fireEvent.click(screen.getByRole('button', { name: 'node-1' })));
 
-        expect(screen.getByRole('status')).toHaveTextContent('Copied "node-1" to clipboard.');
+        expect(screen.getByRole('status')).toHaveTextContent('已将 "node-1" 复制到剪贴板。');
     });
 
     it('reports a failed copy', async () => {
@@ -58,7 +58,7 @@ describe('CopyOnClick', () => {
 
         await act(async () => fireEvent.click(screen.getByRole('button', { name: 'value' })));
 
-        expect(screen.getByRole('status')).toHaveTextContent('Unable to copy text to clipboard.');
+        expect(screen.getByRole('status')).toHaveTextContent('无法将文本复制到剪贴板。');
     });
 
     it('makes non-interactive children focusable and copies on Enter and Space', async () => {

@@ -4,7 +4,7 @@ import TagFormDialog from '@/components/admin/tags/TagFormDialog';
 
 export default function CreateTagButton() {
     return (
-        <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>New tag</NewButton>}>
+        <Dialog.Trigger trigger={({ onClick }) => <NewButton onClick={onClick}>新建标签</NewButton>}>
             {({ open, onClose }) => <TagFormDialog open={open} onClose={onClose} />}
         </Dialog.Trigger>
     );

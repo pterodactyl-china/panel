@@ -9,15 +9,13 @@ describe('node form', () => {
     });
 
     it('rejects emptied number inputs', () => {
-        expect(nodeNumberValidators.memory.onChange({ value: null })).toBe('A memory limit must be provided.');
-        expect(nodeNumberValidators.memoryOverallocate.onChange({ value: null })).toBe(
-            'A memory overallocation must be provided.'
-        );
-        expect(nodeNumberValidators.daemonSftp.onChange({ value: null })).toBe('A daemon SFTP port must be provided.');
+        expect(nodeNumberValidators.memory.onChange({ value: null })).toBe('必须提供内存限制。');
+        expect(nodeNumberValidators.memoryOverallocate.onChange({ value: null })).toBe('必须提供内存超额分配。');
+        expect(nodeNumberValidators.daemonSftp.onChange({ value: null })).toBe('必须提供守护进程 SFTP 端口。');
     });
 
     it('keeps the existing range checks for entered numbers', () => {
-        expect(nodeNumberValidators.disk.onChange({ value: 0 })).toBe('A disk limit must be provided.');
+        expect(nodeNumberValidators.disk.onChange({ value: 0 })).toBe('必须提供磁盘限制。');
         expect(nodeNumberValidators.disk.onChange({ value: 1 })).toBeUndefined();
         expect(nodeNumberValidators.memoryOverallocate.onChange({ value: -1 })).toBeUndefined();
     });

@@ -54,16 +54,14 @@ function NoServers({ model }: { model: ServerListModel }) {
                 <EmptyMedia variant='icon'>
                     <ServerIcon />
                 </EmptyMedia>
-                <EmptyTitle>{others ? 'No other servers' : 'No servers yet'}</EmptyTitle>
+                <EmptyTitle>{others ? '没有其他服务器' : '暂无服务器'}</EmptyTitle>
                 <EmptyDescription>
-                    {others
-                        ? 'There are no servers owned by other users.'
-                        : 'Servers you own or are invited to will appear here.'}
+                    {others ? '没有其他用户拥有的服务器。' : '您拥有或被邀请的服务器将显示在这里。'}
                 </EmptyDescription>
             </EmptyHeader>
             {model.canCreateServers && (
                 <EmptyContent>
-                    <NewLinkButton to='/panel/servers/new'>New server</NewLinkButton>
+                    <NewLinkButton to='/panel/servers/new'>新建服务器</NewLinkButton>
                 </EmptyContent>
             )}
         </Empty>
@@ -77,14 +75,14 @@ export default function ServerList({ model, className }: ViewProps<'dashboard.se
     return (
         <div className={className}>
             <PageHeading
-                title='Servers'
+                title='服务器'
                 className='mb-4'
                 actions={
                     model.canViewOthers && (
                         <Switch
                             checked={others}
                             onChange={() => model.actions.setScope(others ? 'mine' : 'others')}
-                            label={others ? "Showing others' servers" : 'Showing your servers'}
+                            label={others ? '正在显示他人的服务器' : '正在显示您的服务器'}
                             controlPosition='end'
                             className='gap-2'
                         />

@@ -51,10 +51,10 @@ function ThemeMark({ theme }: { theme: AdminTheme }) {
 
 const badges = (theme: AdminTheme): { label: string; className: string }[] =>
     [
-        theme.active && { label: 'Active', className: 'bg-success/15 text-success' },
-        theme.previewing && { label: 'Previewing', className: 'bg-accent/15 text-accent' },
-        theme.builtin && { label: 'Built in', className: 'bg-secondary text-secondary-foreground' },
-        !theme.enabled && { label: 'Disabled', className: 'bg-warning/15 text-warning' },
+        theme.active && { label: '启用中', className: 'bg-success/15 text-success' },
+        theme.previewing && { label: '预览中', className: 'bg-accent/15 text-accent' },
+        theme.builtin && { label: '内置', className: 'bg-secondary text-secondary-foreground' },
+        !theme.enabled && { label: '已禁用', className: 'bg-warning/15 text-warning' },
     ].filter((badge) => badge !== false);
 
 function ThemeCard({ theme }: { theme: AdminTheme }) {
@@ -86,11 +86,11 @@ function ThemeCard({ theme }: { theme: AdminTheme }) {
                 </div>
             </div>
             <p className='mt-3 line-clamp-3 text-sm leading-relaxed text-card-foreground/80'>
-                {theme.description || 'No description provided.'}
+                {theme.description || '未提供描述。'}
             </p>
             {theme.extends && (
                 <p className='mt-2 text-xs text-muted-foreground'>
-                    Built on <span className='font-mono'>{theme.extends}</span>
+                    基于 <span className='font-mono'>{theme.extends}</span>
                 </p>
             )}
             {theme.problem && (
@@ -107,7 +107,7 @@ function ThemeCard({ theme }: { theme: AdminTheme }) {
                         isLoading={activate.isPending}
                         onClick={() => activate.mutate(activateAdminThemeInput(theme.id, theme.name))}
                     >
-                        {theme.active ? 'Active' : 'Activate'}
+                        {theme.active ? '已启用' : '启用'}
                     </NewButton>
                     <NewButton
                         icon={Eye}
@@ -118,7 +118,7 @@ function ThemeCard({ theme }: { theme: AdminTheme }) {
                         isLoading={preview.isPending}
                         onClick={() => preview.mutate(previewAdminThemeInput(theme.id, theme.name))}
                     >
-                        Preview for me
+                        为我预览
                     </NewButton>
                     {theme.settings_count > 0 && (
                         <Dialog.Trigger
@@ -130,7 +130,7 @@ function ThemeCard({ theme }: { theme: AdminTheme }) {
                                     className={actionClass}
                                     onClick={onClick}
                                 >
-                                    Settings
+                                    设置
                                 </NewButton>
                             )}
                         >
@@ -157,7 +157,7 @@ function ThemeToolbar({ meta }: { meta?: AdminThemesMeta }) {
                         isLoading={stopPreview.isPending}
                         onClick={() => stopPreview.mutate({})}
                     >
-                        Stop preview
+                        停止预览
                     </NewButton>
                 )}
                 <LinkButton
@@ -166,7 +166,7 @@ function ThemeToolbar({ meta }: { meta?: AdminThemesMeta }) {
                     className='inline-flex h-9 items-center gap-2'
                 >
                     <Icon icon={LifeBuoy} className='h-4 w-4' />
-                    {meta?.safe_mode ? 'Leave safe mode' : 'Safe mode'}
+                    {meta?.safe_mode ? '退出安全模式' : '安全模式'}
                 </LinkButton>
             </div>
         </ListToolbar>
@@ -183,13 +183,13 @@ export default function ThemesContainer() {
 
     return (
         <AdminContentBlock
-            title='Admin · Themes'
-            heading='Themes'
-            description='Choose the theme every visitor sees, try one on yourself first, and adjust its settings.'
+            title='管理 · 主题'
+            heading='主题'
+            description='选择所有访问者看到的主题，可先自行试用再调整其设置。'
         >
             {data?.meta?.safe_mode && (
                 <Alert type='warning' className='mb-4'>
-                    Safe mode is on for your session: you see the classic theme without any extension bundles.
+                    当前会话已启用安全模式：您看到的是不带任何扩展资源的经典主题。
                 </Alert>
             )}
             {data ? (

@@ -110,7 +110,7 @@ describe('server.schedules', () => {
         );
         expect(screen.getByText('active')).toHaveClass('bg-success/90', 'rounded-full');
         expect(screen.getByText('processing')).toHaveAttribute('data-tone', 'neutral');
-        expect(screen.getByRole('link', { name: 'Edit Hourly backup' })).toHaveAttribute(
+        expect(screen.getByRole('link', { name: '编辑 Hourly backup' })).toHaveAttribute(
             'href',
             '/server/a1b2c3d4/schedules/2'
         );
@@ -121,12 +121,12 @@ describe('server.schedules', () => {
             queryClient.setQueryData(serverSchedulesQueryOptions(uuid).queryKey, { object: 'list', data: [] })
         );
 
-        fireEvent.click(screen.getAllByRole('button', { name: 'New schedule' })[0]);
+        fireEvent.click(screen.getAllByRole('button', { name: '新建计划' })[0]);
         const dialog = await screen.findByRole('dialog');
 
-        fireEvent.change(within(dialog).getByLabelText('Schedule name'), { target: { value: 'Nightly' } });
+        fireEvent.change(within(dialog).getByLabelText('计划名称'), { target: { value: 'Nightly' } });
         await act(async () => {
-            fireEvent.click(within(dialog).getByRole('button', { name: 'Create schedule' }));
+            fireEvent.click(within(dialog).getByRole('button', { name: '创建计划' }));
         });
 
         await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
@@ -155,7 +155,7 @@ describe('server.schedules', () => {
             () => {}
         );
 
-        expect(screen.queryByRole('button', { name: 'New schedule' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: '新建计划' })).not.toBeInTheDocument();
         expect(screen.queryByRole('link', { name: /^Edit / })).not.toBeInTheDocument();
     });
 });
@@ -179,8 +179,8 @@ describe('page.server.schedules.detail', () => {
 
         expect(screen.getByRole('heading', { name: /Nightly restart/ })).toHaveTextContent('Active');
         expect(rows.map((row) => within(row).getAllByRole('cell')[0].textContent)).toEqual([
-            'Send Commandsay Restarting soon',
-            'Send Power Actionrestart',
+            '发送命令say Restarting soon',
+            '发送电源操作restart',
         ]);
     });
 
@@ -188,7 +188,7 @@ describe('page.server.schedules.detail', () => {
         await renderInServer(<View name='page.server.schedules.detail' />, seed);
 
         await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: 'Run Now' }));
+            fireEvent.click(screen.getByRole('button', { name: '立即运行' }));
         });
 
         expect(requests).toContainEqual({
@@ -196,16 +196,16 @@ describe('page.server.schedules.detail', () => {
             url: `/api/client/servers/${uuid}/schedules/7/execute`,
             body: undefined,
         });
-        await waitFor(() => expect(screen.getByRole('button', { name: 'Run Now' })).toBeDisabled());
-        expect(screen.getByRole('heading', { name: /Nightly restart/ })).toHaveTextContent('Processing');
+        await waitFor(() => expect(screen.getByRole('button', { name: '立即运行' })).toBeDisabled());
+        expect(screen.getByRole('heading', { name: /Nightly restart/ })).toHaveTextContent('处理中');
     });
 
     it('deletes a task once confirmed', async () => {
         await renderInServer(<View name='page.server.schedules.detail' />, seed);
 
-        fireEvent.click(screen.getByRole('button', { name: 'Delete task 2 (Send Power Action)' }));
+        fireEvent.click(screen.getByRole('button', { name: '删除 任务 2（发送电源操作）' }));
         await act(async () => {
-            fireEvent.click(await screen.findByRole('button', { name: 'Delete Task' }));
+            fireEvent.click(await screen.findByRole('button', { name: /^删除/ }));
         });
 
         expect(requests).toContainEqual({
@@ -219,9 +219,9 @@ describe('page.server.schedules.detail', () => {
     it('returns to the list once the schedule is deleted', async () => {
         await renderInServer(<View name='page.server.schedules.detail' />, seed);
 
-        fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+        fireEvent.click(screen.getByRole('button', { name: '删除' }));
         await act(async () => {
-            fireEvent.click(within(await screen.findByRole('dialog')).getByRole('button', { name: 'Delete' }));
+            fireEvent.click(within(await screen.findByRole('dialog')).getByRole('button', { name: '删除' }));
         });
 
         await waitFor(() => expect(host!.location().pathname).toBe('/server/a1b2c3d4/schedules'));
@@ -260,11 +260,13 @@ describe('the task form', () => {
     });
 
     it('validates the payload, the offset and the backup limit', () => {
-        expect(form.validatePayload('command', '')).toBe('A task payload must be provided.');
+        expect(form.validatePayload('command', '')).toBe('必须提供任务内容。');
         expect(form.validatePayload('backup', '')).toBeUndefined();
-        expect(form.validateTimeOffset(901)).toBe('The time offset must be less than 900 seconds.');
-        expect(form.validateTimeOffset(null)).toBe('A time offset must be provided.');
-        expect(form.validate({ ...form.values(), action: 'backup' })).toContain('backup limit is set to 0');
+        expect(form.validateTimeOffset(901)).toBe('时间偏移必须小于 900 秒。');
+        expect(form.validateTimeOffset(null)).toBe('必须提供时间偏移。');
+        expect(form.validate({ ...form.values(), action: 'backup' })).toContain(
+            '当服务器的备份上限为 0 时无法创建备份任务。'
+        );
         expect(scheduleTaskForm(2).validate({ ...form.values(), action: 'backup' })).toBeNull();
     });
 });

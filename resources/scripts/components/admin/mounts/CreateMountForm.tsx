@@ -37,17 +37,13 @@ export default function CreateMountForm() {
     });
 
     return (
-        <AdminContentBlock
-            title='Admin · Create Mount'
-            heading='Create Mount'
-            description='Create a directory mount that can be attached to servers.'
-        >
+        <AdminContentBlock title='管理 · 创建挂载' heading='创建挂载' description='创建可关联到服务器的目录挂载。'>
             <Link
                 to='/panel/mounts'
                 className='inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4'
             >
                 <Icon icon={ArrowLeft} className='mr-2' />
-                Back to Mounts
+                返回挂载
             </Link>
             <Form form={form}>
                 <div className='space-y-6'>
@@ -57,7 +53,7 @@ export default function CreateMountForm() {
                     </form.AppField>
                     <div className='flex justify-end'>
                         <form.AppForm>
-                            <form.SubmitButton>Create Mount</form.SubmitButton>
+                            <form.SubmitButton>创建挂载</form.SubmitButton>
                         </form.AppForm>
                     </div>
                 </div>

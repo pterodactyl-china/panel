@@ -64,14 +64,14 @@ const EnvironmentVariables = ({ form, egg }: { form: AppForm<Values, TagCheckMet
 
     if (variables.length === 0) {
         return (
-            <TitledGreyBox title='Service Variables'>
+            <TitledGreyBox title='服务变量'>
                 <Empty size='compact'>
                     <EmptyHeader>
                         <EmptyMedia variant='icon'>
                             <Variable />
                         </EmptyMedia>
-                        <EmptyTitle>No variables</EmptyTitle>
-                        <EmptyDescription>This egg doesn&apos;t define any environment variables.</EmptyDescription>
+                        <EmptyTitle>没有变量</EmptyTitle>
+                        <EmptyDescription>此预设未定义任何环境变量。</EmptyDescription>
                     </EmptyHeader>
                 </Empty>
             </TitledGreyBox>
@@ -93,11 +93,11 @@ const EnvironmentVariables = ({ form, egg }: { form: AppForm<Values, TagCheckMet
                     </form.AppField>
                     <div className='mt-3 text-xs text-muted-foreground space-y-1'>
                         <p>
-                            <strong>Startup Variable:</strong> <Code>{attributes.env_variable}</Code>
+                            <strong>启动变量：</strong> <Code>{attributes.env_variable}</Code>
                         </p>
                         {attributes.rules && (
                             <p>
-                                <strong>Input Rules:</strong> <Code className='break-all'>{attributes.rules}</Code>
+                                <strong>输入规则：</strong> <Code className='break-all'>{attributes.rules}</Code>
                             </p>
                         )}
                     </div>
@@ -139,13 +139,12 @@ const EggSelector = ({
 
     return (
         <>
-            <TitledGreyBox title='Service Configuration'>
+            <TitledGreyBox title='服务配置'>
                 <p className='text-xs text-destructive mb-4'>
-                    Changing any of the values below will result in the server being reinstalled. The server will be
-                    stopped and will then proceed.
+                    修改下方任意数值都会导致服务器重装。服务器将先停止，然后继续执行。
                 </p>
                 <div>
-                    <Label htmlFor='eggId'>Egg</Label>
+                    <Label htmlFor='eggId'>预设</Label>
                     <Select
                         id='eggId'
                         value={eggId}
@@ -165,18 +164,15 @@ const EggSelector = ({
                 <div className='mt-6'>
                     <form.AppField name='skipScripts'>
                         {(field) => (
-                            <field.SwitchField
-                                label='Skip Egg Install Script'
-                                description='Skip the egg install script when reinstalling the server.'
-                            />
+                            <field.SwitchField label='跳过预设安装脚本' description='重装服务器时跳过预设安装脚本。' />
                         )}
                     </form.AppField>
                 </div>
             </TitledGreyBox>
-            <TitledGreyBox title='Docker Image Configuration' className='mt-6'>
+            <TitledGreyBox title='Docker 镜像配置' className='mt-6'>
                 {hasPresetImages ? (
                     <>
-                        <Label htmlFor='image'>Image</Label>
+                        <Label htmlFor='image'>镜像</Label>
                         <Select
                             id='image'
                             value={image}
@@ -192,8 +188,8 @@ const EggSelector = ({
                                     <field.TextField
                                         type='text'
                                         id='custom_docker_image'
-                                        label='Custom Docker Image'
-                                        placeholder='Or enter a custom image...'
+                                        label='自定义 Docker 镜像'
+                                        placeholder='或输入自定义镜像...'
                                     />
                                 )}
                             </form.AppField>
@@ -202,18 +198,11 @@ const EggSelector = ({
                 ) : (
                     <form.AppField name='image'>
                         {(field) => (
-                            <field.TextField
-                                type='text'
-                                id='image'
-                                label='Image'
-                                placeholder='Enter a docker image...'
-                            />
+                            <field.TextField type='text' id='image' label='镜像' placeholder='输入 Docker 镜像...' />
                         )}
                     </form.AppField>
                 )}
-                <p className='mt-1 text-xs text-muted-foreground'>
-                    Select an image from the dropdown or enter a custom Docker image.
-                </p>
+                <p className='mt-1 text-xs text-muted-foreground'>从下拉列表中选择镜像，或输入自定义 Docker 镜像。</p>
             </TitledGreyBox>
         </>
     );
@@ -311,27 +300,24 @@ function ServerStartupTabContent({ server }: Props) {
 
     return (
         <Form form={form}>
-            <TitledGreyBox title='Startup Command Modification'>
+            <TitledGreyBox title='启动命令修改'>
                 <form.AppField name='startup'>
                     {(field) => (
                         <field.TextField
                             type='text'
                             id='startup'
-                            label='Startup Command'
-                            description={
-                                'The following variables are available by default: {{SERVER_MEMORY}}, ' +
-                                '{{SERVER_IP}}, and {{SERVER_PORT}}.'
-                            }
+                            label='启动命令'
+                            description='默认可用以下变量：{{SERVER_MEMORY}}、{{SERVER_IP}} 和 {{SERVER_PORT}}。'
                         />
                     )}
                 </form.AppField>
                 <div className='mt-6'>
-                    <Label htmlFor='default_startup'>Default Service Start Command</Label>
+                    <Label htmlFor='default_startup'>默认服务启动命令</Label>
                     <TextInput
                         id='default_startup'
                         type='text'
                         readOnly
-                        value={egg?.attributes.startup || 'Startup not defined'}
+                        value={egg?.attributes.startup || '未定义启动命令'}
                     />
                 </div>
             </TitledGreyBox>
@@ -351,7 +337,7 @@ function ServerStartupTabContent({ server }: Props) {
                 <div className='mt-6'>
                     <TagCheckAlert
                         message={rejection}
-                        action='Change anyway'
+                        action='仍然更改'
                         pending={isSubmitting}
                         onAction={() => void form.handleSubmit({ ignoreTags: true })}
                     />
@@ -359,7 +345,7 @@ function ServerStartupTabContent({ server }: Props) {
             )}
             <div className='flex justify-end mt-6'>
                 <form.AppForm>
-                    <form.SubmitButton>Save Modifications</form.SubmitButton>
+                    <form.SubmitButton>保存修改</form.SubmitButton>
                 </form.AppForm>
             </div>
         </Form>
@@ -370,7 +356,7 @@ export default function ServerStartupTab() {
     const { server } = useServerDetail();
 
     if (server.attributes.container.installed !== 1) {
-        return <ServerError message='Access to this resource is not allowed due to the current installation state.' />;
+        return <ServerError message='由于当前安装状态，不允许访问此资源。' />;
     }
 
     return <ServerStartupTabContent key={server.attributes.id} server={server} />;

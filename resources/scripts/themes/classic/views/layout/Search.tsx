@@ -38,8 +38,8 @@ function Results({ model }: { model: AppSearchModel }) {
                     <EmptyMedia variant='icon'>
                         <SearchX />
                     </EmptyMedia>
-                    <EmptyTitle>No servers found</EmptyTitle>
-                    <EmptyDescription>No servers match your search. Try a different name or address.</EmptyDescription>
+                    <EmptyTitle>未找到服务器</EmptyTitle>
+                    <EmptyDescription>没有服务器匹配您的搜索。请尝试其他名称或地址。</EmptyDescription>
                 </EmptyHeader>
             </Empty>
         );
@@ -77,13 +77,13 @@ export default function Search({ model, className }: ViewProps<'app.search'>) {
     return (
         <>
             {model.open && (
-                <Dialog title='Search servers' open onClose={model.close}>
+                <Dialog title='搜索服务器' open onClose={model.close}>
                     <form noValidate onSubmit={(event) => event.preventDefault()}>
                         <InputSpinner visible={model.loading}>
                             <TextField
                                 field={model.field}
-                                label='Search term'
-                                description='Enter a server name, uuid, or allocation to begin searching.'
+                                label='搜索词'
+                                description='输入服务器名称、UUID 或分配地址开始搜索。'
                                 autoFocus
                             />
                         </InputSpinner>
@@ -94,7 +94,7 @@ export default function Search({ model, className }: ViewProps<'app.search'>) {
             <Tooltip placement='bottom' content='Search'>
                 <button
                     type='button'
-                    aria-label='Search'
+                    aria-label='搜索'
                     aria-keyshortcuts={model.shortcut.aria}
                     className={cn('navigation-link', className)}
                     onClick={model.show}

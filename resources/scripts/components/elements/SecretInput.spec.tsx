@@ -43,7 +43,7 @@ describe('SecretInput', () => {
         expect(clipboard.copy).toHaveBeenCalledTimes(1);
         expect(clipboard.copy).toHaveBeenCalledWith('hunter2');
         expect(container.querySelector('input')).toHaveAttribute('type', 'password');
-        expect(screen.getByRole('status')).toHaveTextContent('Copied text to clipboard.');
+        expect(screen.getByRole('status')).toHaveTextContent('文本已复制到剪贴板。');
     });
 
     it('disables both actions when there is no value', () => {

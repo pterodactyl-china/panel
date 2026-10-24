@@ -31,17 +31,13 @@ export default function CreateNodeForm() {
     });
 
     return (
-        <AdminContentBlock
-            title='Admin · Create Node'
-            heading='Create Node'
-            description='Add a Wings node to your panel.'
-        >
+        <AdminContentBlock title='管理 · 创建节点' heading='创建节点' description='向面板添加 Wings 节点。'>
             <Link
                 to='/panel/nodes'
                 className='inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4'
             >
                 <Icon icon={ArrowLeft} className='mr-2' />
-                Back to Nodes
+                返回节点
             </Link>
             <Form form={form}>
                 <div className='space-y-6'>
@@ -51,7 +47,7 @@ export default function CreateNodeForm() {
                     </form.AppField>
                     <div className='flex justify-end'>
                         <form.AppForm>
-                            <form.SubmitButton>Create Node</form.SubmitButton>
+                            <form.SubmitButton>创建节点</form.SubmitButton>
                         </form.AppForm>
                     </div>
                 </div>

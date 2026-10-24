@@ -12,7 +12,7 @@ export default function NewTaskButton({ form, onSubmit, className }: Props) {
         <Dialog.Trigger
             trigger={({ onClick }) => (
                 <NewButton onClick={onClick} className={className}>
-                    New task
+                    新建任务
                 </NewButton>
             )}
         >

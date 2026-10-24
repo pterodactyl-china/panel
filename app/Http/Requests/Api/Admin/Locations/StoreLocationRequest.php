@@ -35,7 +35,7 @@ class StoreLocationRequest extends AdminApiRequest
     {
         return [
             'short' => 'Location Identifier',
-            'long' => 'Location Description',
+            'long' => '地域描述',
         ];
     }
 

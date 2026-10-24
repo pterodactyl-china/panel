@@ -58,7 +58,7 @@ const validateSlug = (value: string): string | undefined => {
     }
 
     if (/^\d+$/.test(value.trim())) {
-        return 'A slug cannot contain only numbers.';
+        return '标识不能仅由数字组成。';
     }
 
     return undefined;
@@ -77,7 +77,7 @@ const validateColor = (value: string): string | undefined => {
 
     return color.startsWith('#') && hasValidLength && isHexadecimal
         ? undefined
-        : 'Use a hexadecimal color with 3, 4, 6, or 8 digits.';
+        : '请使用 3、4、6 或 8 位十六进制颜色。';
 };
 
 export default function TagFormDialog({ open, onClose, tag }: Props) {
@@ -104,7 +104,7 @@ export default function TagFormDialog({ open, onClose, tag }: Props) {
     return (
         <Dialog
             open={open}
-            title={tag ? 'Update tag' : 'Create tag'}
+            title={tag ? '更新标签' : '创建标签'}
             preventExternalClose={isSubmitting}
             hideCloseIcon={isSubmitting}
             onClose={onClose}
@@ -119,8 +119,8 @@ export default function TagFormDialog({ open, onClose, tag }: Props) {
                         {(field) => (
                             <field.TextField
                                 type='text'
-                                label='Name'
-                                description='The readable label shown throughout the panel.'
+                                label='名称'
+                                description='在整个面板中显示的易读标签。'
                                 autoComplete='off'
                             />
                         )}
@@ -129,8 +129,8 @@ export default function TagFormDialog({ open, onClose, tag }: Props) {
                         {(field) => (
                             <field.TextField
                                 type='text'
-                                label='Slug'
-                                description='A stable identifier used by deployments and API integrations.'
+                                label='标识'
+                                description='供部署与 API 集成使用的稳定标识。'
                                 autoComplete='off'
                                 spellCheck={false}
                             />
@@ -140,9 +140,9 @@ export default function TagFormDialog({ open, onClose, tag }: Props) {
                         {(field) => (
                             <field.TextField
                                 type='text'
-                                label='Color'
-                                description='Optional hexadecimal color used for the tag indicator.'
-                                placeholder='Hex color'
+                                label='颜色'
+                                description='用于标签指示器的可选十六进制颜色。'
+                                placeholder='十六进制颜色'
                                 autoComplete='off'
                                 spellCheck={false}
                             />
@@ -151,10 +151,10 @@ export default function TagFormDialog({ open, onClose, tag }: Props) {
                 </div>
                 <div className='mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end'>
                     <Button.Text type='button' isSecondary onClick={onClose}>
-                        Cancel
+                        取消
                     </Button.Text>
                     <form.AppForm>
-                        <form.SubmitButton>{tag ? 'Save changes' : 'Create tag'}</form.SubmitButton>
+                        <form.SubmitButton>{tag ? '保存更改' : '创建标签'}</form.SubmitButton>
                     </form.AppForm>
                 </div>
             </Form>

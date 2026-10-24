@@ -15,7 +15,7 @@ test('puts the links in a sidebar beside the page', () => {
     const nav = screen.getByRole('navigation', { name: 'Main' });
 
     expect(nav.closest('aside')).not.toBeNull();
-    expect(nav.textContent).toContain('Admin');
+    expect(nav.textContent).toContain('管理');
     expect(rendered.container.querySelector('main#main')).not.toBeNull();
 });
 
@@ -63,13 +63,13 @@ test('draws the account and admin navigation with their slots', () => {
     });
     const account = screen.getByRole('navigation', { name: 'Account' }).textContent;
 
-    expect(account).toContain('SSH Keys');
+    expect(account).toContain('SSH 密钥');
     expect(account).toContain('probe');
 
     rendered = renderView('layout.app', { themes, fixture: 'adminArea', slots: { 'panel.navigation.after': probe } });
     const admin = screen.getByRole('navigation', { name: 'Administration' }).textContent;
 
-    expect(admin).toContain('Themes');
+    expect(admin).toContain('主题');
     expect(admin).toContain('probe');
 });
 

@@ -32,7 +32,7 @@ class AccountController extends ClientApiController
             [
                 'code' => 'InvalidPasswordProvidedException',
                 'status' => '400',
-                'detail' => 'The password provided was invalid for this account.',
+                'detail' => '此账户的密码无效。',
             ],
         ],
     ];

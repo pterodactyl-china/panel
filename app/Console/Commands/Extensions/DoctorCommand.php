@@ -16,8 +16,8 @@ use Pterodactyl\Services\Extensions\ExtensionManifestValidator;
 use Pterodactyl\Services\Extensions\ExtensionRepository;
 use Pterodactyl\Services\Themes\ThemeRepository;
 
-#[Description('Check an extension or theme manifest, compatibility, and built frontend before installation.')]
-#[Signature('p:extension:doctor {path : Path to an unpacked extension package.}')]
+#[Description('安装前检查扩展或主题的清单、兼容性与已构建的前端。')]
+#[Signature('p:extension:doctor {path : 已解压扩展包的路径。}')]
 class DoctorCommand extends Command
 {
     public function handle(ExtensionManifestValidator $validator, ExtensionCompatibility $compatibility, ExtensionRepository $extensions, ExtensionAssetPublisher $assets, ExtensionIconCatalog $icons, ExtensionComposerInspector $composer, ThemeRepository $themes): int
@@ -28,7 +28,7 @@ class DoctorCommand extends Command
             $compatibility->assertMigrationsAreUnique($manifest, $extensions->discovered());
             throw_if($reason = $assets->unusableBuildReason($manifest), InvalidExtensionException::class, $reason);
             foreach ($manifest->autoload as $directory) {
-                throw_unless(is_dir($manifest->path($directory)), InvalidExtensionException::class, "Autoload directory \"{$directory}\" is missing.");
+                throw_unless(is_dir($manifest->path($directory)), InvalidExtensionException::class, "自动加载目录「{$directory}」不存在。");
             }
 
             if ($manifest->isTheme()) {
@@ -41,18 +41,18 @@ class DoctorCommand extends Command
         }
 
         foreach ($icons->unknownIcons($manifest) as $icon) {
-            $this->components->warn("Icon \"{$icon}\" is not a lucide icon this panel ships; the default icon is shown instead.");
+            $this->components->warn("图标「{$icon}」不是本面板内置的 lucide 图标，将改用默认图标。");
         }
 
         if (($problem = $assets->iconProblem($manifest)) !== null) {
-            $this->components->warn($problem.' The extension list shows its initials instead.');
+            $this->components->warn($problem.' 扩展列表将改为显示其首字母。');
         }
 
         foreach ($composer->warnings($manifest) as $warning) {
             $this->components->warn($warning);
         }
 
-        $this->components->info("{$manifest->id} v{$manifest->version}: manifest, compatibility, autoload directories, and build passed.");
+        $this->components->info("{$manifest->id} v{$manifest->version}：清单、兼容性、自动加载目录与构建均已通过。");
 
         return self::SUCCESS;
     }

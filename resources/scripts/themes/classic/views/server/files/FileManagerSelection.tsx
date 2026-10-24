@@ -15,7 +15,7 @@ function MassActions({ model, className }: { model: FileManagerModel; className?
                     {selection.length > 0 && (
                         <div className='flex items-center space-x-4 pointer-events-auto rounded-sm p-4 bg-background/50'>
                             <Slot name='server.files.selectionActions' data={model.slot} />
-                            <Dialog.Trigger trigger={({ onClick }) => <Button onClick={onClick}>Move</Button>}>
+                            <Dialog.Trigger trigger={({ onClick }) => <Button onClick={onClick}>移动</Button>}>
                                 {({ open, onClose }) =>
                                     open && (
                                         <RenameDialog
@@ -28,13 +28,13 @@ function MassActions({ model, className }: { model: FileManagerModel; className?
                                     )
                                 }
                             </Dialog.Trigger>
-                            <Button onClick={() => run(actions.archive(selection))}>Archive</Button>
+                            <Button onClick={() => run(actions.archive(selection))}>压缩</Button>
                             <Dialog.ConfirmTrigger
-                                title='Delete Files'
-                                confirm='Delete'
+                                title='删除文件'
+                                confirm='删除'
                                 trigger={({ onClick }) => (
                                     <Button.Danger isSecondary onClick={onClick}>
-                                        Delete
+                                        删除
                                     </Button.Danger>
                                 )}
                                 onConfirmed={(_event, close) => {
@@ -43,7 +43,7 @@ function MassActions({ model, className }: { model: FileManagerModel; className?
                                 }}
                             >
                                 <p className='mb-2'>
-                                    Are you sure you want to delete&nbsp;
+                                    确定要删除&nbsp;
                                     <span className='font-semibold text-foreground'>{selection.length} files</span>?
                                     This is a permanent action and the files cannot be recovered.
                                 </p>
@@ -51,7 +51,7 @@ function MassActions({ model, className }: { model: FileManagerModel; className?
                                     {selection.slice(0, 15).map((file) => (
                                         <li key={file}>{file}</li>
                                     ))}
-                                    {selection.length > 15 && <li>and {selection.length - 15} others</li>}
+                                    {selection.length > 15 && <li>以及其他 {selection.length - 15} 个</li>}
                                 </ul>
                             </Dialog.ConfirmTrigger>
                         </div>

@@ -75,7 +75,7 @@ function VariableBox({ model, variable }: { model: StartupVariablesModel; variab
         <TitledGreyBox
             title={
                 <p className='text-sm uppercase'>
-                    {!variable.editable && <Badge className='bg-card rounded-full mr-2 mb-1'>Read Only</Badge>}
+                    {!variable.editable && <Badge className='bg-card rounded-full mr-2 mb-1'>只读</Badge>}
                     {variable.name}
                 </p>
             }
@@ -89,17 +89,15 @@ function VariableBox({ model, variable }: { model: StartupVariablesModel; variab
 export default function StartupVariables({ model, className }: ViewProps<'server.startup.variables'>) {
     return (
         <div className={className}>
-            <h3 className='mt-8 mb-2 text-2xl'>Variables</h3>
+            <h3 className='mt-8 mb-2 text-2xl'>变量</h3>
             {model.variables.length === 0 ? (
                 <Empty size='compact' className='border'>
                     <EmptyHeader>
                         <EmptyMedia variant='icon'>
                             <Variable />
                         </EmptyMedia>
-                        <EmptyTitle>No variables</EmptyTitle>
-                        <EmptyDescription>
-                            This server doesn&apos;t have any startup variables to configure.
-                        </EmptyDescription>
+                        <EmptyTitle>没有变量</EmptyTitle>
+                        <EmptyDescription>此服务器没有可配置的启动变量。</EmptyDescription>
                     </EmptyHeader>
                 </Empty>
             ) : (

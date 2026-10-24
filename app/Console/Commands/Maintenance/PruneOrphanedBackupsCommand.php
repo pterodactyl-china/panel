@@ -11,7 +11,7 @@ use Illuminate\Console\Command;
 use InvalidArgumentException;
 use Pterodactyl\Models\Backup;
 
-#[Description('Marks all backups older than "n" minutes that have not yet completed as being failed.')]
+#[Description('将所有超过 n 分钟仍未完成的备份标记为失败。')]
 #[Signature('p:maintenance:prune-backups {--prune-age=}')]
 class PruneOrphanedBackupsCommand extends Command
 {
@@ -19,7 +19,7 @@ class PruneOrphanedBackupsCommand extends Command
     {
         $since = $this->option('prune-age') ?? config('backups.prune_age', 360);
         $minutes = filter_var($since, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
-        throw_if($minutes === false, InvalidArgumentException::class, 'The "--prune-age" argument must be a value greater than 0.');
+        throw_if($minutes === false, InvalidArgumentException::class, '「--prune-age」参数必须为大于 0 的值。');
 
         $query = Backup::query()
             ->whereNull('completed_at')
@@ -27,12 +27,12 @@ class PruneOrphanedBackupsCommand extends Command
 
         $count = $query->count();
         if (! $count) {
-            $this->info('There are no orphaned backups to be marked as failed.');
+            $this->info('没有需要标记为失败的孤立备份。');
 
             return;
         }
 
-        $this->warn("Marking $count uncompleted backups that are older than $minutes minutes as failed.");
+        $this->warn("正在将 $count 个超过 $minutes 分钟未完成的备份标记为失败。");
 
         $query->update([
             'is_successful' => false,

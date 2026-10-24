@@ -84,7 +84,7 @@ function ColorControl({ field, value, onChange }: ControlProps) {
                 aria-label={field.label}
                 value={color}
                 spellCheck={false}
-                placeholder='Hex or oklch() colour'
+                placeholder='十六进制或 oklch() 颜色'
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChange(event.currentTarget.value)}
             />
         </div>
@@ -187,18 +187,18 @@ function ListControl({ field, value, onChange }: ControlProps) {
                         }
                     />
                     <RowButton
-                        label={`Move item ${index + 1} up`}
+                        label={`上移第 ${index + 1} 项`}
                         icon={ArrowUp}
                         disabled={index === 0}
                         onClick={() => move(index, -1)}
                     />
                     <RowButton
-                        label={`Move item ${index + 1} down`}
+                        label={`下移第 ${index + 1} 项`}
                         icon={ArrowDown}
                         disabled={index === items.length - 1}
                         onClick={() => move(index, 1)}
                     />
-                    <RowButton label={`Remove item ${index + 1}`} icon={X} onClick={() => remove(index)} />
+                    <RowButton label={`移除第 ${index + 1} 项`} icon={X} onClick={() => remove(index)} />
                 </div>
             ))}
             <Button
@@ -210,7 +210,7 @@ function ListControl({ field, value, onChange }: ControlProps) {
             >
                 <span className='inline-flex items-center gap-1.5'>
                     <Icon icon={Plus} />
-                    Add item
+                    添加项目
                 </span>
             </Button>
             {maxItems !== undefined && (
@@ -259,7 +259,7 @@ function FileControl({ field, file }: { field: AdminExtensionSettingField; file?
                             disabled={!file || file.pending}
                             onClick={() => file?.onClear()}
                         >
-                            Remove
+                            移除
                         </Button>
                     )}
                 </div>
@@ -317,9 +317,7 @@ function Control({ field, value, onChange, file }: ControlProps & { file?: Setti
                 <TextInput
                     type='password'
                     value={asText(value)}
-                    placeholder={
-                        field.value ? `Stored: ${String(field.value)} - enter a new value to replace it` : undefined
-                    }
+                    placeholder={field.value ? `已保存：${String(field.value)} - 输入新值以替换` : undefined}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChange(event.currentTarget.value)}
                 />
             );
@@ -363,9 +361,9 @@ export default function SettingField({
                 {field.visibility === 'public' && (
                     <span
                         className='rounded-sm bg-accent/10 px-1.5 py-0.5 text-xs font-medium text-accent'
-                        title='This value is sent to every visitor, including those who are not signed in.'
+                        title='此值会发送给每位访问者，包括未登录用户。'
                     >
-                        Visible to guests
+                        对访客可见
                     </span>
                 )}
             </Label>

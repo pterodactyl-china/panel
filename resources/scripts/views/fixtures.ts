@@ -27,7 +27,7 @@ export function createTestServer(options: TestServerOptions = {}): Server {
             server_identifier: identifier,
             internal_id: 1,
             server_owner: owner,
-            name: options.name ?? 'Test server',
+            name: options.name ?? '测试服务器',
             node: 'Test node',
             is_node_under_maintenance: false,
             sftp_details: { ip: '127.0.0.1', port: 2022 },
@@ -55,7 +55,7 @@ export function createTestServerCard(options: Partial<ServerCardModel> = {}): Se
     return {
         identifier: 'test-server',
         uuid: '11111111-1111-4111-8111-111111111111',
-        name: 'Test server',
+        name: '测试服务器',
         description: null,
         address: '127.0.0.1:25565',
         state: {

@@ -56,11 +56,9 @@ class ErrorBoundary extends React.Component<Props, State> {
             <div className='flex items-center justify-center w-full my-4'>
                 <div role='alert' className='flex items-center bg-muted rounded-sm p-3 text-destructive'>
                     <Icon icon={TriangleAlert} className='h-4 w-auto mr-2' />
-                    <p className='text-sm text-foreground'>
-                        An error was encountered by the application while rendering this view. Try refreshing the page.
-                    </p>
+                    <p className='text-sm text-foreground'>渲染此视图时应用发生错误。请尝试刷新页面。</p>
                     <button type='button' className={retryButtonClass} onClick={this.retry}>
-                        Retry
+                        重试
                     </button>
                 </div>
             </div>

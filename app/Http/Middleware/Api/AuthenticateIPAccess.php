@@ -46,12 +46,12 @@ class AuthenticateIPAccess
         }
 
         $requestIp = $request->ip();
-        throw_if($requestIp === null, AccessDeniedHttpException::class, 'The request did not contain a valid IP address.');
+        throw_if($requestIp === null, AccessDeniedHttpException::class, '请求中不包含有效的 IP 地址。');
 
         try {
             $find = new IP($requestIp);
         } catch (IpException) {
-            throw new AccessDeniedHttpException('The request did not contain a valid IP address.');
+            throw new AccessDeniedHttpException('请求中不包含有效的 IP 地址。');
         }
 
         foreach ($token->allowed_ips as $ip) {

@@ -61,6 +61,6 @@ class DaemonAuthenticate
             }
         }
 
-        throw new AccessDeniedHttpException('You are not authorized to access this resource.');
+        throw new AccessDeniedHttpException('您无权访问此资源。');
     }
 }

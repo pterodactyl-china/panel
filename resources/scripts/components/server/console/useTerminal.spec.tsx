@@ -123,7 +123,7 @@ function Harness() {
     return (
         <div ref={ref} data-ready={terminalReady} data-error={terminalError?.message ?? ''}>
             <button type='button' onClick={retry}>
-                Retry
+                重试
             </button>
         </div>
     );
@@ -381,10 +381,7 @@ describe('useTerminal', () => {
         const { container, getByRole } = render(<Harness />);
 
         await waitFor(() =>
-            expect(container.firstElementChild).toHaveAttribute(
-                'data-error',
-                'Terminal font tokens could not be resolved.'
-            )
+            expect(container.firstElementChild).toHaveAttribute('data-error', '无法解析终端字体变量。')
         );
 
         fontSize = '12px';

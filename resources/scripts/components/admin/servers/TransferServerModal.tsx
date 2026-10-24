@@ -82,13 +82,13 @@ export default function TransferServerModal({ server, open, onClose }: Props) {
         onSubmitMeta: { ignoreTags: false },
         onSubmit: async ({ value, meta }) => {
             if (!nodeId) {
-                toast.error('A target node must be selected.');
+                toast.error('必须选择目标节点。');
 
                 return;
             }
 
             if (!value.allocationId) {
-                toast.error('A default allocation must be selected.');
+                toast.error('必须选择默认分配。');
 
                 return;
             }
@@ -125,18 +125,18 @@ export default function TransferServerModal({ server, open, onClose }: Props) {
     return (
         <Dialog
             open={open}
-            title='Transfer server'
+            title='转移服务器'
             preventExternalClose={isSubmitting}
             hideCloseIcon={isSubmitting}
             onClose={onClose}
         >
             <SpinnerOverlay visible={isSubmitting} />
             <Form form={form} className='m-0'>
-                <Label htmlFor='nodeId'>Node</Label>
+                <Label htmlFor='nodeId'>节点</Label>
                 <Select
                     id='nodeId'
                     value={nodeId}
-                    placeholder='Select a target node...'
+                    placeholder='选择目标节点...'
                     groups={transferNodeGroups(groups, attributes.node, acceptsEgg)}
                     onChange={(value) => {
                         setNodeId(Number(value));
@@ -145,18 +145,15 @@ export default function TransferServerModal({ server, open, onClose }: Props) {
                         form.setFieldValue('allocationAdditional', []);
                     }}
                 />
-                <p className='mt-1 text-xs text-muted-foreground'>The node this server will be transferred to.</p>
+                <p className='mt-1 text-xs text-muted-foreground'>此服务器将转移到的节点。</p>
                 <div className='mt-6'>
                     <form.AppField name='allocationId'>
                         {(field) => (
                             <field.SelectField
                                 id='allocationId'
-                                label='Default Allocation'
-                                description='The main allocation that will be assigned to this server.'
-                                options={[
-                                    { value: 0, label: 'Select an allocation...', disabled: true },
-                                    ...allocationOptions,
-                                ]}
+                                label='默认分配'
+                                description='将分配给此服务器的主分配。'
+                                options={[{ value: 0, label: '选择分配...', disabled: true }, ...allocationOptions]}
                                 onChange={(value) =>
                                     form.setFieldValue('allocationAdditional', (current) =>
                                         current.filter((id) => id !== Number(value))
@@ -171,8 +168,8 @@ export default function TransferServerModal({ server, open, onClose }: Props) {
                         {(field) => (
                             <field.MultiSelectField
                                 id='allocationAdditional'
-                                label='Additional Allocation(s)'
-                                description='Additional allocations to assign to this server.'
+                                label='额外分配'
+                                description='要额外分配给此服务器的分配。'
                                 options={additionalOptions}
                             />
                         )}
@@ -182,7 +179,7 @@ export default function TransferServerModal({ server, open, onClose }: Props) {
                     <div className='mt-6'>
                         <TagCheckAlert
                             message={rejection}
-                            action='Transfer anyway'
+                            action='仍然转移'
                             pending={isSubmitting}
                             onAction={() => void form.handleSubmit({ ignoreTags: true })}
                         />
@@ -190,7 +187,7 @@ export default function TransferServerModal({ server, open, onClose }: Props) {
                 )}
                 <div className='flex flex-wrap justify-end mt-6'>
                     <Button type='button' isSecondary className='w-full sm:w-auto sm:mr-2' onClick={onClose}>
-                        Cancel
+                        取消
                     </Button>
                     <Button
                         className='w-full mt-4 sm:w-auto sm:mt-0'
@@ -198,7 +195,7 @@ export default function TransferServerModal({ server, open, onClose }: Props) {
                         disabled={isSubmitting}
                         onClick={() => form.handleSubmit()}
                     >
-                        Confirm Transfer
+                        确认转移
                     </Button>
                 </div>
             </Form>

@@ -35,7 +35,7 @@ class SubuserController extends ClientApiController
             [
                 'code' => 'ServerSubuserExistsException',
                 'status' => '400',
-                'detail' => 'A user with that email address is already assigned as a subuser for this server.',
+                'detail' => '该邮箱地址对应的用户已是此服务器的子用户。',
             ],
         ],
     ];

@@ -78,8 +78,7 @@ function useApiKeyCreateModel(): ApiKeyCreateModel {
         form,
         name: 'description',
         validators: {
-            onChange: ({ value }) =>
-                value.length >= 4 ? undefined : 'A description of at least 4 characters must be provided.',
+            onChange: ({ value }) => (value.length >= 4 ? undefined : '必须提供至少 4 个字符的描述。'),
         },
     });
     const allowedIps = useField({ form, name: 'allowedIps' });
@@ -126,12 +125,12 @@ function useSshKeyCreateModel(): SshKeyCreateModel {
     const name = useField({
         form,
         name: 'name',
-        validators: { onChange: ({ value }) => (value.length >= 1 ? undefined : 'A key name must be provided.') },
+        validators: { onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供密钥名称。') },
     });
     const publicKey = useField({
         form,
         name: 'publicKey',
-        validators: { onChange: ({ value }) => (value.length >= 1 ? undefined : 'A public key must be provided.') },
+        validators: { onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供公钥。') },
     });
     const canSubmit = useStore(form.store, (state) => state.canSubmit);
     const submitting = useStore(form.store, (state) => state.isSubmitting);
@@ -147,7 +146,7 @@ function useSshKeyCreateModel(): SshKeyCreateModel {
 const apiKeys: readonly ApiKeyItem[] = [
     {
         identifier: 'ptlc_7hX2kQ9vLm',
-        description: 'Deploy script',
+        description: '部署脚本',
         allowedIps: ['203.0.113.10'],
         lastUsedAt: '2026-10-11T18:24:00Z',
         createdAt: '2026-03-02T09:15:00Z',
@@ -163,7 +162,7 @@ const apiKeys: readonly ApiKeyItem[] = [
 
 const sshKeys: readonly SshKeyItem[] = [
     { name: 'Laptop', fingerprint: 'W1kFq9n8Zt2c6Vb0RkM5yXo3sLe7uPj4hAdGiQ', createdAt: '2026-02-14T10:05:00Z' },
-    { name: 'Build server', fingerprint: 'k3Nf8Qz2Lx7Wc1Vy5Rb9Tm4Hs6Ju0Pe2Ga8DiO', createdAt: '2026-09-30T16:42:00Z' },
+    { name: '构建服务器', fingerprint: 'k3Nf8Qz2Lx7Wc1Vy5Rb9Tm4Hs6Ju0Pe2Ga8DiO', createdAt: '2026-09-30T16:42:00Z' },
 ];
 
 const apiKeyListFixture = (overrides: Partial<ApiKeyListModel> = {}): ApiKeyListModel => ({
@@ -223,7 +222,7 @@ implementViews({
                             'description',
                             { type: 'text' },
                             'ci',
-                            'A description of at least 4 characters must be provided.'
+                            '必须提供至少 4 个字符的描述。'
                         ),
                     },
                     canSubmit: false,

@@ -10,8 +10,8 @@ use Illuminate\Console\Command;
 use Pterodactyl\Contracts\Extensions\SetsExtensionEnabled;
 use Pterodactyl\Exceptions\Extensions\InvalidExtensionException;
 
-#[Description('Disable an extension without removing its files or data.')]
-#[Signature('p:extension:disable {id : The extension identifier.}')]
+#[Description('禁用扩展，但不删除其文件或数据。')]
+#[Signature('p:extension:disable {id : 扩展标识符。}')]
 class DisableCommand extends Command
 {
     public function handle(SetsExtensionEnabled $installer): int

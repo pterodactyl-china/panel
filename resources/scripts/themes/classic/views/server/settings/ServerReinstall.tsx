@@ -7,19 +7,15 @@ export default function ServerReinstall({ model, className }: ViewProps<'server.
     }
 
     return (
-        <Card title='Reinstall Server' className={cn('relative', className)}>
+        <Card title='重装服务器' className={cn('relative', className)}>
             <p className='text-sm'>
-                Reinstalling your server will stop it, and then re-run the installation script that initially set it
-                up.&nbsp;
-                <strong className='font-medium'>
-                    Some files may be deleted or modified during this process, please back up your data before
-                    continuing.
-                </strong>
+                重装服务器将停止服务器，然后重新运行最初用于安装的脚本。&nbsp;
+                <strong className='font-medium'>此过程中可能会删除或修改部分文件，请在继续前备份您的数据。</strong>
             </p>
             {model.unavailable && <p className='mt-3 text-sm text-muted-foreground'>{model.unavailable}</p>}
             <Dialog.ConfirmTrigger
-                title='Confirm server reinstallation'
-                confirm='Yes, reinstall server'
+                title='确认重装服务器'
+                confirm='是，重装服务器'
                 onConfirmed={async (_event, close) => {
                     if (await model.reinstall()) {
                         close();
@@ -28,13 +24,12 @@ export default function ServerReinstall({ model, className }: ViewProps<'server.
                 trigger={({ onClick }) => (
                     <div className='mt-6 text-right'>
                         <Button.Danger isSecondary disabled={model.unavailable !== null} onClick={onClick}>
-                            Reinstall Server
+                            重装服务器
                         </Button.Danger>
                     </div>
                 )}
             >
-                Your server will be stopped and some files may be deleted or modified during this process, are you sure
-                you wish to continue?
+                服务器将被停止，且此过程中可能会删除或修改部分文件。确定要继续吗？
             </Dialog.ConfirmTrigger>
         </Card>
     );

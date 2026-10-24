@@ -38,7 +38,7 @@ test('invalid power signal results in error', function () {
     $response = $this->actingAs($user)->postJson("/api/client/servers/{$server->uuid}/power", ['signal' => 'invalid']);
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     $response->assertJsonPath('errors.0.meta.rule', 'in');
-    $response->assertJsonPath('errors.0.detail', 'The selected signal is invalid.');
+    $response->assertJsonPath('errors.0.detail', '已选的属性 signal 无效。');
 });
 test('action can be sent to server', function (string $action, string $permission) {
     $fake = new FakeDaemonPower;

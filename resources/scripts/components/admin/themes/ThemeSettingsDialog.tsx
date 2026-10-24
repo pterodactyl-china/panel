@@ -144,7 +144,7 @@ export default function ThemeSettingsDialog({
                     disabled={update.isPending}
                     onClick={cancel}
                 >
-                    Cancel
+                    取消
                 </Button>
                 <Button
                     type='button'
@@ -153,7 +153,7 @@ export default function ThemeSettingsDialog({
                     isLoading={update.isPending}
                     onClick={() => void save()}
                 >
-                    Save Settings
+                    保存设置
                 </Button>
             </div>
         </Dialog>

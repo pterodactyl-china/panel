@@ -122,11 +122,7 @@ function PermissionGroup({
                 <div className='flex items-center'>
                     <p className='text-sm uppercase flex-1'>{group.name}</p>
                     {model.canEdit && editable.length > 0 && (
-                        <SelectAll
-                            permissions={editable}
-                            selection={selection}
-                            label={`Select all ${group.name} permissions`}
-                        />
+                        <SelectAll permissions={editable} selection={selection} label={`全选 ${group.name} 权限`} />
                     )}
                 </div>
             }
@@ -147,7 +143,7 @@ function PermissionGroup({
 function SubmitButton({ form, model }: { form: SubuserAppForm; model: SubuserFormModel }) {
     return (
         <form.AppForm>
-            <form.SubmitButton className='w-full sm:w-auto'>{model.subuser ? 'Save' : 'Invite User'}</form.SubmitButton>
+            <form.SubmitButton className='w-full sm:w-auto'>{model.subuser ? '保存' : '邀请用户'}</form.SubmitButton>
         </form.AppForm>
     );
 }
@@ -179,7 +175,7 @@ function FormContent({
                 };
                 const title = model.subuser
                     ? `${model.canEdit ? 'Modify' : 'View'} permissions for ${model.subuser.email}`
-                    : 'Create new subuser';
+                    : '创建新子用户';
 
                 return (
                     <Form form={form}>
@@ -193,8 +189,7 @@ function FormContent({
                         {model.restricted && (
                             <div className='mt-4 pl-4 py-2 border-l-4 border-accent'>
                                 <p className='text-sm text-muted-foreground'>
-                                    Only permissions which your account is currently assigned may be selected when
-                                    creating or modifying other users.
+                                    创建或修改其他用户时，只能选择您账户当前已被授予的权限。
                                 </p>
                             </div>
                         )}
@@ -206,8 +201,8 @@ function FormContent({
                                 >
                                     {(field) => (
                                         <field.TextField
-                                            label='User Email'
-                                            description='Enter the email address of the user you wish to invite as a subuser for this server.'
+                                            label='用户邮箱'
+                                            description='输入您想邀请为此服务器子用户的电子邮箱地址。'
                                         />
                                     )}
                                 </form.AppField>
@@ -221,13 +216,13 @@ function FormContent({
                             className='mt-6'
                             title={
                                 <div className='flex items-center justify-between'>
-                                    <span className='text-sm uppercase'>All Permissions</span>
+                                    <span className='text-sm uppercase'>所有权限</span>
                                     {model.editable.length > 0 && (
                                         <div className='flex items-center gap-2 text-sm'>
                                             <SelectAll
                                                 permissions={model.editable}
                                                 selection={selection}
-                                                label='Select all permissions'
+                                                label='全选权限'
                                                 disabled={!selection.enabled}
                                             />
                                         </div>
@@ -236,8 +231,7 @@ function FormContent({
                             }
                         >
                             <p className='m-0 text-sm text-muted-foreground'>
-                                Only select this if <strong>you entirely trust the user you are inviting</strong> with
-                                all available permissions!
+                                仅在您完全信任该用户并愿意授予其所有可用权限时才选择此项。
                             </p>
                         </Card>
                         <div className='my-6'>

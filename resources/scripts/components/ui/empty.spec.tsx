@@ -14,7 +14,7 @@ describe('Empty', () => {
                     <EmptyMedia variant='icon'>
                         <svg />
                     </EmptyMedia>
-                    <EmptyTitle>No databases</EmptyTitle>
+                    <EmptyTitle>没有数据库</EmptyTitle>
                     <EmptyDescription>
                         Create one from <a href='/'>the panel</a>.
                     </EmptyDescription>
@@ -34,7 +34,7 @@ describe('Empty', () => {
         expect(
             [...container.querySelectorAll('[data-ui="empty"]')].map((element) => element.getAttribute('data-part'))
         ).toEqual(['root', 'header', 'media', 'title', 'description', 'content']);
-        expect(screen.getByText('No databases')).toHaveAttribute('data-part', 'title');
+        expect(screen.getByText('没有数据库')).toHaveAttribute('data-part', 'title');
         expect(screen.getByRole('link', { name: 'the panel' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Create database' })).toBeInTheDocument();
     });

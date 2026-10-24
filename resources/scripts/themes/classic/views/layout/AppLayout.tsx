@@ -38,7 +38,7 @@ function SchemeMenu({
             triggerContent={
                 <>
                     <Icon icon={model.scheme === 'light' ? Sun : Moon} aria-hidden />
-                    <span className='sr-only'>Color scheme</span>
+                    <span className='sr-only'>配色方案</span>
                 </>
             }
         >
@@ -48,7 +48,7 @@ function SchemeMenu({
                 </DropdownMenu.Item>
             ))}
             <DropdownMenu.Item checked={model.preference === 'system'} onClick={() => setScheme('system')}>
-                System
+                系统
             </DropdownMenu.Item>
         </DropdownMenu>
     );
@@ -87,8 +87,8 @@ function NavigationBar({ model }: { model: AppLayoutModel }) {
                         </Tooltip>
                     ))}
                     {model.setScheme && <SchemeMenu model={model} setScheme={model.setScheme} />}
-                    <Tooltip placement='bottom' content='Sign Out'>
-                        <button type='button' aria-label='Sign Out' onClick={model.signOut} className={navItemClass}>
+                    <Tooltip placement='bottom' content='退出登录'>
+                        <button type='button' aria-label='退出登录' onClick={model.signOut} className={navItemClass}>
                             <Icon icon={LogOut} />
                         </button>
                     </Tooltip>

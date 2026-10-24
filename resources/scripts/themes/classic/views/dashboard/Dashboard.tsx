@@ -5,7 +5,7 @@ import PageStatus from '../shared/PageStatus';
 export default function Dashboard({ model, className }: ViewProps<'page.dashboard'>) {
     return (
         <PageStatus model={model} className={className}>
-            <PageContentBlock title='Dashboard' className={className}>
+            <PageContentBlock title='仪表盘' className={className}>
                 <View name='dashboard.serverList' />
             </PageContentBlock>
         </PageStatus>

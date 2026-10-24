@@ -17,11 +17,9 @@ export default function FileManagerList({ model, className }: ViewProps<'server.
                     <EmptyMedia variant='icon'>
                         <FolderOpen />
                     </EmptyMedia>
-                    <EmptyTitle>This folder is empty</EmptyTitle>
+                    <EmptyTitle>此文件夹为空</EmptyTitle>
                     <EmptyDescription>
-                        {model.permissions.create
-                            ? 'Upload files or create a new file or folder to get started.'
-                            : 'There are no files in this folder.'}
+                        {model.permissions.create ? '上传文件，或新建文件/文件夹以开始。' : '此文件夹中没有文件。'}
                     </EmptyDescription>
                 </EmptyHeader>
             </Empty>
@@ -35,7 +33,7 @@ export default function FileManagerList({ model, className }: ViewProps<'server.
             {model.truncated && (
                 <div className='rounded-sm bg-warning mb-px p-3'>
                     <p className='text-warning-foreground text-sm text-center'>
-                        This directory is too large to display in the browser, limiting output to first 250 files.
+                        此目录过大，无法在浏览器中完整显示，仅展示前 250 个文件。
                     </p>
                 </div>
             )}

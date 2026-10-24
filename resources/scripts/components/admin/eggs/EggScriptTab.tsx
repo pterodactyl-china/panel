@@ -64,14 +64,13 @@ function EggScriptForm({ egg }: Props) {
 
     return (
         <Form form={form}>
-            <TitledGreyBox title='Install Script'>
+            <TitledGreyBox title='安装脚本'>
                 {Number(copyScriptFrom) > 0 && (
                     <p className='text-xs text-warning mb-4'>
-                        This egg is copying its install script
+                        此预设正在复制安装脚本，来源
                         {copiedFromEgg ? (
                             <>
                                 {' '}
-                                from{' '}
                                 <Link
                                     to='/panel/eggs/$eggId/script'
                                     params={{ eggId: copiedFromEgg.attributes.id }}
@@ -81,10 +80,9 @@ function EggScriptForm({ egg }: Props) {
                                 </Link>
                             </>
                         ) : (
-                            ' from another egg'
+                            ' 其他预设'
                         )}
-                        . Changes made to the script below will not apply unless you select &quot;None&quot; from the
-                        &quot;Copy Script From&quot; dropdown.
+                        。除非您从「从以下预设复制脚本」下拉中选择 &quot;无&quot;，否则对下方脚本的修改不会生效。
                     </p>
                 )}
                 <CodemirrorEditor
@@ -95,16 +93,16 @@ function EggScriptForm({ egg }: Props) {
                     onContentSaved={() => {}}
                 />
             </TitledGreyBox>
-            <TitledGreyBox title='Script Configuration' className='mt-6'>
+            <TitledGreyBox title='脚本配置' className='mt-6'>
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
                     <form.AppField name='copyScriptFrom'>
                         {(field) => (
                             <field.SelectField
                                 id='copyScriptFrom'
-                                label='Copy Script From'
-                                description='If selected, the script above is ignored and the chosen egg’s script is used.'
+                                label='从以下预设复制脚本'
+                                description='如果选择，上方的脚本将被忽略，改用所选预设的脚本。'
                                 options={[
-                                    { value: 0, label: 'None' },
+                                    { value: 0, label: '无' },
                                     ...copyableEggs.map((option) => ({
                                         value: option.attributes.id,
                                         label: option.attributes.name,
@@ -118,8 +116,8 @@ function EggScriptForm({ egg }: Props) {
                             <field.TextField
                                 type='text'
                                 id='scriptContainer'
-                                label='Script Container'
-                                description='Docker container used when running this script for the server.'
+                                label='脚本容器'
+                                description='为服务器运行此脚本时使用的 Docker 容器。'
                             />
                         )}
                     </form.AppField>
@@ -128,8 +126,8 @@ function EggScriptForm({ egg }: Props) {
                             <field.TextField
                                 type='text'
                                 id='scriptEntry'
-                                label='Script Entrypoint Command'
-                                description='The entrypoint command to use for this script.'
+                                label='脚本入口命令'
+                                description='此脚本使用的入口命令。'
                             />
                         )}
                     </form.AppField>
@@ -138,20 +136,17 @@ function EggScriptForm({ egg }: Props) {
                     <form.AppField name='scriptIsPrivileged'>
                         {(field) => (
                             <field.SwitchField
-                                label='Privileged Installation Script'
-                                description={
-                                    'Run the installation script with elevated privileges, granting access to the ' +
-                                    "node's docker socket. Only enable this when you trust the script."
-                                }
+                                label='特权安装脚本'
+                                description='以提升的权限运行安装脚本，可访问节点的 Docker 套接字。仅在您信任该脚本时启用。'
                             />
                         )}
                     </form.AppField>
                 </div>
             </TitledGreyBox>
             {dependentEggs.length > 0 && (
-                <TitledGreyBox title='Eggs Using This Script' className='mt-6'>
+                <TitledGreyBox title='使用此脚本的预设' className='mt-6'>
                     <p className='text-sm text-muted-foreground mb-4'>
-                        Changes to this install script affect these eggs because they copy from this one.
+                        对此安装脚本的修改会影响这些预设，因为它们从此预设复制。
                     </p>
                     <div className='space-y-2'>
                         {dependentEggs.map((dependent) => (
@@ -169,7 +164,7 @@ function EggScriptForm({ egg }: Props) {
             )}
             <div className='flex justify-end mt-6'>
                 <form.AppForm>
-                    <form.SubmitButton>Save Changes</form.SubmitButton>
+                    <form.SubmitButton>保存更改</form.SubmitButton>
                 </form.AppForm>
             </div>
         </Form>

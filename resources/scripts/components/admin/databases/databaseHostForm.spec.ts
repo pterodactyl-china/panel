@@ -63,21 +63,19 @@ describe('database host form values', () => {
 
 describe('databaseHostValidators', () => {
     it('requires a port within range', () => {
-        expect(databaseHostValidators.port.onChange({ value: null })).toBe('A port must be provided.');
-        expect(databaseHostValidators.port.onChange({ value: 0 })).toBe('The port must be between 1 and 65535.');
+        expect(databaseHostValidators.port.onChange({ value: null })).toBe('必须提供端口。');
+        expect(databaseHostValidators.port.onChange({ value: 0 })).toBe('端口必须介于 1 与 65535 之间。');
         expect(databaseHostValidators.port.onChange({ value: 3306 })).toBeUndefined();
     });
 
     it('validates host names', () => {
-        expect(databaseHostValidators.host.onChange({ value: '' })).toBe('A host must be provided.');
-        expect(databaseHostValidators.host.onChange({ value: 'bad host' })).toBe(
-            'The host must be a valid hostname or IP address.'
-        );
+        expect(databaseHostValidators.host.onChange({ value: '' })).toBe('必须提供主机。');
+        expect(databaseHostValidators.host.onChange({ value: 'bad host' })).toBe('主机必须是有效的主机名或 IP 地址。');
         expect(databaseHostValidators.host.onChange({ value: '10.0.0.5' })).toBeUndefined();
     });
 
     it('requires a password only where the form asks for one', () => {
-        expect(databaseHostValidators.requiredPassword.onChange({ value: '' })).toBe('A password must be provided.');
+        expect(databaseHostValidators.requiredPassword.onChange({ value: '' })).toBe('必须提供密码。');
         expect(databaseHostValidators.requiredPassword.onChange({ value: 'secret' })).toBeUndefined();
     });
 });

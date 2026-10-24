@@ -213,5 +213,5 @@ test('unresolvable rule string is rejected', function (): void {
     $response = $this->postJson(url($egg), ['name' => 'Bad Rules', 'env_variable' => 'BAD_RULES', 'rules' => 'requird|string', 'default_value' => 'bad']);
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     $response->assertJsonPath('errors.0.meta.source_field', 'rules');
-    $response->assertJsonPath('errors.0.detail', 'The validation rule "requird" is not a valid rule for this application.');
+    $response->assertJsonPath('errors.0.detail', '验证规则 "requird" 不是此应用程序的有效规则。');
 });

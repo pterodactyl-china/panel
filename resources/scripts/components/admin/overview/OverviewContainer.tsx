@@ -13,22 +13,22 @@ import { interactiveSurfaceClass } from '@/components/ui/styles';
 import { cn } from '@/lib/cn';
 
 const sections: { to: LinkProps['to']; label: string; description: string }[] = [
-    { to: '/panel/users', label: 'Users', description: 'Create, edit, and remove user accounts.' },
-    { to: '/panel/locations', label: 'Locations', description: 'Group nodes into physical locations.' },
-    { to: '/panel/nodes', label: 'Nodes', description: 'Manage Wings daemons and allocations.' },
-    { to: '/panel/servers', label: 'Servers', description: 'Provision and manage game servers.' },
-    { to: '/panel/databases', label: 'Database Hosts', description: 'Configure MySQL hosts for server databases.' },
-    { to: '/panel/mounts', label: 'Mounts', description: 'Define host → container mount points.' },
-    { to: '/panel/eggs', label: 'Eggs', description: 'Manage server templates and variables.' },
-    { to: '/panel/settings', label: 'Settings', description: 'General, mail, and advanced configuration.' },
-    { to: '/panel/api', label: 'API Keys', description: 'Issue application API credentials.' },
+    { to: '/panel/users', label: '用户', description: '创建、编辑与删除用户账户。' },
+    { to: '/panel/locations', label: '地域', description: '将节点按物理地域分组。' },
+    { to: '/panel/nodes', label: '节点', description: '管理 Wings 守护进程与分配。' },
+    { to: '/panel/servers', label: '服务器', description: '创建并管理游戏服务器。' },
+    { to: '/panel/databases', label: '数据库主机', description: '为服务器数据库配置 MySQL 主机。' },
+    { to: '/panel/mounts', label: '挂载', description: '定义宿主机 → 容器挂载点。' },
+    { to: '/panel/eggs', label: '预设', description: '管理服务器模板与变量。' },
+    { to: '/panel/settings', label: '设置', description: '常规、邮件与高级配置。' },
+    { to: '/panel/api', label: 'API 密钥', description: '签发应用 API 凭据。' },
 ];
 
 const externalLinks = (version: AdminVersion) => [
-    { href: version.discord, label: 'Get Help', icon: LifeBuoy },
-    { href: 'https://pterodactyl.io', label: 'Documentation', icon: BookOpen },
+    { href: version.discord, label: '获取帮助', icon: LifeBuoy },
+    { href: 'https://pterodactyl.io', label: '文档', icon: BookOpen },
     { href: 'https://github.com/pterodactyl/panel', label: 'GitHub', icon: Code2 },
-    { href: version.donations, label: 'Support Project', icon: HeartHandshake },
+    { href: version.donations, label: '支持项目', icon: HeartHandshake },
 ];
 
 export default function OverviewContainer() {
@@ -39,11 +39,7 @@ export default function OverviewContainer() {
     }
 
     return (
-        <AdminContentBlock
-            title='Admin Overview'
-            heading='Administration'
-            description='Manage your users, infrastructure, servers, and panel settings.'
-        >
+        <AdminContentBlock title='管理概览' heading='管理' description='管理您的用户、基础设施、服务器与面板设置。'>
             <Slot name='panel.overview.before' />
             {version ? (
                 <>

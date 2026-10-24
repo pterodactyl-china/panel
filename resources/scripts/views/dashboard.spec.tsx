@@ -46,7 +46,7 @@ it('shows a maintenance badge instead of loading stats when the node is under ma
         />
     );
 
-    expect(await screen.findByText('Under Maintenance')).toBeVisible();
+    expect(await screen.findByText('维护中')).toBeVisible();
     expect(useServerResourceUsage).toHaveBeenCalledWith(server.attributes.uuid, false);
 });
 
@@ -56,7 +56,7 @@ it('loads stats for a server on an available node', async () => {
     await renderInApp(<View name='dashboard.serverCard' server={server} />);
 
     expect(await screen.findByText('Survival')).toBeVisible();
-    expect(screen.queryByText('Under Maintenance')).not.toBeInTheDocument();
+    expect(screen.queryByText('维护中')).not.toBeInTheDocument();
     expect(useServerResourceUsage).toHaveBeenCalledWith(server.attributes.uuid, true);
 });
 
@@ -108,7 +108,7 @@ it('shows the empty state and the dashboard error from fixtures', async () => {
         </ViewFixtureProvider>
     );
 
-    expect(await screen.findByText('No servers yet')).toBeVisible();
+    expect(await screen.findByText('暂无服务器')).toBeVisible();
     expect(screen.queryByRole('switch')).not.toBeInTheDocument();
-    expect(screen.getByText('Request failed with status code 500.')).toBeVisible();
+    expect(screen.getByText('请求失败，状态码 500。')).toBeVisible();
 });

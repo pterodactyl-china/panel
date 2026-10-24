@@ -25,7 +25,7 @@ class AllocationResource extends ClientResource
     public function toArray(Request $request): array
     {
         $this->resource->loadMissing('server');
-        $server = $this->resource->server ?? throw new UnexpectedValueException('The allocation does not belong to a server.');
+        $server = $this->resource->server ?? throw new UnexpectedValueException('该分配不属于任何服务器。');
 
         return [
             'id' => $this->resource->id,

@@ -47,7 +47,7 @@ final class CreateSchedule implements CreatesSchedules
         try {
             $schedule->next_run_at = $schedule->getNextRunDate();
         } catch (Throwable) {
-            throw new DisplayException('The cron data provided does not evaluate to a valid expression.');
+            throw new DisplayException('提供的 Cron 表达式无效。');
         }
 
         $schedule->save();

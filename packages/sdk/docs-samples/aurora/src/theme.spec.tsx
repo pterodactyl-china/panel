@@ -40,7 +40,7 @@ test('keeps the engine field attributes on the sign-in form', () => {
 
     expect(password.getAttribute('autocomplete')).toBe('current-password');
     expect(password.getAttribute('aria-invalid')).toBe('true');
-    expect(screen.getByText('Please enter your account password.')).not.toBeNull();
+    expect(screen.getByText('请输入您的账户密码。')).not.toBeNull();
 });
 
 test('draws buttons as pills and keeps their state attributes', () => {

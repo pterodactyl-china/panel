@@ -13,16 +13,16 @@ describe('Button', () => {
 
         render(
             <form onSubmit={onSubmit}>
-                <Button.Text onClick={vi.fn()}>Cancel</Button.Text>
-                <Button type='submit'>Save</Button>
+                <Button.Text onClick={vi.fn()}>取消</Button.Text>
+                <Button type='submit'>保存</Button>
             </form>
         );
 
-        expect(screen.getByRole('button', { name: 'Cancel' })).toHaveAttribute('type', 'button');
-        fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+        expect(screen.getByRole('button', { name: '取消' })).toHaveAttribute('type', 'button');
+        fireEvent.click(screen.getByRole('button', { name: '取消' }));
         expect(onSubmit).not.toHaveBeenCalled();
 
-        fireEvent.click(screen.getByRole('button', { name: 'Save' }));
+        fireEvent.click(screen.getByRole('button', { name: '保存' }));
         expect(onSubmit).toHaveBeenCalledOnce();
     });
 

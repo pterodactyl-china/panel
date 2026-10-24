@@ -53,37 +53,31 @@ const serverToValues = (server: AdminServer): Values => ({
     removeAllocations: [],
 });
 
-const validateCpu = requiredNumber('A CPU limit must be provided.', (value) =>
-    value >= 0 ? undefined : 'Invalid CPU limit.'
+const validateCpu = requiredNumber('必须提供 CPU 限制。', (value) => (value >= 0 ? undefined : 'CPU 限制无效。'));
+const validateMemory = requiredNumber('必须提供内存限制。', (value) => (value >= 0 ? undefined : '内存限制无效。'));
+const validateSwap = requiredNumber('必须提供交换分区限制。', (value) =>
+    value >= -1 ? undefined : '交换分区限制无效。'
 );
-const validateMemory = requiredNumber('A memory limit must be provided.', (value) =>
-    value >= 0 ? undefined : 'Invalid memory limit.'
-);
-const validateSwap = requiredNumber('A swap limit must be provided.', (value) =>
-    value >= -1 ? undefined : 'Invalid swap limit.'
-);
-const validateDisk = requiredNumber('A disk limit must be provided.', (value) =>
-    value >= 0 ? undefined : 'Invalid disk limit.'
-);
-const validateIo = requiredNumber('An IO proportion must be provided.', (value): string | undefined => {
+const validateDisk = requiredNumber('必须提供磁盘限制。', (value) => (value >= 0 ? undefined : '磁盘限制无效。'));
+const validateIo = requiredNumber('必须提供 IO 比例。', (value): string | undefined => {
     if (value < 10) {
-        return 'The IO proportion must be at least 10.';
+        return 'IO 比例不能小于 10。';
     }
 
     if (value > 1000) {
-        return 'The IO proportion must not exceed 1000.';
+        return 'IO 比例不得超过 1000。';
     }
 
     return undefined;
 });
-const validateDatabaseLimit = requiredNumber('A database limit must be provided.', (value) =>
-    value >= 0 ? undefined : 'Invalid database limit.'
+const validateDatabaseLimit = requiredNumber('必须提供数据库限制。', (value) =>
+    value >= 0 ? undefined : '数据库限制无效。'
 );
-const validateAllocationLimit = requiredNumber('An allocation limit must be provided.', (value) =>
-    value >= 0 ? undefined : 'Invalid allocation limit.'
+const validateAllocationLimit = requiredNumber('必须提供分配限制。', (value) =>
+    value >= 0 ? undefined : '分配限制无效。'
 );
-const validateBackupLimit = requiredNumber('A backup limit must be provided.', (value) =>
-    value >= 0 ? undefined : 'Invalid backup limit.'
+const validateBackupLimit = requiredNumber('必须提供备份限制。', (value) =>
+    value >= 0 ? undefined : '备份限制无效。'
 );
 
 function ServerBuildForm({ server }: Props) {
@@ -142,14 +136,14 @@ function ServerBuildForm({ server }: Props) {
     return (
         <Form form={form}>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-                <TitledGreyBox title='Resource Management'>
+                <TitledGreyBox title='资源管理'>
                     <form.AppField name='cpu' validators={{ onChange: validateCpu }}>
                         {(field) => (
                             <field.NumberField
                                 id='cpu'
-                                label='CPU Limit (%)'
+                                label='CPU 限制 (%)'
                                 min={0}
-                                description='Each thread on the system is 100%. Set to 0 for unlimited CPU.'
+                                description='系统中每个线程为 100%。设为 0 表示不限制 CPU。'
                             />
                         )}
                     </form.AppField>
@@ -159,11 +153,8 @@ function ServerBuildForm({ server }: Props) {
                                 <field.TextField
                                     type='text'
                                     id='threads'
-                                    label='CPU Pinning'
-                                    description={
-                                        'Advanced: the specific CPU cores this process can run on (e.g. 0, 0-1,3). ' +
-                                        'Leave blank to allow all cores.'
-                                    }
+                                    label='CPU 绑定'
+                                    description='高级：此进程可运行的特定 CPU 核心（例如 0, 0-1,3）。留空表示允许使用所有核心。'
                                 />
                             )}
                         </form.AppField>
@@ -173,9 +164,9 @@ function ServerBuildForm({ server }: Props) {
                             {(field) => (
                                 <field.NumberField
                                     id='memory'
-                                    label='Allocated Memory (MiB)'
+                                    label='已分配内存 (MiB)'
                                     min={0}
-                                    description='The maximum memory for this container. Set to 0 for unlimited.'
+                                    description='此容器的最大内存。设为 0 表示不限制。'
                                 />
                             )}
                         </form.AppField>
@@ -185,9 +176,9 @@ function ServerBuildForm({ server }: Props) {
                             {(field) => (
                                 <field.NumberField
                                     id='swap'
-                                    label='Allocated Swap (MiB)'
+                                    label='已分配交换分区 (MiB)'
                                     min={-1}
-                                    description='Set to 0 to disable swap, or -1 for unlimited swap.'
+                                    description='设为 0 禁用交换分区，设为 -1 表示不限制。'
                                 />
                             )}
                         </form.AppField>
@@ -197,9 +188,9 @@ function ServerBuildForm({ server }: Props) {
                             {(field) => (
                                 <field.NumberField
                                     id='disk'
-                                    label='Disk Space Limit (MiB)'
+                                    label='磁盘空间限制 (MiB)'
                                     min={0}
-                                    description='Set to 0 to allow unlimited disk usage.'
+                                    description='设为 0 表示不限制磁盘使用。'
                                 />
                             )}
                         </form.AppField>
@@ -209,10 +200,10 @@ function ServerBuildForm({ server }: Props) {
                             {(field) => (
                                 <field.NumberField
                                     id='io'
-                                    label='Block IO Proportion'
+                                    label='块 IO 比例'
                                     min={10}
                                     max={1000}
-                                    description='Advanced: a value between 10 and 1000.'
+                                    description='高级：取值介于 10 与 1000 之间。'
                                 />
                             )}
                         </form.AppField>
@@ -222,11 +213,11 @@ function ServerBuildForm({ server }: Props) {
                             {(field) => (
                                 <field.SelectField
                                     id='oomDisabled'
-                                    label='OOM Killer'
-                                    description='Enabling the OOM killer may cause server processes to exit unexpectedly.'
+                                    label='OOM 终止器'
+                                    description='启用 OOM Killer 可能导致服务器进程意外退出。'
                                     options={[
-                                        { value: 'false', label: 'Enabled' },
-                                        { value: 'true', label: 'Disabled' },
+                                        { value: 'false', label: '已启用' },
+                                        { value: 'true', label: '已禁用' },
                                     ]}
                                 />
                             )}
@@ -234,28 +225,26 @@ function ServerBuildForm({ server }: Props) {
                     </div>
                 </TitledGreyBox>
                 <div className='space-y-6'>
-                    <TitledGreyBox title='Application Feature Limits'>
+                    <TitledGreyBox title='应用功能限制'>
                         <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
                             <form.AppField name='databaseLimit' validators={{ onChange: validateDatabaseLimit }}>
-                                {(field) => <field.NumberField id='database_limit' label='Database Limit' min={0} />}
+                                {(field) => <field.NumberField id='database_limit' label='数据库限制' min={0} />}
                             </form.AppField>
                             <form.AppField name='allocationLimit' validators={{ onChange: validateAllocationLimit }}>
-                                {(field) => (
-                                    <field.NumberField id='allocation_limit' label='Allocation Limit' min={0} />
-                                )}
+                                {(field) => <field.NumberField id='allocation_limit' label='分配限制' min={0} />}
                             </form.AppField>
                             <form.AppField name='backupLimit' validators={{ onChange: validateBackupLimit }}>
-                                {(field) => <field.NumberField id='backup_limit' label='Backup Limit' min={0} />}
+                                {(field) => <field.NumberField id='backup_limit' label='备份限制' min={0} />}
                             </form.AppField>
                         </div>
                     </TitledGreyBox>
-                    <TitledGreyBox title='Allocation Management'>
+                    <TitledGreyBox title='分配管理'>
                         <form.AppField name='allocationId'>
                             {(field) => (
                                 <field.SelectField
                                     id='allocationId'
-                                    label='Game Port'
-                                    description='The default connection address for this server.'
+                                    label='游戏端口'
+                                    description='此服务器的默认连接地址。'
                                     options={assignedOptions}
                                     onChange={(value) =>
                                         form.setFieldValue('removeAllocations', (current) =>
@@ -270,8 +259,8 @@ function ServerBuildForm({ server }: Props) {
                                 {(field) => (
                                     <field.MultiSelectField
                                         id='addAllocations'
-                                        label='Assign Additional Ports'
-                                        description='Unassigned ports on this node that will be assigned to the server.'
+                                        label='分配额外端口'
+                                        description='此节点上将分配给该服务器的未分配端口。'
                                         options={unassigned.map((allocation) => ({
                                             value: allocation.attributes.id,
                                             label: allocationLabel(allocation),
@@ -285,8 +274,8 @@ function ServerBuildForm({ server }: Props) {
                                 {(field) => (
                                     <field.MultiSelectField
                                         id='removeAllocations'
-                                        label='Remove Additional Ports'
-                                        description='Select the ports to remove from this server.'
+                                        label='移除额外端口'
+                                        description='选择要从此服务器移除的端口。'
                                         options={removableOptions}
                                     />
                                 )}
@@ -297,7 +286,7 @@ function ServerBuildForm({ server }: Props) {
             </div>
             <div className='flex justify-end mt-6'>
                 <form.AppForm>
-                    <form.SubmitButton>Update Build Configuration</form.SubmitButton>
+                    <form.SubmitButton>更新构建配置</form.SubmitButton>
                 </form.AppForm>
             </div>
         </Form>
@@ -308,7 +297,7 @@ export default function ServerBuildTab() {
     const { server } = useServerDetail();
 
     if (server.attributes.container.installed !== 1) {
-        return <ServerError message='Access to this resource is not allowed due to the current installation state.' />;
+        return <ServerError message='由于当前安装状态，不允许访问此资源。' />;
     }
 
     return <ServerBuildForm key={`${server.attributes.id}:${server.attributes.updated_at}`} server={server} />;

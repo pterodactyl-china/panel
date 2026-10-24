@@ -133,11 +133,11 @@ export const useCreateAdminUser = () => {
         ...adminCreateUserMutation(),
         onSuccess: async (user) => {
             await invalidateGeneratedOperations(queryClient, ['adminListUsers']);
-            const messages = resourceMutationMessages('user', 'create', user.attributes.email);
+            const messages = resourceMutationMessages('用户', 'create', user.attributes.email);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('user', 'create').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('用户', 'create').errorTitle),
     });
 };
 
@@ -155,11 +155,11 @@ export const useUpdateAdminUser = () => {
                 invalidateGeneratedOperations(queryClient, ['adminListUsers']),
                 queryClient.invalidateQueries({ queryKey: adminUserDetailKey(variables.path.user_id) }),
             ]);
-            const messages = resourceMutationMessages('user', 'update', user.attributes.email);
+            const messages = resourceMutationMessages('用户', 'update', user.attributes.email);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('user', 'update').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('用户', 'update').errorTitle),
     });
 };
 
@@ -173,9 +173,9 @@ export const useUpdateAdminUserAvatar = () => {
                 invalidateGeneratedOperations(queryClient, ['adminListUsers']),
                 queryClient.invalidateQueries({ queryKey: adminUserDetailKey(variables.path.user_id) }),
             ]);
-            toast.success('Avatar updated');
+            toast.success('头像已更新');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update avatar'),
+        onError: (error) => notifyHttpError(error, '无法更新头像'),
     });
 };
 
@@ -189,9 +189,9 @@ export const useDeleteAdminUserAvatar = () => {
                 invalidateGeneratedOperations(queryClient, ['adminListUsers']),
                 queryClient.invalidateQueries({ queryKey: adminUserDetailKey(variables.path.user_id) }),
             ]);
-            toast.success('Avatar removed');
+            toast.success('头像已移除');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to remove avatar'),
+        onError: (error) => notifyHttpError(error, '无法移除头像'),
     });
 };
 
@@ -204,10 +204,10 @@ export const useDeleteAdminUser = () => {
             removeQueriesWhenUnobserved(queryClient, { queryKey: adminUserDetailKey(variables.path.user_id) });
             await invalidateGeneratedOperations(queryClient, ['adminListUsers']);
             const name = variables.meta?.email;
-            const messages = resourceMutationMessages('user', 'delete', name);
+            const messages = resourceMutationMessages('用户', 'delete', name);
 
             toast.success(messages.success.title, { description: messages.success.description });
         },
-        onError: (error) => notifyHttpError(error, resourceMutationMessages('user', 'delete').errorTitle),
+        onError: (error) => notifyHttpError(error, resourceMutationMessages('用户', 'delete').errorTitle),
     });
 };

@@ -19,8 +19,7 @@ const serverErrorToasts = {
     token: 'server:websocket:token-error',
 };
 
-const daemonErrorMessage = (message: string) =>
-    message.trim() ? message : 'Wings reported an error without additional details.';
+const daemonErrorMessage = (message: string) => (message.trim() ? message : 'Wings 报告了一个错误，但未提供详细信息。');
 
 const serverStatuses = new Set<ServerStatus>(['offline', 'starting', 'stopping', 'running', null]);
 const isServerStatus = (value: string): value is NonNullable<ServerStatus> => serverStatuses.has(value as ServerStatus);
@@ -55,7 +54,7 @@ export default function WebsocketHandler() {
             })
             .catch((error) => {
                 if (activeSocket.current === socket && activeUuid.current === uuid) {
-                    notifyHttpError(error, 'Failed to refresh server connection', { id: serverErrorToasts.token });
+                    notifyHttpError(error, '刷新服务器连接失败', { id: serverErrorToasts.token });
                 }
             })
             .finally(() => {
@@ -78,10 +77,9 @@ export default function WebsocketHandler() {
             socket.on('SOCKET_CLOSE', () => setConnectionState(false));
             socket.on('SOCKET_CONNECT_ERROR', () => {
                 setReconnecting(false);
-                notifyServerError('Server connection failed', {
+                notifyServerError('服务器连接失败', {
                     id: serverErrorToasts.connection,
-                    description:
-                        'Failed to connect to the websocket after multiple attempts. Reconnecting resumes once your network or this tab is active again.',
+                    description: '多次尝试后仍无法连接 WebSocket。当网络恢复或此标签页重新激活后将自动重连。',
                 });
             });
             socket.on('SOCKET_RECONNECT', () => {
@@ -108,8 +106,8 @@ export default function WebsocketHandler() {
             });
 
             socket.on('daemon error', (message) => {
-                console.warn('Got error message from daemon socket:', message);
-                notifyServerError('Server reported an error', {
+                console.warn('收到守护进程套接字错误：', message);
+                notifyServerError('服务器报告了一个错误', {
                     id: serverErrorToasts.daemon,
                     description: daemonErrorMessage(message),
                 });
@@ -119,16 +117,15 @@ export default function WebsocketHandler() {
             socket.on('token expired', () => updateToken(uuid, socket));
             socket.on('jwt error', (error: string) => {
                 setConnectionState(false);
-                console.warn('JWT validation error from wings:', error);
+                console.warn('Wings 返回 JWT 校验错误：', error);
 
                 if (reconnectErrors.some((v) => error.toLowerCase().includes(v))) {
                     updateToken(uuid, socket);
                 } else {
                     setReconnecting(false);
-                    notifyServerError('Server connection rejected', {
+                    notifyServerError('服务器连接被拒绝', {
                         id: serverErrorToasts.jwt,
-                        description:
-                            'There was an error validating the credentials provided for the websocket. Please refresh the page.',
+                        description: '校验 WebSocket 凭据时出错，请刷新页面。',
                     });
                 }
             });
@@ -169,7 +166,7 @@ export default function WebsocketHandler() {
                 }
 
                 setReconnecting(false);
-                notifyHttpError(error, 'Failed to start server connection', { id: serverErrorToasts.token });
+                notifyHttpError(error, '启动服务器连接失败', { id: serverErrorToasts.token });
             });
 
         return () => {
@@ -192,9 +189,7 @@ export default function WebsocketHandler() {
         <div className='bg-destructive py-2'>
             <ContentContainer className='flex items-center justify-center'>
                 <Spinner size='small' />
-                <p className='ml-2 text-sm text-destructive-foreground'>
-                    We&apos;re having some trouble connecting to your server, please wait...
-                </p>
+                <p className='ml-2 text-sm text-destructive-foreground'>连接您的服务器时遇到问题，请稍候...</p>
             </ContentContainer>
         </div>
     ) : null;

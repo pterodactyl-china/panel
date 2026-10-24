@@ -123,7 +123,7 @@ describe('bootTheme', () => {
         ]);
         render(<boot.ThemeFailureNotice />);
         expect(toastError).toHaveBeenCalledWith(
-            expect.stringContaining('"aurora" theme could not load'),
+            expect.stringContaining('主题「aurora」加载失败'),
             expect.objectContaining({ closeButton: true })
         );
     });

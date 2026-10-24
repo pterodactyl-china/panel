@@ -163,7 +163,7 @@ class ServerResource extends ApplicationResource
             return $this->null();
         }
 
-        $egg = $this->resource->loadMissing('egg')->egg ?? throw new UnexpectedValueException('The server does not have an egg.');
+        $egg = $this->resource->loadMissing('egg')->egg ?? throw new UnexpectedValueException('该服务器没有关联预设。');
 
         return $this->item($egg, EggResource::class, 'egg');
     }
@@ -186,7 +186,7 @@ class ServerResource extends ApplicationResource
             return $this->null();
         }
 
-        $location = $this->resource->loadMissing('location')->location ?? throw new UnexpectedValueException('The server does not have a location.');
+        $location = $this->resource->loadMissing('location')->location ?? throw new UnexpectedValueException('该服务器没有关联地域。');
 
         return $this->item($location, LocationResource::class, 'location');
     }

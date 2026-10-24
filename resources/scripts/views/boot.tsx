@@ -61,7 +61,7 @@ export function ThemeFailureNotice() {
             return;
         }
 
-        toast.error(`The "${failure.id}" theme could not load, so this page uses the classic theme.`, {
+        toast.error(`主题「${failure.id}」加载失败，因此本页使用经典主题。`, {
             id: 'theme-failure',
             description: failure.message,
             duration: Infinity,

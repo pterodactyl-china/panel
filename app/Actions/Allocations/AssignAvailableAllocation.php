@@ -22,7 +22,7 @@ final readonly class AssignAvailableAllocation implements AssignsAvailableAlloca
     public function assignAvailable(Server $server): Allocation
     {
         throw_unless(config('pterodactyl.client_features.allocations.enabled'), AutoAllocationNotEnabledException::class);
-        $primaryAllocation = $server->allocation ?? throw new UnexpectedValueException('The server does not have a primary allocation.');
+        $primaryAllocation = $server->allocation ?? throw new UnexpectedValueException('该服务器没有主分配。');
         $allocation = $server->node->allocations()->lockForUpdate()->where('ip', $primaryAllocation->ip)->whereNull('server_id')->inRandomOrder()->first();
 
         if ($allocation === null) {

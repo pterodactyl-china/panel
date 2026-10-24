@@ -15,30 +15,15 @@ const DetailsFields = ({ form }: Props) => (
                 onChange: ({ value }) => validateMountName(value),
             }}
         >
-            {(field) => (
-                <field.TextField
-                    type='text'
-                    id='name'
-                    label='Name'
-                    description='A unique name used to identify this mount.'
-                />
-            )}
+            {(field) => <field.TextField type='text' id='name' label='名称' description='用于标识此挂载的唯一名称。' />}
         </form.AppField>
         <form.AppField
             name='description'
             validators={{
-                onChange: ({ value }) =>
-                    value.length <= 191 ? undefined : 'A description must not exceed 191 characters.',
+                onChange: ({ value }) => (value.length <= 191 ? undefined : '描述不得超过 191 个字符。'),
             }}
         >
-            {(field) => (
-                <field.TextField
-                    type='text'
-                    id='description'
-                    label='Description'
-                    description='A longer description for this mount.'
-                />
-            )}
+            {(field) => <field.TextField type='text' id='description' label='描述' description='此挂载的详细描述。' />}
         </form.AppField>
     </div>
 );
@@ -48,30 +33,25 @@ const PathFields = ({ form }: Props) => (
         <form.AppField
             name='source'
             validators={{
-                onChange: ({ value }) => (value.length >= 1 ? undefined : 'A source path must be provided.'),
+                onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供源路径。'),
             }}
         >
             {(field) => (
-                <field.TextField
-                    type='text'
-                    id='source'
-                    label='Source'
-                    description='The path on the host system to mount into the container.'
-                />
+                <field.TextField type='text' id='source' label='源路径' description='宿主机上要挂载到容器中的路径。' />
             )}
         </form.AppField>
         <form.AppField
             name='target'
             validators={{
-                onChange: ({ value }) => (value.length >= 1 ? undefined : 'A target path must be provided.'),
+                onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供目标路径。'),
             }}
         >
             {(field) => (
                 <field.TextField
                     type='text'
                     id='target'
-                    label='Target'
-                    description='The path inside the container where the source will be mounted.'
+                    label='目标路径'
+                    description='源路径在容器内挂载的目标路径。'
                 />
             )}
         </form.AppField>
@@ -81,20 +61,10 @@ const PathFields = ({ form }: Props) => (
 const AccessFields = ({ form }: Props) => (
     <div className='space-y-6'>
         <form.AppField name='readOnly'>
-            {(field) => (
-                <field.SwitchField
-                    label='Read Only'
-                    description='Mount this volume as read only inside the container.'
-                />
-            )}
+            {(field) => <field.SwitchField label='只读' description='在容器内以只读方式挂载此卷。' />}
         </form.AppField>
         <form.AppField name='userMountable'>
-            {(field) => (
-                <field.SwitchField
-                    label='User Mountable'
-                    description='Allow this mount to be added to servers by users.'
-                />
-            )}
+            {(field) => <field.SwitchField label='用户可挂载' description='允许用户将此挂载添加到服务器。' />}
         </form.AppField>
     </div>
 );
@@ -102,13 +72,13 @@ const AccessFields = ({ form }: Props) => (
 export default function MountFormFields({ form }: Props) {
     return (
         <div className='space-y-6'>
-            <TitledGreyBox title='Mount Details'>
+            <TitledGreyBox title='挂载详情'>
                 <DetailsFields form={form} />
             </TitledGreyBox>
-            <TitledGreyBox title='Paths'>
+            <TitledGreyBox title='路径'>
                 <PathFields form={form} />
             </TitledGreyBox>
-            <TitledGreyBox title='Access'>
+            <TitledGreyBox title='访问'>
                 <AccessFields form={form} />
             </TitledGreyBox>
         </div>

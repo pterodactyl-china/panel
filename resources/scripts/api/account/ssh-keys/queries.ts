@@ -32,9 +32,9 @@ export const useCreateSSHKey = () => {
             queryClient.setQueryData<ClientListSshKeysResponse>(clientListSshKeysQueryKey(), (current) =>
                 upsertListItem(current, key, (item) => item.attributes.fingerprint === key.attributes.fingerprint)
             );
-            toast.success('SSH key created');
+            toast.success('SSH 密钥已创建');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to create SSH key'),
+        onError: (error) => notifyHttpError(error, '无法创建 SSH 密钥'),
     });
 };
 
@@ -57,7 +57,7 @@ export const useDeleteSSHKey = () => {
             };
         },
         onSuccess: () => {
-            toast.success('SSH key deleted');
+            toast.success('SSH 密钥已删除');
         },
         onSettled: () => {
             if (queryClient.isMutating({ mutationKey: clientDeleteSshKeyMutation().mutationKey }) === 1) {
@@ -79,7 +79,7 @@ export const useDeleteSSHKey = () => {
                 );
             }
 
-            notifyHttpError(error, 'Unable to delete SSH key');
+            notifyHttpError(error, '无法删除 SSH 密钥');
         },
     });
 };

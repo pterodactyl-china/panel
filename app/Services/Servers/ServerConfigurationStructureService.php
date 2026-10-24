@@ -23,8 +23,8 @@ class ServerConfigurationStructureService
     public function forServer(Server $server): array
     {
         $server->loadMissing(['egg', 'allocation', 'allocations', 'mounts']);
-        $egg = $server->egg ?? throw new UnexpectedValueException('The server does not have an egg relationship.');
-        $allocation = $server->allocation ?? throw new UnexpectedValueException('The server does not have a primary allocation.');
+        $egg = $server->egg ?? throw new UnexpectedValueException('该服务器没有关联预设。');
+        $allocation = $server->allocation ?? throw new UnexpectedValueException('该服务器没有主分配。');
 
         return [
             'uuid' => $server->uuid,
@@ -82,8 +82,8 @@ class ServerConfigurationStructureService
     public function legacyForServer(Server $server): array
     {
         $server->loadMissing(['egg', 'allocation', 'allocations']);
-        $egg = $server->egg ?? throw new UnexpectedValueException('The server does not have an egg relationship.');
-        $allocation = $server->allocation ?? throw new UnexpectedValueException('The server does not have a primary allocation.');
+        $egg = $server->egg ?? throw new UnexpectedValueException('该服务器没有关联预设。');
+        $allocation = $server->allocation ?? throw new UnexpectedValueException('该服务器没有主分配。');
 
         return [
             'uuid' => $server->uuid,

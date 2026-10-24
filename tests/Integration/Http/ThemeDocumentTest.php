@@ -79,7 +79,7 @@ function themePayload(TestResponse $response): array
 
 test('guests get the classic theme with the panel stylesheet and a zoomable viewport', function (): void {
     $response = $this->get('/auth/login')->assertOk()
-        ->assertSee('<html lang="en" class="dark" data-theme="classic" >', false)
+        ->assertSee('<html lang="zh" class="dark" data-theme="classic" >', false)
         ->assertSee('<style id="theme-settings"></style>', false)
         ->assertSee('href="/assets/stylesheet.test.css"', false)
         ->assertSee('<meta content="width=device-width, initial-scale=1" name="viewport">', false)

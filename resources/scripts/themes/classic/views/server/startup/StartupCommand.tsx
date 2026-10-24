@@ -5,11 +5,11 @@ import type { ViewProps } from '@/sdk/theme';
 export default function StartupCommand({ model, className }: ViewProps<'server.startup.command'>) {
     return (
         <TitledGreyBox
-            title='Startup Command'
+            title='启动命令'
             actions={
                 model.command && (
                     <CopyOnClick text={model.command}>
-                        <Button.Text type='button' size='xsmall' isSecondary aria-label='Copy startup command'>
+                        <Button.Text type='button' size='xsmall' isSecondary aria-label='复制启动命令'>
                             <Icon icon={Copy} className='h-3.5 w-3.5' />
                         </Button.Text>
                     </CopyOnClick>

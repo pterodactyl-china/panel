@@ -55,7 +55,7 @@ const collapsedNavigationClass = [
 ].join(' ');
 
 export interface SubNavigationItemState extends NavItemState {
-    /** In the row, or in the "More" menu once the row ran out of room. */
+    /** 位于行内，或在行内空间不足后放入「更多」菜单。 */
     readonly placement: 'row' | 'menu';
 }
 
@@ -64,7 +64,7 @@ export interface SubNavigationProps extends Omit<React.ComponentProps<'div'>, 'c
     /** Rendered around the items, typically the area's navigation slots; it never moves into the menu. */
     readonly before?: React.ReactNode;
     readonly after?: React.ReactNode;
-    /** The items that may move into the "More" menu; by default those of extensions. */
+    /** 可以移入「更多」菜单的项目；默认为扩展的项目。 */
     readonly canOverflow?: (item: NavItem) => boolean;
     /** The content of an item's link and menu entry; by default its icon, label and badge. */
     readonly renderItem?: (item: NavItem, state: SubNavigationItemState) => React.ReactNode;
@@ -296,9 +296,8 @@ function MenuEntry({
 }
 
 /**
- * An area's horizontal navigation. Items that do not fit move into a "More" menu, and when even
- * the pinned ones do not, the row collapses behind a toggle. `<html data-sub-navigation="side">`
- * turns it into a sidebar.
+ * 某个区域的横向导航。无法容纳的项目会移入「更多」菜单；当连固定项也放不下时，
+ * 整行会折叠到一个开关之后。`<html data-sub-navigation="side">` 会将其变为侧边栏。
  */
 const SubNavigation = ({
     items,
@@ -364,7 +363,7 @@ const SubNavigation = ({
                         )}
                         triggerContent={
                             <>
-                                More
+                                更多
                                 <Icon icon={ChevronDown} aria-hidden />
                             </>
                         }

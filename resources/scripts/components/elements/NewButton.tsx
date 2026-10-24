@@ -11,7 +11,7 @@ interface IconProps {
 
 export type NewButtonProps = ButtonProps & IconProps;
 
-/** The panel's "create" action: a Plus icon and a sentence-case label such as "New node". */
+/** 面板的「创建」操作：一个加号图标与首字母大写的标签，例如「新建节点」。 */
 export function NewButton({ icon = Plus, className, children, ...props }: NewButtonProps) {
     const ui = useSkin('NewButton', { link: false });
 

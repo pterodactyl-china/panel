@@ -5,7 +5,7 @@ import PageStatus from '../../shared/PageStatus';
 export default function NetworkPage({ model, className }: ViewProps<'page.server.network'>) {
     return (
         <PageStatus model={model} className={className}>
-            <ServerContentBlock title='Network' className={className}>
+            <ServerContentBlock title='网络' className={className}>
                 <View name='server.allocations' />
             </ServerContentBlock>
         </PageStatus>

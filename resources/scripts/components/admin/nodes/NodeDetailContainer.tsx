@@ -14,12 +14,12 @@ import Slot from '@/extensions/Slot';
 import { resourceNavigation, type ResourceTab } from '@/views/navigation';
 
 const tabs: ResourceTab[] = [
-    { id: 'about', label: 'About', to: '/panel/nodes/$id', exact: true },
-    { id: 'settings', label: 'Settings', to: '/panel/nodes/$id/settings' },
-    { id: 'configuration', label: 'Configuration', to: '/panel/nodes/$id/configuration' },
-    { id: 'allocation', label: 'Allocation', to: '/panel/nodes/$id/allocation' },
-    { id: 'tags', label: 'Tags', to: '/panel/nodes/$id/tags' },
-    { id: 'servers', label: 'Servers', to: '/panel/nodes/$id/servers' },
+    { id: 'about', label: '关于', to: '/panel/nodes/$id', exact: true },
+    { id: 'settings', label: '设置', to: '/panel/nodes/$id/settings' },
+    { id: 'configuration', label: '配置', to: '/panel/nodes/$id/configuration' },
+    { id: 'allocation', label: '分配', to: '/panel/nodes/$id/allocation' },
+    { id: 'tags', label: '标签', to: '/panel/nodes/$id/tags' },
+    { id: 'servers', label: '服务器', to: '/panel/nodes/$id/servers' },
 ];
 
 export default function NodeDetailContainer() {
@@ -46,7 +46,7 @@ export default function NodeDetailContainer() {
     return (
         <ExtensionResourceProvider.Provider value={resourceContext}>
             <AdminContentBlock
-                title={`Admin · ${attributes.name}`}
+                title={`管理 · ${attributes.name}`}
                 heading={attributes.name}
                 description={attributes.fqdn}
             >
@@ -55,7 +55,7 @@ export default function NodeDetailContainer() {
                     className='inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4'
                 >
                     <Icon icon={ArrowLeft} className='mr-2' />
-                    Back to Nodes
+                    返回节点
                 </Link>
                 <Slot name='panel.nodes.detail.actions' data={resourceContext} />
                 <SubNavigation

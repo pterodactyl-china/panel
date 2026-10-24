@@ -4,21 +4,21 @@ import { TextAreaField, TextField } from '../shared/fields';
 
 export default function SshKeyCreate({ model, className }: ViewProps<'account.sshKeys.create'>) {
     return (
-        <ContentBox title='Add SSH Key' className={className}>
+        <ContentBox title='添加 SSH 密钥' className={className}>
             <Form form={{ handleSubmit: model.submit }}>
                 <SpinnerOverlay visible={model.submitting} />
                 <div className='mb-6'>
-                    <TextField field={model.fields.name} label='SSH Key Name' />
+                    <TextField field={model.fields.name} label='SSH 密钥名称' />
                 </div>
                 <TextAreaField
                     field={model.fields.publicKey}
-                    label='Public Key'
+                    label='公钥'
                     rows={6}
-                    description='Enter your public SSH key.'
+                    description='请输入您的 SSH 公钥。'
                 />
                 <div className='flex justify-end mt-6'>
                     <Button type='submit' disabled={!model.canSubmit} isLoading={model.submitting}>
-                        Save
+                        保存
                     </Button>
                 </div>
             </Form>

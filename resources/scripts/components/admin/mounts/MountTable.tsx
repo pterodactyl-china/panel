@@ -34,39 +34,37 @@ function DeleteMountDialog({ mount, open, onClose }: MountDialogProps) {
     return (
         <Dialog
             open={open}
-            title='Confirm mount deletion'
+            title='确认删除挂载'
             preventExternalClose={isSubmitting}
             hideCloseIcon={isSubmitting}
             onClose={onClose}
         >
             <SpinnerOverlay visible={isSubmitting} />
             <p className='text-sm'>
-                Deleting a mount is permanent. This will permanently delete <strong>{attributes.name}</strong> and
-                remove it from attached eggs and nodes.
+                删除挂载是不可撤销的操作。这将永久删除 <strong>{attributes.name}</strong> 及其关联的预设和节点。
             </p>
             <Form form={deleteForm} className='m-0 mt-6'>
                 <deleteForm.AppField
                     name='confirm'
                     validators={{
-                        onChange: ({ value }) =>
-                            value === attributes.name ? undefined : 'The mount name must be provided.',
+                        onChange: ({ value }) => (value === attributes.name ? undefined : '必须提供挂载名称。'),
                     }}
                 >
                     {(field) => (
                         <field.TextField
                             type='text'
                             id={`confirm_${attributes.uuid}`}
-                            label='Confirm mount name'
-                            description='Enter the name of this mount to confirm deletion.'
+                            label='确认挂载名称'
+                            description='输入此挂载的名称以确认删除。'
                         />
                     )}
                 </deleteForm.AppField>
                 <div className='mt-6 flex justify-end gap-2'>
                     <Button.Text type='button' isSecondary onClick={onClose}>
-                        Cancel
+                        取消
                     </Button.Text>
                     <deleteForm.AppForm>
-                        <deleteForm.SubmitButton color='red'>Delete mount</deleteForm.SubmitButton>
+                        <deleteForm.SubmitButton color='red'>删除挂载</deleteForm.SubmitButton>
                     </deleteForm.AppForm>
                 </div>
             </Form>
@@ -101,12 +99,12 @@ const MountPathCell = ({ path }: { path: string }) => (
 const MountActionsCell = ({ mount }: { mount: AdminMount }) => (
     <RowActions>
         <EditLinkAction
-            aria-label={`Edit ${mount.attributes.name}`}
+            aria-label={`编辑 ${mount.attributes.name}`}
             to='/panel/mounts/$id'
             params={{ id: mount.attributes.id }}
         />
         <Dialog.Trigger
-            trigger={({ onClick }) => <DeleteAction aria-label={`Delete ${mount.attributes.name}`} onClick={onClick} />}
+            trigger={({ onClick }) => <DeleteAction aria-label={`删除 ${mount.attributes.name}`} onClick={onClick} />}
         >
             {({ open, onClose }) => <DeleteMountDialog mount={mount} open={open} onClose={onClose} />}
         </Dialog.Trigger>
@@ -117,35 +115,35 @@ export const mountColumns = [
     {
         id: 'name',
         accessorFn: (mount) => mount.attributes.name,
-        header: ({ column }) => <DataTableColumnHeader column={column} title='Mount' />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title='挂载' />,
         cell: ({ row }) => <MountIdentityCell mount={row.original} />,
         enableSorting: true,
         meta: { headerClassName: 'min-w-48', cellClassName: 'min-w-48' },
     },
     {
         id: 'source',
-        header: 'Source',
+        header: '源路径',
         cell: ({ row }) => <MountPathCell path={row.original.attributes.source} />,
         enableSorting: false,
         meta: { headerClassName: 'hidden w-44 @2xl:table-cell', cellClassName: 'hidden w-44 @2xl:table-cell' },
     },
     {
         id: 'target',
-        header: 'Target',
+        header: '目标路径',
         cell: ({ row }) => <MountPathCell path={row.original.attributes.target} />,
         enableSorting: false,
         meta: { headerClassName: 'hidden w-44 @4xl:table-cell', cellClassName: 'hidden w-44 @4xl:table-cell' },
     },
     {
         id: 'eggs_count',
-        header: 'Eggs',
+        header: '预设',
         cell: ({ row }) => <span className='tabular-nums'>{row.original.attributes.eggs_count}</span>,
         enableSorting: false,
         meta: { headerClassName: 'hidden w-20 @sm:table-cell', cellClassName: 'hidden w-20 @sm:table-cell' },
     },
     {
         id: 'nodes_count',
-        header: 'Nodes',
+        header: '节点',
         cell: ({ row }) => <span className='tabular-nums'>{row.original.attributes.nodes_count}</span>,
         enableSorting: false,
         meta: { headerClassName: 'hidden w-20 @xl:table-cell', cellClassName: 'hidden w-20 @xl:table-cell' },

@@ -28,7 +28,7 @@ class EggConfigurationService
      */
     public function forServer(Server $server): array
     {
-        $egg = $server->egg ?? throw new UnexpectedValueException('The server does not have an egg assigned.');
+        $egg = $server->egg ?? throw new UnexpectedValueException('该服务器未分配预设。');
         $configs = $this->replacePlaceholders($server, $this->configurationFiles($egg->inherit_config_files));
 
         return [

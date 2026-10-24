@@ -36,7 +36,7 @@ import { httpErrorToHuman } from '@/api/http';
 import { cn } from '@/lib/cn';
 import { getPageSearch, usePageSearch } from '@/router/search';
 
-const countLabel = (count: number, noun: string) => `${count} ${noun}${count === 1 ? '' : 's'}`;
+const countLabel = (count: number, noun: string) => `${count} 个${noun}`;
 
 const ghostDangerClass = 'rounded-sm text-muted-foreground transition-colors hover:bg-popover hover:text-destructive';
 
@@ -65,9 +65,7 @@ const groupAllocationsByIp = (items: AdminAllocation[]) => {
     return [...map.entries()];
 };
 
-const paginationColumns = [
-    { id: 'allocation', header: 'Allocation', cell: () => null },
-] as ColumnDef<AdminAllocation>[];
+const paginationColumns = [{ id: 'allocation', header: '分配', cell: () => null }] as ColumnDef<AdminAllocation>[];
 
 interface AllocationTableContextValue {
     nodeId: number;
@@ -97,7 +95,7 @@ const AllocationGroupCheckbox = ({ allocations }: { allocations: AdminAllocation
 
     return (
         <Checkbox
-            aria-label={ip ? `Select all unassigned allocations on ${ip}` : 'Select all unassigned allocations'}
+            aria-label={ip ? `选择 ${ip} 上所有未分配的分配` : '选择所有未分配的分配'}
             checked={allSelected}
             indeterminate={!allSelected && unassignedIds.some((id) => selected.has(id))}
             disabled={unassignedIds.length === 0}
@@ -111,7 +109,7 @@ const AllocationCheckbox = ({ allocation }: { allocation: AdminAllocation }) => 
 
     return (
         <Checkbox
-            aria-label={`Select allocation ${allocation.attributes.ip}:${allocation.attributes.port}`}
+            aria-label={`选择分配 ${allocation.attributes.ip}:${allocation.attributes.port}`}
             checked={selected.has(allocation.attributes.id)}
             disabled={allocation.attributes.assigned}
             onChange={() => toggle(allocation.attributes.id)}
@@ -147,8 +145,8 @@ const AllocationAliasCell = ({ allocation }: { allocation: AdminAllocation }) =>
         <TextInput
             type='text'
             value={draft ?? savedAlias}
-            placeholder='Add alias'
-            aria-label={`Alias for ${allocation.attributes.ip}:${allocation.attributes.port}`}
+            placeholder='添加别名'
+            aria-label={`${allocation.attributes.ip}:${allocation.attributes.port} 的别名`}
             onChange={(e) => setDraft(e.currentTarget.value)}
             onBlur={saveAlias}
             className='h-8 border border-transparent bg-transparent px-2 py-1 placeholder:text-muted-foreground focus:bg-input'
@@ -162,13 +160,13 @@ const AllocationServerCell = ({ allocation }: { allocation: AdminAllocation }) =
     if (!assigned) {
         return (
             <span className='inline-flex items-center rounded-sm border border-border bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground'>
-                Unassigned
+                未分配
             </span>
         );
     }
 
     if (serverId === null) {
-        return <span className='text-sm text-muted-foreground'>Assigned</span>;
+        return <span className='text-sm text-muted-foreground'>已分配</span>;
     }
 
     return (
@@ -177,7 +175,7 @@ const AllocationServerCell = ({ allocation }: { allocation: AdminAllocation }) =
             params={{ id: serverId }}
             className='block truncate text-sm text-foreground transition-colors hover:text-accent'
         >
-            {serverName ?? 'Assigned'}
+            {serverName ?? '已分配'}
         </Link>
     );
 };
@@ -194,17 +192,15 @@ const AllocationDeleteCell = ({ allocation }: { allocation: AdminAllocation }) =
     return (
         <RowActions>
             <Dialog.ConfirmTrigger
-                title='Delete this allocation?'
-                confirm='Delete'
-                trigger={({ onClick }) => (
-                    <DeleteAction aria-label={`Delete allocation ${address}`} onClick={onClick} />
-                )}
+                title='删除此分配？'
+                confirm='删除'
+                trigger={({ onClick }) => <DeleteAction aria-label={`删除分配 ${address}`} onClick={onClick} />}
                 onConfirmed={(_event, close) => {
                     close();
                     deleteAllocation(allocation);
                 }}
             >
-                This will permanently delete the <strong>{address}</strong> allocation. This action cannot be undone.
+                这将永久删除分配 <strong>{address}</strong>，此操作无法撤销。
             </Dialog.ConfirmTrigger>
         </RowActions>
     );
@@ -219,7 +215,7 @@ const allocationColumns = [
     },
     {
         id: 'port',
-        header: 'Port',
+        header: '端口',
         cell: ({ row }) => (
             <span className='font-mono text-sm tabular-nums text-foreground'>{row.original.attributes.port}</span>
         ),
@@ -227,13 +223,13 @@ const allocationColumns = [
     },
     {
         id: 'alias',
-        header: 'Alias',
+        header: '别名',
         cell: ({ row }) => <AllocationAliasCell allocation={row.original} />,
         meta: { cellClassName: 'py-2 pl-1' },
     },
     {
         id: 'server',
-        header: 'Server',
+        header: '服务器',
         cell: ({ row }) => <AllocationServerCell allocation={row.original} />,
         meta: { headerClassName: 'hidden w-44 sm:table-cell', cellClassName: 'hidden sm:table-cell' },
     },
@@ -262,16 +258,16 @@ const AllocationGroupTable = ({ ip, allocations, isFetching, onDeleteBlock }: Al
                 <div className='flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-0.5'>
                     <h3 className='truncate font-mono text-sm font-medium text-foreground'>{ip}</h3>
                     <p className='text-xs text-muted-foreground'>
-                        {countLabel(allocations.length, 'allocation')} · {unassignedCount} unassigned
+                        {countLabel(allocations.length, '分配')} · {unassignedCount} 个未分配
                     </p>
                 </div>
                 <Dialog.ConfirmTrigger
-                    title='Delete allocations for IP block?'
-                    confirm='Delete'
+                    title='删除此 IP 段的分配？'
+                    confirm='删除'
                     trigger={({ onClick }) => (
                         <button
                             type='button'
-                            aria-label={`Delete IP block ${ip}`}
+                            aria-label={`删除 IP 段 ${ip}`}
                             className={cn(
                                 'inline-flex shrink-0 items-center gap-1.5 px-2 py-1 text-xs font-medium',
                                 ghostDangerClass
@@ -279,7 +275,7 @@ const AllocationGroupTable = ({ ip, allocations, isFetching, onDeleteBlock }: Al
                             onClick={onClick}
                         >
                             <Icon icon={Trash2} aria-hidden />
-                            Delete IP block
+                            删除 IP 段
                         </button>
                     )}
                     onConfirmed={(_event, close) => {
@@ -287,8 +283,7 @@ const AllocationGroupTable = ({ ip, allocations, isFetching, onDeleteBlock }: Al
                         onDeleteBlock(ip);
                     }}
                 >
-                    This will permanently delete every unassigned allocation for <strong>{ip}</strong>. This action
-                    cannot be undone.
+                    这将永久删除以下地址的所有未分配分配： <strong>{ip}</strong>，此操作无法撤销。
                 </Dialog.ConfirmTrigger>
             </div>
             <DataTable
@@ -296,7 +291,7 @@ const AllocationGroupTable = ({ ip, allocations, isFetching, onDeleteBlock }: Al
                 isFetching={isFetching}
                 className='rounded-none border-0 bg-transparent'
                 tableClassName='table-fixed'
-                emptyState='No allocations for this address.'
+                emptyState='此地址没有分配。'
             />
         </section>
     );
@@ -314,11 +309,11 @@ const ExistingAllocationsSummary = ({ selectedCount, total, onBulkDelete }: Exis
             <div className='-my-1 flex items-center gap-3'>
                 <span className='text-xs text-muted-foreground'>{selectedCount} selected</span>
                 <Dialog.ConfirmTrigger
-                    title='Delete selected allocations?'
-                    confirm='Delete'
+                    title='删除所选分配？'
+                    confirm='删除'
                     trigger={({ onClick }) => (
                         <Button size='xsmall' color='red' onClick={onClick}>
-                            Delete Selected
+                            删除所选
                         </Button>
                     )}
                     onConfirmed={(_event, close) => {
@@ -337,7 +332,7 @@ const ExistingAllocationsSummary = ({ selectedCount, total, onBulkDelete }: Exis
         return null;
     }
 
-    return <span className='text-xs text-muted-foreground'>{countLabel(total, 'allocation')}</span>;
+    return <span className='text-xs text-muted-foreground'>{countLabel(total, '分配')}</span>;
 };
 
 type NodeAllocationsQuery = ReturnType<typeof useAdminNodeAllocations>;
@@ -358,7 +353,7 @@ const AllocationList = ({ query, paginationTable, showPagination, onBlockDelete 
             <div className='space-y-4 p-3'>
                 <Alert type='danger'>{httpErrorToHuman(error)}</Alert>
                 <Button.Text type='button' onClick={() => refetch()}>
-                    Retry
+                    重试
                 </Button.Text>
             </div>
         );
@@ -376,10 +371,8 @@ const AllocationList = ({ query, paginationTable, showPagination, onBlockDelete 
                         <EmptyMedia variant='icon'>
                             <Network />
                         </EmptyMedia>
-                        <EmptyTitle>No allocations yet</EmptyTitle>
-                        <EmptyDescription>
-                            Assign IP addresses and ports with the form to make them available to servers.
-                        </EmptyDescription>
+                        <EmptyTitle>暂无分配</EmptyTitle>
+                        <EmptyDescription>使用下方表单分配 IP 地址与端口，使其可供服务器使用。</EmptyDescription>
                     </EmptyHeader>
                 </Empty>
             ) : (
@@ -400,7 +393,7 @@ const AllocationList = ({ query, paginationTable, showPagination, onBlockDelete 
                     table={paginationTable}
                     total={allocations.meta.pagination.total}
                     count={allocations.meta.pagination.count}
-                    itemLabel='allocations'
+                    itemLabel='分配'
                     className='mt-0 border-t border-border px-3 py-2'
                 />
             )}
@@ -549,7 +542,7 @@ export default function NodeAllocationTab() {
                 contentClassName='p-0'
                 title={
                     <div className='flex min-h-5 items-center justify-between gap-3'>
-                        <h2 className={cardTitleClass}>Existing Allocations</h2>
+                        <h2 className={cardTitleClass}>现有分配</h2>
                         <ExistingAllocationsSummary
                             selectedCount={selected.length}
                             total={allocations?.meta.pagination.total}
@@ -568,20 +561,19 @@ export default function NodeAllocationTab() {
                 </AllocationTableContext.Provider>
             </TitledGreyBox>
             <Form form={createForm}>
-                <TitledGreyBox title='Assign New Allocations' contentClassName='space-y-6 px-3 pt-4'>
+                <TitledGreyBox title='分配新地址' contentClassName='space-y-6 px-3 pt-4'>
                     <createForm.AppField
                         name='ip'
                         validators={{
-                            onChange: ({ value }) =>
-                                value.length >= 1 ? undefined : 'An IP address must be provided.',
+                            onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供 IP 地址。'),
                         }}
                     >
                         {(field) => (
                             <field.TextField
                                 type='text'
                                 id='allocation_ip'
-                                label='IP Address'
-                                description='Enter the IP address to assign ports to.'
+                                label='IP 地址'
+                                description='输入要分配端口的 IP 地址。'
                             />
                         )}
                     </createForm.AppField>
@@ -590,33 +582,29 @@ export default function NodeAllocationTab() {
                             <field.TextField
                                 type='text'
                                 id='allocation_alias'
-                                label='IP Alias'
-                                description='Optional default alias for these allocations.'
+                                label='IP 别名'
+                                description='这些分配的默认可选别名。'
                             />
                         )}
                     </createForm.AppField>
                     <createForm.AppField
                         name='ports'
                         validators={{
-                            onChange: ({ value }) =>
-                                value.length >= 1 ? undefined : 'At least one port must be provided.',
+                            onChange: ({ value }) => (value.length >= 1 ? undefined : '必须提供至少一个端口。'),
                         }}
                     >
                         {(field) => (
                             <field.TextField
                                 type='text'
                                 id='allocation_ports'
-                                label='Ports'
-                                description={
-                                    'Enter individual ports or port ranges (e.g. 25565-25570) separated by ' +
-                                    'commas or spaces.'
-                                }
+                                label='端口'
+                                description='输入单个端口或端口范围（例如 25565-25570），以逗号或空格分隔。'
                             />
                         )}
                     </createForm.AppField>
                     <div className='flex justify-end'>
                         <createForm.AppForm>
-                            <createForm.SubmitButton>Create Allocations</createForm.SubmitButton>
+                            <createForm.SubmitButton>创建分配</createForm.SubmitButton>
                         </createForm.AppForm>
                     </div>
                 </TitledGreyBox>

@@ -133,15 +133,15 @@ export const useRenameServer = (serverIdentifier: string) => {
                 },
             }));
             await invalidateGeneratedOperations(queryClient, ['clientListClientServers']);
-            toast.success('Server details updated');
+            toast.success('服务器详情已更新');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update server details'),
+        onError: (error) => notifyHttpError(error, '无法更新服务器详情'),
     });
 };
 
 export const useReinstallServer = () =>
     useMutation({
         ...clientReinstallServerMutation(),
-        onSuccess: () => toast.success('Server reinstall started'),
-        onError: (error) => notifyHttpError(error, 'Unable to reinstall server'),
+        onSuccess: () => toast.success('服务器重装已开始'),
+        onError: (error) => notifyHttpError(error, '无法重装服务器'),
     });

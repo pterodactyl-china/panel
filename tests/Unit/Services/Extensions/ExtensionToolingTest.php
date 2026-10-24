@@ -40,7 +40,7 @@ test('doctor reports navigation icons the panel does not ship without failing th
     ]]], JSON_THROW_ON_ERROR));
 
     $this->artisan('p:extension:doctor', ['path' => $this->directory])
-        ->expectsOutputToContain('Icon "not-an-icon" is not a lucide icon this panel ships')
+        ->expectsOutputToContain('图标「not-an-icon」不是本面板内置的 lucide 图标')
         ->doesntExpectOutputToContain('life-buoy')
         ->assertSuccessful();
 });
@@ -251,6 +251,6 @@ test('warns about missing frontend configuration keys only when a provider could
     File::put($this->directory.'/extension.json', json_encode($manifest, JSON_THROW_ON_ERROR));
 
     $this->artisan('p:extension:types', ['path' => $this->directory])
-        ->expectsOutputToContain('provider is not loaded')
+        ->expectsOutputToContain('Provider 未加载')
         ->assertSuccessful();
 });

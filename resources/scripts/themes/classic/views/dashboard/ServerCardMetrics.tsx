@@ -4,12 +4,12 @@ import type { ServerCardState, ServerStatMetric, ServerUnavailableReason, UiTone
 
 const unavailableLabels = {
     suspended: 'Suspended',
-    'connection-error': 'Connection Error',
-    maintenance: 'Under Maintenance',
+    'connection-error': '连接错误',
+    maintenance: '维护中',
     transferring: 'Transferring',
-    installing: 'Installing',
-    'restoring-backup': 'Restoring Backup',
-    unavailable: 'Unavailable',
+    installing: '安装中',
+    'restoring-backup': '正在恢复备份',
+    unavailable: '不可用',
 } as const;
 
 const unavailableTones = {
@@ -50,21 +50,21 @@ function MetricsContent({ state }: { state: ServerCardState }) {
                     icon: Cpu,
                     metric: state.cpu,
                     value: `${state.cpu.value.toFixed(2)} %`,
-                    limit: state.cpu.limit === 0 ? 'Unlimited' : `${state.cpu.limit} %`,
+                    limit: state.cpu.limit === 0 ? '无限制' : `${state.cpu.limit} %`,
                 },
                 {
-                    label: 'Memory',
+                    label: '内存',
                     icon: MemoryStick,
                     metric: state.memory,
                     value: bytesToString(state.memory.value),
-                    limit: state.memory.limit === 0 ? 'Unlimited' : bytesToString(state.memory.limit),
+                    limit: state.memory.limit === 0 ? '无限制' : bytesToString(state.memory.limit),
                 },
                 {
-                    label: 'Disk',
+                    label: '磁盘',
                     icon: HardDrive,
                     metric: state.disk,
                     value: bytesToString(state.disk.value),
-                    limit: state.disk.limit === 0 ? 'Unlimited' : bytesToString(state.disk.limit),
+                    limit: state.disk.limit === 0 ? '无限制' : bytesToString(state.disk.limit),
                 },
             ].map(({ label, icon, metric, value, limit }) => (
                 <Stat

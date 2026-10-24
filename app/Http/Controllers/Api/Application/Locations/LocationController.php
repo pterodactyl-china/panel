@@ -37,7 +37,7 @@ class LocationController extends ApplicationApiController
             [
                 'code' => 'HasActiveNodesException',
                 'status' => '400',
-                'detail' => 'Cannot delete a location that has active nodes attached to it.',
+                'detail' => '无法删除仍挂有活动节点的地域。',
             ],
         ],
     ];

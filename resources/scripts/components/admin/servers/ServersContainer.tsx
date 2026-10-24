@@ -121,11 +121,7 @@ export default function ServersContainer() {
     }
 
     return (
-        <AdminContentBlock
-            title='Admin · Servers'
-            heading='Servers'
-            description='Create and manage game servers across your nodes.'
-        >
+        <AdminContentBlock title='管理 · 服务器' heading='服务器' description='在各节点上创建并管理游戏服务器。'>
             <form
                 className='mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between'
                 onSubmit={(e) => {
@@ -146,9 +142,9 @@ export default function ServersContainer() {
                     <TextInput
                         key={filter}
                         name='filter'
-                        aria-label='Search servers'
+                        aria-label='搜索服务器'
                         className='h-9 border-border bg-card pl-10'
-                        placeholder='Search servers…'
+                        placeholder='搜索服务器…'
                         defaultValue={filter}
                     />
                 </div>
@@ -162,10 +158,10 @@ export default function ServersContainer() {
                         emptyState={
                             <AdminListEmpty
                                 icon={Server}
-                                noun='servers'
+                                noun='服务器'
                                 filter={filter}
                                 onClearFilter={() => navigateToSearch({ page: 1, filter: '' })}
-                                description='Create a server to deploy it on one of your nodes.'
+                                description='创建服务器以部署到您的某个节点。'
                                 action={<CreateServerButton />}
                             />
                         }
@@ -174,7 +170,7 @@ export default function ServersContainer() {
                         table={table}
                         total={servers.meta.pagination.total}
                         count={servers.meta.pagination.count}
-                        itemLabel='servers'
+                        itemLabel='服务器'
                     />
                 </>
             ) : (

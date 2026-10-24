@@ -5,7 +5,7 @@ import PageStatus from '../../shared/PageStatus';
 export default function BackupsPage({ model, className }: ViewProps<'page.server.backups'>) {
     return (
         <PageStatus model={model} className={className}>
-            <ServerContentBlock title='Backups' className={className}>
+            <ServerContentBlock title='备份' className={className}>
                 <View name='server.backups' />
             </ServerContentBlock>
         </PageStatus>

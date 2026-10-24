@@ -10,6 +10,8 @@
   </testsuites>
   <php>
     <env name="APP_ENV" value="testing"/>
+    <!-- 面板与测试统一使用简体中文，断言直接校验中文文案。 -->
+    <env name="APP_LOCALE" value="zh"/>
     <env name="CACHE_STORE" value="array"/>
     <env name="DB_DATABASE" value="testing"/>
     <env name="MAIL_MAILER" value="array"/>
@@ -18,6 +20,8 @@
     <env name="RECAPTCHA_ENABLED" value="(false)"/>
     <env name="SESSION_DRIVER" value="array"/>
     <env name="PTERODACTYL_EXTENSIONS_DIRECTORY" value="tests/Fixtures/extensions"/>
+    <!-- 集成测试会加载整套面板与大量 SQL 快照，默认 128M 会在中途耗尽内存。 -->
+    <ini name="memory_limit" value="2G"/>
   </php>
   <source>
     <include>

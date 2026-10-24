@@ -116,7 +116,7 @@ it('isolates suspense queries and lets an errored query recover on explicit retr
         </QueryClientProvider>
     );
     expect(screen.getByText('host stays')).toBeVisible();
-    fireEvent.click(await screen.findByRole('button', { name: 'Retry extension' }));
+    fireEvent.click(await screen.findByRole('button', { name: '重试扩展' }));
     expect(await screen.findByText('recovered')).toBeVisible();
     expect(queryFn).toHaveBeenCalledTimes(2);
     client.clear();
@@ -157,7 +157,7 @@ it('keeps recovery controls outside clickable slot hosts', async () => {
         </>
     );
     expect(within(screen.getByRole('link', { name: 'Host row' })).queryByRole('button')).not.toBeInTheDocument();
-    expect(await screen.findByRole('button', { name: 'Retry extension' })).toBeVisible();
+    expect(await screen.findByRole('button', { name: '重试扩展' })).toBeVisible();
 });
 
 it('reports a failure repeated in every row once and retries every row together', async () => {
@@ -182,7 +182,7 @@ it('reports a failure repeated in every row once and retries every row together'
         </>
     );
 
-    expect(await screen.findAllByRole('button', { name: 'Retry extension' })).toHaveLength(1);
+    expect(await screen.findAllByRole('button', { name: '重试扩展' })).toHaveLength(1);
     const reports = errors.mock.calls.filter(([message]) => String(message).startsWith('[extensions] "rows"'));
 
     expect(reports).toHaveLength(1);
@@ -193,8 +193,8 @@ it('reports a failure repeated in every row once and retries every row together'
     });
 
     broken = false;
-    fireEvent.click(screen.getByRole('button', { name: 'Retry extension' }));
+    fireEvent.click(screen.getByRole('button', { name: '重试扩展' }));
 
     expect(await screen.findAllByText('row ready')).toHaveLength(3);
-    await waitFor(() => expect(screen.queryByRole('button', { name: 'Retry extension' })).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByRole('button', { name: '重试扩展' })).not.toBeInTheDocument());
 });

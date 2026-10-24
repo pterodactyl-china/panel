@@ -100,9 +100,9 @@ export const useCreateServerBackup = () => {
             await queryClient.invalidateQueries({
                 queryKey: clientListServerBackupsQueryKey({ path: { server_uuid: path.server_uuid } }),
             });
-            toast.success('Backup started', { description: `${backup.attributes.name} is being created.` });
+            toast.success('Backup started', { description: `${backup.attributes.name} 正在创建。` });
         },
-        onError: (error) => notifyHttpError(error, 'Unable to create backup'),
+        onError: (error) => notifyHttpError(error, '无法创建备份'),
     });
 };
 
@@ -116,7 +116,7 @@ export const useDeleteServerBackup = () => {
             queryClient.invalidateQueries({
                 queryKey: clientListServerBackupsQueryKey({ path: { server_uuid: path.server_uuid } }),
             }),
-        onError: (error) => notifyHttpError(error, 'Unable to delete backup'),
+        onError: (error) => notifyHttpError(error, '无法删除备份'),
     });
 };
 
@@ -132,7 +132,7 @@ export const useRestoreServerBackup = () => {
                 attributes: { ...server.attributes, status: 'restoring_backup' },
             }));
         },
-        onError: (error) => notifyHttpError(error, 'Unable to restore backup'),
+        onError: (error) => notifyHttpError(error, '无法恢复备份'),
     });
 };
 
@@ -143,9 +143,9 @@ export const useToggleServerBackupLock = (page: number) => {
         ...clientToggleBackupLockMutation(),
         onSuccess: (updated, { path }) => {
             updateServerBackup(queryClient, path.server_uuid, page, path.backup_uuid, () => updated);
-            toast.success(updated.attributes.is_locked ? 'Backup locked' : 'Backup unlocked');
+            toast.success(updated.attributes.is_locked ? '备份已锁定' : '备份已解锁');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to update backup lock'),
+        onError: (error) => notifyHttpError(error, '无法更新备份锁定状态'),
     });
 };
 
@@ -160,5 +160,5 @@ export const useBackupDownloadUrl = () =>
 
             return data.attributes.url;
         },
-        onError: (error) => notifyHttpError(error, 'Unable to create backup download'),
+        onError: (error) => notifyHttpError(error, '无法生成备份下载链接'),
     });

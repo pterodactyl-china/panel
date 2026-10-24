@@ -83,17 +83,17 @@ describe('DataTable', () => {
 
         render(<TestTable />);
 
-        await user.click(screen.getByRole('button', { name: 'Next page' }));
+        await user.click(screen.getByRole('button', { name: '下一页' }));
 
-        expect(screen.getByLabelText('Page 2 of 2')).toBeInTheDocument();
-        expect(screen.getByLabelText('Showing 3 to 3 of 3 servers')).toBeInTheDocument();
+        expect(screen.getByLabelText('第 2 页，共 2 页')).toBeInTheDocument();
+        expect(screen.getByLabelText('显示第 3 至 3 条，共 3 条')).toBeInTheDocument();
     });
 
     it('only shows the range summary when every row fits on one page', () => {
         render(<TestTable total={2} />);
 
-        expect(screen.getByLabelText('Showing 1 to 2 of 2 servers')).toBeInTheDocument();
-        expect(screen.queryByLabelText('Page 1 of 1')).not.toBeInTheDocument();
+        expect(screen.getByLabelText('显示第 1 至 2 条，共 2 条')).toBeInTheDocument();
+        expect(screen.queryByLabelText('第 1 页，共 1 页')).not.toBeInTheDocument();
         expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });
 
@@ -103,7 +103,7 @@ describe('DataTable', () => {
 
             return (
                 <>
-                    <DataTable table={table} isFetching={isFetching} emptyState={<p>No servers yet</p>} />
+                    <DataTable table={table} isFetching={isFetching} emptyState={<p>暂无服务器</p>} />
                     <DataTablePagination table={table} total={0} count={0} itemLabel='servers' />
                 </>
             );
@@ -111,7 +111,7 @@ describe('DataTable', () => {
 
         const { container, rerender } = render(<EmptyTable />);
 
-        expect(screen.getByText('No servers yet')).toBeInTheDocument();
+        expect(screen.getByText('暂无服务器')).toBeInTheDocument();
         expect(screen.queryByRole('table')).not.toBeInTheDocument();
         expect(screen.queryByRole('columnheader')).not.toBeInTheDocument();
         expect(screen.queryByLabelText(/^Showing/)).not.toBeInTheDocument();

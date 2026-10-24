@@ -3,7 +3,7 @@ import type { ViewProps } from '@/sdk/theme';
 
 export default function StartupImage({ model, className }: ViewProps<'server.startup.image'>) {
     return (
-        <TitledGreyBox title='Docker Image' className={className}>
+        <TitledGreyBox title='Docker 镜像' className={className}>
             {model.images.length > 1 && !model.custom ? (
                 <>
                     <InputSpinner visible={model.pending}>
@@ -15,8 +15,7 @@ export default function StartupImage({ model, className }: ViewProps<'server.sta
                         />
                     </InputSpinner>
                     <p className='text-xs text-muted-foreground mt-2'>
-                        This is an advanced feature allowing you to select a Docker image to use when running this
-                        server instance.
+                        这是一项高级功能，可让您选择运行此服务器实例时使用的 Docker 镜像。
                     </p>
                 </>
             ) : (
@@ -24,8 +23,7 @@ export default function StartupImage({ model, className }: ViewProps<'server.sta
                     <Input disabled readOnly value={model.image} />
                     {model.custom && (
                         <p className='text-xs text-muted-foreground mt-2'>
-                            This server's Docker image has been manually set by an administrator and cannot be changed
-                            through this UI.
+                            此服务器的 Docker 镜像已由管理员手动设置，无法通过此界面更改。
                         </p>
                     )}
                 </>

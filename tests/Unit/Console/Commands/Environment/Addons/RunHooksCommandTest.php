@@ -44,7 +44,7 @@ test('non executable files are ignored', function () {
 test('invalid event name is rejected', function () {
     config(['addons.hooks_enabled' => true]);
     Process::fake();
-    runHooks('BadEvent')->expectsOutputToContain('Invalid hook event name')->assertExitCode(Command::INVALID);
+    runHooks('BadEvent')->expectsOutputToContain('无效的钩子事件名')->assertExitCode(Command::INVALID);
     Process::assertNothingRan();
 });
 test('failing hook does not abort remaining hooks', function () {
@@ -52,7 +52,7 @@ test('failing hook does not abort remaining hooks', function () {
     $failing = makeHook('broken');
     $passing = makeHook('healthy');
     Process::fake(['*broken*' => Process::result(exitCode: 3), '*' => Process::result()]);
-    runHooks()->expectsOutputToContain('exited with an error')->assertExitCode(Command::SUCCESS);
+    runHooks()->expectsOutputToContain('以错误退出')->assertExitCode(Command::SUCCESS);
     Process::assertRan(fn ($process) => $process->command === [$failing]);
     Process::assertRan(fn ($process) => $process->command === [$passing]);
 });
@@ -60,7 +60,7 @@ test('declined confirmation skips hooks', function () {
     config(['addons.hooks_enabled' => true]);
     Process::fake();
     makeHook('example');
-    $this->artisan('p:environment:addons:run-hooks', ['event' => 'post-install'])->expectsConfirmation('Execute 1 addon hook script(s) for the "post-install" event? They run with the privileges of this process.', 'no')->assertExitCode(Command::SUCCESS);
+    $this->artisan('p:environment:addons:run-hooks', ['event' => 'post-install'])->expectsConfirmation('是否为事件「post-install」执行 1 个附加组件钩子脚本？它们将以本进程的权限运行。', 'no')->assertExitCode(Command::SUCCESS);
     Process::assertNothingRan();
 });
 function runHooks(string $event = 'post-install'): PendingCommand

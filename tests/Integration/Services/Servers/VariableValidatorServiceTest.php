@@ -29,8 +29,8 @@ test('environment variables can be validated', function () {
         expect($errors)->toHaveCount(2);
         expect($errors)->toHaveKey('environment.BUNGEE_VERSION');
         expect($errors)->toHaveKey('environment.SERVER_JARFILE');
-        expect($errors['environment.BUNGEE_VERSION'][0])->toBe('The Bungeecord Version variable may only contain letters and numbers.');
-        expect($errors['environment.SERVER_JARFILE'][0])->toBe('The Bungeecord Jar File variable field is required.');
+        expect($errors['environment.BUNGEE_VERSION'][0])->toBe('Bungeecord Version 变量 只能由字母和数字组成。');
+        expect($errors['environment.SERVER_JARFILE'][0])->toBe('Bungeecord Jar File 变量 不能为空。');
     }
     $response = getService()->validate($egg, ['BUNGEE_VERSION' => '1234', 'SERVER_JARFILE' => 'server.jar']);
     expect($response)->toBeInstanceOf(Collection::class);

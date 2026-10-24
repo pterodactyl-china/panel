@@ -2,22 +2,20 @@ import { describe, expect, it } from 'vitest';
 import { requiredNumber, submittedNumber } from './numberInput';
 
 describe('requiredNumber', () => {
-    const validate = requiredNumber('A memory limit must be provided.', (value) =>
-        value >= 0 ? undefined : 'Invalid memory limit.'
-    );
+    const validate = requiredNumber('必须提供内存限制。', (value) => (value >= 0 ? undefined : '内存限制无效。'));
 
     it('rejects an empty input even when the range check would accept null', () => {
-        expect(validate({ value: null })).toBe('A memory limit must be provided.');
+        expect(validate({ value: null })).toBe('必须提供内存限制。');
     });
 
     it('checks an entered number', () => {
         expect(validate({ value: 0 })).toBeUndefined();
         expect(validate({ value: 512 })).toBeUndefined();
-        expect(validate({ value: -1 })).toBe('Invalid memory limit.');
+        expect(validate({ value: -1 })).toBe('内存限制无效。');
     });
 
     it('accepts any entered number without a check', () => {
-        expect(requiredNumber('A port must be provided.')({ value: 0 })).toBeUndefined();
+        expect(requiredNumber('必须提供端口。')({ value: 0 })).toBeUndefined();
     });
 });
 

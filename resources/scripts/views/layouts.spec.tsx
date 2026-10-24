@@ -90,21 +90,21 @@ describe('layout.app', () => {
         await renderLayout('layout.app', { models: { 'layout.app': appModel({ signOut }) } });
 
         expect(await screen.findByRole('link', { name: 'Panel' })).toHaveAttribute('href', '/');
-        expect(screen.getByRole('link', { name: 'Dashboard' })).toHaveAttribute('data-status', 'active');
-        expect(screen.getByRole('link', { name: 'Admin' })).toHaveAttribute('href', '/panel');
-        expect(screen.getByRole('link', { name: 'Account Settings' })).toHaveAttribute('href', '/account');
+        expect(screen.getByRole('link', { name: '仪表盘' })).toHaveAttribute('data-status', 'active');
+        expect(screen.getByRole('link', { name: '管理' })).toHaveAttribute('href', '/panel');
+        expect(screen.getByRole('link', { name: '账户设置' })).toHaveAttribute('href', '/account');
         expect(screen.getByRole('button', { name: 'Search' })).toHaveClass('px-3', 'sm:px-6');
         expect(screen.getByRole('main')).toHaveTextContent('Routed page');
 
-        fireEvent.click(screen.getByRole('button', { name: 'Sign Out' }));
+        fireEvent.click(screen.getByRole('button', { name: '退出登录' }));
         expect(signOut).toHaveBeenCalledOnce();
     });
 
     it('leaves the admin link out for other users', async () => {
         await renderLayout('layout.app', { fixtures: { 'layout.app': 'user' } });
 
-        expect(await screen.findByRole('link', { name: 'Dashboard' })).toBeVisible();
-        expect(screen.queryByRole('link', { name: 'Admin' })).not.toBeInTheDocument();
+        expect(await screen.findByRole('link', { name: '仪表盘' })).toBeVisible();
+        expect(screen.queryByRole('link', { name: '管理' })).not.toBeInTheDocument();
     });
 
     it('shows the theme logo in place of the panel name', async () => {
@@ -118,7 +118,7 @@ describe('layout.app', () => {
 
     it('offers a scheme switcher only when the theme has more than one scheme', async () => {
         await renderLayout('layout.app', { fixtures: { 'layout.app': 'user' } });
-        expect(screen.queryByRole('button', { name: 'Color scheme' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: '配色方案' })).not.toBeInTheDocument();
         cleanup();
         host?.dispose();
 
@@ -127,7 +127,7 @@ describe('layout.app', () => {
         await renderLayout('layout.app', {
             models: { 'layout.app': appModel({ schemes: ['dark', 'light'], setScheme }) },
         });
-        fireEvent.click(screen.getByRole('button', { name: 'Color scheme' }));
+        fireEvent.click(screen.getByRole('button', { name: '配色方案' }));
         fireEvent.click(await screen.findByRole('menuitemcheckbox', { name: 'Light' }));
 
         expect(setScheme).toHaveBeenCalledWith('light');
@@ -140,7 +140,7 @@ describe('layout.app', () => {
         document.documentElement.className = 'dark';
 
         await renderLayout('layout.app', null);
-        fireEvent.click(await screen.findByRole('button', { name: 'Color scheme' }));
+        fireEvent.click(await screen.findByRole('button', { name: '配色方案' }));
         fireEvent.click(await screen.findByRole('menuitemcheckbox', { name: 'Light' }));
 
         expect(document.documentElement).toHaveClass('light');
@@ -204,7 +204,7 @@ describe('the area layout.app renders', () => {
     beforeAll(() => {
         publishAreaNav('account', [
             { segment: '', label: 'Account', exact: true, icon: 'user-round' },
-            { segment: 'api', label: 'API Credentials', icon: 'key-round' },
+            { segment: 'api', label: 'API 凭据', icon: 'key-round' },
         ]);
         publishAreaNav('server', [
             { segment: '', label: 'Console', exact: true, icon: 'square-terminal' },
@@ -223,10 +223,7 @@ describe('the area layout.app renders', () => {
 
     it('carries the navigation of the account and admin areas, with their icons', async () => {
         expect(await renderArea('/account/api')).toHaveTextContent('account');
-        expect(screen.getByRole('link', { name: 'key-round API Credentials' })).toHaveAttribute(
-            'data-status',
-            'active'
-        );
+        expect(screen.getByRole('link', { name: 'key-round API 凭据' })).toHaveAttribute('data-status', 'active');
         cleanup();
         host?.dispose();
 
@@ -255,7 +252,7 @@ describe('layout.server', () => {
             'href',
             '/server/a1b2c3d4/files#/'
         );
-        expect(within(navigation).getByRole('link', { name: 'Open Admin Area' })).toHaveAttribute(
+        expect(within(navigation).getByRole('link', { name: '打开管理区' })).toHaveAttribute(
             'href',
             '/panel/servers/1'
         );
@@ -302,7 +299,7 @@ describe('layout.admin', () => {
             { fixtures: { 'layout.admin': 'default' } },
             '/panel/settings'
         );
-        const disclosure = screen.getByRole('button', { name: 'Settings' });
+        const disclosure = screen.getByRole('button', { name: '设置' });
 
         fireEvent.click(disclosure);
         expect(disclosure).toHaveAttribute('aria-expanded', 'true');
@@ -312,15 +309,15 @@ describe('layout.admin', () => {
         await act(async () => panel.navigate({ to: '/panel/users' }));
 
         await waitFor(() =>
-            expect(screen.getByRole('button', { name: 'Users' })).toHaveAttribute('aria-expanded', 'false')
+            expect(screen.getByRole('button', { name: '用户' })).toHaveAttribute('aria-expanded', 'false')
         );
-        expect(screen.getByRole('link', { name: 'Users' })).toHaveAttribute('data-status', 'active');
+        expect(screen.getByRole('link', { name: '用户' })).toHaveAttribute('data-status', 'active');
     });
 
     it('does not confuse items with a shared path prefix', async () => {
         await renderLayout('layout.admin', { fixtures: { 'layout.admin': 'default' } }, '/panel/users-extra');
 
-        expect(screen.getByRole('button', { name: 'Administration' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: '管理' })).toBeInTheDocument();
     });
 });
 

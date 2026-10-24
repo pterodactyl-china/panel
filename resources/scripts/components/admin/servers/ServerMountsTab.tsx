@@ -62,7 +62,7 @@ function ServerMountsContent({ server }: Props) {
             [
                 {
                     id: 'name',
-                    header: 'Mount',
+                    header: '挂载',
                     cell: ({ row }) => (
                         <div className='min-w-0'>
                             <Link
@@ -82,7 +82,7 @@ function ServerMountsContent({ server }: Props) {
                 },
                 {
                     id: 'status',
-                    header: 'Status',
+                    header: '状态',
                     cell: ({ row }) => (
                         <span
                             className={
@@ -101,7 +101,7 @@ function ServerMountsContent({ server }: Props) {
                     (mount) => (
                         <RowActions>
                             <EditLinkAction
-                                aria-label={`Edit ${mount.attributes.name}`}
+                                aria-label={`编辑 ${mount.attributes.name}`}
                                 to='/panel/mounts/$id'
                                 params={{ id: mount.attributes.id }}
                             />
@@ -135,7 +135,7 @@ function ServerMountsContent({ server }: Props) {
 
     return (
         <div>
-            <TitledGreyBox title='Available Mounts'>
+            <TitledGreyBox title='可用挂载'>
                 {mounts ? (
                     <DataTable
                         table={table}
@@ -146,15 +146,14 @@ function ServerMountsContent({ server }: Props) {
                                     <EmptyMedia variant='icon'>
                                         <FolderInput />
                                     </EmptyMedia>
-                                    <EmptyTitle>No mounts available</EmptyTitle>
+                                    <EmptyTitle>没有可用的挂载</EmptyTitle>
                                     <EmptyDescription>
-                                        A mount appears here once it is attached to both this server&apos;s egg and its
-                                        node.
+                                        当挂载同时关联到此服务器的预设与其节点后，就会显示在这里。
                                     </EmptyDescription>
                                 </EmptyHeader>
                                 <EmptyContent>
                                     <NewLinkButton to='/panel/mounts' isSecondary icon={FolderInput}>
-                                        Manage mounts
+                                        管理挂载
                                     </NewLinkButton>
                                 </EmptyContent>
                             </Empty>
@@ -172,7 +171,7 @@ export default function ServerMountsTab() {
     const { server } = useServerDetail();
 
     if (server.attributes.container.installed !== 1) {
-        return <ServerError message='Access to this resource is not allowed due to the current installation state.' />;
+        return <ServerError message='由于当前安装状态，不允许访问此资源。' />;
     }
 
     return <ServerMountsContent server={server} />;

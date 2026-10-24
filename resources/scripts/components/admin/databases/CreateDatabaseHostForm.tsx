@@ -39,28 +39,28 @@ export default function CreateDatabaseHostForm() {
 
     return (
         <AdminContentBlock
-            title='Admin · Create Database Host'
-            heading='Create Database Host'
-            description='Add a database host for server databases.'
+            title='管理 · 创建数据库主机'
+            heading='创建数据库主机'
+            description='添加供服务器数据库使用的数据库主机。'
         >
             <Link
                 to='/panel/databases'
                 className='inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4'
             >
                 <Icon icon={ArrowLeft} className='mr-2' />
-                Back to Database Hosts
+                返回数据库主机
             </Link>
             <Form form={form}>
                 <div className='space-y-6'>
-                    <TitledGreyBox title='Host Details'>
+                    <TitledGreyBox title='主机详情'>
                         <div className='space-y-6'>
                             <form.AppField name='name' validators={databaseHostValidators.name}>
                                 {(field) => (
                                     <field.TextField
                                         type='text'
                                         id='name'
-                                        label='Name'
-                                        description='A short, human-readable name used to identify this host.'
+                                        label='名称'
+                                        description='用于标识此主机的简短易读名称。'
                                     />
                                 )}
                             </form.AppField>
@@ -70,13 +70,13 @@ export default function CreateDatabaseHostForm() {
                                         <field.TextField
                                             type='text'
                                             id='host'
-                                            label='Host'
-                                            description='The hostname or IP address that this database server is reachable on.'
+                                            label='主机'
+                                            description='此数据库服务器可访问的主机名或 IP 地址。'
                                         />
                                     )}
                                 </form.AppField>
                                 <form.AppField name='port' validators={databaseHostValidators.port}>
-                                    {(field) => <field.NumberField id='port' label='Port' />}
+                                    {(field) => <field.NumberField id='port' label='端口' />}
                                 </form.AppField>
                             </div>
                             <DatabaseHostNodeSelect
@@ -86,14 +86,14 @@ export default function CreateDatabaseHostForm() {
                             />
                         </div>
                     </TitledGreyBox>
-                    <TitledGreyBox title='Credentials'>
+                    <TitledGreyBox title='凭据'>
                         <form.AppField name='username' validators={databaseHostValidators.username}>
                             {(field) => (
                                 <field.TextField
                                     type='text'
                                     id='username'
-                                    label='Username'
-                                    description='A user on the database server with permission to create users and databases.'
+                                    label='用户名'
+                                    description='数据库服务器上具有创建用户和数据库权限的用户。'
                                 />
                             )}
                         </form.AppField>
@@ -103,8 +103,8 @@ export default function CreateDatabaseHostForm() {
                                     <field.TextField
                                         type='password'
                                         id='password'
-                                        label='Password'
-                                        description='The password for the account used to connect to this host.'
+                                        label='密码'
+                                        description='用于连接此主机的账户密码。'
                                     />
                                 )}
                             </form.AppField>
@@ -122,7 +122,7 @@ export default function CreateDatabaseHostForm() {
                     </form.AppField>
                     <div className='flex justify-end'>
                         <form.AppForm>
-                            <form.SubmitButton>Create Host</form.SubmitButton>
+                            <form.SubmitButton>创建主机</form.SubmitButton>
                         </form.AppForm>
                     </div>
                 </div>
