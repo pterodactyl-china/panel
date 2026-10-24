@@ -14,17 +14,17 @@ Pterodactyl® 是一个免费的开源游戏服务器管理面板，使用 PHP�
 
 **此仓库将实时同步上游进行汉化 , 发布的 Releases 均通过 Github Actions 的构建测试，并在发布前会经过本地环境测试。**
 
-## Pterodactyl v2 Beta is Out!
+## Pterodactyl v2 Beta 已发布！
 
-Pterodactyl v2.0.0-beta.1 is now available! The next major version introduces a modernized tech stack, a redesigned admin area, and an extension SDK built into the panel. It remains 100% free and open source under the MIT license.
+Pterodactyl v2.0.0-beta.1 现已可用！这一新的重大版本带来了现代化的技术栈、重新设计的管理区域，以及内置于面板中的扩展 SDK。它依然基于 MIT 协议，100% 免费且开源。
 
-[![Watch: Introducing Pterodactyl v2](.github/assets/v2-video.jpg)](https://www.youtube.com/watch?v=1ER4kv0jVEU)
+[![观看：Pterodactyl v2 介绍](.github/assets/v2-video.jpg)](https://www.youtube.com/watch?v=1ER4kv0jVEU)
 
-- [Get started with v2](https://docs.pterodactyl.io/v2/panel/getting-started)
-- [Upgrade from v1](https://docs.pterodactyl.io/v2/upgrading/upgrading-from-v1)
-- [Release notes](https://github.com/pterodactyl/panel/releases/tag/v2.0.0-beta.1)
+- [开始使用 v2](https://docs.pterodactyl.io/v2/panel/getting-started)
+- [从 v1 升级](https://docs.pterodactyl.io/v2/upgrading/upgrading-from-v1)
+- [发布说明](https://github.com/pterodactyl/panel/releases/tag/v2.0.0-beta.1)
 
-Development happens on the [`2.0-develop`](https://github.com/pterodactyl/panel/tree/2.0-develop) branch. The v2 branch is currently in beta, while `1.0-develop` remains the current stable release line.
+开发工作正在 [`2.0-develop`](https://github.com/pterodactyl/panel/tree/2.0-develop) 分支上进行。v2 分支目前处于 beta 阶段，而 `1.0-develop` 仍是当前的稳定发布线。
 
 ![Image](https://cdn.pterodactyl.io/site-assets/pterodactyl_v1_demo.gif)
 
@@ -73,13 +73,13 @@ Development happens on the [`2.0-develop`](https://github.com/pterodactyl/panel/
 * FiveM
 * Xonotic
 * Starmade
-* Discord ATLBot, and most other Node.js/Python discord bots
+* Discord ATLBot，以及大多数其他 Node.js/Python 的 Discord 机器人
 * [更多...](https://eggs.pterodactyl.io)
 
 ## 开源协议
 
-Pterodactyl® Copyright © 2015 - 2022 Dane Everitt and contributors.     
-Code released under the [MIT License](./LICENSE.md).
+Pterodactyl® 版权所有 © 2015 - 2022 Dane Everitt 及贡献者.     
+代码基于 [MIT 许可证](./LICENSE.md) 发布。
 
 此本地化项目同样遵循 翼龙开源协议 与 MIT 开源协议   
 引用资源文件/汉化文本请注意作者署名。
