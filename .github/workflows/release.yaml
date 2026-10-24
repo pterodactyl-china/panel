@@ -53,7 +53,7 @@ jobs:
       # 上面创建的是 draft release，清单仓库无法通过 API 读到版本号，只能由这里主动告知。
       # GITHUB_TOKEN 无法跨仓库使用，需要 CDN_DISPATCH_TOKEN（对 .github 仓库有 Contents: Read and write 的 PAT）。
       - name: Update release manifest
-        if: ${{ secrets.CDN_DISPATCH_TOKEN != '' && !contains(github.ref_name, 'rc') && !contains(github.ref_name, 'beta') && !contains(github.ref_name, 'alpha') }}
+        if: ${{ !contains(github.ref_name, 'rc') && !contains(github.ref_name, 'beta') && !contains(github.ref_name, 'alpha') }}
         env:
           GH_TOKEN: ${{ secrets.CDN_DISPATCH_TOKEN }}
           VERSION: ${{ github.ref_name }}
