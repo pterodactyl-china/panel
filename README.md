@@ -14,6 +14,18 @@ Pterodactyl® 是一个免费的开源游戏服务器管理面板，使用 PHP�
 
 **此仓库将实时同步上游进行汉化 , 发布的 Releases 均通过 Github Actions 的构建测试，并在发布前会经过本地环境测试。**
 
+## Pterodactyl v2 Beta is Out!
+
+Pterodactyl v2.0.0-beta.1 is now available! The next major version introduces a modernized tech stack, a redesigned admin area, and an extension SDK built into the panel. It remains 100% free and open source under the MIT license.
+
+[![Watch: Introducing Pterodactyl v2](.github/assets/v2-video.jpg)](https://www.youtube.com/watch?v=1ER4kv0jVEU)
+
+- [Get started with v2](https://docs.pterodactyl.io/v2/panel/getting-started)
+- [Upgrade from v1](https://docs.pterodactyl.io/v2/upgrading/upgrading-from-v1)
+- [Release notes](https://github.com/pterodactyl/panel/releases/tag/v2.0.0-beta.1)
+
+Development happens on the [`2.0-develop`](https://github.com/pterodactyl/panel/tree/2.0-develop) branch. The v2 branch is currently in beta, while `1.0-develop` remains the current stable release line.
+
 ![Image](https://cdn.pterodactyl.io/site-assets/pterodactyl_v1_demo.gif)
 
 ## 翼龙中国文档
