@@ -21,8 +21,8 @@ class VersionController extends AdminApiController
         'latest' => '1.0.0',
         'is_latest' => true,
         'daemon' => '1.0.0',
-        'discord' => 'https://pterodactyl.io/discord',
-        'donations' => 'https://github.com/sponsors/pterodactyl',
+        'discord' => 'https://pterodactyl.top/discord',
+        'donations' => 'https://afdian.net/a/vlssu',
     ];
 
     /**

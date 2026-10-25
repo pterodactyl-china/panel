@@ -13,8 +13,8 @@ test('get version', function () {
     $this->app->instance(SoftwareVersionService::class, new FakeSoftwareVersionService(
         panel: '1.0.0',
         daemon: '1.0.0',
-        discord: 'https://pterodactyl.io/discord',
-        donations: 'https://github.com/sponsors/matthewpi',
+        discord: 'https://pterodactyl.top/discord',
+        donations: 'https://afdian.net/a/vlssu',
         isLatestPanel: true,
     ));
     $response = $this->getJson(route('api.admin.version'));
@@ -24,8 +24,8 @@ test('get version', function () {
     $response->assertJsonPath('latest', '1.0.0');
     $response->assertJsonPath('is_latest', true);
     $response->assertJsonPath('daemon', '1.0.0');
-    $response->assertJsonPath('discord', 'https://pterodactyl.io/discord');
-    $response->assertJsonPath('donations', 'https://github.com/sponsors/matthewpi');
+    $response->assertJsonPath('discord', 'https://pterodactyl.top/discord');
+    $response->assertJsonPath('donations', 'https://afdian.net/a/vlssu');
 });
 test('non admin forbidden', function () {
     $this->actingAsNonAdmin();

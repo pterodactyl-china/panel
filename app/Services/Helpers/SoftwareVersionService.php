@@ -46,7 +46,7 @@ class SoftwareVersionService
      */
     public function getDiscord(): string
     {
-        return $this->versionData()['discord'] ?? 'https://pterodactyl.io/discord';
+        return $this->versionData()['discord'] ?? 'https://pterodactyl.top/discord';
     }
 
     /**
@@ -54,7 +54,7 @@ class SoftwareVersionService
      */
     public function getDonations(): string
     {
-        return $this->versionData()['donations'] ?? 'https://github.com/sponsors/matthewpi';
+        return $this->versionData()['donations'] ?? 'https://afdian.net/a/vlssu';
     }
 
     /**
