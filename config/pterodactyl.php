@@ -193,7 +193,8 @@ return [
     */
 
     'telemetry' => [
-        'enabled' => (bool) env('PTERODACTYL_TELEMETRY_ENABLED', true),
+        // 遥测会把实例信息上报给上游，默认关闭；需要时通过环境变量显式开启。
+        'enabled' => (bool) env('PTERODACTYL_TELEMETRY_ENABLED', false),
     ],
 
     'features' => [

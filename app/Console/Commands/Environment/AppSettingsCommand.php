@@ -132,7 +132,7 @@ class AppSettingsCommand extends Command
         } else {
             $this->variables['PTERODACTYL_TELEMETRY_ENABLED'] = $this->confirm(
                 '是否发送匿名遥测数据？',
-                config()->boolean('pterodactyl.telemetry.enabled', true)
+                config()->boolean('pterodactyl.telemetry.enabled', false)
             ) ? 'true' : 'false';
         }
 
