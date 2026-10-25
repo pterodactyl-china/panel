@@ -10,8 +10,9 @@ return [
 
     /*
      * API endpoint for recaptcha checks. You should not edit this.
+     * www.google.com 在中国大陆无法访问，改用 Google 提供的 recaptcha.net 域名。
      */
-    'domain' => env('RECAPTCHA_DOMAIN', 'https://www.google.com/recaptcha/api/siteverify'),
+    'domain' => env('RECAPTCHA_DOMAIN', 'https://www.recaptcha.net/recaptcha/api/siteverify'),
 
     /*
      * Use a custom secret key, we use our public one by default

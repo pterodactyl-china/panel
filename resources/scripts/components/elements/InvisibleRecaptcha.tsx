@@ -140,7 +140,12 @@ interface Props {
 
 /** Invisible reCAPTCHA v2; call `ref.execute()` to obtain a token. */
 const InvisibleRecaptcha = ({ siteKey, ref }: Props) => (
-    <GoogleReCaptchaProvider type='v2-invisible' siteKey={siteKey || '_invalid_key'}>
+    <GoogleReCaptchaProvider
+        type='v2-invisible'
+        siteKey={siteKey || '_invalid_key'}
+        // www.google.com 在中国大陆无法访问；recaptcha.net 是 Google 提供的可访问域名。
+        host='recaptcha.net'
+    >
         <RecaptchaBridge ref={ref} />
     </GoogleReCaptchaProvider>
 );
