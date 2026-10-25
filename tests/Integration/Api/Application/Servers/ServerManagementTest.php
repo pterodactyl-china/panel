@@ -33,7 +33,7 @@ test('server can be created', function (): void {
     $allocation = Allocation::factory()->create(['node_id' => $fixture->node_id]);
     $owner = User::factory()->create();
     $environment = $fixture->egg->variables->mapWithKeys(fn ($variable): array => [$variable->env_variable => $variable->default_value])->toArray();
-    $response = $this->postJson('/api/application/servers', ['name' => 'Created Via API', 'user' => $owner->id, 'egg' => $fixture->egg_id, 'docker_image' => 'ghcr.io/pterodactyl/yolks:java_17', 'startup' => 'java -jar server.jar', 'environment' => $environment, 'skip_scripts' => true, 'limits' => ['memory' => 512, 'swap' => 0, 'disk' => 1024, 'io' => 500, 'cpu' => 100], 'feature_limits' => ['databases' => 0, 'allocations' => 1, 'backups' => 0], 'allocation' => ['default' => $allocation->id]]);
+    $response = $this->postJson('/api/application/servers', ['name' => 'Created Via API', 'user' => $owner->id, 'egg' => $fixture->egg_id, 'docker_image' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17', 'startup' => 'java -jar server.jar', 'environment' => $environment, 'skip_scripts' => true, 'limits' => ['memory' => 512, 'swap' => 0, 'disk' => 1024, 'io' => 500, 'cpu' => 100], 'feature_limits' => ['databases' => 0, 'allocations' => 1, 'backups' => 0], 'allocation' => ['default' => $allocation->id]]);
     $response->assertStatus(Response::HTTP_CREATED)->assertJsonPath('object', 'server')->assertJsonPath('attributes.name', 'Created Via API')->assertJsonPath('attributes.user', $owner->id);
     $this->assertDatabaseHas('servers', ['name' => 'Created Via API', 'owner_id' => $owner->id]);
     expect($allocation->refresh()->server_id)->toBe($response->json('attributes.id'));
@@ -57,7 +57,7 @@ test('a server created through the application api takes its nested fields', fun
     $server = Server::query()->findOrFail($response->json('attributes.id'));
     expect($server->external_id)->toBe('app-ext-1')
         ->and($server->description)->toBe('Provisioned by billing.')
-        ->and($server->image)->toBe('ghcr.io/pterodactyl/yolks:java_17')
+        ->and($server->image)->toBe('registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17')
         ->and($server->oom_disabled)->toBeFalse()
         ->and($server->memory)->toBe(512)
         ->and($server->swap)->toBe(-1)
@@ -194,7 +194,7 @@ test('server startup can be updated', function (): void {
     mockDaemon();
     $server = $this->createServerModel();
     $environment = $server->egg->variables->mapWithKeys(fn ($variable): array => [$variable->env_variable => $variable->default_value])->toArray();
-    $this->patchJson("/api/application/servers/{$server->id}/startup", ['startup' => 'java -jar updated.jar', 'environment' => $environment, 'egg' => $server->egg_id, 'image' => 'ghcr.io/pterodactyl/yolks:java_17', 'skip_scripts' => false])->assertOk()->assertJsonPath('attributes.container.startup_command', 'java -jar updated.jar')->assertJsonPath('attributes.container.image', 'ghcr.io/pterodactyl/yolks:java_17');
+    $this->patchJson("/api/application/servers/{$server->id}/startup", ['startup' => 'java -jar updated.jar', 'environment' => $environment, 'egg' => $server->egg_id, 'image' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17', 'skip_scripts' => false])->assertOk()->assertJsonPath('attributes.container.startup_command', 'java -jar updated.jar')->assertJsonPath('attributes.container.image', 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17');
     expect($server->refresh()->startup)->toBe('java -jar updated.jar');
 });
 test('server startup takes the application field names', function (): void {
@@ -202,10 +202,10 @@ test('server startup takes the application field names', function (): void {
     $server = $this->createServerModel(['skip_scripts' => false]);
     $nextEgg = $this->cloneEggAndVariables($server->egg);
 
-    $this->patchJson("/api/application/servers/{$server->id}/startup", ['startup' => 'java -jar moved.jar', 'environment' => ['BUNGEE_VERSION' => '456', 'SERVER_JARFILE' => 'moved.jar'], 'egg' => (string) $nextEgg->id, 'image' => 'ghcr.io/pterodactyl/yolks:java_21', 'skip_scripts' => '1'])
+    $this->patchJson("/api/application/servers/{$server->id}/startup", ['startup' => 'java -jar moved.jar', 'environment' => ['BUNGEE_VERSION' => '456', 'SERVER_JARFILE' => 'moved.jar'], 'egg' => (string) $nextEgg->id, 'image' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21', 'skip_scripts' => '1'])
         ->assertOk()
         ->assertJsonPath('attributes.egg', $nextEgg->id)
-        ->assertJsonPath('attributes.container.image', 'ghcr.io/pterodactyl/yolks:java_21')
+        ->assertJsonPath('attributes.container.image', 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21')
         ->assertJsonPath('attributes.container.skip_scripts', true);
 
     $server->refresh();
@@ -217,7 +217,7 @@ test('server startup takes the application field names', function (): void {
 test('server startup keeps its own rules', function (array $payload, string $field, string $rule): void {
     $server = $this->createServerModel(['startup' => 'old startup']);
 
-    $this->patchJson("/api/application/servers/{$server->id}/startup", array_filter([...['startup' => 'java -jar updated.jar', 'environment' => ['BUNGEE_VERSION' => '123', 'SERVER_JARFILE' => 'updated.jar'], 'egg' => $server->egg_id, 'image' => 'ghcr.io/pterodactyl/yolks:java_17', 'skip_scripts' => false], ...$payload], fn (mixed $value): bool => $value !== 'missing'))
+    $this->patchJson("/api/application/servers/{$server->id}/startup", array_filter([...['startup' => 'java -jar updated.jar', 'environment' => ['BUNGEE_VERSION' => '123', 'SERVER_JARFILE' => 'updated.jar'], 'egg' => $server->egg_id, 'image' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17', 'skip_scripts' => false], ...$payload], fn (mixed $value): bool => $value !== 'missing'))
         ->assertUnprocessable()
         ->assertJsonCount(1, 'errors')
         ->assertJsonPath('errors.0.meta.source_field', $field)
@@ -342,7 +342,7 @@ function applicationServerPayload(int $allocationId): array
         'name' => 'Application Server',
         'user' => User::factory()->create()->id,
         'egg' => Egg::query()->where('author', 'support@pterodactyl.io')->where('name', 'Bungeecord')->firstOrFail()->id,
-        'docker_image' => 'ghcr.io/pterodactyl/yolks:java_17',
+        'docker_image' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17',
         'startup' => 'java -jar server.jar',
         'environment' => ['BUNGEE_VERSION' => '123', 'SERVER_JARFILE' => 'server.jar'],
         'limits' => ['memory' => 512, 'swap' => 0, 'disk' => 1024, 'io' => 500, 'cpu' => 100],

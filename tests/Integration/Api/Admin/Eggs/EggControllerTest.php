@@ -45,7 +45,7 @@ test('egg tags can be included', function () {
         ->assertJsonPath('attributes.relationships.tags.data.0.attributes.slug', 'survival');
 });
 test('egg can be created', function () {
-    $response = $this->postJson(route('api.admin.eggs.store'), ['name' => 'Standalone Egg', 'description' => 'Grouped by tags.', 'docker_images' => 'Java 21|ghcr.io/pterodactyl/yolks:java_21', 'startup' => 'java -jar server.jar', 'config_stop' => 'stop', 'config_startup' => '{"done":["Done"]}', 'config_logs' => '{}', 'config_files' => '{}']);
+    $response = $this->postJson(route('api.admin.eggs.store'), ['name' => 'Standalone Egg', 'description' => 'Grouped by tags.', 'docker_images' => 'Java 21|registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21', 'startup' => 'java -jar server.jar', 'config_stop' => 'stop', 'config_startup' => '{"done":["Done"]}', 'config_logs' => '{}', 'config_files' => '{}']);
     $response->assertCreated()->assertJsonPath('attributes.name', 'Standalone Egg');
     $this->assertDatabaseHas('eggs', ['name' => 'Standalone Egg']);
 });

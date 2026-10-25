@@ -13,14 +13,14 @@ uses(TestCase::class);
 test('parses a v2 egg into typed import data', function () {
     $parsed = EggImportData::fromFile(fixture('minecraft/egg-paper.json'));
     expect($parsed->name)->toBe('Paper');
-    expect($parsed->dockerImages['Java 21'])->toBe('ghcr.io/pterodactyl/yolks:java_21');
+    expect($parsed->dockerImages['Java 21'])->toBe('registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21');
     expect($parsed->features)->toBe(['eula', 'java_version', 'pid_limit']);
     expect($parsed->variables[0]->environmentVariable)->toBe('MINECRAFT_VERSION');
     expect($parsed->variables[0]->userViewable)->toBeTrue();
 });
 test('normalizes a v1 image list', function () {
     $parsed = EggImportData::fromFile(fixture('source-engine/egg-garrys-mod.json'));
-    expect($parsed->dockerImages)->toBe(['ghcr.io/pterodactyl/games:source' => 'ghcr.io/pterodactyl/games:source']);
+    expect($parsed->dockerImages)->toBe(['registry.cn-shanghai.aliyuncs.com/pterodactyl-china/games:source' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/games:source']);
     expect($parsed->variables[0]->environmentVariable)->toBe('SRCDS_MAP');
 });
 test('reads tag slugs trimmed, without blanks or duplicates, and null when the key is absent', function (): void {

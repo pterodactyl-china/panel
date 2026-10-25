@@ -53,7 +53,7 @@ test('create egg', function (): void {
     $response->assertJsonStructure(['object', 'attributes' => ['id', 'uuid', 'name', 'docker_images', 'force_outgoing_ip', 'config', 'script', 'startup', 'created_at', 'updated_at'], 'meta' => ['resource']]);
     $this->assertDatabaseHas('eggs', ['name' => 'Test Egg']);
     $egg = Egg::query()->where('name', 'Test Egg')->firstOrFail();
-    expect($egg->docker_images)->toBe(['Java 17' => 'ghcr.io/pterodactyl/yolks:java_17', 'Java 11' => 'ghcr.io/pterodactyl/yolks:java_11']);
+    expect($egg->docker_images)->toBe(['Java 17' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17', 'Java 11' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_11']);
     $response->assertJson(['object' => 'egg', 'attributes' => ['id' => $egg->id, 'uuid' => $egg->uuid, 'name' => $egg->name, 'author' => $egg->author, 'description' => $egg->description, 'docker_images' => $egg->docker_images, 'startup' => $egg->startup, 'force_outgoing_ip' => $egg->force_outgoing_ip], 'meta' => ['resource' => route('api.admin.eggs.view', ['egg' => $egg->id])]]);
 });
 test('every docker image line must be valid on its own', function (string $images): void {
@@ -63,15 +63,15 @@ test('every docker image line must be valid on its own', function (string $image
 
     $this->assertDatabaseMissing('eggs', ['name' => 'Test Egg']);
 })->with([
-    'shell characters after a valid line' => ["Java 17|ghcr.io/pterodactyl/yolks:java_17\nghcr.io/x;rm -rf /\$(id)"],
-    'an image over 191 characters' => ["Java 17|ghcr.io/pterodactyl/yolks:java_17\n".str_repeat('a', 192)],
+    'shell characters after a valid line' => ["Java 17|registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17\nghcr.io/x;rm -rf /\$(id)"],
+    'an image over 191 characters' => ["Java 17|registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17\n".str_repeat('a', 192)],
     'only blank lines' => ["\n \n"],
 ]);
 test('blank lines between docker images are ignored', function (): void {
-    $this->postJson(route('api.admin.eggs.store'), array_merge(validCreatePayload(), ['docker_images' => "Java 17|ghcr.io/pterodactyl/yolks:java_17\n\nJava 11|ghcr.io/pterodactyl/yolks:java_11\n"]))
+    $this->postJson(route('api.admin.eggs.store'), array_merge(validCreatePayload(), ['docker_images' => "Java 17|registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17\n\nJava 11|registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_11\n"]))
         ->assertCreated();
 
-    expect(Egg::query()->where('name', 'Test Egg')->firstOrFail()->docker_images)->toBe(['Java 17' => 'ghcr.io/pterodactyl/yolks:java_17', 'Java 11' => 'ghcr.io/pterodactyl/yolks:java_11']);
+    expect(Egg::query()->where('name', 'Test Egg')->firstOrFail()->docker_images)->toBe(['Java 17' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17', 'Java 11' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_11']);
 });
 test('features and denied files that are not strings are dropped', function (): void {
     $this->postJson(route('api.admin.eggs.store'), array_merge(validCreatePayload(), ['features' => ['eula', 5, ['fastdl']], 'file_denylist' => ['secret.txt', true]]))
@@ -145,7 +145,7 @@ test('invalid payloads return validation errors', function (): void {
 /** Valid egg-creation payload; `docker_images` is a newline-delimited string the request normalizes into a `name => image` map. */
 function validCreatePayload(): array
 {
-    return ['name' => 'Test Egg', 'description' => 'A freshly created egg.', 'docker_images' => "Java 17|ghcr.io/pterodactyl/yolks:java_17\nJava 11|ghcr.io/pterodactyl/yolks:java_11", 'startup' => 'java -jar server.jar', 'config_stop' => 'stop', 'config_startup' => '{"done": ["Done"]}', 'config_logs' => '{}', 'config_files' => '{}', 'features' => ['eula', 'fastdl']];
+    return ['name' => 'Test Egg', 'description' => 'A freshly created egg.', 'docker_images' => "Java 17|registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17\nJava 11|registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_11", 'startup' => 'java -jar server.jar', 'config_stop' => 'stop', 'config_startup' => '{"done": ["Done"]}', 'config_logs' => '{}', 'config_files' => '{}', 'features' => ['eula', 'fastdl']];
 }
 
 test('config from must reference an existing egg', function (): void {

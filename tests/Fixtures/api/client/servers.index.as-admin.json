@@ -32,7 +32,7 @@
                             "oom_disabled": true
                         },
                         "invocation": "java -jar server.jar",
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                         "egg_features": [
                             "eula",
                             "java_version"
@@ -146,7 +146,7 @@
                             "oom_disabled": true
                         },
                         "invocation": "java -Xms128M -Xmx2048M -jar paper.jar",
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                         "egg_features": [
                             "eula",
                             "java_version"
@@ -252,7 +252,7 @@
                             "oom_disabled": false
                         },
                         "invocation": "java -jar child.jar",
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_17",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17",
                         "egg_features": [
                             "eula",
                             "java_version"
@@ -353,7 +353,7 @@
                             "oom_disabled": true
                         },
                         "invocation": "java -Xms128M -Xmx2048M -jar paper.jar",
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                         "egg_features": [
                             "eula",
                             "java_version"
@@ -466,7 +466,7 @@
                             "oom_disabled": false
                         },
                         "invocation": "java -jar child.jar",
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_17",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17",
                         "egg_features": [
                             "eula",
                             "java_version"
@@ -576,7 +576,7 @@
                             "oom_disabled": true
                         },
                         "invocation": "java -jar server.jar",
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                         "egg_features": [
                             "eula",
                             "java_version"

@@ -15,6 +15,10 @@ function CorePageFooter({ className }: PageFooterProps) {
                     Pterodactyl&reg;
                 </a>
                 &nbsp;&copy; 2015 - <span suppressHydrationWarning>{new Date().getFullYear()}</span>
+                &nbsp;| 汉化：&nbsp;
+                <a rel='noopener nofollow noreferrer' href='https://pterodactyl.top' target='_blank' {...ui('link')}>
+                    翼龙中国&reg;
+                </a>
             </p>
         </div>
     );

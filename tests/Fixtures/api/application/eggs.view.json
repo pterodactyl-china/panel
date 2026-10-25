@@ -10,10 +10,10 @@
                 "name": "Paper",
                 "author": "support@example.test",
                 "description": "High performance Minecraft server.",
-                "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                 "docker_images": {
-                    "Java 21": "ghcr.io/pterodactyl/yolks:java_21",
-                    "Java 17": "ghcr.io/pterodactyl/yolks:java_17"
+                    "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
+                    "Java 17": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17"
                 },
                 "config": {
                     "files": {
@@ -38,7 +38,7 @@
                     "privileged": true,
                     "install": "#!/bin/ash\necho \"installing\"",
                     "entry": "ash",
-                    "container": "ghcr.io/pterodactyl/installers:alpine",
+                    "container": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/installers:alpine",
                     "extends": null
                 },
                 "relationships": [],
@@ -58,10 +58,10 @@
                 "name": "Paper",
                 "author": "support@example.test",
                 "description": "High performance Minecraft server.",
-                "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                 "docker_images": {
-                    "Java 21": "ghcr.io/pterodactyl/yolks:java_21",
-                    "Java 17": "ghcr.io/pterodactyl/yolks:java_17"
+                    "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
+                    "Java 17": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17"
                 },
                 "config": {
                     "files": {
@@ -86,7 +86,7 @@
                     "privileged": true,
                     "install": "#!/bin/ash\necho \"installing\"",
                     "entry": "ash",
-                    "container": "ghcr.io/pterodactyl/installers:alpine",
+                    "container": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/installers:alpine",
                     "extends": null
                 },
                 "relationships": {
@@ -124,7 +124,7 @@
                                     "egg": 1,
                                     "container": {
                                         "startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
-                                        "image": "ghcr.io/pterodactyl/yolks:java_21",
+                                        "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                                         "installed": 1,
                                         "environment": {
                                             "SERVER_JARFILE": "paper.jar",
@@ -173,7 +173,7 @@
                                     "egg": 1,
                                     "container": {
                                         "startup_command": "java -jar {{SERVER_JARFILE}}",
-                                        "image": "ghcr.io/pterodactyl/yolks:java_21",
+                                        "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                                         "installed": 1,
                                         "environment": {
                                             "SERVER_JARFILE": "server.jar",
@@ -210,10 +210,10 @@
                 "name": "Paper",
                 "author": "support@example.test",
                 "description": "High performance Minecraft server.",
-                "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                 "docker_images": {
-                    "Java 21": "ghcr.io/pterodactyl/yolks:java_21",
-                    "Java 17": "ghcr.io/pterodactyl/yolks:java_17"
+                    "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
+                    "Java 17": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17"
                 },
                 "config": {
                     "files": {
@@ -238,7 +238,7 @@
                     "privileged": true,
                     "install": "#!/bin/ash\necho \"installing\"",
                     "entry": "ash",
-                    "container": "ghcr.io/pterodactyl/installers:alpine",
+                    "container": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/installers:alpine",
                     "extends": null
                 },
                 "relationships": {
@@ -263,10 +263,10 @@
                 "name": "Paper",
                 "author": "support@example.test",
                 "description": "High performance Minecraft server.",
-                "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                 "docker_images": {
-                    "Java 21": "ghcr.io/pterodactyl/yolks:java_21",
-                    "Java 17": "ghcr.io/pterodactyl/yolks:java_17"
+                    "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
+                    "Java 17": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17"
                 },
                 "config": {
                     "files": {
@@ -291,7 +291,7 @@
                     "privileged": true,
                     "install": "#!/bin/ash\necho \"installing\"",
                     "entry": "ash",
-                    "container": "ghcr.io/pterodactyl/installers:alpine",
+                    "container": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/installers:alpine",
                     "extends": null
                 },
                 "relationships": {
@@ -316,10 +316,10 @@
                 "name": "Paper",
                 "author": "support@example.test",
                 "description": "High performance Minecraft server.",
-                "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                 "docker_images": {
-                    "Java 21": "ghcr.io/pterodactyl/yolks:java_21",
-                    "Java 17": "ghcr.io/pterodactyl/yolks:java_17"
+                    "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
+                    "Java 17": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17"
                 },
                 "config": {
                     "files": {
@@ -344,7 +344,7 @@
                     "privileged": true,
                     "install": "#!/bin/ash\necho \"installing\"",
                     "entry": "ash",
-                    "container": "ghcr.io/pterodactyl/installers:alpine",
+                    "container": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/installers:alpine",
                     "extends": null
                 },
                 "relationships": {
@@ -421,10 +421,10 @@
                 "name": "Paper",
                 "author": "support@example.test",
                 "description": "High performance Minecraft server.",
-                "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                 "docker_images": {
-                    "Java 21": "ghcr.io/pterodactyl/yolks:java_21",
-                    "Java 17": "ghcr.io/pterodactyl/yolks:java_17"
+                    "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
+                    "Java 17": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17"
                 },
                 "config": {
                     "files": {
@@ -449,7 +449,7 @@
                     "privileged": true,
                     "install": "#!/bin/ash\necho \"installing\"",
                     "entry": "ash",
-                    "container": "ghcr.io/pterodactyl/installers:alpine",
+                    "container": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/installers:alpine",
                     "extends": null
                 },
                 "relationships": {
@@ -503,10 +503,10 @@
                 "name": "Paper",
                 "author": "support@example.test",
                 "description": "High performance Minecraft server.",
-                "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                 "docker_images": {
-                    "Java 21": "ghcr.io/pterodactyl/yolks:java_21",
-                    "Java 17": "ghcr.io/pterodactyl/yolks:java_17"
+                    "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
+                    "Java 17": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17"
                 },
                 "config": {
                     "files": {
@@ -531,7 +531,7 @@
                     "privileged": true,
                     "install": "#!/bin/ash\necho \"installing\"",
                     "entry": "ash",
-                    "container": "ghcr.io/pterodactyl/installers:alpine",
+                    "container": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/installers:alpine",
                     "extends": null
                 },
                 "relationships": {
@@ -569,7 +569,7 @@
                                     "egg": 1,
                                     "container": {
                                         "startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
-                                        "image": "ghcr.io/pterodactyl/yolks:java_21",
+                                        "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                                         "installed": 1,
                                         "environment": {
                                             "SERVER_JARFILE": "paper.jar",
@@ -618,7 +618,7 @@
                                     "egg": 1,
                                     "container": {
                                         "startup_command": "java -jar {{SERVER_JARFILE}}",
-                                        "image": "ghcr.io/pterodactyl/yolks:java_21",
+                                        "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                                         "installed": 1,
                                         "environment": {
                                             "SERVER_JARFILE": "server.jar",
@@ -752,10 +752,10 @@
                 "name": "Paper",
                 "author": "support@example.test",
                 "description": "High performance Minecraft server.",
-                "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                 "docker_images": {
-                    "Java 21": "ghcr.io/pterodactyl/yolks:java_21",
-                    "Java 17": "ghcr.io/pterodactyl/yolks:java_17"
+                    "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
+                    "Java 17": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17"
                 },
                 "config": {
                     "files": {
@@ -780,7 +780,7 @@
                     "privileged": true,
                     "install": "#!/bin/ash\necho \"installing\"",
                     "entry": "ash",
-                    "container": "ghcr.io/pterodactyl/installers:alpine",
+                    "container": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/installers:alpine",
                     "extends": null
                 },
                 "relationships": {
@@ -818,7 +818,7 @@
                                     "egg": 1,
                                     "container": {
                                         "startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
-                                        "image": "ghcr.io/pterodactyl/yolks:java_21",
+                                        "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                                         "installed": 1,
                                         "environment": {
                                             "SERVER_JARFILE": "paper.jar",
@@ -888,7 +888,7 @@
                                     "egg": 1,
                                     "container": {
                                         "startup_command": "java -jar {{SERVER_JARFILE}}",
-                                        "image": "ghcr.io/pterodactyl/yolks:java_21",
+                                        "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                                         "installed": 1,
                                         "environment": {
                                             "SERVER_JARFILE": "server.jar",
@@ -946,9 +946,9 @@
                 "name": "Paper Child",
                 "author": "support@example.test",
                 "description": null,
-                "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                 "docker_images": {
-                    "Java 21": "ghcr.io/pterodactyl/yolks:java_21"
+                    "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21"
                 },
                 "config": {
                     "files": {},
@@ -995,7 +995,7 @@
                             "privileged": false,
                             "install": "#!/bin/ash\necho \"installing\"",
                             "entry": "ash",
-                            "container": "ghcr.io/pterodactyl/installers:alpine"
+                            "container": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/installers:alpine"
                         }
                     }
                 },

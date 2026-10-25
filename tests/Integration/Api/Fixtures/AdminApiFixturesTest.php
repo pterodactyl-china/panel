@@ -181,15 +181,15 @@ function adminWrites(): array
 {
     // A node's fqdn has to resolve, and only localhost does without DNS.
     $node = ['name' => 'node-gamma', 'description' => 'Created by an admin', 'location_id' => 1, 'public' => true, 'fqdn' => 'localhost', 'scheme' => 'https', 'behind_proxy' => false, 'maintenance_mode' => false, 'memory' => 2048, 'memory_overallocate' => 0, 'disk' => 20480, 'disk_overallocate' => 0, 'upload_size' => 100, 'daemon_listen' => 8080, 'daemon_sftp' => 2022, 'daemon_base' => '/var/lib/pterodactyl/volumes'];
-    $egg = ['name' => 'Created Egg', 'description' => 'A freshly created egg.', 'docker_images' => "Java 21|ghcr.io/pterodactyl/yolks:java_21\nJava 17|ghcr.io/pterodactyl/yolks:java_17", 'startup' => 'java -jar server.jar', 'config_stop' => 'stop', 'config_startup' => '{"done": ["Done"]}', 'config_logs' => '{}', 'config_files' => '{}', 'features' => ['eula', 'fastdl']];
+    $egg = ['name' => 'Created Egg', 'description' => 'A freshly created egg.', 'docker_images' => "Java 21|registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21\nJava 17|registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17", 'startup' => 'java -jar server.jar', 'config_stop' => 'stop', 'config_startup' => '{"done": ["Done"]}', 'config_logs' => '{}', 'config_files' => '{}', 'features' => ['eula', 'fastdl']];
     $environment = ['SERVER_JARFILE' => 'server.jar', 'BUILD_NUMBER' => '42', 'HIDDEN_TOKEN' => 'abc'];
     $server = [
         'name' => 'Admin Created', 'description' => 'Created by an admin.', 'external_id' => 'ext-admin-created', 'owner_id' => World::OWNER, 'egg_id' => 1,
-        'docker_image' => 'ghcr.io/pterodactyl/yolks:java_21', 'startup' => 'java -jar {{SERVER_JARFILE}}', 'environment' => $environment,
+        'docker_image' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21', 'startup' => 'java -jar {{SERVER_JARFILE}}', 'environment' => $environment,
         'memory' => 512, 'swap' => 0, 'disk' => 1024, 'io' => 500, 'cpu' => 0, 'threads' => null, 'database_limit' => 0, 'allocation_limit' => 0,
         'backup_limit' => 0, 'primary_allocation_id' => 4, 'start_on_completion' => false,
     ];
-    $startup = ['startup' => 'java -jar {{SERVER_JARFILE}}', 'egg_id' => 1, 'docker_image' => 'ghcr.io/pterodactyl/yolks:java_17', 'skip_scripts' => true, 'environment' => [...$environment, 'SERVER_JARFILE' => 'renamed.jar']];
+    $startup = ['startup' => 'java -jar {{SERVER_JARFILE}}', 'egg_id' => 1, 'docker_image' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17', 'skip_scripts' => true, 'environment' => [...$environment, 'SERVER_JARFILE' => 'renamed.jar']];
     $mount = ['name' => 'Created Mount', 'description' => 'Created by an admin.', 'source' => '/mnt/created', 'target' => '/mnt/created-target', 'read_only' => true, 'user_mountable' => false];
     $export = fn (int $id): Closure => fn (): UploadedFile => UploadedFile::fake()->createWithContent('egg.json', App::make(ExportsEggs::class)->export(Egg::query()->findOrFail($id)));
 

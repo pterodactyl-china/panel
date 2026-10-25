@@ -17,7 +17,7 @@ function egg(array $overrides = []): array
 {
     return [...[
         'name' => 'Direct Egg',
-        'docker_images' => "Java 21|ghcr.io/pterodactyl/yolks:java_21\nghcr.io/pterodactyl/yolks:java_17",
+        'docker_images' => "Java 21|registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21\nregistry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17",
         'startup' => 'java -jar server.jar',
         'config_stop' => 'stop',
         'config_startup' => '{"done": ["Done"]}',
@@ -40,8 +40,8 @@ test('eggs created without the http api meet the same rules', function (array $i
 })->with([
     'a missing name' => [['name' => null], 'name'],
     'a name that is too long' => [['name' => str_repeat('a', 192)], 'name'],
-    'docker images given as a list' => [['docker_images' => ['ghcr.io/pterodactyl/yolks:java_21']], 'docker_images'],
-    'a docker image line with shell characters' => [['docker_images' => "ghcr.io/pterodactyl/yolks:java_21\nghcr.io/x;rm -rf /"], 'docker_images'],
+    'docker images given as a list' => [['docker_images' => ['registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21']], 'docker_images'],
+    'a docker image line with shell characters' => [['docker_images' => "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21\nghcr.io/x;rm -rf /"], 'docker_images'],
     'only blank docker image lines' => [['docker_images' => "\n \n"], 'docker_images'],
     'an outgoing ip flag that is not a boolean' => [['force_outgoing_ip' => 'yes'], 'force_outgoing_ip'],
     'features that are not a list' => [['features' => 'eula'], 'features'],
@@ -65,7 +65,7 @@ test('an egg is created with its images keyed by name and the service author', f
     ]));
 
     expect($egg->author)->toBe('eggs@example.com')
-        ->and($egg->docker_images)->toBe(['Java 21' => 'ghcr.io/pterodactyl/yolks:java_21', 'ghcr.io/pterodactyl/yolks:java_17' => 'ghcr.io/pterodactyl/yolks:java_17'])
+        ->and($egg->docker_images)->toBe(['Java 21' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21', 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17'])
         ->and($egg->description)->toBeNull()
         ->and($egg->features)->toBe(['eula', 'fastdl'])
         ->and($egg->file_denylist)->toBe(['secret.txt'])
@@ -79,7 +79,7 @@ test('values are coerced the way laravel validates them', function (int|string $
 
     $egg = $this->app->make(CreatesEggs::class)->create([
         'name' => 'Child Egg',
-        'docker_images' => 'ghcr.io/pterodactyl/yolks:java_21',
+        'docker_images' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21',
         'startup' => 'java -jar server.jar',
         'force_outgoing_ip' => $flag,
         'config_from' => (string) $parent->id,

@@ -32,7 +32,7 @@
                             "oom_disabled": true
                         },
                         "invocation": "java -Xms128M -Xmx2048M -jar paper.jar",
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                         "egg_features": [
                             "eula",
                             "java_version"
@@ -217,7 +217,7 @@
                     "oom_disabled": true
                 },
                 "invocation": "java -Xms128M -Xmx2048M -jar paper.jar",
-                "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                 "egg_features": [
                     "eula",
                     "java_version"
@@ -673,8 +673,8 @@
             "meta": {
                 "startup_command": "java -Xms128M -Xmx2048M -jar paper.jar",
                 "docker_images": {
-                    "Java 21": "ghcr.io/pterodactyl/yolks:java_21",
-                    "Java 17": "ghcr.io/pterodactyl/yolks:java_17"
+                    "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
+                    "Java 17": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17"
                 },
                 "raw_startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}"
             }

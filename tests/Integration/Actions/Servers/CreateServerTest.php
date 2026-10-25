@@ -278,7 +278,7 @@ function directInput(IntegrationTestCase $test, array $overrides = []): array
         'name' => 'Direct Server',
         'owner_id' => $test->owner->id,
         'egg_id' => $test->bungeecord->id,
-        'image' => 'ghcr.io/pterodactyl/yolks:java_21',
+        'image' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21',
         'startup' => 'java -jar server.jar',
         'environment' => ['BUNGEE_VERSION' => '123', 'SERVER_JARFILE' => 'server.jar'],
         'memory' => 256,

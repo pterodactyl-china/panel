@@ -14,10 +14,10 @@
                     "eula",
                     "fastdl"
                 ],
-                "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                 "docker_images": {
-                    "Java 21": "ghcr.io/pterodactyl/yolks:java_21",
-                    "Java 17": "ghcr.io/pterodactyl/yolks:java_17"
+                    "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
+                    "Java 17": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17"
                 },
                 "force_outgoing_ip": false,
                 "config": {

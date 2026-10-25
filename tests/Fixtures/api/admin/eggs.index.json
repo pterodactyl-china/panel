@@ -17,10 +17,10 @@
                             "eula",
                             "java_version"
                         ],
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                         "docker_images": {
-                            "Java 21": "ghcr.io/pterodactyl/yolks:java_21",
-                            "Java 17": "ghcr.io/pterodactyl/yolks:java_17"
+                            "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
+                            "Java 17": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17"
                         },
                         "force_outgoing_ip": false,
                         "config": {
@@ -46,7 +46,7 @@
                             "privileged": true,
                             "install": "#!/bin/ash\necho \"installing\"",
                             "entry": "ash",
-                            "container": "ghcr.io/pterodactyl/installers:alpine",
+                            "container": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/installers:alpine",
                             "extends": null
                         },
                         "relationships": [],
@@ -63,9 +63,9 @@
                         "name": "Paper Child",
                         "description": null,
                         "features": null,
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                         "docker_images": {
-                            "Java 21": "ghcr.io/pterodactyl/yolks:java_21"
+                            "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21"
                         },
                         "force_outgoing_ip": true,
                         "config": {
@@ -156,10 +156,10 @@
                             "eula",
                             "java_version"
                         ],
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                         "docker_images": {
-                            "Java 21": "ghcr.io/pterodactyl/yolks:java_21",
-                            "Java 17": "ghcr.io/pterodactyl/yolks:java_17"
+                            "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
+                            "Java 17": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17"
                         },
                         "force_outgoing_ip": false,
                         "config": {
@@ -185,7 +185,7 @@
                             "privileged": true,
                             "install": "#!/bin/ash\necho \"installing\"",
                             "entry": "ash",
-                            "container": "ghcr.io/pterodactyl/installers:alpine",
+                            "container": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/installers:alpine",
                             "extends": null
                         },
                         "relationships": {
@@ -314,7 +314,7 @@
                                             "egg": 1,
                                             "container": {
                                                 "startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
-                                                "image": "ghcr.io/pterodactyl/yolks:java_21",
+                                                "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                                                 "skip_scripts": false,
                                                 "installed": 1,
                                                 "environment": {
@@ -363,7 +363,7 @@
                                             "egg": 1,
                                             "container": {
                                                 "startup_command": "java -jar {{SERVER_JARFILE}}",
-                                                "image": "ghcr.io/pterodactyl/yolks:java_21",
+                                                "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                                                 "skip_scripts": false,
                                                 "installed": 1,
                                                 "environment": {
@@ -397,9 +397,9 @@
                         "name": "Paper Child",
                         "description": null,
                         "features": null,
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                         "docker_images": {
-                            "Java 21": "ghcr.io/pterodactyl/yolks:java_21"
+                            "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21"
                         },
                         "force_outgoing_ip": true,
                         "config": {
@@ -498,7 +498,7 @@
                                             "egg": 2,
                                             "container": {
                                                 "startup_command": "java -jar {{SERVER_JARFILE}}",
-                                                "image": "ghcr.io/pterodactyl/yolks:java_17",
+                                                "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17",
                                                 "skip_scripts": true,
                                                 "installed": 0,
                                                 "environment": {
@@ -616,10 +616,10 @@
                             "eula",
                             "java_version"
                         ],
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                         "docker_images": {
-                            "Java 21": "ghcr.io/pterodactyl/yolks:java_21",
-                            "Java 17": "ghcr.io/pterodactyl/yolks:java_17"
+                            "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
+                            "Java 17": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17"
                         },
                         "force_outgoing_ip": false,
                         "config": {
@@ -645,7 +645,7 @@
                             "privileged": true,
                             "install": "#!/bin/ash\necho \"installing\"",
                             "entry": "ash",
-                            "container": "ghcr.io/pterodactyl/installers:alpine",
+                            "container": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/installers:alpine",
                             "extends": null
                         },
                         "relationships": [],
@@ -683,9 +683,9 @@
                         "name": "Paper Child",
                         "description": null,
                         "features": null,
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                         "docker_images": {
-                            "Java 21": "ghcr.io/pterodactyl/yolks:java_21"
+                            "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21"
                         },
                         "force_outgoing_ip": true,
                         "config": {
@@ -766,10 +766,10 @@
                             "eula",
                             "java_version"
                         ],
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                         "docker_images": {
-                            "Java 21": "ghcr.io/pterodactyl/yolks:java_21",
-                            "Java 17": "ghcr.io/pterodactyl/yolks:java_17"
+                            "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
+                            "Java 17": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17"
                         },
                         "force_outgoing_ip": false,
                         "config": {
@@ -795,7 +795,7 @@
                             "privileged": true,
                             "install": "#!/bin/ash\necho \"installing\"",
                             "entry": "ash",
-                            "container": "ghcr.io/pterodactyl/installers:alpine",
+                            "container": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/installers:alpine",
                             "extends": null
                         },
                         "relationships": [],
@@ -834,10 +834,10 @@
                             "eula",
                             "java_version"
                         ],
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                         "docker_images": {
-                            "Java 21": "ghcr.io/pterodactyl/yolks:java_21",
-                            "Java 17": "ghcr.io/pterodactyl/yolks:java_17"
+                            "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
+                            "Java 17": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17"
                         },
                         "force_outgoing_ip": false,
                         "config": {
@@ -863,7 +863,7 @@
                             "privileged": true,
                             "install": "#!/bin/ash\necho \"installing\"",
                             "entry": "ash",
-                            "container": "ghcr.io/pterodactyl/installers:alpine",
+                            "container": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/installers:alpine",
                             "extends": null
                         },
                         "relationships": {
@@ -916,9 +916,9 @@
                         "name": "Paper Child",
                         "description": null,
                         "features": null,
-                        "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                        "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                         "docker_images": {
-                            "Java 21": "ghcr.io/pterodactyl/yolks:java_21"
+                            "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21"
                         },
                         "force_outgoing_ip": true,
                         "config": {

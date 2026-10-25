@@ -19,7 +19,7 @@ Pterodactyl® 是一款免费、开源的游戏服务器管理面板，使用 PH
 
 ## v2 有哪些新特性
 
-本分支（`2.0-develop`）是 Pterodactyl v2 的开发分支，目前处于活跃开发中；当前稳定发布线位于 [`1.0-develop`](https://github.com/pterodactyl/panel/tree/1.0-develop)。
+本分支（`2.0-develop`）是 Pterodactyl v2 的开发分支，目前处于活跃开发中；当前稳定发布线位于 [`1.0-develop`](https://github.com/pterodactyl-china/panel/tree/1.0-develop)。
 
 * **扩展 SDK** —— 通过带版本号的 API 扩展面板，无需修改核心文件，您的改动可以跨越版本升级继续生效。示例扩展见 [pterodactyl/extensions](https://github.com/pterodactyl/extensions)。
 * **全面现代化的技术栈** —— Vite、React 19、TanStack Router 与 Query、Tailwind 4 以及 Laravel 13。
@@ -30,9 +30,9 @@ Pterodactyl® 是一款免费、开源的游戏服务器管理面板，使用 PH
 
 ## 文档
 
-* [面板文档](https://pterodactyl.io/panel/1.0/getting_started.html)
-* [Wings 文档](https://pterodactyl.io/wings/1.0/installing.html)
-* [社区指南](https://pterodactyl.io/community/about.html)
+* [面板文档](https://pterodactyl.top/panel/1.0/getting_started.html)
+* [Wings 文档](https://pterodactyl.top/wings/1.0/installing.html)
+* [社区指南](https://pterodactyl.top/community/about.html)
 * 或者通过 [Discord](https://discord.gg/pterodactyl) 获取更多帮助
 
 ## 赞助商
@@ -70,7 +70,7 @@ Pterodactyl 通过 Docker 容器隔离每个实例，从而支持种类繁多的
 * Xonotic
 * Starmade
 * Discord ATLBot，以及大多数其他 Node.js/Python 的 Discord 机器人
-* [以及更多……](https://eggs.pterodactyl.io)
+* [以及更多……](https://eggs.pterodactyl.top)
 
 ## 许可证
 

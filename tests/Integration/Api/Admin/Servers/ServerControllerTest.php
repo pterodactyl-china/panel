@@ -123,7 +123,7 @@ test('create server hands its admin fields to the server', function (): void {
 
     $server = Server::query()->findOrFail($response->json('attributes.id'));
     expect($server->external_id)->toBe('admin-ext-1')
-        ->and($server->image)->toBe('ghcr.io/pterodactyl/yolks:java_21')
+        ->and($server->image)->toBe('registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21')
         ->and($server->oom_disabled)->toBeFalse()
         ->and($server->skip_scripts)->toBeTrue()
         ->and($server->threads)->toBe('0')
@@ -164,7 +164,7 @@ function adminServerPayload(int $allocationId): array
         'name' => 'Admin Server',
         'owner_id' => User::factory()->create()->id,
         'egg_id' => Egg::query()->where('author', 'support@pterodactyl.io')->where('name', 'Bungeecord')->firstOrFail()->id,
-        'docker_image' => 'ghcr.io/pterodactyl/yolks:java_21',
+        'docker_image' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21',
         'startup' => 'java -jar server.jar',
         'environment' => ['BUNGEE_VERSION' => '123', 'SERVER_JARFILE' => 'server.jar'],
         'memory' => 512,

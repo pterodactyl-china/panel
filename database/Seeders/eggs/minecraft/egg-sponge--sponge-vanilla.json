@@ -7,18 +7,18 @@
     "exported_at": "2026-04-05T20:12:50+02:00",
     "name": "Sponge (SpongeVanilla)",
     "author": "support@pterodactyl.io",
-    "description": "SpongeVanilla is the SpongeAPI implementation for Vanilla Minecraft.",
+    "description": "SpongeVanilla 是建立在独立的原版 Minecraft 服务端上的 SpongeAPI 实现。",
     "features": [
         "eula",
         "java_version",
         "pid_limit"
     ],
     "docker_images": {
-        "Java 25": "ghcr.io\/pterodactyl\/yolks:java_25",
-        "Java 21": "ghcr.io\/pterodactyl\/yolks:java_21",
-        "Java 16": "ghcr.io\/pterodactyl\/yolks:java_16",
-        "Java 11": "ghcr.io\/pterodactyl\/yolks:java_11",
-        "Java 8": "ghcr.io\/pterodactyl\/yolks:java_8"
+        "Java 25": "registry.cn-shanghai.aliyuncs.com\/pterodactyl-china\/yolks:java_25",
+        "Java 21": "registry.cn-shanghai.aliyuncs.com\/pterodactyl-china\/yolks:java_21",
+        "Java 16": "registry.cn-shanghai.aliyuncs.com\/pterodactyl-china\/yolks:java_16",
+        "Java 11": "registry.cn-shanghai.aliyuncs.com\/pterodactyl-china\/yolks:java_11",
+        "Java 8": "registry.cn-shanghai.aliyuncs.com\/pterodactyl-china\/yolks:java_8"
     },
     "file_denylist": [],
     "startup": "java -Xms128M -XX:MaxRAMPercentage=95.0 -jar {{SERVER_JARFILE}}",
@@ -31,7 +31,7 @@
     "scripts": {
         "installation": {
             "script": "#!\/bin\/ash\r\n# Sponge Installation Script\r\n#\r\n# Server Files: \/mnt\/server\r\n\r\ncd \/mnt\/server\r\n\r\ncurl -sSL \"https:\/\/repo.spongepowered.org\/maven\/org\/spongepowered\/spongevanilla\/${SPONGE_VERSION}\/spongevanilla-${SPONGE_VERSION}.jar\" -o ${SERVER_JARFILE}",
-            "container": "ghcr.io\/pterodactyl\/installers:alpine",
+            "container": "registry.cn-shanghai.aliyuncs.com\/pterodactyl-china\/installers:alpine",
             "entrypoint": "ash"
         }
     },

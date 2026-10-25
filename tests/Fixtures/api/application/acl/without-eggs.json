@@ -77,7 +77,7 @@
                 "egg": 1,
                 "container": {
                     "startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
-                    "image": "ghcr.io/pterodactyl/yolks:java_21",
+                    "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                     "installed": 1,
                     "environment": {
                         "SERVER_JARFILE": "paper.jar",
@@ -279,7 +279,7 @@
                                                 "egg": 1,
                                                 "container": {
                                                     "startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
-                                                    "image": "ghcr.io/pterodactyl/yolks:java_21",
+                                                    "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                                                     "installed": 1,
                                                     "environment": {
                                                         "SERVER_JARFILE": "paper.jar",
@@ -371,7 +371,7 @@
                                                 "egg": 1,
                                                 "container": {
                                                     "startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
-                                                    "image": "ghcr.io/pterodactyl/yolks:java_21",
+                                                    "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                                                     "installed": 1,
                                                     "environment": {
                                                         "SERVER_JARFILE": "paper.jar",

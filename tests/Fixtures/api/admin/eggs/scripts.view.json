@@ -11,9 +11,9 @@
                 "name": "Paper Child",
                 "description": null,
                 "features": null,
-                "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                 "docker_images": {
-                    "Java 21": "ghcr.io/pterodactyl/yolks:java_21"
+                    "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21"
                 },
                 "force_outgoing_ip": true,
                 "config": {
@@ -53,9 +53,9 @@
                 "name": "Paper Child",
                 "description": null,
                 "features": null,
-                "docker_image": "ghcr.io/pterodactyl/yolks:java_21",
+                "docker_image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                 "docker_images": {
-                    "Java 21": "ghcr.io/pterodactyl/yolks:java_21"
+                    "Java 21": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21"
                 },
                 "force_outgoing_ip": true,
                 "config": {
@@ -154,7 +154,7 @@
                                     "egg": 2,
                                     "container": {
                                         "startup_command": "java -jar {{SERVER_JARFILE}}",
-                                        "image": "ghcr.io/pterodactyl/yolks:java_17",
+                                        "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17",
                                         "skip_scripts": true,
                                         "installed": 0,
                                         "environment": {

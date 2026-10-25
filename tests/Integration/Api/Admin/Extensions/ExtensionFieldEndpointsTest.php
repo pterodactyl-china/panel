@@ -225,7 +225,7 @@ function formCase(string $endpoint): array
         $route = fn (string $name, array $parameters = []): string => route('api.admin.'.$name, $parameters);
         $userPayload = ['username' => 'ext-user', 'email' => 'ext-user@example.test', 'name_first' => 'Ext', 'name_last' => 'User'];
         $nodePayload = fn (Location $location): array => ['name' => 'ExtNode', 'description' => 'Extension node.', 'location_id' => $location->id, 'public' => true, 'fqdn' => 'localhost', 'scheme' => 'https', 'behind_proxy' => false, 'maintenance_mode' => false, 'memory' => 2048, 'memory_overallocate' => 0, 'disk' => 20480, 'disk_overallocate' => 0, 'upload_size' => 100, 'daemon_listen' => 8080, 'daemon_sftp' => 2022, 'daemon_base' => '/var/lib/pterodactyl/volumes'];
-        $eggPayload = ['name' => 'Ext Egg', 'description' => 'Extension egg.', 'docker_images' => 'Java 17|ghcr.io/pterodactyl/yolks:java_17', 'startup' => 'java -jar server.jar', 'config_stop' => 'stop', 'config_startup' => '{"done": ["Done"]}', 'config_logs' => '{}', 'config_files' => '{}'];
+        $eggPayload = ['name' => 'Ext Egg', 'description' => 'Extension egg.', 'docker_images' => 'Java 17|registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17', 'startup' => 'java -jar server.jar', 'config_stop' => 'stop', 'config_startup' => '{"done": ["Done"]}', 'config_logs' => '{}', 'config_files' => '{}'];
         $mountPayload = ['name' => 'Ext Mount', 'description' => 'Extension mount.', 'source' => '/mnt/ext-source', 'target' => '/mnt/ext-target', 'read_only' => false, 'user_mountable' => false];
         $hostPayload = ['name' => 'Ext Host', 'host' => '127.0.0.1', 'port' => 3306, 'username' => 'extuser', 'password' => 'extpassword'];
 

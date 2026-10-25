@@ -56,7 +56,7 @@ function serverPayload(Egg $egg, Allocation $allocation): array
         'name' => 'Tagged Server',
         'owner_id' => User::factory()->create()->id,
         'egg_id' => $egg->id,
-        'docker_image' => 'ghcr.io/pterodactyl/yolks:java_21',
+        'docker_image' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21',
         'startup' => 'java -jar server.jar',
         'environment' => ['BUNGEE_VERSION' => '123', 'SERVER_JARFILE' => 'server.jar'],
         'memory' => 512,

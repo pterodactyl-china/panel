@@ -194,7 +194,7 @@ function applicationWrites(): array
         'application/nodes.update' => ['requests' => [['PATCH', APP.'/nodes/1', [...$node, 'name' => 'node-alpha-renamed', 'memory' => 16384]]]],
         'application/servers.store' => ['requests' => [['POST', APP.'/servers', [
             'name' => 'Created Server', 'description' => 'Created through the API', 'external_id' => 'ext-created', 'user' => World::OWNER, 'egg' => 1,
-            'docker_image' => 'ghcr.io/pterodactyl/yolks:java_21', 'startup' => 'java -jar {{SERVER_JARFILE}}', 'environment' => $environment,
+            'docker_image' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21', 'startup' => 'java -jar {{SERVER_JARFILE}}', 'environment' => $environment,
             'limits' => ['memory' => 512, 'swap' => 0, 'disk' => 1024, 'io' => 500, 'cpu' => 100], 'feature_limits' => ['databases' => 1, 'allocations' => 2, 'backups' => 3],
             'allocation' => ['default' => 4, 'additional' => [5]], 'start_on_completion' => false,
         ]]]],
@@ -204,7 +204,7 @@ function applicationWrites(): array
             'feature_limits' => ['databases' => 6, 'backups' => 7, 'allocations' => 8],
         ]]]],
         'application/servers/details.update' => ['requests' => [['PATCH', APP.'/servers/1/details', ['name' => 'Survival Renamed', 'user' => World::HELPER, 'external_id' => 'ext-survival-2', 'description' => 'Renamed via API']]]],
-        'application/servers/startup.update' => ['requests' => [['PATCH', APP.'/servers/1/startup', ['startup' => 'java -jar {{SERVER_JARFILE}}', 'environment' => [...$environment, 'SERVER_JARFILE' => 'renamed.jar'], 'egg' => 1, 'image' => 'ghcr.io/pterodactyl/yolks:java_17', 'skip_scripts' => true]]]],
+        'application/servers/startup.update' => ['requests' => [['PATCH', APP.'/servers/1/startup', ['startup' => 'java -jar {{SERVER_JARFILE}}', 'environment' => [...$environment, 'SERVER_JARFILE' => 'renamed.jar'], 'egg' => 1, 'image' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17', 'skip_scripts' => true]]]],
         'application/servers/databases.store' => ['redact' => ['password'], 'requests' => [['POST', APP.'/servers/1/databases', ['database' => 'apidb', 'remote' => '%', 'host' => 1]]]],
         'application/servers/databases.store.includes' => ['redact' => ['password'], 'requests' => [['POST', APP.'/servers/1/databases?include=password,host', ['database' => 'apidb', 'remote' => '10.%', 'host' => 1]]]],
         'application/users.store' => ['requests' => [['POST', APP.'/users', ['username' => 'created', 'email' => 'created@example.test', 'first_name' => 'Cre', 'last_name' => 'Ated', 'external_id' => 'ext-created']]]],

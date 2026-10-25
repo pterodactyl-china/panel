@@ -188,7 +188,7 @@
                                             "egg": 1,
                                             "container": {
                                                 "startup_command": "java -jar {{SERVER_JARFILE}}",
-                                                "image": "ghcr.io/pterodactyl/yolks:java_21",
+                                                "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                                                 "skip_scripts": false,
                                                 "installed": 1,
                                                 "environment": {
@@ -265,7 +265,7 @@
                                             "egg": 1,
                                             "container": {
                                                 "startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
-                                                "image": "ghcr.io/pterodactyl/yolks:java_21",
+                                                "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                                                 "skip_scripts": false,
                                                 "installed": 1,
                                                 "environment": {
@@ -314,7 +314,7 @@
                                             "egg": 2,
                                             "container": {
                                                 "startup_command": "java -jar {{SERVER_JARFILE}}",
-                                                "image": "ghcr.io/pterodactyl/yolks:java_17",
+                                                "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17",
                                                 "skip_scripts": true,
                                                 "installed": 0,
                                                 "environment": {
@@ -614,7 +614,7 @@
                                             "egg": 1,
                                             "container": {
                                                 "startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
-                                                "image": "ghcr.io/pterodactyl/yolks:java_21",
+                                                "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21",
                                                 "skip_scripts": false,
                                                 "installed": 1,
                                                 "environment": {
@@ -663,7 +663,7 @@
                                             "egg": 2,
                                             "container": {
                                                 "startup_command": "java -jar {{SERVER_JARFILE}}",
-                                                "image": "ghcr.io/pterodactyl/yolks:java_17",
+                                                "image": "registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_17",
                                                 "skip_scripts": true,
                                                 "installed": 0,
                                                 "environment": {

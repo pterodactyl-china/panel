@@ -33,6 +33,15 @@ export default function AuthCard({ title, submit, className, children }: Props) 
                 >
                     Pterodactyl 软件
                 </a>
+                &nbsp;| 汉化：&nbsp;
+                <a
+                    rel='noopener nofollow noreferrer'
+                    href='https://pterodactyl.top'
+                    target='_blank'
+                    className='no-underline text-muted-foreground hover:text-muted-foreground'
+                >
+                    翼龙中国&reg;
+                </a>
             </p>
         </div>
     );

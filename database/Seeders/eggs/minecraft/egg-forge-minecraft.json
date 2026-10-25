@@ -7,19 +7,19 @@
     "exported_at": "2026-04-05T20:12:54+02:00",
     "name": "Forge Minecraft",
     "author": "support@pterodactyl.io",
-    "description": "Minecraft Forge Server. Minecraft Forge is a modding API (Application Programming Interface), which makes it easier to create mods, and also make sure mods are compatible with each other.",
+    "description": "Minecraft Forge 服务器。Minecraft Forge 是一个模组 API（应用程序编程接口），它可以更轻松地创建模组，并确保模组彼此兼容。",
     "features": [
         "eula",
         "java_version",
         "pid_limit"
     ],
     "docker_images": {
-        "Java 25": "ghcr.io\/pterodactyl\/yolks:java_25",
-        "Java 21": "ghcr.io\/pterodactyl\/yolks:java_21",
-        "Java 17": "ghcr.io\/pterodactyl\/yolks:java_17",
-        "Java 16": "ghcr.io\/pterodactyl\/yolks:java_16",
-        "Java 11": "ghcr.io\/pterodactyl\/yolks:java_11",
-        "Java 8": "ghcr.io\/pterodactyl\/yolks:java_8"
+        "Java 25": "registry.cn-shanghai.aliyuncs.com\/pterodactyl-china\/yolks:java_25",
+        "Java 21": "registry.cn-shanghai.aliyuncs.com\/pterodactyl-china\/yolks:java_21",
+        "Java 17": "registry.cn-shanghai.aliyuncs.com\/pterodactyl-china\/yolks:java_17",
+        "Java 16": "registry.cn-shanghai.aliyuncs.com\/pterodactyl-china\/yolks:java_16",
+        "Java 11": "registry.cn-shanghai.aliyuncs.com\/pterodactyl-china\/yolks:java_11",
+        "Java 8": "registry.cn-shanghai.aliyuncs.com\/pterodactyl-china\/yolks:java_8"
     },
     "file_denylist": [],
     "startup": "java -Xms128M -XX:MaxRAMPercentage=95.0 -Dterminal.jline=false -Dterminal.ansi=true $( [[  ! -f unix_args.txt ]] && printf %s \"-jar {{SERVER_JARFILE}}\" || printf %s \"@unix_args.txt\" )",

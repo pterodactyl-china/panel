@@ -26,8 +26,8 @@ const sections: { to: LinkProps['to']; label: string; description: string }[] = 
 
 const externalLinks = (version: AdminVersion) => [
     { href: version.discord, label: '获取帮助', icon: LifeBuoy },
-    { href: 'https://pterodactyl.io', label: '文档', icon: BookOpen },
-    { href: 'https://github.com/pterodactyl/panel', label: 'GitHub', icon: Code2 },
+    { href: 'https://pterodactyl.top', label: '文档', icon: BookOpen },
+    { href: 'https://github.com/pterodactyl-china/panel', label: 'GitHub', icon: Code2 },
     { href: version.donations, label: '支持项目', icon: HeartHandshake },
 ];
 

@@ -17,7 +17,7 @@ function egg(array $overrides = []): array
 {
     return [...[
         'name' => 'Updated Egg',
-        'docker_images' => 'Java 21|ghcr.io/pterodactyl/yolks:java_21',
+        'docker_images' => 'Java 21|registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21',
         'startup' => 'java -jar updated.jar',
         'config_stop' => '^C',
         'config_startup' => '{}',
@@ -56,7 +56,7 @@ test('an update replaces the egg fields and keeps the config it is not given', f
 
     $this->app->make(UpdatesEggs::class)->update($egg, [
         'name' => 'Updated Egg',
-        'docker_images' => 'Java 21|ghcr.io/pterodactyl/yolks:java_21',
+        'docker_images' => 'Java 21|registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21',
         'startup' => 'java -jar updated.jar',
         'config_from' => $parent->id,
         'config_stop' => '',
@@ -65,7 +65,7 @@ test('an update replaces the egg fields and keeps the config it is not given', f
 
     $egg->refresh();
     expect($egg->name)->toBe('Updated Egg')
-        ->and($egg->docker_images)->toBe(['Java 21' => 'ghcr.io/pterodactyl/yolks:java_21'])
+        ->and($egg->docker_images)->toBe(['Java 21' => 'registry.cn-shanghai.aliyuncs.com/pterodactyl-china/yolks:java_21'])
         ->and($egg->startup)->toBe('java -jar updated.jar')
         ->and($egg->config_from)->toBe($parent->id)
         ->and($egg->config_stop)->toBeNull()
