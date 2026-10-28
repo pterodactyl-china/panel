@@ -109,5 +109,5 @@ test('frontend type declarations exclude secrets and reject serialization drift'
     $bad = new ExtensionSettingsDefinition(settings(['flag' => 'yes']), [
         ExtensionSettingDefinition::make('flag', 'flag', true)->frontend()->frontendType('boolean'),
     ]);
-    expect(fn (): array => $bad->frontendConfig())->toThrow(UnexpectedValueException::class, 'declared boolean type');
+    expect(fn (): array => $bad->frontendConfig())->toThrow(UnexpectedValueException::class, '声明的 boolean 类型');
 });

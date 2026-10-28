@@ -18,7 +18,7 @@ test('exception details are hidden when debugging is disabled', function () {
     $error = ApiErrorResponse::toArray(new RuntimeException('sensitive detail'))['errors'][0];
     expect($error['code'])->toBe('RuntimeException');
     expect($error['status'])->toBe('500');
-    expect($error['detail'])->toBe('An unexpected error was encountered while processing this request, please try again.');
+    expect($error['detail'])->toBe('处理此请求时发生意外错误，请重试。');
     $this->assertArrayNotHasKey('source', $error);
     $this->assertArrayNotHasKey('meta', $error);
 });

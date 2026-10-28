@@ -197,7 +197,7 @@ test('install rejects a package with an invalid manifest', function (): void {
     $this->post(route('api.admin.extensions.install'), ['package' => extensionPackage(['id' => 'Bad_Probe', 'name' => 'Bad', 'version' => '1.0.0'])], ['Accept' => 'application/json'])
         ->assertUnprocessable()
         ->assertJsonPath('errors.0.code', 'InvalidExtensionException')
-        ->assertJsonPath('errors.0.detail', fn (string $detail): bool => str_contains($detail, 'Extension id "Bad_Probe" must match'));
+        ->assertJsonPath('errors.0.detail', fn (string $detail): bool => str_contains($detail, '扩展 ID "Bad_Probe" 必须匹配'));
 
     $this->assertDatabaseMissing('extensions', ['identifier' => 'Bad_Probe']);
 });
@@ -217,7 +217,7 @@ test('install asks before replacing an installed extension and replaces it once 
     $this->post(route('api.admin.extensions.install'), ['package' => $package(), 'enable' => 'false'], ['Accept' => 'application/json'])
         ->assertStatus(Response::HTTP_CONFLICT)
         ->assertJsonPath('errors.0.code', 'ExtensionAlreadyInstalledException')
-        ->assertJsonPath('errors.0.detail', 'Extension "admin-fixture" v1.0.0 is already installed; replacing it with v2.0.0 must be confirmed.')
+        ->assertJsonPath('errors.0.detail', '扩展 "admin-fixture" v1.0.0 已安装；替换为 v2.0.0 需要确认。')
         ->assertJsonPath('errors.0.meta.identifier', 'admin-fixture')
         ->assertJsonPath('errors.0.meta.installed_version', '1.0.0')
         ->assertJsonPath('errors.0.meta.version', '2.0.0')

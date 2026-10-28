@@ -34,7 +34,7 @@ test('progress rejects invalid updates and permissions outside its namespace', f
     $progress = new ExtensionJobProgress;
     expect(fn () => $progress->begin('probe', $user, $server, 'ext.other.view'))->toThrow(InvalidArgumentException::class);
     expect(fn () => $progress->begin('probe', $user, permission: 'ext.probe.view'))->toThrow(InvalidArgumentException::class);
-    expect(fn () => $progress->begin("probe\n", $user))->toThrow(InvalidArgumentException::class, 'Invalid extension identifier.');
+    expect(fn () => $progress->begin("probe\n", $user))->toThrow(InvalidArgumentException::class, '无效的扩展标识符。');
     expect(fn () => $progress->begin('probe', $user, $server, "ext.probe.view\n"))->toThrow(InvalidArgumentException::class);
     $started = $progress->begin('probe', $user, $server, 'ext.probe.view');
     expect(fn () => $progress->update('probe', $started->id, 101))->toThrow(InvalidArgumentException::class);

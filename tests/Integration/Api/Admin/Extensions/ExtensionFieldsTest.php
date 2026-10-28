@@ -613,7 +613,7 @@ test('malformed values of a running extension are a validation error, and those 
     $update(['billing' => [5 => 'pro']])
         ->assertUnprocessable()
         ->assertJsonPath('errors.0.meta.source_field', 'extensions.billing')
-        ->assertJsonPath('errors.0.detail', 'The billing values must be an object keyed by field.');
+        ->assertJsonPath('errors.0.detail', 'billing 的值必须是以字段名为键的对象。');
     $update(['billing' => ['plan' => $nested]])
         ->assertUnprocessable()
         ->assertJsonPath('errors.0.detail', 'The billing values are nested too deeply.');

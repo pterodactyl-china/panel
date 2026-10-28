@@ -88,8 +88,8 @@ test('a disk the web server serves directly is refused', function (array $disk):
     config(['filesystems.disks.exposed' => $disk, 'extensions.files_disk' => 'exposed']);
     $files = new ExtensionSettingFiles;
 
-    expect(fn () => $files->store('probe', upload(base64_decode(PNG, true)), ExtensionSettingFiles::IMAGES, 64))->toThrow(UnexpectedValueException::class, 'must name a private disk');
-    expect(fn () => $files->read('probe', '0123456789abcdef0123456789abcdef01234567.png'))->toThrow(UnexpectedValueException::class, 'must name a private disk');
+    expect(fn () => $files->store('probe', upload(base64_decode(PNG, true)), ExtensionSettingFiles::IMAGES, 64))->toThrow(UnexpectedValueException::class, '必须指定私有磁盘');
+    expect(fn () => $files->read('probe', '0123456789abcdef0123456789abcdef01234567.png'))->toThrow(UnexpectedValueException::class, '必须指定私有磁盘');
 })->with([
     'public visibility' => [fn (): array => ['driver' => 'local', 'root' => storage_path('app/exposed'), 'visibility' => 'public']],
     'storage link target' => [fn (): array => ['driver' => 'local', 'root' => storage_path('app/public/nested')]],
@@ -99,7 +99,7 @@ test('a disk the web server serves directly is refused', function (array $disk):
 test('the stock public disk is refused', function (): void {
     config(['extensions.files_disk' => 'public']);
 
-    expect(fn () => (new ExtensionSettingFiles)->store('probe', upload(base64_decode(PNG, true)), ExtensionSettingFiles::IMAGES, 64))->toThrow(UnexpectedValueException::class, 'must name a private disk');
+    expect(fn () => (new ExtensionSettingFiles)->store('probe', upload(base64_decode(PNG, true)), ExtensionSettingFiles::IMAGES, 64))->toThrow(UnexpectedValueException::class, '必须指定私有磁盘');
 });
 
 test('enforces the size limit of the definition', function (): void {

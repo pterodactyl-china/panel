@@ -50,7 +50,7 @@ test('allocation cannot be created if not enabled', function (): void {
     /** @var Server $server */
     [$user, $server] = $this->generateTestAccount();
     $server->update(['allocation_limit' => 2]);
-    $this->actingAs($user)->postJson($this->link($server, '/network/allocations'))->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.code', 'AutoAllocationNotEnabledException')->assertJsonPath('errors.0.detail', 'Server auto-allocation is not enabled for this instance.');
+    $this->actingAs($user)->postJson($this->link($server, '/network/allocations'))->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.code', 'AutoAllocationNotEnabledException')->assertJsonPath('errors.0.detail', '此实例未启用服务器自动分配。');
 });
 test('allocation cannot be created if server is at limit', function (): void {
     /** @var Server $server */

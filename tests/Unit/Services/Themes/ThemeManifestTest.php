@@ -98,7 +98,7 @@ test('rejects settings that could not be stored or rendered safely', function (a
     expect(fn () => withSetting($setting))->toThrow(InvalidExtensionException::class, $message);
 })->with([
     'an unknown type' => [['type' => 'font'], 'theme.settings.probe.type'],
-    'a colour default that is not a colour' => [['type' => 'color', 'default' => 'red'], 'Theme setting "probe": A color setting defaults to a hex or oklch() colour'],
+    'a colour default that is not a colour' => [['type' => 'color', 'default' => 'red'], 'Theme setting "probe": 颜色设置的默认值必须是十六进制或 oklch() 颜色'],
     'a token that is not a custom property' => [['type' => 'color', 'token' => 'color'], 'custom property names'],
     'a token with css in it' => [['type' => 'color', 'token' => '--a;}body{x:y'], 'custom property names'],
     'an attribute outside data-*' => [['type' => 'toggle', 'attribute' => 'onclick'], 'data attributes'],
@@ -119,8 +119,8 @@ test('rejects settings that could not be stored or rendered safely', function (a
 ]);
 
 test('rejects setting names that are not identifiers and two settings writing the same target', function (): void {
-    expect(fn () => theme(['theme' => ['settings' => ['bad-name' => ['type' => 'toggle', 'label' => 'Bad']]]]))->toThrow(InvalidExtensionException::class, 'Theme setting names must match');
-    expect(fn () => theme(['theme' => ['settings' => [['type' => 'toggle', 'label' => 'Listed']]]]))->toThrow(InvalidExtensionException::class, 'Theme setting names must match');
+    expect(fn () => theme(['theme' => ['settings' => ['bad-name' => ['type' => 'toggle', 'label' => 'Bad']]]]))->toThrow(InvalidExtensionException::class, '主题设置的名称必须匹配');
+    expect(fn () => theme(['theme' => ['settings' => [['type' => 'toggle', 'label' => 'Listed']]]]))->toThrow(InvalidExtensionException::class, '主题设置的名称必须匹配');
     expect(fn () => theme(['theme' => ['settings' => [
         'one' => ['type' => 'color', 'label' => 'One', 'token' => '--accent'],
         'two' => ['type' => 'color', 'label' => 'Two', 'token' => '--accent'],

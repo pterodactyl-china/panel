@@ -233,7 +233,7 @@ test('writes a chosen tailwind prefix to the manifest, the stylesheet and the st
 });
 test('rejects malformed and reserved tailwind prefixes before writing anything', function (string $prefix): void {
     expect(fn () => $this->scaffolder->scaffold(id: 'my-widget', outDir: $this->directory, prefix: $prefix))
-        ->toThrow(InvalidExtensionException::class, "Tailwind prefix \"{$prefix}\" must match /^[a-z]{2,12}$/D");
+        ->toThrow(InvalidExtensionException::class, "Tailwind 前缀 \"{$prefix}\" 必须匹配 /^[a-z]{2,12}$/D");
     expect($this->directory.'/my-widget')->not->toBeDirectory();
     $this->artisan('p:extension:make', ['id' => 'my-widget', '--out' => $this->directory, '--prefix' => $prefix])->assertFailed();
 })->with(['a', 'My', 'my-widget', 'w2', 'toolongtobeaprefix', 'sm', 'dark', 'hover', 'group', 'tw', 'color']);

@@ -74,20 +74,20 @@ test('exception is thrown if no more allocations can be created in range', funct
         Allocation::factory()->create(['ip' => $server->allocation->ip, 'port' => $i, 'node_id' => $server->node_id, 'server_id' => $server2->id]);
     }
     $this->expectException(NoAutoAllocationSpaceAvailableException::class);
-    $this->expectExceptionMessage('Cannot assign additional allocation: no more space available on node.');
+    $this->expectExceptionMessage('无法分配额外端口：节点上已没有可用空间。');
     getAction()->assignAvailable($server);
 });
 test('exception is thrown if only free port is on a different ip', function () {
     $server = $this->createServerModel();
     Allocation::factory()->times(5)->create(['node_id' => $server->node_id]);
     $this->expectException(NoAutoAllocationSpaceAvailableException::class);
-    $this->expectExceptionMessage('Cannot assign additional allocation: no more space available on node.');
+    $this->expectExceptionMessage('无法分配额外端口：节点上已没有可用空间。');
     getAction()->assignAvailable($server);
 });
 test('exception is thrown if start or end range is not defined', function () {
     $server = $this->createServerModel();
     $this->expectException(NoAutoAllocationSpaceAvailableException::class);
-    $this->expectExceptionMessage('Cannot assign additional allocation: no more space available on node.');
+    $this->expectExceptionMessage('无法分配额外端口：节点上已没有可用空间。');
     getAction()->assignAvailable($server);
 });
 test('exception is thrown if start or end range is not numeric', function () {

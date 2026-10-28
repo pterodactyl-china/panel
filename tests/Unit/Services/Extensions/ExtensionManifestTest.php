@@ -28,7 +28,7 @@ beforeEach(function (): void {
 afterEach(function (): void {
     File::deleteDirectory($this->directory);
 });
-dataset('invalidManifestProvider', fn (): array => ['missing name' => [['name' => ''], 'field "name"'], 'uppercase id' => [['id' => 'BadId'], 'must match'], 'reserved id' => [['id' => 'pterodactyl'], 'reserved'], 'ui without entry' => [['ui' => ['mode' => 'native']], '"entry"'], 'absolute ui entry' => [['ui' => ['entry' => '/etc/passwd']], 'relative path'], 'traversal ui entry' => [['ui' => ['entry' => '../../owned.js']], 'relative path'], 'unsupported ui entry' => [['ui' => ['entry' => 'dist/main.js']], 'must be "dist/client.js"'], 'unknown ui mode' => [['ui' => ['entry' => 'dist/client.js', 'mode' => 'sandboxed']], 'Unsupported ui.mode'], 'autoload traversal' => [['autoload' => ['X\\' => '../src']], 'relative paths'], 'autoload bad prefix' => [['autoload' => ['NoTrailingSlash' => 'src']], 'autoload']]);
+dataset('invalidManifestProvider', fn (): array => ['missing name' => [['name' => ''], 'field "name"'], 'uppercase id' => [['id' => 'BadId'], '必须匹配'], 'reserved id' => [['id' => 'pterodactyl'], 'reserved'], 'ui without entry' => [['ui' => ['mode' => 'native']], '"entry"'], 'absolute ui entry' => [['ui' => ['entry' => '/etc/passwd']], 'relative path'], 'traversal ui entry' => [['ui' => ['entry' => '../../owned.js']], 'relative path'], 'unsupported ui entry' => [['ui' => ['entry' => 'dist/main.js']], 'must be "dist/client.js"'], 'unknown ui mode' => [['ui' => ['entry' => 'dist/client.js', 'mode' => 'sandboxed']], 'Unsupported ui.mode'], 'autoload traversal' => [['autoload' => ['X\\' => '../src']], 'relative paths'], 'autoload bad prefix' => [['autoload' => ['NoTrailingSlash' => 'src']], 'autoload']]);
 test('parses a complete manifest', function (): void {
     writeManifest(['id' => 'example-extension', 'name' => 'Example Extension', 'version' => '1.2.3', 'description' => 'Example', 'author' => 'Pterodactyl', 'provider' => 'ExampleExtension\Provider', 'autoload' => ['ExampleExtension\\' => 'src'], 'ui' => ['entry' => 'dist/client.js', 'mode' => 'native']]);
     $manifest = (new ExtensionManifestValidator)->fromDirectory($this->directory);
@@ -58,9 +58,9 @@ test('identifiers and slugs with a trailing newline are rejected', function (arr
     expect(preg_match(ExtensionManifest::ID_REGEX, "my-ext\n"))->toBe(0);
     expect(fn (): ExtensionManifest => (new ExtensionManifestValidator)->fromDirectory($this->directory))->toThrow(InvalidExtensionException::class, $message);
 })->with([
-    'extension id' => [['id' => "my-ext\n"], 'Extension id "my-ext'],
+    'extension id' => [['id' => "my-ext\n"], '扩展 ID "my-ext'],
     'dependency id' => [['requires' => ['extensions' => ["base\n" => '*']]], 'Extension dependencies must be valid identifiers'],
-    'root path prefix' => [['routes' => ['root' => ["go\n"]]], 'Manifest "routes.root" prefixes must match'],
+    'root path prefix' => [['routes' => ['root' => ["go\n"]]], 'Manifest "routes.root" 的前缀必须匹配'],
     'screen id' => [['ui' => ['entry' => 'dist/client.js', 'screens' => [['id' => "main\n", 'area' => 'account', 'path' => 'probe']]]], 'ui.screens.0.id'],
     'screen path' => [['ui' => ['entry' => 'dist/client.js', 'screens' => [['id' => 'main', 'area' => 'account', 'path' => "probe\n"]]]], 'ui.screens.0.path'],
     'navigation icon' => [['ui' => ['entry' => 'dist/client.js', 'screens' => [['id' => 'main', 'area' => 'account', 'path' => 'probe', 'nav' => ['label' => 'Probe', 'icon' => "life-buoy\n"]]]]], 'Navigation "icon" must be a lucide icon name'],
@@ -402,16 +402,16 @@ test('rejects malformed and reserved tailwind prefixes', function (mixed $prefix
 
     expect(fn (): ExtensionManifest => (new ExtensionManifestValidator)->fromDirectory($this->directory))->toThrow(InvalidExtensionException::class, 'Manifest "ui.prefix" '.$message);
 })->with([
-    'null' => [null, 'must match /^[a-z]{2,12}$/D.'],
-    'not a string' => [12, 'must match /^[a-z]{2,12}$/D.'],
-    'empty' => ['', 'must match /^[a-z]{2,12}$/D.'],
-    'one letter' => ['h', 'must match /^[a-z]{2,12}$/D.'],
-    'thirteen letters' => ['thirteenlette', 'must match /^[a-z]{2,12}$/D.'],
-    'uppercase' => ['Hw', 'must match /^[a-z]{2,12}$/D.'],
-    'digit' => ['hw2', 'must match /^[a-z]{2,12}$/D.'],
-    'hyphen' => ['hello-world', 'must match /^[a-z]{2,12}$/D.'],
-    'trailing colon' => ['hw:', 'must match /^[a-z]{2,12}$/D.'],
-    'trailing newline' => ["hw\n", 'must match /^[a-z]{2,12}$/D.'],
+    'null' => [null, '必须匹配 /^[a-z]{2,12}$/D.'],
+    'not a string' => [12, '必须匹配 /^[a-z]{2,12}$/D.'],
+    'empty' => ['', '必须匹配 /^[a-z]{2,12}$/D.'],
+    'one letter' => ['h', '必须匹配 /^[a-z]{2,12}$/D.'],
+    'thirteen letters' => ['thirteenlette', '必须匹配 /^[a-z]{2,12}$/D.'],
+    'uppercase' => ['Hw', '必须匹配 /^[a-z]{2,12}$/D.'],
+    'digit' => ['hw2', '必须匹配 /^[a-z]{2,12}$/D.'],
+    'hyphen' => ['hello-world', '必须匹配 /^[a-z]{2,12}$/D.'],
+    'trailing colon' => ['hw:', '必须匹配 /^[a-z]{2,12}$/D.'],
+    'trailing newline' => ["hw\n", '必须匹配 /^[a-z]{2,12}$/D.'],
     'breakpoint' => ['sm', 'is a Tailwind variant, theme namespace or panel name'],
     'state variant' => ['hover', 'is a Tailwind variant, theme namespace or panel name'],
     'dark variant' => ['dark', 'is a Tailwind variant, theme namespace or panel name'],
@@ -451,12 +451,12 @@ test('rejects malformed, reserved and core root path prefixes', function (mixed 
 
     expect(fn (): ExtensionManifest => (new ExtensionManifestValidator)->fromDirectory($this->directory))->toThrow(InvalidExtensionException::class, $message);
 })->with([
-    'not an object' => ['go', '"routes" must be an object'],
+    'not an object' => ['go', '"routes" 必须是包含 "root" 列表的对象'],
     'unknown key' => [['web' => ['go']], 'routes'],
     'not a list' => [['root' => ['a' => 'go']], 'routes.root'],
-    'uppercase' => [['root' => ['Go']], 'must match'],
-    'nested path' => [['root' => ['go/links']], 'must match'],
-    'parameter' => [['root' => ['{slug}']], 'must match'],
+    'uppercase' => [['root' => ['Go']], '必须匹配'],
+    'nested path' => [['root' => ['go/links']], '必须匹配'],
+    'parameter' => [['root' => ['{slug}']], '必须匹配'],
     'duplicate' => [['root' => ['go', 'go']], 'must be unique'],
     'too many' => [['root' => ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']], 'routes.root'],
     'spa route' => [['root' => ['server']], '"/server" is reserved'],

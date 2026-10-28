@@ -21,10 +21,10 @@ const STORED = '0123456789abcdef0123456789abcdef01234567.png';
 test('public settings require frontend and exclude secrets', function (): void {
     expect(ExtensionSettingDefinition::make('a', 'a', true)->frontend()->public()->isPublic())->toBeTrue();
     expect(ExtensionSettingDefinition::make('a', 'a', true)->frontend()->isPublic())->toBeFalse();
-    expect(fn () => ExtensionSettingDefinition::make('a', 'a', true)->public())->toThrow(InvalidArgumentException::class, 'call ->frontend() first');
-    expect(fn () => ExtensionSettingDefinition::make('a', 'a', '')->secret()->public())->toThrow(InvalidArgumentException::class, 'cannot be public');
+    expect(fn () => ExtensionSettingDefinition::make('a', 'a', true)->public())->toThrow(InvalidArgumentException::class, '请先调用 ->frontend()');
+    expect(fn () => ExtensionSettingDefinition::make('a', 'a', '')->secret()->public())->toThrow(InvalidArgumentException::class, '不能设为公开');
     expect(fn () => ExtensionSettingDefinition::make('a', 'a', '')->frontend()->public()->secret())->toThrow(InvalidArgumentException::class);
-    expect(fn () => ExtensionSettingDefinition::make('a', 'a', true)->frontend()->public()->frontend(false))->toThrow(InvalidArgumentException::class, 'must stay exposed');
+    expect(fn () => ExtensionSettingDefinition::make('a', 'a', true)->frontend()->public()->frontend(false))->toThrow(InvalidArgumentException::class, '必须保持对前端包可见');
 });
 
 test('guests receive only public frontend settings', function (): void {
@@ -49,15 +49,15 @@ test('fields can be grouped into tabs on the settings form', function (): void {
     ]);
 
     expect(array_column($definition->schema(), 'tab', 'input'))->toBe(['bucket' => 'Storage', 'enabled' => null, 'access_key' => 'Storage']);
-    expect(fn () => ExtensionSettingDefinition::make('a', 'a', '')->tab(' '))->toThrow(InvalidArgumentException::class, '1 to 64 characters');
-    expect(fn () => ExtensionSettingDefinition::make('a', 'a', '')->tab(str_repeat('a', 65)))->toThrow(InvalidArgumentException::class, '1 to 64 characters');
+    expect(fn () => ExtensionSettingDefinition::make('a', 'a', '')->tab(' '))->toThrow(InvalidArgumentException::class, '1 到 64 个字符');
+    expect(fn () => ExtensionSettingDefinition::make('a', 'a', '')->tab(str_repeat('a', 65)))->toThrow(InvalidArgumentException::class, '1 到 64 个字符');
 });
 
-test('rich field types cannot be secret', function (string $field): void {
+test('rich field types 不能设为机密', function (string $field): void {
     $default = in_array($field, ['multiselect', 'list'], true) ? [] : ($field === 'textarea' ? '' : null);
     $options = [['value' => 'a', 'label' => 'A']];
-    expect(fn () => ExtensionSettingDefinition::make('x', 'x', $default)->field($field, $options)->secret())->toThrow(InvalidArgumentException::class, 'cannot be secret');
-    expect(fn () => ExtensionSettingDefinition::make('x', 'x', $default)->secret()->field($field, $options))->toThrow(InvalidArgumentException::class, 'secret extension setting cannot use');
+    expect(fn () => ExtensionSettingDefinition::make('x', 'x', $default)->field($field, $options)->secret())->toThrow(InvalidArgumentException::class, '不能设为机密');
+    expect(fn () => ExtensionSettingDefinition::make('x', 'x', $default)->secret()->field($field, $options))->toThrow(InvalidArgumentException::class, '机密扩展设置不能使用');
 })->with(['color', 'textarea', 'multiselect', 'list', 'file']);
 
 test('field declarations reject defaults and limits that do not fit', function (callable $declare): void {
@@ -88,9 +88,9 @@ test('password fields are always secret and never reach frontend bundles', funct
     expect($definition->schema()[0])->toMatchArray(['field' => 'password', 'value' => ExtensionSettingDefinition::MASK, 'visibility' => 'admin']);
     expect($definition->publicSettings())->toBe(['token' => ExtensionSettingDefinition::MASK]);
     expect($definition->frontendConfig())->toBe([]);
-    expect(fn () => ExtensionSettingDefinition::make('a', 'a', '')->field('password')->frontend())->toThrow(InvalidArgumentException::class, 'cannot be exposed to frontend bundles');
-    expect(fn () => ExtensionSettingDefinition::make('a', 'a', '')->frontend()->field('password'))->toThrow(InvalidArgumentException::class, 'cannot be exposed to frontend bundles');
-    expect(fn () => ExtensionSettingDefinition::make('a', 'a', '')->secret()->field('text')->frontend())->toThrow(InvalidArgumentException::class, 'cannot be exposed to frontend bundles');
+    expect(fn () => ExtensionSettingDefinition::make('a', 'a', '')->field('password')->frontend())->toThrow(InvalidArgumentException::class, '不能暴露给前端包');
+    expect(fn () => ExtensionSettingDefinition::make('a', 'a', '')->frontend()->field('password'))->toThrow(InvalidArgumentException::class, '不能暴露给前端包');
+    expect(fn () => ExtensionSettingDefinition::make('a', 'a', '')->secret()->field('text')->frontend())->toThrow(InvalidArgumentException::class, '不能暴露给前端包');
 });
 
 test('a secret keeps its stored value when the mask, a blank or nothing is submitted', function (string $field, ?string $default): void {

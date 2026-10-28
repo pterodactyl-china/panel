@@ -66,7 +66,7 @@ test('a valid token is refused when disabled', function (): void {
     Http::fake();
 
     expect(fn () => $this->downloader->download(signed($this->keypair, $this->base, ['url' => $this->base])))
-        ->toThrow(InvalidExtensionException::class, 'disabled on this panel');
+        ->toThrow(InvalidExtensionException::class, '已禁用通过 URL 安装扩展');
     Http::assertNothingSent();
 });
 
@@ -102,7 +102,7 @@ test('a signed token for another purpose is refused', function (): void {
 
 test('a token without a source claim is refused', function (): void {
     $this->downloader->verifiedUrl(signed($this->keypair, $this->base));
-})->throws(InvalidExtensionException::class, 'does not say where to download');
+})->throws(InvalidExtensionException::class, '未指明扩展的下载地址');
 
 test('it downloads the package with the install header', function (): void {
     Http::fake([$this->base.'*' => Http::response('package-bytes')]);

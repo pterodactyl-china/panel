@@ -21,7 +21,7 @@ test('an application key cannot use the admin API, whatever its permissions', fu
     $key = ApiKey::factory()->create(['user_id' => $admin->id, 'key_type' => ApiKey::TYPE_APPLICATION, ...$permissions]);
     withKey($key);
 
-    $denied = ['errors' => [['code' => 'AccessDeniedHttpException', 'status' => '403', 'detail' => 'You are attempting to use an application API key on an endpoint that does not accept them.']]];
+    $denied = ['errors' => [['code' => 'AccessDeniedHttpException', 'status' => '403', 'detail' => '你正在不支持应用 API 密钥的接口上使用应用 API 密钥。']]];
     $this->getJson('/api/admin/users')->assertForbidden()->assertExactJson($denied);
     $this->postJson('/api/admin/tags', ['name' => 'Escalated', 'slug' => 'escalated'])->assertForbidden()->assertExactJson($denied);
     expect(Tag::query()->where('slug', 'escalated')->exists())->toBeFalse();
@@ -53,7 +53,7 @@ test('a root administrator account key cannot install extensions', function (): 
     $this->postJson('/api/admin/extensions', [])
         ->assertForbidden()
         ->assertJsonPath('errors.0.code', 'AccessDeniedHttpException')
-        ->assertJsonPath('errors.0.detail', 'This action can only be performed from an authenticated panel session, not with an API key.');
+        ->assertJsonPath('errors.0.detail', '此操作只能通过已登录的面板会话执行，不能使用 API 密钥。');
 });
 test('a root administrator account key cannot read node secrets', function (): void {
     $admin = User::factory()->create(['root_admin' => true]);
