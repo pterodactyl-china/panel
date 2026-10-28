@@ -1,7 +1,6 @@
 [![Logo Image](https://api.pterodactyl.top/logos/new/pterodactyl_china_logo.png)](https://pterodactyl.top)
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/pterodactyl-china/panel/ci.yaml?label=%E6%B5%8B%E8%AF%95&style=for-the-badge&branch=2.0-develop)
-![Discord](https://img.shields.io/discord/122900397965705216?label=Discord&logo=Discord&logoColor=white&style=for-the-badge)
 ![GitHub Releases](https://img.shields.io/github/downloads/pterodactyl-china/panel/latest/total?style=for-the-badge)
 ![GitHub contributors](https://img.shields.io/github/contributors/pterodactyl-china/panel?style=for-the-badge)
 
@@ -21,7 +20,7 @@ Pterodactyl® 是一款免费、开源的游戏服务器管理面板，使用 PH
 
 本分支（`2.0-develop`）是 Pterodactyl v2 的开发分支，目前处于活跃开发中；当前稳定发布线位于 [`1.0-develop`](https://github.com/pterodactyl-china/panel/tree/1.0-develop)。
 
-* **扩展 SDK** —— 通过带版本号的 API 扩展面板，无需修改核心文件，您的改动可以跨越版本升级继续生效。示例扩展见 [pterodactyl/extensions](https://github.com/pterodactyl/extensions)。
+* **扩展 SDK** —— 通过带版本号的 API 扩展面板，无需修改核心文件，您的改动可以跨越版本升级继续生效。示例扩展见 [pterodactyl-china/extensions](https://github.com/pterodactyl-china/extensions)。
 * **全面现代化的技术栈** —— Vite、React 19、TanStack Router 与 Query、Tailwind 4 以及 Laravel 13。
 * **全新的管理后台** —— 管理与客户端区域合并为单一 React 应用，采用统一设计。
 * **一键导入预设** —— 浏览预设目录并直接从面板导入。
@@ -33,11 +32,11 @@ Pterodactyl® 是一款免费、开源的游戏服务器管理面板，使用 PH
 * [面板文档](https://pterodactyl.top/panel/1.0/getting_started.html)
 * [Wings 文档](https://pterodactyl.top/wings/1.0/installing.html)
 * [社区指南](https://pterodactyl.top/community/about.html)
-* 或者通过 [Discord](https://discord.gg/pterodactyl) 获取更多帮助
+* 或者，[通过 腾讯频道](https://pd.qq.com/s/2schz3it0) 或 [通过 翼龙中国社区](https://bbs.pterodactyl.top) 来获得更多帮助
 
 ## 赞助商
 
-感谢以下赞助商对 Pterodactyl 开发工作的支持。[有意成为赞助商？](https://github.com/sponsors/pterodactyl)
+感谢以下赞助商对 Pterodactyl 开发工作的支持。[有意成为赞助商？](https://afdian.com/a/vlssu)
 
 | 公司/个人 | 关于 |
 | ------- | ----- |
