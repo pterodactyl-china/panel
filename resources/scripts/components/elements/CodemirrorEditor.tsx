@@ -689,8 +689,8 @@ class CustomSearchPanel implements Panel {
             this.replaceField = document.createElement('input');
             this.replaceField.className = 'cm-textfield cm-replace-input';
             this.replaceField.name = 'replace';
-            this.replaceField.placeholder = 'Replace';
-            this.replaceField.setAttribute('aria-label', 'Replace');
+            this.replaceField.placeholder = '替换';
+            this.replaceField.setAttribute('aria-label', '替换');
             this.replaceField.value = query.replace;
             this.replaceField.onchange = this.commit;
             this.replaceField.onkeyup = this.commit;
@@ -702,7 +702,7 @@ class CustomSearchPanel implements Panel {
             replaceNav.className = 'cm-search-nav';
 
             const replaceBtn = this.createActionButton(
-                'Replace',
+                '替换',
                 '替换 (Enter)',
                 'replace',
                 () => replaceNext(this.view),

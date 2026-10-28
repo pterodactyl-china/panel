@@ -26,13 +26,7 @@ const PageButton = ({ label, children, ...props }: React.ComponentProps<typeof B
     </Button.Text>
 );
 
-export default function DataTablePagination<TData extends RowData>({
-    table,
-    total,
-    count,
-    itemLabel = 'items',
-    className,
-}: Props<TData>) {
+export default function DataTablePagination<TData extends RowData>({ table, total, count, className }: Props<TData>) {
     const { pageIndex, pageSize } = table.getState().pagination;
     const pageCount = table.getPageCount();
     const start = total === 0 ? 0 : pageIndex * pageSize + 1;
@@ -71,7 +65,7 @@ export default function DataTablePagination<TData extends RowData>({
                         aria-live='polite'
                         className='min-w-24 px-2 text-center text-xs text-muted-foreground'
                     >
-                        页 <span className='font-medium text-foreground'>{pageIndex + 1}</span> of{' '}
+                        页 <span className='font-medium text-foreground'>{pageIndex + 1}</span> / 共{' '}
                         <span className='font-medium text-foreground'>{Math.max(pageCount, 1)}</span>
                     </span>
                     <PageButton label='下一页' disabled={!table.getCanNextPage()} onClick={() => table.nextPage()}>

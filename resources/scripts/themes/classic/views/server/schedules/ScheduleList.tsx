@@ -36,6 +36,19 @@ const scheduleStatus = (schedule: ScheduleSummary): string => {
     return schedule.active ? 'active' : 'inactive';
 };
 
+const scheduleStatusLabel = (status: string): string => {
+    switch (status) {
+        case 'active':
+            return '已启用';
+        case 'processing':
+            return '处理中';
+        case 'inactive':
+            return '已停用';
+        default:
+            return status;
+    }
+};
+
 const scheduleDestination = (model: ScheduleListModel, schedule: ScheduleSummary) =>
     ({
         to: '/server/$id/schedules/$scheduleId',
@@ -96,7 +109,7 @@ function columns(model: ScheduleListModel): TableColumn<ScheduleSummary>[] {
                             status === 'active' && 'bg-success/90'
                         )}
                     >
-                        {status}
+                        {scheduleStatusLabel(status)}
                     </Badge>
                 );
             },

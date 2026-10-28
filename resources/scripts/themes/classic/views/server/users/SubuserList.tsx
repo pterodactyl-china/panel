@@ -89,7 +89,7 @@ function columns(model: SubuserListModel): TableColumn<SubuserSummary>[] {
                         icon={subuser.twoFactor ? UserLock : LockOpen}
                         className={subuser.twoFactor ? 'text-success' : 'text-destructive'}
                     />
-                    {subuser.twoFactor ? 'Enabled' : 'Disabled'}
+                    {subuser.twoFactor ? '已启用' : '已禁用'}
                 </span>
             ),
             headerClassName: 'hidden sm:table-cell w-28',

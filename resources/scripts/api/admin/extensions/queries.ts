@@ -204,7 +204,7 @@ export const useClearAdminExtensionSettingFile = () => {
 
 const notifyReloadToApply = (title: string, description: string) =>
     toast.success(title, {
-        description: `${description} Reload the page to apply it.`,
+        description: `${description} 刷新页面即可生效。`,
         action: { label: '重新加载', onClick: () => window.location.reload() },
     });
 

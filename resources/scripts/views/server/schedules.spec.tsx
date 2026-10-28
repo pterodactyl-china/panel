@@ -108,8 +108,8 @@ describe('server.schedules', () => {
             'href',
             '/server/a1b2c3d4/schedules/1'
         );
-        expect(screen.getByText('active')).toHaveClass('bg-success/90', 'rounded-full');
-        expect(screen.getByText('processing')).toHaveAttribute('data-tone', 'neutral');
+        expect(screen.getByText('已启用')).toHaveClass('bg-success/90', 'rounded-full');
+        expect(screen.getByText('处理中')).toHaveAttribute('data-tone', 'neutral');
         expect(screen.getByRole('link', { name: '编辑 Hourly backup' })).toHaveAttribute(
             'href',
             '/server/a1b2c3d4/schedules/2'

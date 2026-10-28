@@ -42,7 +42,7 @@ function NotesCell({ model, allocation }: CellProps) {
             <TextArea
                 aria-label={`${allocation.ip}:${allocation.port} 的备注`}
                 className='min-h-9 resize-y bg-input hover:border-input-border border-transparent'
-                placeholder='Notes'
+                placeholder='备注'
                 defaultValue={allocation.notes || undefined}
                 onChange={(event) => save(event.currentTarget.value)}
                 onBlur={save.flush}

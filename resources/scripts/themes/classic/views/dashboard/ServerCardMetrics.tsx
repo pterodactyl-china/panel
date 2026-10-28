@@ -73,7 +73,7 @@ function MetricsContent({ state }: { state: ServerCardState }) {
                     icon={icon}
                     label={label}
                     value={value}
-                    limit={`of ${limit}`}
+                    limit={`上限 ${limit}`}
                     tone={tone(metric)}
                     className='flex-1 ml-4 hidden sm:flex'
                 />

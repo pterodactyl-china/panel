@@ -36,7 +36,7 @@ function UptimeDuration({ seconds }: { seconds: number }) {
 
 function Uptime({ state, uptime }: { state: ServerRunState | null; uptime: number }) {
     if (state === null) {
-        return 'Offline';
+        return '离线';
     }
 
     if (uptime > 0) {

@@ -91,7 +91,7 @@ export default function Search({ model, className }: ViewProps<'app.search'>) {
                     <Results model={model} />
                 </Dialog>
             )}
-            <Tooltip placement='bottom' content='Search'>
+            <Tooltip placement='bottom' content='搜索'>
                 <button
                     type='button'
                     aria-label='搜索'

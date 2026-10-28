@@ -40,10 +40,10 @@ export default function Graphs({ model, className }: ViewProps<'server.graphs'>)
                 title='网络'
                 legend={
                     <>
-                        <Tooltip arrow content='Inbound'>
+                        <Tooltip arrow content='入站'>
                             <CloudDownload className='mr-2 w-4 h-4 text-chart-2' />
                         </Tooltip>
-                        <Tooltip arrow content='Outbound'>
+                        <Tooltip arrow content='出站'>
                             <CloudUpload className='w-4 h-4 text-chart-1' />
                         </Tooltip>
                     </>

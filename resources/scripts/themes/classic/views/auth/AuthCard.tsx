@@ -31,9 +31,9 @@ export default function AuthCard({ title, submit, className, children }: Props) 
                     target='_blank'
                     className='no-underline text-muted-foreground hover:text-muted-foreground'
                 >
-                    Pterodactyl 软件
+                    Pterodactyl Software
                 </a>
-                &nbsp;| 汉化：&nbsp;
+                &nbsp;| Sinicizated by&nbsp;
                 <a
                     rel='noopener nofollow noreferrer'
                     href='https://pterodactyl.top'

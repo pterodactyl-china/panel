@@ -114,7 +114,7 @@ describe('extension install dialog', () => {
         expect(mocks.notifyError).not.toHaveBeenCalled();
         expect((upload.mock.calls[0]![0].data as FormData).get('replace')).toBe('false');
 
-        await user.click(within(dialog).getByRole('button', { name: 'Replace votes' }));
+        await user.click(within(dialog).getByRole('button', { name: '替换 votes' }));
 
         await waitFor(() => expect(upload).toHaveBeenCalledTimes(2));
         expect((upload.mock.calls[1]![0].data as FormData).get('replace')).toBe('true');
@@ -135,7 +135,7 @@ describe('extension install dialog', () => {
 
         await user.upload(input, new File(['zip'], 'votes.pteroext'));
         await user.click(within(dialog).getByRole('button', { name: '安装' }));
-        await within(dialog).findByRole('button', { name: 'Replace votes' });
+        await within(dialog).findByRole('button', { name: '替换 votes' });
 
         await user.upload(input, new File(['zip'], 'other.pteroext'));
 

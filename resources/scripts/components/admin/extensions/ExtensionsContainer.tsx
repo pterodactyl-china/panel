@@ -230,7 +230,7 @@ function InstallExtensionDialog({ open, onClose }: { open: boolean; onClose: () 
                     isLoading={submitting}
                     onClick={() => void submit()}
                 >
-                    {replacement ? `Replace ${replacement.id}` : '安装'}
+                    {replacement ? `替换 ${replacement.id}` : '安装'}
                 </Button>
             </div>
         </Dialog>
@@ -272,7 +272,7 @@ function ExtensionToolbar({
             }
         >
             <div className='flex items-center gap-2'>
-                <Tooltip content='Refresh'>
+                <Tooltip content='刷新'>
                     <span className='inline-flex'>
                         <Button
                             type='button'
@@ -342,7 +342,7 @@ function SettingsEmptyState({ extensionEnabled }: { extensionEnabled: boolean | 
                 <EmptyMedia variant='icon'>
                     <Settings2 />
                 </EmptyMedia>
-                <EmptyTitle>{extensionEnabled ? 'No settings' : '设置不可用'}</EmptyTitle>
+                <EmptyTitle>{extensionEnabled ? '暂无设置' : '设置不可用'}</EmptyTitle>
                 <EmptyDescription>
                     {extensionEnabled ? '此扩展未注册任何设置。' : '启用此扩展以加载其设置。'}
                 </EmptyDescription>
@@ -494,7 +494,7 @@ function SettingsDialog({
     return (
         <Dialog
             open={open}
-            title={`${extensionName(extension)} settings`}
+            title={`${extensionName(extension)} 的设置`}
             preventExternalClose={submitting}
             hideCloseIcon={submitting}
             onClose={onClose}

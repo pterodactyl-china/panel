@@ -76,7 +76,7 @@ export const useAdminThemeSettings = (theme: string, options?: { enabled?: boole
 /** A theme applies from the next page load on, so changing it offers a reload. */
 const notifyReloadToApply = (title: string, description: string) =>
     toast.success(title, {
-        description: `${description} Reload the page to see it.`,
+        description: `${description} 刷新页面即可查看。`,
         action: { label: '重新加载', onClick: () => window.location.reload() },
     });
 

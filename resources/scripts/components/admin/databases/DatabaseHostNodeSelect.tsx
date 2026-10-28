@@ -31,7 +31,7 @@ export default function DatabaseHostNodeSelect({ id, value, onChange }: Props) {
             <Select
                 id={id}
                 value={value}
-                placeholder='None'
+                placeholder='不关联'
                 groups={groups}
                 disabled={locations === undefined}
                 onChange={(value) => onChange(String(value))}
