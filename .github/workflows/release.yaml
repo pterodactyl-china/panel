@@ -40,6 +40,16 @@ jobs:
           git push
       - name: create release archive
         run: bash .github/scripts/archive.sh
+      - name: setup php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          extensions: intl, mbstring, pdo, pdo_mysql, posix, zip, sodium, bcmath, gd, curl
+          coverage: none
+      - name: install dependencies for the full archive
+        run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --classmap-authoritative
+      - name: create release archive with vendor
+        run: bash .github/scripts/archive.sh --with-vendor
       - name: write changelog
         run: |
           sed -n "/^## ${{ github.ref_name }}/,/^## /{/^## /b;p}" CHANGELOG.md > ./RELEASE_CHANGELOG
@@ -52,6 +62,7 @@ jobs:
           body_path: ./RELEASE_CHANGELOG
           files: |
             panel.tar.gz
+            panel-full.tar.gz
 
       # Publishes the tagged version to https://cdn.pterodactyl.io/releases/latest.json
       # through pterodactyl/pterodactyl-cdn, which every panel polls for updates.
