@@ -10,6 +10,6 @@ class ManifestDoesNotExistException extends Exception
 {
     public function __construct()
     {
-        parent::__construct('The Vite manifest has not been generated yet. Run "npm run build:production" to build the frontend first.');
+        parent::__construct('前端资源尚未构建，请先运行 "npm run build:production"。');
     }
 }

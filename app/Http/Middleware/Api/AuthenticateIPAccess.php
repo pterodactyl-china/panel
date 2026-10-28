@@ -71,6 +71,6 @@ class AuthenticateIPAccess
             ->property('identifier', $token->identifier)
             ->log();
 
-        throw new AccessDeniedHttpException('This IP address ('.$request->ip().') does not have permission to access the API using these credentials.');
+        throw new AccessDeniedHttpException('此 IP 地址（'.$request->ip().'）没有使用这些凭据访问 API 的权限。');
     }
 }

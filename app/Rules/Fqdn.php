@@ -45,7 +45,7 @@ class Fqdn implements DataAwareRule, ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (! is_string($value)) {
-            $fail('The :attribute could not be resolved to a valid IP address.');
+            $fail(':attribute 无法解析为有效的 IP 地址。');
 
             return;
         }
@@ -54,7 +54,7 @@ class Fqdn implements DataAwareRule, ValidationRule
             // Unless someone owns their IP blocks and pays for a custom certificate, an IP
             // cannot serve HTTPS, so refuse the combination before the node fails to connect.
             if ($this->schemeField && Arr::get($this->data, $this->schemeField) === 'https') {
-                $fail('The :attribute must not be an IP address when HTTPS is enabled.');
+                $fail('启用 HTTPS 时，:attribute 不能是 IP 地址。');
             }
 
             return;
@@ -67,6 +67,6 @@ class Fqdn implements DataAwareRule, ValidationRule
             return;
         }
 
-        $fail('The :attribute could not be resolved to a valid IP address.');
+        $fail(':attribute 无法解析为有效的 IP 地址。');
     }
 }

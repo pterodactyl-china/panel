@@ -26,11 +26,11 @@ class AuthenticateAdmin
     public function handle(Request $request, Closure $next): mixed
     {
         $user = $request->user();
-        throw_if(! $user || ! $user->root_admin, AccessDeniedHttpException::class, 'This action is unauthorized.');
+        throw_if(! $user || ! $user->root_admin, AccessDeniedHttpException::class, '此操作未获授权。');
 
         $token = $user->currentAccessToken();
         if ($token instanceof HasAbilities && ! $token instanceof TransientToken) {
-            throw_if($token->key_type === ApiKey::TYPE_APPLICATION, AccessDeniedHttpException::class, 'You are attempting to use an application API key on an endpoint that does not accept them.');
+            throw_if($token->key_type === ApiKey::TYPE_APPLICATION, AccessDeniedHttpException::class, '你正在不支持应用 API 密钥的接口上使用应用 API 密钥。');
         }
 
         return $next($request);

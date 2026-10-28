@@ -35,7 +35,7 @@ class TagSlug implements ValidationRule
         }
 
         if (self::isReserved($value)) {
-            $fail('A tag slug cannot be purely numeric (reserved for tag and legacy nest IDs).');
+            $fail('标签标识不能是纯数字（保留给标签 ID 与旧版预设 ID）。');
         }
     }
 }

@@ -45,7 +45,7 @@ class ExtensionScaffolder
     ): string {
         $this->files = [];
 
-        throw_unless(preg_match(ExtensionManifest::ID_REGEX, $id), InvalidExtensionException::class, "Extension id \"{$id}\" must match ".ExtensionManifest::ID_REGEX.'.');
+        throw_unless(preg_match(ExtensionManifest::ID_REGEX, $id), InvalidExtensionException::class, "扩展 ID \"{$id}\" 必须匹配 ".ExtensionManifest::ID_REGEX.'.');
 
         throw_if(in_array($id, ExtensionManifest::RESERVED_IDS, true), InvalidExtensionException::class, "Extension id \"{$id}\" is reserved.");
 
@@ -56,7 +56,7 @@ class ExtensionScaffolder
         throw_if($extends !== null && (preg_match(ExtensionManifest::ID_REGEX, $extends) !== 1 || $extends === $id), InvalidExtensionException::class, "--extends names the theme to build on, such as \"aurora\": \"{$extends}\" is not one.");
 
         $prefix ??= ExtensionManifest::defaultUiPrefix($id);
-        throw_unless($theme || ExtensionManifest::isUsableUiPrefix($prefix), InvalidExtensionException::class, "Tailwind prefix \"{$prefix}\" must match ".ExtensionManifest::UI_PREFIX_REGEX.' and must not be a Tailwind variant, theme namespace or panel name.');
+        throw_unless($theme || ExtensionManifest::isUsableUiPrefix($prefix), InvalidExtensionException::class, "Tailwind 前缀 \"{$prefix}\" 必须匹配 ".ExtensionManifest::UI_PREFIX_REGEX.'，且不能是 Tailwind 变体、主题命名空间或面板名称。');
 
         $target = mb_rtrim($outDir ?? config()->string('extensions.directory'), '/\\').DIRECTORY_SEPARATOR.$id;
         throw_if(is_dir($target) && ! $force, InvalidExtensionException::class, "{$target} already exists - pass --force to overwrite it.");

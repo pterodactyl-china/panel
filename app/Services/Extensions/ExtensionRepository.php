@@ -62,7 +62,7 @@ class ExtensionRepository
             try {
                 $manifest = $this->validator->fromDirectory($directory);
                 if ($manifest->id !== basename($directory)) {
-                    throw new InvalidExtensionException(sprintf('Extension directory "%s" must match its manifest id "%s".', basename($directory), $manifest->id));
+                    throw new InvalidExtensionException(sprintf('扩展目录 "%s" 必须与其 manifest id "%s" 一致。', basename($directory), $manifest->id));
                 }
 
                 $manifests[$manifest->id] = $manifest;

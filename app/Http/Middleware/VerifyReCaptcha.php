@@ -43,7 +43,7 @@ class VerifyReCaptcha
             )
         );
 
-        throw new HttpException(Response::HTTP_BAD_REQUEST, 'Failed to validate reCAPTCHA data.');
+        throw new HttpException(Response::HTTP_BAD_REQUEST, '人机验证校验失败。');
     }
 
     /**

@@ -87,16 +87,20 @@ final class ApiErrorResponse
         $error = [
             'code' => class_basename($e),
             'status' => (string) self::status($e),
-            'detail' => $e instanceof HttpExceptionInterface || self::mappedStatus($e) !== null
-                ? $e->getMessage()
-                : 'An unexpected error was encountered while processing this request, please try again.',
+            // Laravel 在策略拒绝时抛出 AuthorizationException（最终变成 AccessDeniedHttpException），
+            // 消息是框架内置的英文，这里统一换成中文。
+            'detail' => $e->getMessage() === 'This action is unauthorized.'
+                ? '此操作未获授权。'
+                : ($e instanceof HttpExceptionInterface || self::mappedStatus($e) !== null
+                    ? $e->getMessage()
+                    : '处理此请求时发生意外错误，请重试。'),
         ];
 
         if ($e instanceof ModelNotFoundException || $e->getPrevious() instanceof ModelNotFoundException) {
             // Show a nicer error message compared to the standard "No query results for model"
             // response that is normally returned. If we are in debug mode this will get overwritten
             // with a more specific error message to help narrow down things.
-            $error['detail'] = 'The requested resource could not be found on the server.';
+            $error['detail'] = '无法在服务器上找到所请求的资源。';
         }
 
         if (config('app.debug')) {

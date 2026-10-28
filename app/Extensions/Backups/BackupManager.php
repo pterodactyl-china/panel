@@ -139,7 +139,7 @@ class BackupManager
     {
         $config = $this->getConfig($name);
 
-        throw_if(empty($config['adapter']), InvalidArgumentException::class, "Backup disk [$name] does not have a configured adapter.");
+        throw_if(empty($config['adapter']), InvalidArgumentException::class, "备份磁盘 [$name] 未配置适配器。");
 
         $adapter = $config['adapter'];
 
@@ -150,7 +150,7 @@ class BackupManager
         return match ($adapter) {
             'wings' => $this->createWingsAdapter($config),
             's3' => $this->createS3Adapter($this->s3Config($config)),
-            default => throw new InvalidArgumentException("Adapter [$adapter] is not supported."),
+            default => throw new InvalidArgumentException("不支持适配器 [$adapter]。"),
         };
     }
 

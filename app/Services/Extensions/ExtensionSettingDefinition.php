@@ -118,7 +118,7 @@ class ExtensionSettingDefinition
     public function tab(string $tab): self
     {
         $tab = mb_trim($tab);
-        throw_if($tab === '' || mb_strlen($tab) > 64, InvalidArgumentException::class, 'An extension settings tab name must be 1 to 64 characters.');
+        throw_if($tab === '' || mb_strlen($tab) > 64, InvalidArgumentException::class, '扩展设置的分页名称必须为 1 到 64 个字符。');
         $this->tab = $tab;
 
         return $this;
@@ -138,7 +138,7 @@ class ExtensionSettingDefinition
     public function field(string $field, array $options = []): self
     {
         if (! in_array($field, self::FIELDS, true)) {
-            throw new InvalidArgumentException(sprintf('Unknown settings field type "%s"; expected one of %s.', $field, implode(', ', self::FIELDS)));
+            throw new InvalidArgumentException(sprintf('未知的设置字段类型 "%s"；应为以下之一：%s。', $field, implode(', ', self::FIELDS)));
         }
 
         return match ($field) {
@@ -161,7 +161,7 @@ class ExtensionSettingDefinition
      */
     public function color(): self
     {
-        throw_unless($this->default === null || ExtensionSettingValueGuard::color($this->default) !== null, InvalidArgumentException::class, 'A color setting defaults to a hex or oklch() colour, or null.');
+        throw_unless($this->default === null || ExtensionSettingValueGuard::color($this->default) !== null, InvalidArgumentException::class, '颜色设置的默认值必须是十六进制或 oklch() 颜色，或 null。');
 
         return $this->useField('color');
     }
@@ -169,8 +169,8 @@ class ExtensionSettingDefinition
     /** A multi-line string of at most $maxLength characters. */
     public function textarea(int $maxLength = 5000): self
     {
-        throw_unless(ExtensionSettingValueGuard::text($this->default) !== null, InvalidArgumentException::class, 'A textarea setting defaults to a string.');
-        throw_if($maxLength < 1, InvalidArgumentException::class, 'A textarea setting needs a positive maximum length.');
+        throw_unless(ExtensionSettingValueGuard::text($this->default) !== null, InvalidArgumentException::class, '多行文本设置的默认值必须是字符串。');
+        throw_if($maxLength < 1, InvalidArgumentException::class, '多行文本设置需要正数的最大长度。');
         $this->maxLength = $maxLength;
 
         return $this->useField('textarea');
@@ -184,7 +184,7 @@ class ExtensionSettingDefinition
      */
     public function multiselect(array $options): self
     {
-        throw_unless(ExtensionSettingValueGuard::strings($this->default) !== null, InvalidArgumentException::class, 'A multiselect setting defaults to a list.');
+        throw_unless(ExtensionSettingValueGuard::strings($this->default) !== null, InvalidArgumentException::class, '多选设置的默认值必须是列表。');
         throw_if($options === [] || array_any($options, fn (array $option): bool => $option['value'] === true || $option['value'] === false), InvalidArgumentException::class, 'A multiselect setting needs string or integer choices.');
 
         return $this->useField('multiselect', $options);
@@ -198,8 +198,8 @@ class ExtensionSettingDefinition
      */
     public function list(array $itemRules = ['max:255'], int $maxItems = 50): self
     {
-        throw_unless(ExtensionSettingValueGuard::strings($this->default) !== null, InvalidArgumentException::class, 'A list setting defaults to a list of strings.');
-        throw_if($maxItems < 1, InvalidArgumentException::class, 'A list setting needs a positive maximum item count.');
+        throw_unless(ExtensionSettingValueGuard::strings($this->default) !== null, InvalidArgumentException::class, '列表设置的默认值必须是字符串列表。');
+        throw_if($maxItems < 1, InvalidArgumentException::class, '列表设置需要正数的最大条目数。');
         $this->itemRules = $itemRules;
         $this->maxItems = $maxItems;
 
@@ -217,9 +217,9 @@ class ExtensionSettingDefinition
      */
     public function file(array $mimes = ExtensionSettingFiles::IMAGES, int $maxKilobytes = 1024): self
     {
-        throw_unless($this->default === null || ExtensionSettingValueGuard::text($this->default) !== null, InvalidArgumentException::class, 'A file setting defaults to a URL or null.');
-        throw_if($mimes === [] || array_diff($mimes, array_keys(ExtensionSettingFiles::TYPES)) !== [], InvalidArgumentException::class, sprintf('A file setting accepts only these types: %s.', implode(', ', array_keys(ExtensionSettingFiles::TYPES))));
-        throw_if($maxKilobytes < 1 || $maxKilobytes > ExtensionSettingFiles::MAX_KILOBYTES, InvalidArgumentException::class, sprintf('A file setting is limited to between 1 and %d KB.', ExtensionSettingFiles::MAX_KILOBYTES));
+        throw_unless($this->default === null || ExtensionSettingValueGuard::text($this->default) !== null, InvalidArgumentException::class, '文件设置的默认值必须是 URL 或 null。');
+        throw_if($mimes === [] || array_diff($mimes, array_keys(ExtensionSettingFiles::TYPES)) !== [], InvalidArgumentException::class, sprintf('文件设置只接受以下类型：%s。', implode(', ', array_keys(ExtensionSettingFiles::TYPES))));
+        throw_if($maxKilobytes < 1 || $maxKilobytes > ExtensionSettingFiles::MAX_KILOBYTES, InvalidArgumentException::class, sprintf('文件设置的大小限制为 1 到 %d KB。', ExtensionSettingFiles::MAX_KILOBYTES));
         $this->mimes = $mimes;
         $this->maxKilobytes = $maxKilobytes;
 
@@ -233,8 +233,8 @@ class ExtensionSettingDefinition
      */
     public function frontend(bool $frontend = true): self
     {
-        throw_if($frontend && $this->secret, InvalidArgumentException::class, 'Secret and password extension settings cannot be exposed to frontend bundles.');
-        throw_if(! $frontend && $this->guests, InvalidArgumentException::class, 'Public extension settings must stay exposed to frontend bundles.');
+        throw_if($frontend && $this->secret, InvalidArgumentException::class, '机密与密码类型的扩展设置不能暴露给前端包。');
+        throw_if(! $frontend && $this->guests, InvalidArgumentException::class, '公开的扩展设置必须保持对前端包可见。');
         $this->frontend = $frontend;
 
         return $this;
@@ -247,8 +247,8 @@ class ExtensionSettingDefinition
      */
     public function public(): self
     {
-        throw_if($this->secret, InvalidArgumentException::class, 'Secret extension settings cannot be public.');
-        throw_unless($this->frontend, InvalidArgumentException::class, 'Only frontend extension settings can be public; call ->frontend() first.');
+        throw_if($this->secret, InvalidArgumentException::class, '机密扩展设置不能设为公开。');
+        throw_unless($this->frontend, InvalidArgumentException::class, '只有前端扩展设置才能设为公开；请先调用 ->frontend()。');
         $this->guests = true;
 
         return $this;
@@ -262,8 +262,8 @@ class ExtensionSettingDefinition
      */
     public function secret(): self
     {
-        throw_if($this->frontend, InvalidArgumentException::class, 'Secret and password extension settings cannot be exposed to frontend bundles.');
-        throw_if(in_array($this->field, self::RICH_FIELDS, true), InvalidArgumentException::class, sprintf('A %s extension setting cannot be secret.', $this->field));
+        throw_if($this->frontend, InvalidArgumentException::class, '机密与密码类型的扩展设置不能暴露给前端包。');
+        throw_if(in_array($this->field, self::RICH_FIELDS, true), InvalidArgumentException::class, sprintf('%s 类型的扩展设置不能设为机密。', $this->field));
         $this->secret = true;
         $this->field = 'password';
 
@@ -298,7 +298,7 @@ class ExtensionSettingDefinition
 
     public function frontendType(string $type): self
     {
-        throw_unless(in_array($type, ['string', 'number', 'boolean', 'array', 'object', 'null', 'json'], true), InvalidArgumentException::class, 'Invalid frontend setting type.');
+        throw_unless(in_array($type, ['string', 'number', 'boolean', 'array', 'object', 'null', 'json'], true), InvalidArgumentException::class, '无效的前端设置类型。');
         $this->frontendType = $type;
 
         return $this;
@@ -429,7 +429,7 @@ class ExtensionSettingDefinition
     /** @param list<array{value: string|int|bool, label: string}> $options */
     private function useField(string $field, array $options = []): self
     {
-        throw_if($this->secret && in_array($field, self::RICH_FIELDS, true), InvalidArgumentException::class, sprintf('A secret extension setting cannot use the %s field.', $field));
+        throw_if($this->secret && in_array($field, self::RICH_FIELDS, true), InvalidArgumentException::class, sprintf('机密扩展设置不能使用 %s 字段。', $field));
         $this->field = $field;
         $this->options = $options;
 

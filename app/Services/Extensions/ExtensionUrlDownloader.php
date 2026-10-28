@@ -64,7 +64,7 @@ class ExtensionUrlDownloader
                 ->get($url);
 
             throw_unless($response->successful(), InvalidExtensionException::class, $this->failureMessage($path, $response->status()));
-            throw_if(File::size($path) > self::MAX_PACKAGE_BYTES, InvalidExtensionException::class, 'The extension package is larger than the panel accepts.');
+            throw_if(File::size($path) > self::MAX_PACKAGE_BYTES, InvalidExtensionException::class, '扩展包超出了面板允许的大小。');
         } catch (Throwable $throwable) {
             rescue(fn () => File::delete($path));
 
@@ -73,7 +73,7 @@ class ExtensionUrlDownloader
             throw_if($refusal instanceof InvalidExtensionException, $refusal);
             throw_unless($throwable instanceof ConnectionException || $throwable instanceof TransferException, $throwable);
 
-            throw new InvalidExtensionException('Could not download the extension. Please try again.', $throwable->getCode(), previous: $throwable);
+            throw new InvalidExtensionException('无法下载扩展，请重试。', $throwable->getCode(), previous: $throwable);
         }
 
         return $path;
@@ -86,7 +86,7 @@ class ExtensionUrlDownloader
      */
     public function verifiedUrl(string $link): string
     {
-        throw_unless(config('extensions.signed_urls.enabled'), InvalidExtensionException::class, 'Installing extensions from a URL is disabled on this panel.');
+        throw_unless(config('extensions.signed_urls.enabled'), InvalidExtensionException::class, '此面板已禁用通过 URL 安装扩展。');
         throw_unless(extension_loaded('sodium'), InvalidExtensionException::class, 'The PHP sodium extension is required to verify signed install URLs.');
 
         $jwt = Str::afterLast(Str::before(Str::before(mb_trim($link), '?'), '#'), '/');
@@ -129,7 +129,7 @@ class ExtensionUrlDownloader
         );
 
         $base = rescue(fn (): string => Arr::string($claims->all(), 'url'), report: false);
-        throw_unless($base !== null && $this->isUrl($base), InvalidExtensionException::class, 'This install URL does not say where to download the extension from.');
+        throw_unless($base !== null && $this->isUrl($base), InvalidExtensionException::class, '此安装 URL 未指明扩展的下载地址。');
 
         return $base.$jwt;
     }
@@ -141,7 +141,7 @@ class ExtensionUrlDownloader
         throw_if(
             $length !== false && $length > self::MAX_PACKAGE_BYTES,
             InvalidExtensionException::class,
-            'The extension package is larger than the panel accepts.',
+            '扩展包超出了面板允许的大小。',
         );
     }
 

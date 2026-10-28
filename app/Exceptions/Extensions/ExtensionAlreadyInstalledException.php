@@ -23,7 +23,7 @@ final class ExtensionAlreadyInstalledException extends InvalidExtensionException
         public readonly bool $enabled,
     ) {
         parent::__construct(sprintf(
-            'Extension "%s"%s is already installed; replacing it with v%s must be confirmed.',
+            '扩展 "%s"%s 已安装；替换为 v%s 需要确认。',
             $identifier,
             $installedVersion === null ? '' : ' v'.$installedVersion,
             $version,

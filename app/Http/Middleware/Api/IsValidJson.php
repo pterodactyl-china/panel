@@ -27,7 +27,7 @@ class IsValidJson
             try {
                 json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
             } catch (JsonException $exception) {
-                throw new BadRequestHttpException('The JSON data passed in the request appears to be malformed: '.$exception->getMessage(), $exception);
+                throw new BadRequestHttpException('请求中传入的 JSON 数据格式有误： '.$exception->getMessage(), $exception);
             }
         }
 

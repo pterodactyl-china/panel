@@ -28,14 +28,14 @@ class NotInPathHierarchy implements ValidationRule
 
             if ($path === $blocked) {
                 $fail($this->includeDescendants
-                    ? "The {$attribute} path cannot be or reside within [{$blocked}]."
-                    : "The {$attribute} path cannot be [{$blocked}].");
+                    ? "路径 {$attribute} 不能是 [{$blocked}]，也不能位于其中。"
+                    : "路径 {$attribute} 不能是 [{$blocked}]。");
 
                 return;
             }
 
             if ($this->includeDescendants && str_starts_with($path, $blocked.'/')) {
-                $fail("The {$attribute} path cannot be or reside within [{$blocked}].");
+                $fail("路径 {$attribute} 不能是 [{$blocked}]，也不能位于其中。");
 
                 return;
             }

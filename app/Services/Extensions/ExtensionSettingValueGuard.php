@@ -28,7 +28,7 @@ final class ExtensionSettingValueGuard
             return $value;
         }
 
-        throw_unless(is_string($value), UnexpectedValueException::class, 'Encrypted extension settings must be strings.');
+        throw_unless(is_string($value), UnexpectedValueException::class, '加密的扩展设置必须是字符串。');
 
         return json_decode(Crypt::decryptString($value), true, flags: JSON_THROW_ON_ERROR);
     }
@@ -47,12 +47,12 @@ final class ExtensionSettingValueGuard
     public static function assertValue(mixed $value, int $remainingDepth = 10): void
     {
         if (! is_array($value)) {
-            throw_unless($value === null || is_scalar($value), UnexpectedValueException::class, 'Extension setting values must be JSON scalars or arrays.');
+            throw_unless($value === null || is_scalar($value), UnexpectedValueException::class, '扩展设置的值必须是 JSON 标量或数组。');
 
             return;
         }
 
-        throw_if($remainingDepth === 0, UnexpectedValueException::class, 'Extension setting values may be nested at most 10 levels.');
+        throw_if($remainingDepth === 0, UnexpectedValueException::class, '扩展设置的值最多嵌套 10 层。');
 
         foreach ($value as $item) {
             self::assertValue($item, $remainingDepth - 1);
@@ -62,10 +62,10 @@ final class ExtensionSettingValueGuard
     /** @phpstan-assert array<string, mixed> $value */
     public static function assertValues(mixed $value): void
     {
-        throw_unless(is_array($value), UnexpectedValueException::class, 'Extension settings must be an object.');
+        throw_unless(is_array($value), UnexpectedValueException::class, '扩展设置必须是对象。');
 
         foreach ($value as $key => $item) {
-            throw_unless(is_string($key), UnexpectedValueException::class, 'Extension setting names must be strings.');
+            throw_unless(is_string($key), UnexpectedValueException::class, '扩展设置的名称必须是字符串。');
 
             self::assertValue($item);
         }
@@ -103,7 +103,7 @@ final class ExtensionSettingValueGuard
      */
     public static function fieldValue(mixed $value): bool|float|int|string|array|null
     {
-        throw_unless(self::isFieldValue($value), UnexpectedValueException::class, 'Extension field values must be strings, numbers, booleans, null, or lists of them.');
+        throw_unless(self::isFieldValue($value), UnexpectedValueException::class, '扩展字段的值必须是字符串、数字、布尔值、null 或它们的列表。');
 
         return $value;
     }
@@ -115,11 +115,11 @@ final class ExtensionSettingValueGuard
      */
     public static function fieldValues(mixed $value): array
     {
-        throw_unless(is_array($value), UnexpectedValueException::class, 'Extension field values must be an array keyed by field name.');
+        throw_unless(is_array($value), UnexpectedValueException::class, '扩展字段的值必须是以字段名为键的数组。');
 
         $values = [];
         foreach ($value as $key => $item) {
-            throw_unless(is_string($key), UnexpectedValueException::class, 'Extension field names must be strings.');
+            throw_unless(is_string($key), UnexpectedValueException::class, '扩展字段的名称必须是字符串。');
             $values[$key] = self::fieldValue($item);
         }
 
@@ -136,11 +136,11 @@ final class ExtensionSettingValueGuard
      */
     public static function validationRules(mixed $value): array
     {
-        throw_unless(is_array($value), UnexpectedValueException::class, 'Extension field rules must be an array keyed by field name.');
+        throw_unless(is_array($value), UnexpectedValueException::class, '扩展字段规则的每一项都必须是以字段名为键的数组。');
 
         $rules = [];
         foreach ($value as $field => $rule) {
-            throw_unless(is_string($field), UnexpectedValueException::class, 'Extension field rules must be keyed by field name.');
+            throw_unless(is_string($field), UnexpectedValueException::class, '扩展字段规则必须以字段名为键。');
             $rules[$field] = is_array($rule) ? array_values(array_map(self::validationRule(...), $rule)) : self::validationRule($rule);
         }
 
@@ -154,11 +154,11 @@ final class ExtensionSettingValueGuard
      */
     public static function stringMap(mixed $value): array
     {
-        throw_unless(is_array($value), UnexpectedValueException::class, 'Extension field attributes and messages must be an array of strings.');
+        throw_unless(is_array($value), UnexpectedValueException::class, '扩展字段的属性与消息必须是字符串数组。');
 
         $strings = [];
         foreach ($value as $key => $string) {
-            throw_unless(is_string($key) && is_string($string), UnexpectedValueException::class, 'Extension field attributes and messages must be an array of strings.');
+            throw_unless(is_string($key) && is_string($string), UnexpectedValueException::class, '扩展字段的属性与消息必须是字符串数组。');
             $strings[$key] = $string;
         }
 
@@ -269,7 +269,7 @@ final class ExtensionSettingValueGuard
             'null' => $value === null,
             'json' => true,
         };
-        throw_unless($valid, UnexpectedValueException::class, "Extension frontend setting does not match its declared {$type} type.");
+        throw_unless($valid, UnexpectedValueException::class, "扩展前端设置与其声明的 {$type} 类型不符。");
     }
 
     /**
@@ -279,7 +279,7 @@ final class ExtensionSettingValueGuard
      */
     private static function validationRule(mixed $value): string|Stringable|Closure|RuleContract|ValidationRuleContract
     {
-        throw_unless(is_string($value) || $value instanceof Stringable || $value instanceof Closure || $value instanceof RuleContract || $value instanceof ValidationRuleContract, UnexpectedValueException::class, 'Extension field rules must be rule strings, rule objects or closures.');
+        throw_unless(is_string($value) || $value instanceof Stringable || $value instanceof Closure || $value instanceof RuleContract || $value instanceof ValidationRuleContract, UnexpectedValueException::class, '扩展字段规则必须是规则字符串、规则对象或闭包。');
 
         return $value;
     }

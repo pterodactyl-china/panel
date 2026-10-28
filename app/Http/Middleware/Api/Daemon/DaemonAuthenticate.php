@@ -42,17 +42,17 @@ class DaemonAuthenticate
             return $next($request);
         }
 
-        throw_if(($bearer = $request->bearerToken()) === null, HttpException::class, 401, 'Access to this endpoint must include an Authorization header.', null, ['WWW-Authenticate' => 'Bearer']);
+        throw_if(($bearer = $request->bearerToken()) === null, HttpException::class, 401, '访问该接口必须携带 Authorization 请求头。', null, ['WWW-Authenticate' => 'Bearer']);
 
         $parts = explode('.', $bearer);
         // Ensure that all of the correct parts are provided in the header.
-        throw_if(count($parts) !== 2 || empty($parts[0]) || empty($parts[1]), BadRequestHttpException::class, 'The Authorization header provided was not in a valid format.');
+        throw_if(count($parts) !== 2 || empty($parts[0]) || empty($parts[1]), BadRequestHttpException::class, '提供的 Authorization 请求头格式无效。');
 
         // Unknown token ids and wrong tokens fail identically.
         $node = Node::query()->where('daemon_token_id', $parts[0])->first();
         if ($node !== null) {
             $token = Crypt::decrypt($node->daemon_token);
-            throw_unless(is_string($token), AccessDeniedHttpException::class, 'The authentication token provided is not valid.');
+            throw_unless(is_string($token), AccessDeniedHttpException::class, '提供的认证令牌无效。');
 
             if (hash_equals($token, $parts[1])) {
                 $request->attributes->set('node', $node);

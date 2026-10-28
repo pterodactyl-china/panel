@@ -104,7 +104,7 @@ trait ValidatesExtensionFields
         $submitted = [];
         foreach (array_intersect_key($input, array_flip($running)) as $extension => $values) {
             if (! is_array($values) || array_any(array_keys($values), fn (int|string $key): bool => is_int($key))) {
-                $validator->errors()->add('extensions.'.$extension, sprintf('The %s values must be an object keyed by field.', $extension));
+                $validator->errors()->add('extensions.'.$extension, sprintf('%s 的值必须是以字段名为键的对象。', $extension));
 
                 continue;
             }

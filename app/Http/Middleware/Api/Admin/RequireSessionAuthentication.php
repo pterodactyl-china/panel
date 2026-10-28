@@ -22,7 +22,7 @@ class RequireSessionAuthentication
     {
         $token = $request->user()?->currentAccessToken();
 
-        throw_unless($token instanceof TransientToken, AccessDeniedHttpException::class, 'This action can only be performed from an authenticated panel session, not with an API key.');
+        throw_unless($token instanceof TransientToken, AccessDeniedHttpException::class, '此操作只能通过已登录的面板会话执行，不能使用 API 密钥。');
 
         return $next($request);
     }

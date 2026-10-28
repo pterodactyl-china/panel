@@ -35,7 +35,7 @@ class ExtensionPermissionRegistry
         throw_if($keys === [], InvalidArgumentException::class, sprintf('Extension "%s" must register at least one permission.', $identifier));
 
         foreach (array_keys($keys) as $key) {
-            throw_unless(preg_match(self::KEY_REGEX, $key) === 1, InvalidArgumentException::class, sprintf('Extension permission "%s" must match %s.', $key, self::KEY_REGEX));
+            throw_unless(preg_match(self::KEY_REGEX, $key) === 1, InvalidArgumentException::class, sprintf('扩展权限 "%s" 必须匹配 %s。', $key, self::KEY_REGEX));
         }
 
         $this->groups[self::group($identifier)] = ['description' => $description, 'keys' => $keys];

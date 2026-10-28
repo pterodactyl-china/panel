@@ -14,7 +14,7 @@ final class ExtensionFieldValue implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (! ExtensionSettingValueGuard::isFieldValue($value)) {
-            $fail('The :attribute field must be a string, number, boolean, or a list of them.');
+            $fail(':attribute 必须是字符串、数字、布尔值或其列表。');
         }
     }
 }

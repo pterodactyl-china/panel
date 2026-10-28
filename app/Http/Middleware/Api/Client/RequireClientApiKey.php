@@ -32,7 +32,7 @@ class RequireClientApiKey
             return $next($request);
         }
 
-        throw_if($token->key_type === ApiKey::TYPE_APPLICATION, AccessDeniedHttpException::class, 'You are attempting to use an application API key on an endpoint that requires a client API key.');
+        throw_if($token->key_type === ApiKey::TYPE_APPLICATION, AccessDeniedHttpException::class, '你正在需要客户端 API 密钥的接口上使用应用 API 密钥。');
 
         return $next($request);
     }

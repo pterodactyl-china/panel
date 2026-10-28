@@ -72,7 +72,7 @@ class ExtensionManifestValidator
         $this->assertRootPrefixesAreFree($data['routes']['root'] ?? []);
 
         $id = $data['id'];
-        throw_unless(preg_match(ExtensionManifest::ID_REGEX, $id), InvalidExtensionException::class, "Extension id \"{$id}\" must match ".ExtensionManifest::ID_REGEX.'.');
+        throw_unless(preg_match(ExtensionManifest::ID_REGEX, $id), InvalidExtensionException::class, "扩展 ID \"{$id}\" 必须匹配 ".ExtensionManifest::ID_REGEX.'.');
 
         throw_if(in_array($id, ExtensionManifest::RESERVED_IDS, true), InvalidExtensionException::class, "Extension id \"{$id}\" is reserved.");
 
@@ -164,7 +164,7 @@ class ExtensionManifestValidator
             'theme.stylesheet' => ['sometimes', 'nullable', 'string', Rule::in([ThemeDefinition::STYLESHEET])],
             'theme.schemes' => ['sometimes', 'array', 'list', 'min:1', 'max:2'],
             'theme.schemes.*' => ['required', 'string', 'distinct:strict', Rule::in(ThemeDefinition::SCHEMES)],
-            'theme.settings' => ['sometimes', 'array', $this->keyedBy(ThemeSetting::KEY_REGEX, 'Theme setting names must match '.ThemeSetting::KEY_REGEX.'.')],
+            'theme.settings' => ['sometimes', 'array', $this->keyedBy(ThemeSetting::KEY_REGEX, '主题设置的名称必须匹配 '.ThemeSetting::KEY_REGEX.'.')],
             'theme.settings.*' => ['required', 'array:type,label,default,help,tab,token,attribute,options,min,max,step,unit,maxLength'],
             'theme.settings.*.type' => ['required', 'string', Rule::in(ThemeSetting::TYPES)],
             'theme.settings.*.label' => ['required', 'string'],
@@ -195,9 +195,9 @@ class ExtensionManifestValidator
             'ui.entry.required_with' => 'Manifest "ui" must be an object with an "entry" path.',
             'ui.entry.string' => 'Manifest "ui" must be an object with an "entry" path.',
             'ui.mode.string' => 'Manifest "ui.mode" must be a string.',
-            'ui.prefix.filled' => 'Manifest "ui.prefix" must match '.ExtensionManifest::UI_PREFIX_REGEX.'.',
-            'ui.prefix.string' => 'Manifest "ui.prefix" must match '.ExtensionManifest::UI_PREFIX_REGEX.'.',
-            'ui.prefix.regex' => 'Manifest "ui.prefix" must match '.ExtensionManifest::UI_PREFIX_REGEX.'.',
+            'ui.prefix.filled' => 'Manifest "ui.prefix" 必须匹配 '.ExtensionManifest::UI_PREFIX_REGEX.'.',
+            'ui.prefix.string' => 'Manifest "ui.prefix" 必须匹配 '.ExtensionManifest::UI_PREFIX_REGEX.'.',
+            'ui.prefix.regex' => 'Manifest "ui.prefix" 必须匹配 '.ExtensionManifest::UI_PREFIX_REGEX.'.',
             'ui.prefix.not_in' => 'Manifest "ui.prefix" is a Tailwind variant, theme namespace or panel name and cannot be used as a prefix.',
             'requires.sdk.required_with' => 'View overrides must declare a "requires.sdk" version constraint.',
             'ui.prefix.prohibited_if' => 'A theme cannot declare "ui.prefix": it builds the panel stylesheet itself.',
@@ -212,8 +212,8 @@ class ExtensionManifestValidator
             'ui.screens.*.nav.icon.regex' => 'Navigation "icon" must be a lucide icon name such as "life-buoy".',
             'ui.screens.*.when.eggFeatures.prohibited_unless' => 'Screen "when" egg rules are only supported on server screens.',
             'ui.screens.*.when.eggTags.prohibited_unless' => 'Screen "when" egg rules are only supported on server screens.',
-            'routes.array' => 'Manifest "routes" must be an object with a "root" list.',
-            'routes.root.*.regex' => 'Manifest "routes.root" prefixes must match '.ExtensionManifest::ROOT_PREFIX_REGEX.'.',
+            'routes.array' => 'Manifest 的 "routes" 必须是包含 "root" 列表的对象。',
+            'routes.root.*.regex' => 'Manifest "routes.root" 的前缀必须匹配 '.ExtensionManifest::ROOT_PREFIX_REGEX.'.',
             'routes.root.*.distinct' => 'Manifest "routes.root" prefixes must be unique.',
         ]);
 

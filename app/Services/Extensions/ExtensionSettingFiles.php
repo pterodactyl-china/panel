@@ -167,7 +167,7 @@ class ExtensionSettingFiles
     private function disk(): Filesystem
     {
         $name = config()->string('extensions.files_disk');
-        throw_if($this->servedDirectly($name), UnexpectedValueException::class, sprintf('The "%s" disk is served directly by the web server; extensions.files_disk must name a private disk so setting files are only served through /%s.', $name, self::ROUTE_PREFIX));
+        throw_if($this->servedDirectly($name), UnexpectedValueException::class, sprintf('磁盘 "%s" 由 Web 服务器直接提供访问；extensions.files_disk 必须指定私有磁盘，以确保设置文件仅通过 /%s 提供。', $name, self::ROUTE_PREFIX));
 
         return Storage::disk($name);
     }
@@ -196,7 +196,7 @@ class ExtensionSettingFiles
 
     private function assertExtension(string $extension): void
     {
-        throw_unless(preg_match(ExtensionManifest::ID_REGEX, $extension) === 1, ValidationException::withMessages(['file' => 'Invalid extension id.']));
+        throw_unless(preg_match(ExtensionManifest::ID_REGEX, $extension) === 1, ValidationException::withMessages(['file' => '无效的扩展 ID。']));
     }
 
     private function reject(string $message): never

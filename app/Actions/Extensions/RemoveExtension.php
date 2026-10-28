@@ -41,7 +41,7 @@ final readonly class RemoveExtension implements RemovesExtensions
 
     public function remove(string $identifier): void
     {
-        throw_unless(preg_match(ExtensionManifest::ID_REGEX, $identifier), InvalidExtensionException::class, "Extension id \"{$identifier}\" must match ".ExtensionManifest::ID_REGEX.'.');
+        throw_unless(preg_match(ExtensionManifest::ID_REGEX, $identifier), InvalidExtensionException::class, "扩展 ID \"{$identifier}\" 必须匹配 ".ExtensionManifest::ID_REGEX.'.');
         $this->directories->assertWritable();
         $this->lock->run($identifier, fn () => $this->removePackage($identifier));
     }

@@ -26,6 +26,6 @@ class Username implements ValidationRule
             return;
         }
 
-        $fail('The :attribute must start and end with alpha-numeric characters and contain only letters, numbers, dashes, underscores, and periods.');
+        $fail(':attribute 必须以字母或数字开头和结尾，且只能包含字母、数字、短横线、下划线与句点。');
     }
 }

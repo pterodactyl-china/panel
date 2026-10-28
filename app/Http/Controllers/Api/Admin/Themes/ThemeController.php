@@ -153,7 +153,7 @@ class ThemeController extends AdminApiController
     public function updateSettings(UpdateThemeSettingsRequest $request, UpdatesExtensionSettings $updates, ThemeRepository $themes, string $theme): ApiResourceCollection
     {
         $manifest = $this->theme($themes, $theme);
-        abort_if(! $manifest instanceof ExtensionManifest, Response::HTTP_NOT_FOUND, 'The classic theme has no settings.');
+        abort_if(! $manifest instanceof ExtensionManifest, Response::HTTP_NOT_FOUND, '经典主题没有可配置的设置。');
         $definition = $themes->settings($manifest);
         $settings = $request->settings($definition);
         $updates->update($definition, $settings);
