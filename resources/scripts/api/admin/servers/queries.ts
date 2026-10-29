@@ -479,7 +479,7 @@ export const useUpdateAdminServerBuild = () => {
                 invalidateAdminNodeAllocations(queryClient, [server.attributes.node]),
             ]);
             toast.success('构建配置已更新', {
-                description: `${server.attributes.name} has updated build settings.`,
+                description: `${server.attributes.name} 的构建设置已更新。`,
             });
         },
         onError: (error) => notifyHttpError(error, '无法更新构建配置'),
@@ -499,7 +499,7 @@ export const useUpdateAdminServerStartup = () => {
                 }),
             ]);
             toast.success('启动配置已更新', {
-                description: `${server.attributes.name} has updated startup settings.`,
+                description: `${server.attributes.name} 的启动设置已更新。`,
             });
         },
         onError: (error) => notifyHttpError(error, '无法更新启动配置'),
@@ -630,7 +630,7 @@ export const useRotateAdminServerDatabasePassword = () => {
                 queryKey: adminServerDatabaseListQueryKey(variables.path.server_admin_identifier),
             });
             toast.success('数据库密码已轮换', {
-                description: `${database.attributes.name} has a new password.`,
+                description: `${database.attributes.name} 的密码已重置。`,
             });
         },
         onError: (error) => notifyHttpError(error, '无法轮换数据库密码'),

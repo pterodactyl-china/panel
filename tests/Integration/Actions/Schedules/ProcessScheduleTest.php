@@ -30,7 +30,7 @@ test('schedule with no tasks returns exception', function (): void {
     $server = $this->createServerModel();
     $schedule = Schedule::factory()->create(['server_id' => $server->id]);
     $this->expectException(DisplayException::class);
-    $this->expectExceptionMessage('Cannot process schedule for task execution: no tasks are registered.');
+    $this->expectExceptionMessage('无法执行计划任务：没有注册任何任务。');
     getService()->process($schedule);
 });
 test('error during schedule data update does not persist changes', function (): void {
@@ -158,7 +158,7 @@ test('a stale schedule instance cannot claim an active run twice', function (): 
 
     getService()->process($schedule);
 
-    expect(fn () => getService()->process($stale))->toThrow(DisplayException::class, 'This schedule is already being processed.');
+    expect(fn () => getService()->process($stale))->toThrow(DisplayException::class, '此计划任务正在处理中。');
     Bus::assertDispatchedTimes(RunTaskJob::class, 1);
 });
 

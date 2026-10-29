@@ -49,10 +49,10 @@ final readonly class EggImportData
      */
     public static function fromFile(UploadedFile $file): self
     {
-        throw_if($file->getError() !== UPLOAD_ERR_OK || ! $file->isFile(), InvalidFileUploadException::class, 'The selected file is not valid and cannot be imported.');
+        throw_if($file->getError() !== UPLOAD_ERR_OK || ! $file->isFile(), InvalidFileUploadException::class, '所选文件无效，无法导入。');
 
         $contents = $file->openFile()->fread($file->getSize());
-        throw_if($contents === false, InvalidFileUploadException::class, 'The selected file could not be read.');
+        throw_if($contents === false, InvalidFileUploadException::class, '无法读取所选文件。');
 
         return self::fromJson($contents);
     }

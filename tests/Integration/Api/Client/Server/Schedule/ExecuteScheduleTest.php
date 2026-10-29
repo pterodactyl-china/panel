@@ -24,7 +24,7 @@ test('schedule is executed right away', function (array $permissions) {
     $response = $this->actingAs($user)->postJson($this->link($schedule, '/execute'));
     $response->assertStatus(Response::HTTP_BAD_REQUEST);
     $response->assertJsonPath('errors.0.code', 'DisplayException');
-    $response->assertJsonPath('errors.0.detail', 'Cannot process schedule for task execution: no tasks are registered.');
+    $response->assertJsonPath('errors.0.detail', '无法执行计划任务：没有注册任何任务。');
     /** @var Task $task */
     $task = Task::factory()->create(['schedule_id' => $schedule->id, 'sequence_id' => 1, 'time_offset' => 2]);
     $this->actingAs($user)->postJson($this->link($schedule, '/execute'))->assertStatus(Response::HTTP_ACCEPTED);

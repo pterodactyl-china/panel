@@ -40,7 +40,7 @@ final readonly class CreateScheduleTask implements CreatesScheduleTasks
     public function create(Schedule $schedule, array $input): Task
     {
         $validated = Validator::make($input, self::rules(($input['action'] ?? null) === Task::ACTION_POWER))->safe();
-        throw_if($validated['action'] === Task::ACTION_BACKUP && $schedule->server->backup_limit === 0, HttpForbiddenException::class, "A backup task cannot be created when the server's backup limit is set to 0.");
+        throw_if($validated['action'] === Task::ACTION_BACKUP && $schedule->server->backup_limit === 0, HttpForbiddenException::class, '服务器的备份上限为 0 时无法创建备份任务。');
 
         $attributes = [
             'action' => $validated['action'],

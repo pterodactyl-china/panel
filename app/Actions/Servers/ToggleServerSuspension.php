@@ -29,7 +29,7 @@ final readonly class ToggleServerSuspension implements TogglesServerSuspension
         }
 
         // A transfer can race with Wings state synchronization, so reject it first.
-        throw_if($server->transfer !== null, ConflictHttpException::class, 'Cannot toggle suspension status on a server that is currently being transferred.');
+        throw_if($server->transfer !== null, ConflictHttpException::class, '服务器正在迁移，无法切换冻结状态。');
         $server->update(['status' => $isSuspending ? Server::STATUS_SUSPENDED : null]);
 
         try {

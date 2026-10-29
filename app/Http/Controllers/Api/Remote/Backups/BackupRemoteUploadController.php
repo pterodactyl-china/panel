@@ -39,7 +39,7 @@ class BackupRemoteUploadController extends Controller
         // Check that the backup is "owned" by the node making the request. This avoids other nodes
         // from messing with backups that they don't own.
         $server = $model->server;
-        throw_if($server->node_id !== $node->id, HttpForbiddenException::class, 'Requesting node does not have permission to access this server.');
+        throw_if($server->node_id !== $node->id, HttpForbiddenException::class, '请求的节点没有访问此服务器的权限。');
 
         // Prevent backups that have already been completed from trying to
         // be uploaded again.

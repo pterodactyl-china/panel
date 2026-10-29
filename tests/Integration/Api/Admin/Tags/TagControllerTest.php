@@ -57,7 +57,7 @@ test('a custom tag cannot be renamed onto a built in slug', function () {
 test('built in tags cannot be deleted', function () {
     /** @var Tag $tag */
     $tag = Tag::factory()->predefined()->create();
-    $this->delete(route('api.admin.tags.delete', ['tag' => $tag->id]))->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.code', 'DisplayException')->assertJsonPath('errors.0.detail', 'Built-in game tags cannot be deleted.');
+    $this->delete(route('api.admin.tags.delete', ['tag' => $tag->id]))->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.code', 'DisplayException')->assertJsonPath('errors.0.detail', '内置游戏标签无法删除。');
 });
 test('deleting an egg or node removes its tag attachments', function () {
     $tag = Tag::factory()->create(['slug' => 'attached']);

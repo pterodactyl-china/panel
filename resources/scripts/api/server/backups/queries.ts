@@ -100,7 +100,7 @@ export const useCreateServerBackup = () => {
             await queryClient.invalidateQueries({
                 queryKey: clientListServerBackupsQueryKey({ path: { server_uuid: path.server_uuid } }),
             });
-            toast.success('Backup started', { description: `${backup.attributes.name} 正在创建。` });
+            toast.success('备份已开始', { description: `${backup.attributes.name} 正在创建。` });
         },
         onError: (error) => notifyHttpError(error, '无法创建备份'),
     });

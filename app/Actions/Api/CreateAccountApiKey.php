@@ -38,7 +38,7 @@ final readonly class CreateAccountApiKey implements CreatesAccountApiKeys
 
         $token = DB::transaction(function () use ($user, $description, $allowedIps): NewAccessToken {
             $user = User::query()->lockForUpdate()->findOrFail($user->id);
-            throw_if($user->apiKeys()->count() >= 25, DisplayException::class, 'You have reached the account limit for number of API keys.');
+            throw_if($user->apiKeys()->count() >= 25, DisplayException::class, '账户的 API 密钥数量已达上限。');
 
             return $user->createToken($description, $allowedIps);
         });

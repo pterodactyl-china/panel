@@ -66,7 +66,7 @@ test('a transfer rejects an allocation claimed after validation without reservin
         }
     });
     expect(fn () => $this->app->make(InitiatesTransfers::class)->initiate($server, $node, $primary->id, [$additional->id]))
-        ->toThrow(DisplayException::class, 'The selected allocations are no longer available on the target node.');
+        ->toThrow(DisplayException::class, '所选端口在目标节点上已不可用。');
     $this->assertDatabaseMissing('server_transfers', ['server_id' => $server->id]);
     expect($primary->refresh()->server_id)->toBe($claimPrimary ? $other->id : null);
     expect($additional->refresh()->server_id)->toBe($claimPrimary ? null : $other->id);

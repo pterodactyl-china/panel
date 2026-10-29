@@ -40,11 +40,11 @@ const validateRequired = (label: string, value: string): string | undefined => {
     const length = value.trim().length;
 
     if (length === 0) {
-        return `${label} is required.`;
+        return `${label}为必填项。`;
     }
 
     if (length > 191) {
-        return `${label} must not exceed 191 characters.`;
+        return `${label}不能超过 191 个字符。`;
     }
 
     return undefined;

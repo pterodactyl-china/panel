@@ -195,9 +195,7 @@ const ownedServerColumns = [
                 </Link>
                 <p className='mt-1 font-mono text-xs text-muted-foreground'>
                     {row.original.attributes.identifier}
-                    {row.original.attributes.suspended ? (
-                        <span className='ml-2 text-destructive'>suspended</span>
-                    ) : null}
+                    {row.original.attributes.suspended ? <span className='ml-2 text-destructive'>已暂停</span> : null}
                 </p>
             </div>
         ),

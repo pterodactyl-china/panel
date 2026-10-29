@@ -115,7 +115,7 @@ class Node extends Model implements Identifiable
         }
 
         $remote = config()->string('app.url');
-        throw_if($remote === '', UnexpectedValueException::class, 'The application URL must not be empty.');
+        throw_if($remote === '', UnexpectedValueException::class, '应用 URL 不能为空。');
 
         return [
             'debug' => false,

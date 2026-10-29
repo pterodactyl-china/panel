@@ -10,6 +10,7 @@
             <meta content="width=device-width, initial-scale=1" name="viewport">
             <meta name="csrf-token" content="{{ csrf_token() }}">
             <meta name="robots" content="noindex">
+            <meta name="app-version" content="{{ config('app.version') }}">
             {{-- An extension that registers one of these elements (registerHeadTags)
                  replaces the panel's default instead of adding a second one. --}}
             @unless ($extensionHead->replaces('link', 'apple-touch-icon'))

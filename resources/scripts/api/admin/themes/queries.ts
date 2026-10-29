@@ -169,7 +169,7 @@ export const useClearAdminThemeImage = () => {
         ...adminClearThemeImageMutation(),
         onSuccess: (data, variables) => {
             store(data, variables.path.theme);
-            notifyReloadToApply('Image removed', '此后页面将不再使用它渲染。');
+            notifyReloadToApply('图片已移除', '此后页面将不再使用它渲染。');
         },
         onError: (error) => notifyHttpError(error, '无法移除图片'),
     });

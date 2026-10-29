@@ -82,7 +82,7 @@ test('api key limit is applied', function (): void {
     /** @var User $user */
     $user = User::factory()->create();
     ApiKey::factory()->times(25)->for($user)->create(['key_type' => ApiKey::TYPE_ACCOUNT]);
-    $this->actingAs($user)->postJson('/api/client/account/api-keys', ['description' => 'Test Description', 'allowed_ips' => ['127.0.0.1']])->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.code', 'DisplayException')->assertJsonPath('errors.0.detail', 'You have reached the account limit for number of API keys.');
+    $this->actingAs($user)->postJson('/api/client/account/api-keys', ['description' => 'Test Description', 'allowed_ips' => ['127.0.0.1']])->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.code', 'DisplayException')->assertJsonPath('errors.0.detail', '账户的 API 密钥数量已达上限。');
 });
 test('validation error is returned for bad requests', function (): void {
     $this->actingAs(User::factory()->create());

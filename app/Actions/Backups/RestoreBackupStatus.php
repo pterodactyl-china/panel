@@ -16,7 +16,7 @@ final class RestoreBackupStatus implements RestoresBackupStatuses
     {
         $model = Backup::query()->where('uuid', $backupUuid)->firstOrFail();
 
-        throw_unless($model->server->node->is($node), HttpForbiddenException::class, 'Requesting node does not have permission to access this server.');
+        throw_unless($model->server->node->is($node), HttpForbiddenException::class, '请求的节点没有访问此服务器的权限。');
 
         $model->server->update(['status' => null]);
 

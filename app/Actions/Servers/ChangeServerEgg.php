@@ -44,7 +44,7 @@ final readonly class ChangeServerEgg implements ChangesServerEgg
             ])->save();
 
             $fresh = $server->fresh();
-            throw_if($fresh === null, LogicException::class, 'The modified server no longer exists.');
+            throw_if($fresh === null, LogicException::class, '被修改的服务器已不存在。');
 
             return $fresh;
         });

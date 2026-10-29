@@ -36,13 +36,13 @@ test('error is returned if allocation is primary', function () {
     /** @var Server $server */
     [$user, $server] = $this->generateTestAccount();
     $server->update(['allocation_limit' => 2]);
-    $this->actingAs($user)->deleteJson($this->link($server->allocation))->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.code', 'DisplayException')->assertJsonPath('errors.0.detail', 'You cannot delete the primary allocation for this server.');
+    $this->actingAs($user)->deleteJson($this->link($server->allocation))->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.code', 'DisplayException')->assertJsonPath('errors.0.detail', '无法删除此服务器的主分配端口。');
 });
 test('allocation cannot be deleted if server limit is not defined', function () {
     [$user, $server] = $this->generateTestAccount();
     /** @var Allocation $allocation */
     $allocation = Allocation::factory()->forServer($server)->create(['notes' => 'Test notes']);
-    $this->actingAs($user)->deleteJson($this->link($allocation))->assertStatus(400)->assertJsonPath('errors.0.detail', 'You cannot delete allocations for this server: no allocation limit is set.');
+    $this->actingAs($user)->deleteJson($this->link($allocation))->assertStatus(400)->assertJsonPath('errors.0.detail', '无法删除此服务器的端口：未设置端口上限。');
     $allocation->refresh();
     expect($allocation->notes)->not->toBeNull();
     expect($allocation->server_id)->toEqual($server->id);

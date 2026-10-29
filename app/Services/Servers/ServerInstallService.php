@@ -33,7 +33,7 @@ class ServerInstallService
     {
         $server = Server::query()->with('node')->whereUuidOrShort($uuid)->firstOrFail();
 
-        throw_unless($server->node->is(RemoteRequestNode::get($request)), HttpForbiddenException::class, 'Requesting node does not have permission to access this server.');
+        throw_unless($server->node->is(RemoteRequestNode::get($request)), HttpForbiddenException::class, '请求的节点没有访问此服务器的权限。');
 
         return $server;
     }

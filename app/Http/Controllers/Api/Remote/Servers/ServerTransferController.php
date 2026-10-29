@@ -29,7 +29,7 @@ class ServerTransferController extends Controller
         $transfer = $this->activeTransfer($uuid);
 
         $node = RemoteRequestNode::get($request);
-        throw_if(! $node->is($transfer->newNode) && ! $node->is($transfer->oldNode), HttpForbiddenException::class, 'Requesting node does not have permission to access this server.');
+        throw_if(! $node->is($transfer->newNode) && ! $node->is($transfer->oldNode), HttpForbiddenException::class, '请求的节点没有访问此服务器的权限。');
 
         $transfers->fail($transfer);
 
@@ -46,7 +46,7 @@ class ServerTransferController extends Controller
         $transfer = $this->activeTransfer($uuid);
 
         $node = RemoteRequestNode::get($request);
-        throw_unless($node->is($transfer->newNode), HttpForbiddenException::class, 'Requesting node does not have permission to access this server.');
+        throw_unless($node->is($transfer->newNode), HttpForbiddenException::class, '请求的节点没有访问此服务器的权限。');
 
         $transfers->complete($transfer);
 

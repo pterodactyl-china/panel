@@ -20,7 +20,7 @@ final readonly class PresignBackupUpload implements PresignsBackupUploads
     public function presign(Backup $backup, int $size): array
     {
         $adapter = $this->backupManager->adapter();
-        throw_unless($adapter instanceof S3Filesystem, BadRequestHttpException::class, 'The configured backup adapter is not an S3 compatible adapter.');
+        throw_unless($adapter instanceof S3Filesystem, BadRequestHttpException::class, '配置的备份适配器不是兼容 S3 的适配器。');
 
         $client = $adapter->getClient();
         $expires = CarbonImmutable::now()->addMinutes(config()->integer('backups.presigned_url_lifespan', 60));

@@ -88,7 +88,7 @@ export const useCreateServerAllocation = () => {
         onSuccess: async (allocation, { path }) => {
             await upsertAllocation(queryClient, path.server_uuid, allocation);
             toast.success('分配已创建', {
-                description: `${allocation.attributes.ip}:${allocation.attributes.port} is available.`,
+                description: `${allocation.attributes.ip}:${allocation.attributes.port} 现可用。`,
             });
         },
         onError: (error) => notifyHttpError(error, '无法创建分配'),

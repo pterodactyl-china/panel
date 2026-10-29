@@ -76,7 +76,7 @@ test('creating database with identical name triggers an exception', function ():
         getService()->create($server, ['database' => $name, 'remote' => '%', 'database_host_id' => $host2->id]);
         $this->fail('Expected DuplicateDatabaseNameException to be thrown.');
     } catch (DuplicateDatabaseNameException $duplicateDatabaseNameException) {
-        expect($duplicateDatabaseNameException->getMessage())->toBe('A database with that name already exists for this server.');
+        expect($duplicateDatabaseNameException->getMessage())->toBe('此服务器上已存在同名数据库。');
     }
 
     $this->assertDatabaseMissing('databases', ['database' => $name, 'database_host_id' => $host2->id]);

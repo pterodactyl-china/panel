@@ -57,7 +57,7 @@ final readonly class DeleteBackup implements DeletesBackups
     private function deleteFromS3(Backup $backup): void
     {
         $adapter = $this->manager->adapter(Backup::ADAPTER_AWS_S3);
-        throw_unless($adapter instanceof S3Filesystem, LogicException::class, 'The S3 backup adapter is not configured correctly.');
+        throw_unless($adapter instanceof S3Filesystem, LogicException::class, 'S3 备份适配器配置有误。');
 
         $adapter->getClient()->deleteObject([
             'Bucket' => $adapter->getBucket(),

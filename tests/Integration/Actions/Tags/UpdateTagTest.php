@@ -68,7 +68,7 @@ test('built-in game tags cannot be edited, whatever the input', function (array 
     $tag = Tag::factory()->predefined('fivem')->create();
 
     expect(fn () => $this->app->make(UpdatesTags::class)->update($tag, $input))
-        ->toThrow(DisplayException::class, 'Built-in game tags cannot be edited.');
+        ->toThrow(DisplayException::class, '内置游戏标签无法编辑。');
     expect($tag->fresh()->slug)->toBe('fivem');
 })->with([
     'valid input' => [['name' => 'Changed', 'slug' => 'changed']],

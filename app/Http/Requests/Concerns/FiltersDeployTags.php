@@ -55,7 +55,7 @@ trait FiltersDeployTags
                 continue;
             }
 
-            $validator->errors()->add($this->deployTagsField(), "The node tag '{$value}' does not exist.");
+            $validator->errors()->add($this->deployTagsField(), "节点标签 '{$value}' 不存在。");
         }
     }
 

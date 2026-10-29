@@ -27,7 +27,7 @@ export const nodeAcceptsEgg = (nodeTags: AdminTag[], eggTags: AdminTag[]): boole
 };
 
 export const nodeRejectsEggMessage = (nodeName: string, nodeTags: AdminTag[]): string =>
-    `${nodeName} only accepts eggs tagged ${nodeTags.map((tag) => tag.attributes.name).join(', ')}.`;
+    `${nodeName} 只接受带有 ${nodeTags.map((tag) => tag.attributes.name).join('、')} 标签的预设。`;
 
 /** Submit meta of a form that can repeat its request with `ignore_tags`. */
 export interface TagCheckMeta {
@@ -38,5 +38,5 @@ export interface TagCheckMeta {
 export const tagCheckError = (cause: unknown, field: string): string | null => {
     const errors = httpValidationErrors(cause);
 
-    return field in errors && errors[field].includes(' only accepts eggs tagged ') ? errors[field] : null;
+    return field in errors && errors[field].includes(' 只接受带有 ') ? errors[field] : null;
 };

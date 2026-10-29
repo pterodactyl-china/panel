@@ -49,19 +49,19 @@ test('failure status update can be sent from new node', function () {
 test('success status update cannot be sent from old node', function () {
     $server = $this->transfer->server;
     $oldNode = $this->transfer->oldNode;
-    $this->withHeader('Authorization', "Bearer {$oldNode->daemon_token_id}.".$oldNode->getDecryptedKey())->postJson("/api/remote/servers/{$server->uuid}/transfer/success")->assertForbidden()->assertJsonPath('errors.0.code', 'HttpForbiddenException')->assertJsonPath('errors.0.detail', 'Requesting node does not have permission to access this server.');
+    $this->withHeader('Authorization', "Bearer {$oldNode->daemon_token_id}.".$oldNode->getDecryptedKey())->postJson("/api/remote/servers/{$server->uuid}/transfer/success")->assertForbidden()->assertJsonPath('errors.0.code', 'HttpForbiddenException')->assertJsonPath('errors.0.detail', '请求的节点没有访问此服务器的权限。');
     expect($this->transfer->refresh()->successful)->toBeNull();
 });
 test('success status update cannot be sent from unauthorized node', function () {
     $server = $this->transfer->server;
     $node = Node::factory()->for(Location::factory())->create();
-    $this->withHeader('Authorization', "Bearer {$node->daemon_token_id}.".$node->getDecryptedKey())->postJson("/api/remote/servers/{$server->uuid}/transfer/success")->assertForbidden()->assertJsonPath('errors.0.code', 'HttpForbiddenException')->assertJsonPath('errors.0.detail', 'Requesting node does not have permission to access this server.');
+    $this->withHeader('Authorization', "Bearer {$node->daemon_token_id}.".$node->getDecryptedKey())->postJson("/api/remote/servers/{$server->uuid}/transfer/success")->assertForbidden()->assertJsonPath('errors.0.code', 'HttpForbiddenException')->assertJsonPath('errors.0.detail', '请求的节点没有访问此服务器的权限。');
     expect($this->transfer->refresh()->successful)->toBeNull();
 });
 test('failure status update cannot be sent from unauthorized node', function () {
     $server = $this->transfer->server;
     $node = Node::factory()->for(Location::factory())->create();
-    $this->withHeader('Authorization', "Bearer {$node->daemon_token_id}.".$node->getDecryptedKey())->postJson("/api/remote/servers/{$server->uuid}/transfer/failure")->assertForbidden()->assertJsonPath('errors.0.code', 'HttpForbiddenException')->assertJsonPath('errors.0.detail', 'Requesting node does not have permission to access this server.');
+    $this->withHeader('Authorization', "Bearer {$node->daemon_token_id}.".$node->getDecryptedKey())->postJson("/api/remote/servers/{$server->uuid}/transfer/failure")->assertForbidden()->assertJsonPath('errors.0.code', 'HttpForbiddenException')->assertJsonPath('errors.0.detail', '请求的节点没有访问此服务器的权限。');
     expect($this->transfer->refresh()->successful)->toBeNull();
 });
 

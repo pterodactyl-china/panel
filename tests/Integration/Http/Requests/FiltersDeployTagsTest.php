@@ -31,5 +31,5 @@ test('deploy tags match slugs without regard to case', function () {
 
     $request->check($validator);
 
-    expect($validator->errors()->get('deploy.tags'))->toBe(["The node tag 'missing' does not exist."]);
+    expect($validator->errors()->get('deploy.tags'))->toBe(["节点标签 'missing' 不存在。"]);
 });

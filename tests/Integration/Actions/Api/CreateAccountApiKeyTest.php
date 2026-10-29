@@ -54,6 +54,6 @@ test('an account holds at most 25 keys', function (): void {
     ApiKey::factory()->times(25)->for($user)->create(['key_type' => ApiKey::TYPE_ACCOUNT]);
 
     expect(fn () => $this->app->make(CreatesAccountApiKeys::class)->create($user, 'One too many', null))
-        ->toThrow(DisplayException::class, 'You have reached the account limit for number of API keys.');
+        ->toThrow(DisplayException::class, '账户的 API 密钥数量已达上限。');
     expect($user->apiKeys()->count())->toBe(25);
 });

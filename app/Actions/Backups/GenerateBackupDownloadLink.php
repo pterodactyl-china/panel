@@ -21,7 +21,7 @@ final readonly class GenerateBackupDownloadLink implements GeneratesBackupDownlo
 
     public function generate(Backup $backup, User $user): string
     {
-        throw_if($backup->disk !== Backup::ADAPTER_AWS_S3 && $backup->disk !== Backup::ADAPTER_WINGS, BadRequestHttpException::class, 'The backup requested references an unknown disk driver type and cannot be downloaded.');
+        throw_if($backup->disk !== Backup::ADAPTER_AWS_S3 && $backup->disk !== Backup::ADAPTER_WINGS, BadRequestHttpException::class, '所请求的备份使用了未知的磁盘驱动类型，无法下载。');
 
         if ($backup->disk === Backup::ADAPTER_AWS_S3) {
             return $this->getS3BackupUrl($backup);
@@ -42,7 +42,7 @@ final readonly class GenerateBackupDownloadLink implements GeneratesBackupDownlo
     private function getS3BackupUrl(Backup $backup): string
     {
         $adapter = $this->backupManager->adapter(Backup::ADAPTER_AWS_S3);
-        throw_unless($adapter instanceof S3Filesystem, LogicException::class, 'The S3 backup adapter is not configured correctly.');
+        throw_unless($adapter instanceof S3Filesystem, LogicException::class, 'S3 备份适配器配置有误。');
 
         $request = $adapter->getClient()->createPresignedRequest(
             $adapter->getClient()->getCommand('GetObject', [

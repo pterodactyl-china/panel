@@ -121,7 +121,7 @@ export const useRotateDatabasePassword = () => {
         onSuccess: async (database, { path }) => {
             await upsertDatabase(queryClient, path.server_uuid, database);
             toast.success('数据库密码已轮换', {
-                description: `${database.attributes.name} has a new password.`,
+                description: `${database.attributes.name} 的密码已重置。`,
             });
         },
         onError: (error) => notifyHttpError(error, '无法轮换数据库密码'),

@@ -117,7 +117,7 @@ const tagCheckFailure = new AxiosError('Unprocessable', '422', undefined, undefi
     config: { headers: new AxiosHeaders() },
     data: {
         errors: [
-            { detail: 'node-alpha only accepts eggs tagged Minecraft.', meta: { source_field: 'egg_id', rule: '' } },
+            { detail: 'node-alpha 只接受带有 Minecraft 标签的预设。', meta: { source_field: 'egg_id', rule: '' } },
         ],
     },
 });
@@ -131,7 +131,7 @@ describe('ServerStartupTab', () => {
 
         await user.selectOptions(screen.getByTestId('eggId'), '2');
         await user.click(screen.getByRole('button', { name: '保存修改' }));
-        expect(await screen.findByText('node-alpha only accepts eggs tagged Minecraft.')).toBeInTheDocument();
+        expect(await screen.findByText('node-alpha 只接受带有 Minecraft 标签的预设。')).toBeInTheDocument();
         await user.click(screen.getByRole('button', { name: '仍然更改' }));
 
         await waitFor(() => expect(screen.queryByRole('alert')).not.toBeInTheDocument());

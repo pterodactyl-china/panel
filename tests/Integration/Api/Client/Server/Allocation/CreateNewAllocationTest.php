@@ -56,5 +56,5 @@ test('allocation cannot be created if server is at limit', function (): void {
     /** @var Server $server */
     [$user, $server] = $this->generateTestAccount();
     $server->update(['allocation_limit' => 1]);
-    $this->actingAs($user)->postJson($this->link($server, '/network/allocations'))->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.code', 'DisplayException')->assertJsonPath('errors.0.detail', 'Cannot assign additional allocations to this server: limit has been reached.');
+    $this->actingAs($user)->postJson($this->link($server, '/network/allocations'))->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.code', 'DisplayException')->assertJsonPath('errors.0.detail', '无法为此服务器分配更多端口：已达到上限。');
 });

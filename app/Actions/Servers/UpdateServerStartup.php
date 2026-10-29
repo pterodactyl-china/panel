@@ -104,7 +104,7 @@ final readonly class UpdateServerStartup implements UpdatesServerStartup
             // come back wrong. fresh() returns a new instance and leaves the
             // relation unloaded.
             $fresh = $server->fresh();
-            throw_if($fresh === null, LogicException::class, 'The modified server no longer exists.');
+            throw_if($fresh === null, LogicException::class, '被修改的服务器已不存在。');
 
             return $fresh;
         });

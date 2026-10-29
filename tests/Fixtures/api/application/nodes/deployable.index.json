@@ -456,7 +456,7 @@
                 {
                     "code": "ValidationException",
                     "status": "422",
-                    "detail": "The node tag 'missing' does not exist.",
+                    "detail": "节点标签 'missing' 不存在。",
                     "meta": {
                         "source_field": "tags",
                         "rule": ""

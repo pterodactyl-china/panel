@@ -28,7 +28,7 @@ export default function TagsField({ tags, label, description, emptyText, exclude
         if (value === null) {
             toast.error('标签名称不能仅为数字。');
         } else if (excluded.has(value)) {
-            toast.error(`${name} is already in the other list.`);
+            toast.error(`${name} 已在另一个列表中。`);
         } else if (!values.includes(value)) {
             field.handleChange([...values, value]);
         }

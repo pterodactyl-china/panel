@@ -29,7 +29,7 @@ class StartupController extends ClientApiController
             [
                 'code' => 'BadRequestHttpException',
                 'status' => '400',
-                'detail' => 'The environment variable you are trying to edit is read-only.',
+                'detail' => '你尝试编辑的环境变量为只读。',
             ],
         ],
     ];
@@ -60,9 +60,9 @@ class StartupController extends ClientApiController
     public function update(UpdateStartupVariableRequest $request, UpdatesServerVariable $variables, Server $server): EggVariableResource
     {
         $variable = $request->variable();
-        throw_if(! $variable instanceof EggVariable || ! $variable->user_viewable, BadRequestHttpException::class, 'The environment variable you are trying to edit does not exist.');
+        throw_if(! $variable instanceof EggVariable || ! $variable->user_viewable, BadRequestHttpException::class, '你尝试编辑的环境变量不存在。');
 
-        throw_unless($variable->user_editable, BadRequestHttpException::class, 'The environment variable you are trying to edit is read-only.');
+        throw_unless($variable->user_editable, BadRequestHttpException::class, '你尝试编辑的环境变量为只读。');
 
         $value = $request->filled('value') ? $request->string('value')->toString() : null;
 

@@ -113,8 +113,8 @@ export const adminSettingsQueryOptions = () => adminGetSettingsOptions();
 
 type AdminSettingsQueryOptions = { enabled?: boolean };
 const adminSettingsUpdateToast = (section: AdminSettingsSection) => ({
-    title: `${section} settings updated`,
-    description: `${section} settings have been updated.`,
+    title: `${section}设置已更新`,
+    description: `${section}设置已更新。`,
 });
 
 export const useAdminSettings = (options?: AdminSettingsQueryOptions) =>

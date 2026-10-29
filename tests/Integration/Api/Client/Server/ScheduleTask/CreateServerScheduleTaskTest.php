@@ -77,8 +77,8 @@ test('backups can not be tasked if limit0', function (): void {
     [$user, $server] = $this->generateTestAccount();
     /** @var Schedule $schedule */
     $schedule = Schedule::factory()->create(['server_id' => $server->id]);
-    $this->actingAs($user)->postJson($this->link($schedule, '/tasks'), ['action' => 'backup', 'time_offset' => 0])->assertStatus(Response::HTTP_FORBIDDEN)->assertJsonPath('errors.0.detail', "A backup task cannot be created when the server's backup limit is set to 0.");
-    $this->actingAs($user)->postJson($this->link($schedule, '/tasks'), ['action' => 'backup', 'payload' => "file.txt\nfile2.log", 'time_offset' => 0])->assertStatus(Response::HTTP_FORBIDDEN)->assertJsonPath('errors.0.detail', "A backup task cannot be created when the server's backup limit is set to 0.");
+    $this->actingAs($user)->postJson($this->link($schedule, '/tasks'), ['action' => 'backup', 'time_offset' => 0])->assertStatus(Response::HTTP_FORBIDDEN)->assertJsonPath('errors.0.detail', '服务器的备份上限为 0 时无法创建备份任务。');
+    $this->actingAs($user)->postJson($this->link($schedule, '/tasks'), ['action' => 'backup', 'payload' => "file.txt\nfile2.log", 'time_offset' => 0])->assertStatus(Response::HTTP_FORBIDDEN)->assertJsonPath('errors.0.detail', '服务器的备份上限为 0 时无法创建备份任务。');
 });
 test('a task cannot be created without the permission its action needs', function (string $action, ?string $payload): void {
     [$user, $server] = $this->generateTestAccount([Permissions::ScheduleUpdate->value]);

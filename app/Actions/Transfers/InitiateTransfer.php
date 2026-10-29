@@ -67,7 +67,7 @@ final readonly class InitiateTransfer implements InitiatesTransfers
             ->count();
 
         if ($count !== count($ids)) {
-            $validator->errors()->add('allocation_id', 'The selected allocation must be an unassigned allocation on the target node.');
+            $validator->errors()->add('allocation_id', '所选端口必须是目标节点上未分配的端口。');
         }
     }
 
@@ -89,7 +89,7 @@ final readonly class InitiateTransfer implements InitiatesTransfers
                 ->lockForUpdate()
                 ->get();
 
-            throw_unless($allocations->count() === count($allocationIds), DisplayException::class, 'The selected allocations are no longer available on the target node.');
+            throw_unless($allocations->count() === count($allocationIds), DisplayException::class, '所选端口在目标节点上已不可用。');
 
             $transfer = ServerTransfer::query()->create([
                 'server_id' => $server->id,

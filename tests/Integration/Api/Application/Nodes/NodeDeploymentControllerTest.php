@@ -82,7 +82,7 @@ test('unknown deploy tags and eggs are rejected', function (): void {
         ->assertUnprocessable()
         ->assertJsonPath('errors.0.meta.source_field', 'egg')
         ->assertJsonPath('errors.1.meta.source_field', 'tags')
-        ->assertJsonPath('errors.1.detail', "The node tag 'no-such-tag' does not exist.");
+        ->assertJsonPath('errors.1.detail', "节点标签 'no-such-tag' 不存在。");
 });
 
 test('allocated resources reflect assigned servers', function () {

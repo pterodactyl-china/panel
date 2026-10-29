@@ -266,7 +266,7 @@ function ExtensionToolbar({
                 failedCount > 0 && (
                     <span className='inline-flex items-center gap-1.5 text-warning'>
                         <Icon icon={AlertCircle} />
-                        {failedCount === 1 ? '1 extension needs attention' : `${failedCount} extensions need attention`}
+                        {failedCount === 1 ? '1 个扩展需要处理' : `${failedCount} 个扩展需要处理`}
                     </span>
                 )
             }

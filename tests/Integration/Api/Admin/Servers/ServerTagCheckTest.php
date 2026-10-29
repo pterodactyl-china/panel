@@ -91,7 +91,7 @@ test('server create refuses a node that does not accept the egg unless tags are 
         ->assertUnprocessable()
         ->assertJsonCount(1, 'errors')
         ->assertJsonPath('errors.0.meta.source_field', 'primary_allocation_id')
-        ->assertJsonPath('errors.0.detail', "{$node->name} only accepts eggs tagged Tag Check Other.");
+        ->assertJsonPath('errors.0.detail', "{$node->name} 只接受带有 Tag Check Other 标签的预设。");
     expect($fake->callsFor('create'))->toBe([]);
 
     $this->postJson(route('api.admin.servers.store'), [...serverPayload($egg, $allocation), 'ignore_tags' => true])->assertCreated();
@@ -117,7 +117,7 @@ test('a transfer refuses a target node that does not accept the egg unless tags 
         ->assertUnprocessable()
         ->assertJsonCount(1, 'errors')
         ->assertJsonPath('errors.0.meta.source_field', 'node_id')
-        ->assertJsonPath('errors.0.detail', "{$target->name} only accepts eggs tagged Tag Check Other.");
+        ->assertJsonPath('errors.0.detail', "{$target->name} 只接受带有 Tag Check Other 标签的预设。");
     $this->assertDatabaseMissing('server_transfers', ['server_id' => $server->id]);
 
     $this->postJson(route('api.admin.servers.transfer', ['server' => $server->id]), ['node_id' => $target->id, 'allocation_id' => $allocation->id, 'ignore_tags' => true])->assertNoContent();
@@ -144,7 +144,7 @@ test('an egg change refuses an egg the server\'s node does not accept unless tag
         ->assertUnprocessable()
         ->assertJsonCount(1, 'errors')
         ->assertJsonPath('errors.0.meta.source_field', 'egg_id')
-        ->assertJsonPath('errors.0.detail', "{$server->node->name} only accepts eggs tagged Tag Check Game.");
+        ->assertJsonPath('errors.0.detail', "{$server->node->name} 只接受带有 Tag Check Game 标签的预设。");
     expect($server->refresh()->egg_id)->not->toBe($egg->id);
 
     $this->putJson(route('api.admin.servers.startup', ['server' => $server->id]), [...$payload, 'ignore_tags' => true])->assertOk();

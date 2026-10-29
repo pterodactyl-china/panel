@@ -162,7 +162,7 @@ export const useUpdateAdminExtensionSettings = () => {
                     path: { extension: variables.path.extension },
                 }),
             });
-            const name = variables.meta?.name ?? 'the extension';
+            const name = variables.meta?.name ?? '该扩展';
 
             toast.success('设置已保存', { description: `${name} 的设置已更新。` });
         },
@@ -215,7 +215,7 @@ export const useInstallAdminExtension = () => {
         ...adminInstallExtensionMutation(),
         onSuccess: async (data) => {
             await queryClient.invalidateQueries({ queryKey: adminListExtensionsQueryKey() });
-            const description = `${data.data?.name ?? 'The extension'} has been installed.`;
+            const description = `${data.data?.name ?? '该扩展'} 已安装。`;
 
             if (data.data?.enabled) {
                 notifyReloadToApply('扩展已安装', description);
@@ -239,7 +239,7 @@ export const useEnableAdminExtension = () => {
         ...adminEnableExtensionMutation(),
         onSuccess: async (data, variables) => {
             await queryClient.invalidateQueries({ queryKey: adminListExtensionsQueryKey() });
-            const fallback = variables.meta?.name ?? 'The extension';
+            const fallback = variables.meta?.name ?? '该扩展';
 
             notifyReloadToApply('扩展已启用', `${data.data?.name ?? fallback} 已启用。`);
         },
@@ -254,7 +254,7 @@ export const useDisableAdminExtension = () => {
         ...adminDisableExtensionMutation(),
         onSuccess: async (data, variables) => {
             await queryClient.invalidateQueries({ queryKey: adminListExtensionsQueryKey() });
-            const fallback = variables.meta?.name ?? 'The extension';
+            const fallback = variables.meta?.name ?? '该扩展';
 
             notifyReloadToApply('扩展已禁用', `${data.data?.name ?? fallback} 已禁用。`);
         },
@@ -269,9 +269,9 @@ export const useRemoveAdminExtension = () => {
         ...adminRemoveExtensionMutation(),
         onSuccess: async (_data, variables) => {
             await queryClient.invalidateQueries({ queryKey: adminListExtensionsQueryKey() });
-            const name = variables.meta?.name ?? 'The extension';
+            const name = variables.meta?.name ?? '该扩展';
 
-            notifyReloadToApply('扩展已移除', `${name} has been removed.`);
+            notifyReloadToApply('扩展已移除', `${name} 已被移除。`);
         },
         onError: (error) => notifyHttpError(error, '无法移除扩展'),
     });

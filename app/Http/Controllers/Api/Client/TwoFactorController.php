@@ -58,7 +58,7 @@ class TwoFactorController extends ClientApiController
             [
                 'code' => 'BadRequestHttpException',
                 'status' => '400',
-                'detail' => 'Two-factor authentication is already enabled on this account.',
+                'detail' => '此账户已启用两步验证。',
             ],
         ],
     ];
@@ -74,7 +74,7 @@ class TwoFactorController extends ClientApiController
     public function index(Request $request, SetsUpTwoFactor $twoFactor): JsonResponse
     {
         $user = $this->authenticatedUser($request);
-        throw_if($user->use_totp, BadRequestHttpException::class, 'Two-factor authentication is already enabled on this account.');
+        throw_if($user->use_totp, BadRequestHttpException::class, '此账户已启用两步验证。');
 
         return new JsonResponse([
             'data' => $twoFactor->setup($user),

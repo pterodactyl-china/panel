@@ -51,11 +51,11 @@ test('startup variable cannot be updated if not user viewable or editable', func
     $response = $this->actingAs($user)->putJson($this->link($server).'/startup/variable', ['key' => 'BUNGEE_VERSION', 'value' => '123']);
     $response->assertStatus(Response::HTTP_BAD_REQUEST);
     $response->assertJsonPath('errors.0.code', 'BadRequestHttpException');
-    $response->assertJsonPath('errors.0.detail', 'The environment variable you are trying to edit does not exist.');
+    $response->assertJsonPath('errors.0.detail', '你尝试编辑的环境变量不存在。');
     $response = $this->actingAs($user)->putJson($this->link($server).'/startup/variable', ['key' => 'SERVER_JARFILE', 'value' => 'server2.jar']);
     $response->assertStatus(Response::HTTP_BAD_REQUEST);
     $response->assertJsonPath('errors.0.code', 'BadRequestHttpException');
-    $response->assertJsonPath('errors.0.detail', 'The environment variable you are trying to edit is read-only.');
+    $response->assertJsonPath('errors.0.detail', '你尝试编辑的环境变量为只读。');
 })->with('permissionsDataProvider');
 test('hidden variables are not returned in startup command when updating variable', function (): void {
     /** @var Server $server */

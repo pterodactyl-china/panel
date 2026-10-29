@@ -24,6 +24,6 @@ trait ValidatesNodeAcceptsEgg
 
         $tags = $node->eggTags->map(fn (Tag $tag): string => $tag->effectiveName())->implode(', ');
 
-        $validator->errors()->add($field, "{$node->name} only accepts eggs tagged {$tags}.");
+        $validator->errors()->add($field, "{$node->name} 只接受带有 {$tags} 标签的预设。");
     }
 }

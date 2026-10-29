@@ -37,7 +37,7 @@ const nodeServerColumns = [
                     className='mt-1 truncate text-xs text-muted-foreground'
                     title={row.original.attributes.description || undefined}
                 >
-                    {row.original.attributes.description || 'No description'}
+                    {row.original.attributes.description || '暂无描述'}
                 </p>
             </div>
         ),

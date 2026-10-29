@@ -78,7 +78,7 @@ final readonly class UpdateServerBuild implements UpdatesServerBuild
             if (isset($attributes['allocation_id']) && $attributes['allocation_id'] !== $server->allocation_id) {
                 $allocationExists = Allocation::query()->where('id', $attributes['allocation_id'])
                     ->where('server_id', $server->id)->exists();
-                throw_if(! $allocationExists, DisplayException::class, 'The requested default allocation is not currently assigned to this server.');
+                throw_if(! $allocationExists, DisplayException::class, '所请求的默认端口当前未分配给此服务器。');
             }
 
             $server->forceFill($attributes)->saveOrFail();

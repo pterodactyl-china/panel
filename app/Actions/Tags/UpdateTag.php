@@ -17,7 +17,7 @@ final readonly class UpdateTag implements UpdatesTags
     {
         // Feature gating matches on a built-in tag's slug and EggSpecificTags owns its
         // presentation, so it is never renamed or relabelled.
-        throw_if(EggSpecificTags::isSpecial($tag->slug), DisplayException::class, 'Built-in game tags cannot be edited.');
+        throw_if(EggSpecificTags::isSpecial($tag->slug), DisplayException::class, '内置游戏标签无法编辑。');
 
         // Nor may a custom tag take a built-in slug and become one.
         $rules = CreateTag::rules($tag);

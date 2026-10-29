@@ -36,7 +36,7 @@ class ServerDetailsController extends Controller
             ? $node->id === $transfer->old_node || $node->id === $transfer->new_node
             : $node->id === $server->node_id;
 
-        throw_unless($valid, HttpForbiddenException::class, 'Requesting node does not have permission to access this server.');
+        throw_unless($valid, HttpForbiddenException::class, '请求的节点没有访问此服务器的权限。');
 
         return new JsonResponse([
             'settings' => $configuration->forServer($server),

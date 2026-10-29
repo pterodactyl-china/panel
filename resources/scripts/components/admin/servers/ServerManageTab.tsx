@@ -160,7 +160,7 @@ function ServerManageContent({ server }: Props) {
                     action={
                         <Dialog.ConfirmTrigger
                             title='解冻服务器'
-                            confirm='Unsuspend'
+                            confirm='确认解冻'
                             pending={updateSuspension.isPending}
                             trigger={({ onClick }) => (
                                 <Button
@@ -190,7 +190,7 @@ function ServerManageContent({ server }: Props) {
                     action={
                         <Dialog.ConfirmTrigger
                             title='冻结服务器'
-                            confirm='Suspend'
+                            confirm='确认冻结'
                             pending={updateSuspension.isPending}
                             trigger={({ onClick }) => (
                                 <ActionTrigger reason={activeTransfer ? '此服务器正在转移，无法冻结。' : undefined}>

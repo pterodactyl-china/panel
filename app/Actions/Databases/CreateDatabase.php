@@ -131,7 +131,7 @@ final class CreateDatabase implements CreatesDatabases
             ->where('database', $data['database'])
             ->exists();
 
-        throw_if($exists, DuplicateDatabaseNameException::class, 'A database with that name already exists for this server.');
+        throw_if($exists, DuplicateDatabaseNameException::class, '此服务器上已存在同名数据库。');
 
         $database = (new Database)->forceFill($data);
         $database->saveOrFail();

@@ -171,7 +171,7 @@ export const useImportAdminEgg = () => {
         onSuccess: async (egg) => {
             await invalidateGeneratedOperations(queryClient, adminEggListOperations);
             toast.success('预设已导入', {
-                description: `${egg.attributes.name} has been imported from the uploaded file.`,
+                description: `${egg.attributes.name} 已从上传的文件中导入。`,
             });
         },
         onError: (error) => notifyHttpError(error, '无法导入预设'),
@@ -225,7 +225,7 @@ export const useUpdateAdminEggScript = () => {
                 queryClient.invalidateQueries({ queryKey: adminEggDetailKey(egg.attributes.id) }),
             ]);
             toast.success('安装脚本已更新', {
-                description: `${egg.attributes.name} has a new install script.`,
+                description: `${egg.attributes.name} 的安装脚本已更新。`,
             });
         },
         onError: (error) => notifyHttpError(error, '无法更新安装脚本'),
@@ -243,7 +243,7 @@ export const useUpdateAdminEggFromFile = () => {
                 queryClient.invalidateQueries({ queryKey: adminEggDetailKey(egg.attributes.id) }),
             ]);
             toast.success('预设已更新', {
-                description: `${egg.attributes.name} has been updated from the uploaded file.`,
+                description: `${egg.attributes.name} 已根据上传的文件更新。`,
             });
         },
         onError: (error) => notifyHttpError(error, '无法通过文件更新预设'),

@@ -7,7 +7,7 @@
                 {
                     "code": "ValidationException",
                     "status": "422",
-                    "detail": "node-alpha only accepts eggs tagged Minecraft.",
+                    "detail": "node-alpha 只接受带有 Minecraft 标签的预设。",
                     "meta": {
                         "source_field": "egg_id",
                         "rule": ""

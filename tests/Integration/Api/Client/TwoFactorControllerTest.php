@@ -32,7 +32,7 @@ test('error is returned when two factor is already enabled', function () {
     $response = $this->actingAs($user)->getJson('/api/client/account/two-factor');
     $response->assertStatus(Response::HTTP_BAD_REQUEST);
     $response->assertJsonPath('errors.0.code', 'BadRequestHttpException');
-    $response->assertJsonPath('errors.0.detail', 'Two-factor authentication is already enabled on this account.');
+    $response->assertJsonPath('errors.0.detail', '此账户已启用两步验证。');
 });
 test('validation error is returned if invalid data is passed to enabled2 fa', function () {
     /** @var User $user */

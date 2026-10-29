@@ -175,7 +175,7 @@ export const userColumns = [
                     )}
                 >
                     <Icon icon={enabled ? UserLock : LockOpen} aria-hidden='true' className='h-3.5 w-3.5' />
-                    {enabled ? '2FA on' : '2FA off'}
+                    {enabled ? '两步验证开启' : '两步验证关闭'}
                 </span>
             );
         },
