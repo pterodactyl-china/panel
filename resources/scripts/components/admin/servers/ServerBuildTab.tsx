@@ -73,8 +73,8 @@ const validateIo = requiredNumber('必须提供 IO 比例。', (value): string |
 const validateDatabaseLimit = requiredNumber('必须提供数据库限制。', (value) =>
     value >= 0 ? undefined : '数据库限制无效。'
 );
-const validateAllocationLimit = requiredNumber('必须提供分配限制。', (value) =>
-    value >= 0 ? undefined : '分配限制无效。'
+const validateAllocationLimit = requiredNumber('必须提供端口配额。', (value) =>
+    value >= 0 ? undefined : '端口配额无效。'
 );
 const validateBackupLimit = requiredNumber('必须提供备份限制。', (value) =>
     value >= 0 ? undefined : '备份限制无效。'
@@ -238,7 +238,7 @@ function ServerBuildForm({ server }: Props) {
                             </form.AppField>
                         </div>
                     </TitledGreyBox>
-                    <TitledGreyBox title='分配管理'>
+                    <TitledGreyBox title='端口管理'>
                         <form.AppField name='allocationId'>
                             {(field) => (
                                 <field.SelectField
@@ -259,8 +259,8 @@ function ServerBuildForm({ server }: Props) {
                                 {(field) => (
                                     <field.MultiSelectField
                                         id='addAllocations'
-                                        label='分配额外端口'
-                                        description='此节点上将分配给该服务器的未分配端口。'
+                                        label='新增端口'
+                                        description='将分配给该服务器的空闲端口。'
                                         options={unassigned.map((allocation) => ({
                                             value: allocation.attributes.id,
                                             label: allocationLabel(allocation),

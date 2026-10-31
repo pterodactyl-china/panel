@@ -88,7 +88,7 @@ export default function TransferServerModal({ server, open, onClose }: Props) {
             }
 
             if (!value.allocationId) {
-                toast.error('必须选择默认分配。');
+                toast.error('必须选择主端口。');
 
                 return;
             }
@@ -151,8 +151,8 @@ export default function TransferServerModal({ server, open, onClose }: Props) {
                         {(field) => (
                             <field.SelectField
                                 id='allocationId'
-                                label='默认分配'
-                                description='将分配给此服务器的主分配。'
+                                label='主端口'
+                                description='将分配给此服务器的主端口。'
                                 options={[{ value: 0, label: '选择分配...', disabled: true }, ...allocationOptions]}
                                 onChange={(value) =>
                                     form.setFieldValue('allocationAdditional', (current) =>
@@ -168,8 +168,8 @@ export default function TransferServerModal({ server, open, onClose }: Props) {
                         {(field) => (
                             <field.MultiSelectField
                                 id='allocationAdditional'
-                                label='额外分配'
-                                description='要额外分配给此服务器的分配。'
+                                label='额外端口'
+                                description='要额外分配给此服务器的端口。'
                                 options={additionalOptions}
                             />
                         )}

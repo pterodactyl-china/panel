@@ -106,10 +106,10 @@ it('marks the primary allocation and lets another one become primary or be remov
     await renderAllocations([allocation(1, 25565, true), allocation(7, 25575)], 4);
 
     expect(screen.getByText('首选')).toHaveAttribute('data-ui', 'badge');
-    expect(screen.getByText('此服务器已使用 2 / 4 个允许的分配。')).toBeVisible();
+    expect(screen.getByText('此服务器已使用 2 / 4 个端口配额。')).toBeVisible();
     expect(screen.getAllByRole('button', { name: '新建分配' })).toHaveLength(1);
 
-    fireEvent.click(screen.getByRole('button', { name: /^删除分配/ }));
+    fireEvent.click(screen.getByRole('button', { name: /^删除端口/ }));
     const dialog = await screen.findByRole('dialog');
 
     fireEvent.click(within(dialog).getByRole('button', { name: '删除' }));

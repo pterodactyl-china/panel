@@ -81,7 +81,7 @@ const EggConfigurationFields = ({
                                 type='text'
                                 id='name'
                                 label='名称'
-                                description='用于标识此预设的简短易读名称，即用户看到的游戏服务器类型。'
+                                description='用于标识此预设的简短名称，用户会看到它作为游戏服务端类型。'
                             />
                         )}
                     </form.AppField>

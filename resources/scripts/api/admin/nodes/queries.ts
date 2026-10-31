@@ -460,9 +460,9 @@ export const useCreateAdminNodeAllocations = () => {
         ...adminCreateNodeAllocationsMutation(),
         onSuccess: async (_data, variables) => {
             await invalidateAdminNodeAllocations(queryClient, [variables.path.node_id]);
-            toast.success('分配已指派', { description: '已分配新的分配。' });
+            toast.success('端口已指派', { description: '已分配新的端口。' });
         },
-        onError: (error) => notifyHttpError(error, '无法分配'),
+        onError: (error) => notifyHttpError(error, '无法分配端口'),
     });
 };
 
@@ -472,7 +472,7 @@ export const useUpdateAdminNodeAllocationAlias = () => {
     return useMutation({
         ...adminUpdateNodeAllocationMutation(),
         onSuccess: (_data, variables) => invalidateAdminNodeAllocations(queryClient, [variables.path.node_id]),
-        onError: (error) => notifyHttpError(error, '无法更新分配别名'),
+        onError: (error) => notifyHttpError(error, '无法更新端口别名'),
     });
 };
 
@@ -482,7 +482,7 @@ export const useDeleteAdminNodeAllocation = () => {
     return useMutation({
         ...adminDeleteNodeAllocationMutation(),
         onSuccess: (_data, variables) => invalidateAdminNodeAllocations(queryClient, [variables.path.node_id]),
-        onError: (error) => notifyHttpError(error, '无法删除分配'),
+        onError: (error) => notifyHttpError(error, '无法删除端口'),
     });
 };
 
@@ -493,9 +493,9 @@ export const useBulkDeleteAdminNodeAllocations = () => {
         ...adminBulkDeleteNodeAllocationsMutation(),
         onSuccess: async (_data, variables) => {
             await invalidateAdminNodeAllocations(queryClient, [variables.path.node_id]);
-            toast.success('分配已删除', { description: '所选分配已删除。' });
+            toast.success('端口已删除', { description: '所选端口已删除。' });
         },
-        onError: (error) => notifyHttpError(error, '无法删除分配'),
+        onError: (error) => notifyHttpError(error, '无法删除端口'),
     });
 };
 
@@ -506,10 +506,10 @@ export const useDeleteAdminNodeIpBlockAllocations = () => {
         ...adminDeleteNodeAllocationIpBlockMutation(),
         onSuccess: async (_data, variables) => {
             await invalidateAdminNodeAllocations(queryClient, [variables.path.node_id]);
-            toast.success('分配已删除', {
-                description: `${variables.body.ip} 上所有未分配的分配已删除。`,
+            toast.success('端口已删除', {
+                description: `${variables.body.ip} 上所有未分配的端口已删除。`,
             });
         },
-        onError: (error) => notifyHttpError(error, '无法删除分配'),
+        onError: (error) => notifyHttpError(error, '无法删除端口'),
     });
 };

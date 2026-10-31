@@ -122,12 +122,12 @@ export default function AdvancedSettingsForm({ settings }: { settings: AdminSett
                     </form.AppField>
                 </div>
             </TitledGreyBox>
-            <TitledGreyBox title='自动创建分配' className='mt-6'>
+            <TitledGreyBox title='自动创建端口' className='mt-6'>
                 <form.AppField name='allocationsEnabled'>
                     {(field) => (
                         <field.SwitchField
-                            label='已启用自动创建分配'
-                            description='允许用户为其服务器自动创建新的分配。'
+                            label='已启用自动创建端口'
+                            description='允许用户为其服务器自动创建新的端口。'
                             disabled={readOnly}
                         />
                     )}

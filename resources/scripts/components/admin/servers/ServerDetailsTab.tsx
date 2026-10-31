@@ -148,7 +148,7 @@ function ServerDetailsForm({ server }: Props) {
                                 type='text'
                                 id='external_id'
                                 label='外部标识符'
-                                description='留空则不为该服务器分配外部标识符。外部 ID 应在该服务器上唯一，且不被其他服务器使用。'
+                                description='留空则不为该服务器端口外部标识符。外部 ID 应在该服务器上唯一，且不被其他服务器使用。'
                             />
                         )}
                     </form.AppField>

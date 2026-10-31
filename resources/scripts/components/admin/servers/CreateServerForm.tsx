@@ -191,7 +191,7 @@ const AllocationBox = ({
     const additionalOptions = allocationOptions.filter((option) => option.value !== defaultAllocationId);
 
     return (
-        <TitledGreyBox title='分配管理'>
+        <TitledGreyBox title='端口管理'>
             <div className='relative grid grid-cols-1 md:grid-cols-3 gap-6'>
                 {loading && <Spinner size='small' centered />}
                 <div>
@@ -218,14 +218,14 @@ const AllocationBox = ({
                     <form.AppField
                         name='allocationId'
                         validators={{
-                            onChange: ({ value }) => (value >= 1 ? undefined : '必须选择默认分配。'),
+                            onChange: ({ value }) => (value >= 1 ? undefined : '必须选择主端口。'),
                         }}
                     >
                         {(field) => (
                             <field.SelectField
                                 id='allocationId'
-                                label='默认分配'
-                                description='将分配给此服务器的主分配。'
+                                label='主端口'
+                                description='将分配给此服务器的主端口。'
                                 disabled={nodeId <= 0}
                                 options={[{ value: 0, label: '选择分配…', disabled: true }, ...allocationOptions]}
                                 onChange={(value) =>
@@ -242,8 +242,8 @@ const AllocationBox = ({
                         {(field) => (
                             <field.MultiSelectField
                                 id='allocationAdditional'
-                                label='额外分配'
-                                description='创建时额外分配给此服务器的分配。'
+                                label='额外端口'
+                                description='创建时额外分配给此服务器的端口。'
                                 disabled={nodeId <= 0}
                                 options={additionalOptions}
                             />
@@ -268,13 +268,13 @@ const FeatureLimitsBox = ({ form }: { form: ServerForm }) => (
                     />
                 )}
             </form.AppField>
-            <form.AppField name='allocationLimit' validators={{ onChange: requiredNumber('必须提供分配限制。') }}>
+            <form.AppField name='allocationLimit' validators={{ onChange: requiredNumber('必须提供端口配额。') }}>
                 {(field) => (
                     <field.NumberField
                         id='allocationLimit'
                         label='分配限制'
                         min={0}
-                        description='用户可为此服务器创建的分配总数。'
+                        description='用户可为此服务器创建的端口总数。'
                     />
                 )}
             </form.AppField>

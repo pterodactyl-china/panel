@@ -87,11 +87,11 @@ export const useCreateServerAllocation = () => {
         ...clientCreateServerAllocationMutation(),
         onSuccess: async (allocation, { path }) => {
             await upsertAllocation(queryClient, path.server_uuid, allocation);
-            toast.success('分配已创建', {
-                description: `${allocation.attributes.ip}:${allocation.attributes.port} 现可用。`,
+            toast.success('端口已创建', {
+                description: `${allocation.attributes.ip}:${allocation.attributes.port} 现在可用。`,
             });
         },
-        onError: (error) => notifyHttpError(error, '无法创建分配'),
+        onError: (error) => notifyHttpError(error, '无法创建端口'),
     });
 };
 
@@ -101,7 +101,7 @@ export const useUpdateAllocationNotes = () => {
     return useMutation({
         ...clientUpdateAllocationNotesMutation(),
         onSuccess: (allocation, { path }) => upsertAllocation(queryClient, path.server_uuid, allocation),
-        onError: (error) => notifyHttpError(error, '无法更新分配备注'),
+        onError: (error) => notifyHttpError(error, '无法更新端口备注'),
     });
 };
 
@@ -126,9 +126,9 @@ export const useSetPrimaryAllocation = () => {
                     }))
             );
             await queryClient.invalidateQueries(serverQueryFilters(path.server_uuid));
-            toast.success('首选分配已更新');
+            toast.success('主端口已更新');
         },
-        onError: (error) => notifyHttpError(error, '无法更新首选分配'),
+        onError: (error) => notifyHttpError(error, '无法更新主端口'),
     });
 };
 
@@ -139,8 +139,8 @@ export const useDeleteServerAllocation = () => {
         ...clientDeleteServerAllocationMutation(),
         onSuccess: async (_data, { path }) => {
             await removeAllocation(queryClient, path.server_uuid, path.allocation_id);
-            toast.success('分配已删除');
+            toast.success('端口已删除');
         },
-        onError: (error) => notifyHttpError(error, '无法删除分配'),
+        onError: (error) => notifyHttpError(error, '无法删除端口'),
     });
 };

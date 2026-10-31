@@ -54,11 +54,11 @@ function NotesCell({ model, allocation }: CellProps) {
 function DeleteAllocationButton({ model, allocation }: CellProps) {
     return (
         <Dialog.ConfirmTrigger
-            title='移除分配'
+            title='移除端口'
             confirm='删除'
             onConfirmed={(_event, close) => model.actions.remove(allocation.id).then(close)}
             trigger={({ onClick }) => (
-                <DeleteAction aria-label={`删除分配 ${allocation.address}:${allocation.port}`} onClick={onClick} />
+                <DeleteAction aria-label={`删除端口 ${allocation.address}:${allocation.port}`} onClick={onClick} />
             )}
         >
             此分配将立即从您的服务器移除。
@@ -144,7 +144,7 @@ export default function Allocations({ model, className }: ViewProps<'server.allo
         <div className={className}>
             <SpinnerOverlay visible={creating} />
             {model.canManage && (
-                <ListToolbar summary={`此服务器已使用 ${model.allocations.length} / ${model.limit} 个允许的分配。`}>
+                <ListToolbar summary={`此服务器已使用 ${model.allocations.length} / ${model.limit} 个端口配额。`}>
                     {model.canCreate && newAllocationButton}
                 </ListToolbar>
             )}

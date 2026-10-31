@@ -74,7 +74,7 @@ function TaskForm({ form: config, task, onSubmit, onClose }: Omit<Props, 'open'>
                                 label='时间偏移（秒）'
                                 min={0}
                                 max={900}
-                                description='上一个任务执行后等待多久再运行此任务。如果这是计划中的第一个任务，则不会应用此设置。'
+                                description='上一个任务执行后等待多久再运行此任务。若这是第一个任务，则忽略此设置。'
                             />
                         )}
                     </form.AppField>

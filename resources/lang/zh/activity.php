@@ -116,7 +116,7 @@ return [
             'create' => '添加 :allocation 到服务器',
             'notes' => '将 :allocation 的备注从 ":old" 更新为 ":new"',
             'primary' => '将 :allocation 设置为服务器首选',
-            'delete' => '删除了 :allocation 分配',
+            'delete' => '删除了 :allocation 端口',
         ],
         'schedule' => [
             'create' => '创建了 :name 计划',
@@ -205,7 +205,7 @@ return [
             'create' => '在节点的 :address_count 个地址上添加了 :ports_count 个端口',
             'alias' => '将分配别名设置为 :alias',
             'delete' => '删除了 :address 上的端口 :port',
-            'delete-block' => '删除了 :address 上未分配的分配',
+            'delete-block' => '删除了 :address 上未分配的端口',
         ],
         'server' => [
             'create' => '创建了服务器 :name',

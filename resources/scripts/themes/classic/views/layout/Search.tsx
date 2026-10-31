@@ -83,7 +83,7 @@ export default function Search({ model, className }: ViewProps<'app.search'>) {
                             <TextField
                                 field={model.field}
                                 label='搜索词'
-                                description='输入服务器名称、UUID 或分配地址开始搜索。'
+                                description='输入服务器名称、UUID 或端口地址开始搜索。'
                                 autoFocus
                             />
                         </InputSpinner>

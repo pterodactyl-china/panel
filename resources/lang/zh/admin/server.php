@@ -14,14 +14,14 @@ declare(strict_types=1);
 return [
     'exceptions' => [
         'no_new_default_allocation' => '您正在试图删除此服务器的默认分配，但没有可供使用的备用分配。',
-        'skipping_install_script' => "此服务器已配置为跳过其预设的安装脚本。在禁用该设置之前无法重新安装。",
+        'skipping_install_script' => '此服务器已配置为跳过其预设的安装脚本。在禁用该设置之前无法重新安装。',
         'marked_as_failed' => '由于该服务器之前被标记为安装失败。在此状态下无法切换当前状态。',
         'bad_variable' => ':name 变量存在验证错误。',
-        'daemon_exception' => '尝试与守护程序通信时出现异常，导致 HTTP/:code 响应代码。已记录此异常。(请求 id: :request_id)',
-        'default_allocation_not_found' => "在此服务器的分配中找不到所请求的默认分配。",
+        'daemon_exception' => '与守护程序通信时出错，返回 HTTP :code。该异常已记录（请求 ID：:request_id）。',
+        'default_allocation_not_found' => '在此服务器的分配中找不到所请求的默认分配。',
     ],
     'alerts' => [
-        'startup_changed' => "该服务器的启动配置已经更新。如果此服务器的预设组或预设被更改，现在将进行重新安装。",
+        'startup_changed' => '该服务器的启动配置已经更新。如果此服务器的预设组或预设被更改，现在将进行重新安装。',
         'server_deleted' => '服务器已成功从系统中删除。',
         'server_created' => '服务器已在面板上成功创建。请允许守护进程用几分钟的时间来完成安装此服务器。',
         'build_updated' => '此服务器的构建配置已更新。某些更改可能需要重新启动才能生效。',

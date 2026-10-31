@@ -95,7 +95,7 @@ const AllocationGroupCheckbox = ({ allocations }: { allocations: AdminAllocation
 
     return (
         <Checkbox
-            aria-label={ip ? `选择 ${ip} 上所有未分配的分配` : '选择所有未分配的分配'}
+            aria-label={ip ? `选择 ${ip} 上所有未分配的端口` : '选择所有未分配的端口'}
             checked={allSelected}
             indeterminate={!allSelected && unassignedIds.some((id) => selected.has(id))}
             disabled={unassignedIds.length === 0}
@@ -109,7 +109,7 @@ const AllocationCheckbox = ({ allocation }: { allocation: AdminAllocation }) => 
 
     return (
         <Checkbox
-            aria-label={`选择分配 ${allocation.attributes.ip}:${allocation.attributes.port}`}
+            aria-label={`选择端口 ${allocation.attributes.ip}:${allocation.attributes.port}`}
             checked={selected.has(allocation.attributes.id)}
             disabled={allocation.attributes.assigned}
             onChange={() => toggle(allocation.attributes.id)}
@@ -192,9 +192,9 @@ const AllocationDeleteCell = ({ allocation }: { allocation: AdminAllocation }) =
     return (
         <RowActions>
             <Dialog.ConfirmTrigger
-                title='删除此分配？'
+                title='删除此端口？'
                 confirm='删除'
-                trigger={({ onClick }) => <DeleteAction aria-label={`删除分配 ${address}`} onClick={onClick} />}
+                trigger={({ onClick }) => <DeleteAction aria-label={`删除端口 ${address}`} onClick={onClick} />}
                 onConfirmed={(_event, close) => {
                     close();
                     deleteAllocation(allocation);
@@ -262,7 +262,7 @@ const AllocationGroupTable = ({ ip, allocations, isFetching, onDeleteBlock }: Al
                     </p>
                 </div>
                 <Dialog.ConfirmTrigger
-                    title='删除此 IP 段的分配？'
+                    title='删除此 IP 段的端口？'
                     confirm='删除'
                     trigger={({ onClick }) => (
                         <button
@@ -291,7 +291,7 @@ const AllocationGroupTable = ({ ip, allocations, isFetching, onDeleteBlock }: Al
                 isFetching={isFetching}
                 className='rounded-none border-0 bg-transparent'
                 tableClassName='table-fixed'
-                emptyState='此地址没有分配。'
+                emptyState='此地址下没有端口。'
             />
         </section>
     );
@@ -309,7 +309,7 @@ const ExistingAllocationsSummary = ({ selectedCount, total, onBulkDelete }: Exis
             <div className='-my-1 flex items-center gap-3'>
                 <span className='text-xs text-muted-foreground'>{selectedCount} selected</span>
                 <Dialog.ConfirmTrigger
-                    title='删除所选分配？'
+                    title='删除所选端口？'
                     confirm='删除'
                     trigger={({ onClick }) => (
                         <Button size='xsmall' color='red' onClick={onClick}>
@@ -561,7 +561,7 @@ export default function NodeAllocationTab() {
                 </AllocationTableContext.Provider>
             </TitledGreyBox>
             <Form form={createForm}>
-                <TitledGreyBox title='分配新地址' contentClassName='space-y-6 px-3 pt-4'>
+                <TitledGreyBox title='新增端口' contentClassName='space-y-6 px-3 pt-4'>
                     <createForm.AppField
                         name='ip'
                         validators={{
@@ -583,7 +583,7 @@ export default function NodeAllocationTab() {
                                 type='text'
                                 id='allocation_alias'
                                 label='IP 别名'
-                                description='这些分配的默认可选别名。'
+                                description='这些端口的默认可选别名。'
                             />
                         )}
                     </createForm.AppField>

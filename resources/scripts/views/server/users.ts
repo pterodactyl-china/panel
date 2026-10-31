@@ -342,7 +342,7 @@ const listFixture = (options: Partial<SubuserListModel> = {}): SubuserListModel 
 const permissionCatalogue: readonly (readonly [string, string, Readonly<Record<string, string>>])[] = [
     [
         'control',
-        '控制用户能否管理服务器电源状态或发送命令的权限。',
+        '控制用户管理服务器电源状态或发送命令的权限。',
         {
             console: '允许用户通过控制台向服务器实例发送命令。',
             start: '允许用户在服务器停止时启动它。',

@@ -233,7 +233,7 @@ function AssignmentCard({
     ownerName: string;
 }) {
     return (
-        <TitledGreyBox title='服务器分配'>
+        <TitledGreyBox title='服务器端口'>
             <dl>
                 <AssignmentRow label='所有者'>
                     <OwnerValue user={user} ownerName={ownerName} />

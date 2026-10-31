@@ -87,7 +87,7 @@ function ServerDatabaseContent({ server }: { server: AdminServer }) {
     const databaseLimit = attributes.feature_limits.databases ?? 0;
     const canCreate = databaseLimit > 0 && data.length < databaseLimit;
     const usage =
-        databaseLimit > 0 && data.length > 0 ? `已为此服务器分配 ${data.length} / ${databaseLimit} 个数据库。` : null;
+        databaseLimit > 0 && data.length > 0 ? `已为此服务器端口 ${data.length} / ${databaseLimit} 个数据库。` : null;
 
     return (
         <div>

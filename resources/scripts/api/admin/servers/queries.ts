@@ -572,7 +572,7 @@ export const useTransferAdminServer = () => {
                 ),
             ]);
             toast.success('服务器转移已开始', {
-                description: '服务器将迁移到所选节点与分配。',
+                description: '服务器将迁移到所选节点与端口。',
             });
         },
         onError: (error) => notifyHttpError(error, '无法转移服务器'),
