@@ -81,7 +81,7 @@ export default function NodeTagsTab() {
                                 <TagsField
                                     tags={tags}
                                     exclude={reservations}
-                                    label='游戏'
+                                    label='游戏标签'
                                     description='当预设带有这些标签之一时即可在此运行。留空表示接受所有预设。'
                                     emptyText='此节点接受所有预设。'
                                 />
@@ -94,9 +94,9 @@ export default function NodeTagsTab() {
                                 <TagsField
                                     tags={tags}
                                     exclude={games}
-                                    label='预留'
-                                    description='保留节点只接受指定了全部这些标签的部署。'
-                                    emptyText='此节点不是保留节点。'
+                                    label='预留标签'
+                                    description='只有同时指定了这些预留标签的部署才能使用此节点。'
+                                    emptyText='此节点未设置预留标签。'
                                 />
                             )}
                         </form.AppField>
