@@ -177,7 +177,7 @@ describe('page.server.schedules.detail', () => {
 
         const rows = screen.getAllByRole('row').slice(1);
 
-        expect(screen.getByRole('heading', { name: /Nightly restart/ })).toHaveTextContent('Active');
+        expect(screen.getByRole('heading', { name: /Nightly restart/ })).toHaveTextContent('已启用');
         expect(rows.map((row) => within(row).getAllByRole('cell')[0].textContent)).toEqual([
             '发送命令say Restarting soon',
             '发送电源操作restart',

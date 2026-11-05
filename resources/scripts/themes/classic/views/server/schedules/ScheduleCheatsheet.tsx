@@ -8,11 +8,11 @@ interface Row {
 }
 
 const examples: Row[] = [
-    { token: '*/5 * * * *', meaning: 'every 5 minutes' },
-    { token: '0 */1 * * *', meaning: 'every hour' },
-    { token: '0 8-12 * * *', meaning: 'hour range' },
-    { token: '0,30 * * * *', meaning: 'on the hour and half past' },
-    { token: '0 0 * * *', meaning: 'once a day' },
+    { token: '*/5 * * * *', meaning: '每 5 分钟' },
+    { token: '0 */1 * * *', meaning: '每小时' },
+    { token: '0 8-12 * * *', meaning: '小时范围' },
+    { token: '0,30 * * * *', meaning: '整点与半点' },
+    { token: '0 0 * * *', meaning: '每天一次' },
     { token: '0 0 * * MON', meaning: '每周一' },
     { token: '0 0 * * MON,FRI', meaning: '每周一和周五' },
 ];
@@ -20,22 +20,22 @@ const examples: Row[] = [
 const specialCharacters: Row[] = [
     {
         token: '*',
-        meaning: 'any value',
+        meaning: '任意值',
         detail: '匹配该字段的任意值。小时位为 * 表示每小时执行一次。',
     },
     {
         token: ',',
-        meaning: 'value list separator',
+        meaning: '值列表分隔符',
         detail: '选择多个具体值。分钟位为 0,30 表示整点和半点执行。',
     },
     {
         token: '-',
-        meaning: 'range values',
+        meaning: '取值范围',
         detail: '覆盖两个值之间的所有取值。小时位为 8-12 表示在 8、9、10、11、12 点执行。',
     },
     {
         token: '/',
-        meaning: 'step values',
+        meaning: '步长取值',
         detail: '每隔 N 个值重复。分钟位为 */15 表示每小时执行四次。',
     },
 ];

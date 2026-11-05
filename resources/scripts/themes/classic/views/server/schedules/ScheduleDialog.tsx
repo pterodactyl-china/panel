@@ -46,7 +46,7 @@ function ScheduleForm({ values, editing, onSubmit, onClose }: Omit<Props, 'open'
             </p>
             <div className='mt-6 bg-card border border-border shadow-inner p-4 rounded-sm'>
                 <Switch
-                    label='显示速查表'
+                    label='显示 Cron 语法速查'
                     description='查看 cron 备忘单以了解示例。'
                     checked={showCheatsheet}
                     onChange={() => setShowCheatsheet((shown) => !shown)}
@@ -65,7 +65,7 @@ function ScheduleForm({ values, editing, onSubmit, onClose }: Omit<Props, 'open'
             </div>
             <div className='mt-6 bg-card border border-border shadow-inner p-4 rounded-sm'>
                 <form.AppField name='enabled'>
-                    {(field) => <field.SwitchField description='启用后此计划将自动执行。' label='计划已启用' />}
+                    {(field) => <field.SwitchField description='启用后此计划将自动执行。' label='启用此计划' />}
                 </form.AppField>
             </div>
             <div className='mt-6 text-right'>

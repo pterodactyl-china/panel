@@ -26,7 +26,7 @@ function StatusBadge({ schedule }: { schedule: ScheduleSummary }) {
             tone={schedule.active ? 'success' : 'danger'}
             className={cn('ml-4 rounded-full py-px uppercase', schedule.active ? 'bg-success/90' : 'bg-destructive/90')}
         >
-            {schedule.active ? 'Active' : 'Inactive'}
+            {schedule.active ? '已启用' : '已停用'}
         </Badge>
     );
 }
