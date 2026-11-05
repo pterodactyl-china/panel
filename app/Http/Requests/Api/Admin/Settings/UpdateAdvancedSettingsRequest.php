@@ -48,14 +48,14 @@ class UpdateAdvancedSettingsRequest extends AdminApiRequest
     public function attributes(): array
     {
         return [
-            'recaptcha:enabled' => 'reCAPTCHA Enabled',
-            'recaptcha:secret_key' => 'reCAPTCHA Secret Key',
-            'recaptcha:website_key' => 'reCAPTCHA Website Key',
-            'pterodactyl:guzzle:timeout' => 'HTTP Request Timeout',
-            'pterodactyl:guzzle:connect_timeout' => 'HTTP Connection Timeout',
-            'pterodactyl:client_features:allocations:enabled' => 'Auto Create Allocations Enabled',
-            'pterodactyl:client_features:allocations:range_start' => 'Starting Port',
-            'pterodactyl:client_features:allocations:range_end' => 'Ending Port',
+            'recaptcha:enabled' => '启用 reCAPTCHA',
+            'recaptcha:secret_key' => 'reCAPTCHA 密钥',
+            'recaptcha:website_key' => 'reCAPTCHA 站点密钥',
+            'pterodactyl:guzzle:timeout' => 'HTTP 请求超时',
+            'pterodactyl:guzzle:connect_timeout' => 'HTTP 连接超时',
+            'pterodactyl:client_features:allocations:enabled' => '启用自动创建端口',
+            'pterodactyl:client_features:allocations:range_start' => '起始端口',
+            'pterodactyl:client_features:allocations:range_end' => '结束端口',
         ];
     }
 

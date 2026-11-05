@@ -34,7 +34,7 @@ class StoreLocationRequest extends AdminApiRequest
     public function attributes(): array
     {
         return [
-            'short' => 'Location Identifier',
+            'short' => '位置标识',
             'long' => '地域描述',
         ];
     }

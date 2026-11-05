@@ -66,7 +66,7 @@ final class BrandingLogoService
             return null;
         }
 
-        $file = substr($url, strlen($prefix));
+        $file = mb_substr($url, mb_strlen($prefix));
 
         return preg_match(ExtensionSettingFiles::NAME_PATTERN, $file) === 1 ? $file : null;
     }

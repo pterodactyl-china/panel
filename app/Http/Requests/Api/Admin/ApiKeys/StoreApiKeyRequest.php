@@ -30,7 +30,7 @@ class StoreApiKeyRequest extends AdminApiRequest
     public function attributes(): array
     {
         return [
-            'memo' => 'Description',
+            'memo' => '描述',
         ];
     }
 

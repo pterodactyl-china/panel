@@ -69,13 +69,13 @@ class UpdateServerBuildConfigurationRequest extends ServerWriteRequest
     public function attributes(): array
     {
         return [
-            'add_allocation_ids' => 'allocations to add',
-            'remove_allocation_ids' => 'allocations to remove',
-            'add_allocation_ids.*' => 'allocation to add',
-            'remove_allocation_ids.*' => 'allocation to remove',
-            'database_limit' => 'Database Limit',
-            'allocation_limit' => 'Allocation Limit',
-            'backup_limit' => 'Backup Limit',
+            'add_allocation_ids' => '待添加的端口',
+            'remove_allocation_ids' => '待移除的端口',
+            'add_allocation_ids.*' => '待添加的端口',
+            'remove_allocation_ids.*' => '待移除的端口',
+            'database_limit' => '数据库上限',
+            'allocation_limit' => '端口上限',
+            'backup_limit' => '备份上限',
         ];
     }
 }

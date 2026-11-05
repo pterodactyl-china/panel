@@ -38,7 +38,7 @@ abstract class ApiRequest extends FormRequest
     public function perPage(int $default = self::DEFAULT_PER_PAGE): int
     {
         $perPage = filter_var($this->validated('per_page') ?? $default, FILTER_VALIDATE_INT);
-        throw_if($perPage === false, InvalidArgumentException::class, 'The validated per-page value must be an integer.');
+        throw_if($perPage === false, InvalidArgumentException::class, '每页数量的校验值必须是整数。');
 
         return $perPage;
     }

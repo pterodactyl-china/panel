@@ -67,10 +67,10 @@ class StoreDatabaseRequest extends AdminApiRequest
     public function attributes(): array
     {
         return [
-            'database_host_id' => 'Database Host Server ID',
-            'remote' => 'Remote Connection String',
-            'database' => 'Database Name',
-            'max_connections' => 'Max Connections',
+            'database_host_id' => '数据库主机 ID',
+            'remote' => '远程连接字符串',
+            'database' => '数据库名称',
+            'max_connections' => '最大连接数',
         ];
     }
 

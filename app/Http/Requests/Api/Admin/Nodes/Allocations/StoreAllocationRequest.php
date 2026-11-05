@@ -35,8 +35,8 @@ class StoreAllocationRequest extends AdminApiRequest
     {
         return [
             'ip' => 'IP 地址',
-            'alias' => 'IP Alias',
-            'ports' => 'Ports',
+            'alias' => 'IP 别名',
+            'ports' => '端口',
         ];
     }
 

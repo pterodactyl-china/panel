@@ -37,10 +37,10 @@ class UpdateGeneralSettingsRequest extends AdminApiRequest
     public function attributes(): array
     {
         return [
-            'branding.name' => 'Company Name',
-            'misc.required_2fa' => 'Require 2-Factor Authentication',
-            'misc.user_avatars_enabled' => 'User Avatars',
-            'default_locale' => 'Default Language',
+            'branding.name' => '公司名称',
+            'misc.required_2fa' => '要求两步验证',
+            'misc.user_avatars_enabled' => '用户头像',
+            'default_locale' => '默认语言',
         ];
     }
 

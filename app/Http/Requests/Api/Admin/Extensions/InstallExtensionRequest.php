@@ -31,7 +31,7 @@ class InstallExtensionRequest extends AdminApiRequest
     public function attributes(): array
     {
         return [
-            'package' => 'extension package',
+            'package' => '扩展包',
         ];
     }
 
