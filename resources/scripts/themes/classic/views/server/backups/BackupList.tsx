@@ -34,7 +34,7 @@ const backupUsage = (model: BackupListModel): string | null => {
     }
 
     if (model.permissions.create && limit > 0 && count > 0) {
-        return `${count} of ${limit} backups have been created for this server.`;
+        return `此服务器已创建 ${count} / ${limit} 个备份。`;
     }
 
     return null;

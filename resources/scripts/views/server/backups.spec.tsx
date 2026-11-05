@@ -80,7 +80,7 @@ describe('server.backups', () => {
             backup('running', 'Nightly backup', { completed_at: null, checksum: null, bytes: 0 }),
         ]);
 
-        expect(screen.getByText('1 of 5 backups have been created for this server.')).toBeVisible();
+        expect(screen.getByText('此服务器已创建 1 / 5 个备份。')).toBeVisible();
         expect(screen.queryByRole('button', { name: '删除 Nightly backup' })).not.toBeInTheDocument();
 
         act(() =>

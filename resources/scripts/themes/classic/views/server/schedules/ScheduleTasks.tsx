@@ -108,7 +108,7 @@ function columns(model: ScheduleTasksModel): TableColumn<ScheduleTask>[] {
                 task.sequence > 1 && task.timeOffset > 0 ? (
                     <span className='inline-flex items-center gap-1.5 whitespace-nowrap text-xs text-muted-foreground'>
                         <Icon icon={Clock} className='h-3.5 w-3.5' />
-                        {task.timeOffset}s later
+                        {task.timeOffset} 秒后
                     </span>
                 ) : (
                     '-'
