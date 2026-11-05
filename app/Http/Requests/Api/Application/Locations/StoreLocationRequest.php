@@ -36,7 +36,7 @@ class StoreLocationRequest extends ApplicationApiRequest
     {
         return [
             'long' => '地域描述',
-            'short' => '位置标识',
+            'short' => '地域标识',
         ];
     }
 

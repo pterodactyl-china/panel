@@ -37,7 +37,7 @@ class StoreNodeRequest extends ApplicationApiRequest
         return [
             'daemon_base' => '守护进程基础路径',
             'upload_size' => '文件上传大小上限',
-            'location_id' => '位置',
+            'location_id' => '地域',
             'public' => '节点可见性',
         ];
     }
