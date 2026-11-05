@@ -135,8 +135,7 @@ const PasswordCard = ({ form }: { form: UserForm }) => (
     <TitledGreyBox title='密码'>
         <form.AppField name='password' validators={{ onChange: validateUserPassword }}>
             {(field) => (
-                <field.TextField
-                    type='password'
+                <field.PasswordField
                     id='password'
                     label='密码'
                     description='留空则保持该用户的密码不变。密码变更时不会向该用户发送任何通知。'

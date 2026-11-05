@@ -48,8 +48,7 @@ const AuthenticationFields = ({ form, languageOptions, languagesLoading }: Props
     <div className='space-y-6'>
         <form.AppField name='password' validators={{ onChange: validateUserPassword }}>
             {(field) => (
-                <field.TextField
-                    type='password'
+                <field.PasswordField
                     id='password'
                     label='密码'
                     description='留空则向该用户发送设置链接，由其自行设置。'
