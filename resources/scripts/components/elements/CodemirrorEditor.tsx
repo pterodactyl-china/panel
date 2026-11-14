@@ -1,5 +1,6 @@
 import React, { useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { basicSetup } from 'codemirror';
+import { indentWithTab } from '@codemirror/commands';
 import { Compartment, EditorState, Prec } from '@codemirror/state';
 import { HighlightStyle, indentUnit, syntaxHighlighting } from '@codemirror/language';
 import { EditorView, keymap, type Panel, type ViewUpdate } from '@codemirror/view';
@@ -17,7 +18,7 @@ import {
 } from '@codemirror/search';
 import { tags } from '@lezer/highlight';
 import { searchScrollbarMarkers } from '@/components/elements/codemirror/searchMarkers';
-import { resolveEditorLanguage } from '@/components/elements/codemirror/yamlHighlighting';
+import { resolveCodemirrorLanguage } from '@/components/elements/codemirror/languages';
 import { editorContainerClass } from '@/components/elements/codemirror/layout';
 import { cn } from '@/lib/cn';
 
@@ -513,6 +514,12 @@ const panelHighlightStyle = HighlightStyle.define([
     { tag: tags.invalid, color: 'var(--editor-syntax-invalid)' },
 ]);
 
+const sameSearch = (a: SearchQuery, b: SearchQuery): boolean =>
+    a.search === b.search &&
+    a.caseSensitive === b.caseSensitive &&
+    a.regexp === b.regexp &&
+    a.wholeWord === b.wholeWord;
+
 class CustomSearchPanel implements Panel {
     dom: HTMLElement;
     top = true;
@@ -598,8 +605,7 @@ class CustomSearchPanel implements Panel {
         this.searchField.setAttribute('aria-label', 'Find');
         this.searchField.setAttribute('main-field', 'true');
         this.searchField.value = query.search;
-        this.searchField.onchange = this.commit;
-        this.searchField.onkeyup = this.commit;
+        this.searchField.oninput = this.commit;
 
         const togglesWrap = document.createElement('div');
 
@@ -692,8 +698,7 @@ class CustomSearchPanel implements Panel {
             this.replaceField.placeholder = '替换';
             this.replaceField.setAttribute('aria-label', '替换');
             this.replaceField.value = query.replace;
-            this.replaceField.onchange = this.commit;
-            this.replaceField.onkeyup = this.commit;
+            this.replaceField.oninput = this.commit;
 
             replaceWrap.appendChild(this.replaceField);
 
@@ -818,13 +823,30 @@ class CustomSearchPanel implements Panel {
         });
 
         if (!query.eq(this.query)) {
+            const previous = this.query;
+
             this.query = query;
             this.view.dispatch({ effects: setSearchQuery.of(query) });
 
-            // Select the first matching occurrence so the active result is visible.
-            if (query.valid) {
-                findNext(this.view);
+            // A new search selects the first match at or after the cursor; editing only the
+            // replacement leaves the selection where it is.
+            if (query.valid && !sameSearch(previous, query)) {
+                this.selectMatchFromCursor(query);
             }
+        }
+    }
+
+    selectMatchFromCursor(query: SearchQuery) {
+        const { state } = this.view;
+        const next = query.getCursor(state, state.selection.main.from).next();
+        const match = next.done ? query.getCursor(state).next() : next;
+
+        if (!match.done) {
+            this.view.dispatch({
+                selection: { anchor: match.value.from, head: match.value.to },
+                scrollIntoView: true,
+                userEvent: 'select.search',
+            });
         }
     }
 
@@ -955,7 +977,8 @@ const createEditorState = (
                     },
                 ])
             ),
-            languageCompartment.of(resolveEditorLanguage(mode)),
+            keymap.of([indentWithTab]),
+            languageCompartment.of(resolveCodemirrorLanguage(mode)),
             EditorView.updateListener.of((update) => {
                 if (update.docChanged) {
                     onContentChanged.current?.(update.state.doc.toString());
@@ -1016,7 +1039,7 @@ export default function CodemirrorEditor({
 
     useEffect(() => {
         editor.current?.dispatch({
-            effects: languageCompartment.reconfigure(resolveEditorLanguage(mode)),
+            effects: languageCompartment.reconfigure(resolveCodemirrorLanguage(mode)),
         });
     }, [languageCompartment, mode]);
 

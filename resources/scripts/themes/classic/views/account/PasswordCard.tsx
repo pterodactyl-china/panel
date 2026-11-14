@@ -15,6 +15,7 @@ export default function PasswordCard({ model, className }: ViewProps<'account.pa
                         field={fields.password}
                         id='new_password'
                         label='新密码'
+                        onGenerate={fields.confirmPassword.setValue}
                         description='新密码长度至少为 8 个字符，且不应与其他网站重复。'
                     />
                 </div>

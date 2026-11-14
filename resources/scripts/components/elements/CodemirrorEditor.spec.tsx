@@ -61,6 +61,26 @@ it('runs the latest save handler for Mod-s', () => {
     expect(latest).toHaveBeenCalledOnce();
 });
 
+it('indents with Tab and outdents with Shift-Tab', () => {
+    const { container } = render(
+        <CodemirrorEditor initialContent='alpha' mode='text/plain' onContentSaved={vi.fn()} />
+    );
+    const view = viewOf(container);
+    const content = container.querySelector('.cm-content')!;
+
+    act(() => view.dispatch({ selection: { anchor: 0 } }));
+
+    act(() => {
+        content.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+    });
+    expect(view.state.doc.toString()).toBe('    alpha');
+
+    act(() => {
+        content.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true }));
+    });
+    expect(view.state.doc.toString()).toBe('alpha');
+});
+
 it('renders the search and replace panel with theme controls', () => {
     const { container } = render(<CodemirrorEditor mode='text/plain' onContentSaved={vi.fn()} />);
 
@@ -75,4 +95,36 @@ it('renders the search and replace panel with theme controls', () => {
     expect(searchPanel?.querySelector('input[name="replace"]')).not.toBeNull();
     expect(searchPanel?.querySelector('button[name="close"]')).not.toBeNull();
     expect(searchPanel?.querySelectorAll('.cm-button').length).toBeGreaterThanOrEqual(4);
+});
+
+it('searches incrementally from the cursor and keeps the match while typing a replacement', () => {
+    const { container } = render(
+        <CodemirrorEditor initialContent='ab ab ab' mode='text/plain' onContentSaved={vi.fn()} />
+    );
+    const view = viewOf(container);
+
+    container
+        .querySelector('.cm-content')!
+        .dispatchEvent(new KeyboardEvent('keydown', { key: 'f', ctrlKey: true, bubbles: true }));
+
+    const type = (name: string, value: string) => {
+        const field = container.querySelector<HTMLInputElement>(`.cm-search input[name="${name}"]`)!;
+
+        field.value = value;
+        act(() => {
+            field.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+    };
+
+    const selected = () => [view.state.selection.main.from, view.state.selection.main.to];
+
+    type('search', 'a');
+    expect(selected()).toEqual([0, 1]);
+
+    type('search', 'ab');
+    expect(selected()).toEqual([0, 2]);
+
+    type('replace', 'x');
+    type('replace', 'xy');
+    expect(selected()).toEqual([0, 2]);
 });

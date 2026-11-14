@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Avatar from '@/components/Avatar';
 import { Button, TitledGreyBox } from '@/sdk';
 import { useDeleteAdminUserAvatar, useUpdateAdminUserAvatar } from '@/api/admin/users/queries';
 import type { AdminUser } from '@/api/admin/users/queries';
+import { imageUploadAccept } from '@/lib/images';
+import { useObjectUrl } from '@/plugins/useObjectUrl';
 
 export default function UserAvatarCard({ user }: { user: AdminUser }) {
     const input = useRef<HTMLInputElement>(null);
@@ -10,29 +12,15 @@ export default function UserAvatarCard({ user }: { user: AdminUser }) {
     const remove = useDeleteAdminUserAvatar();
     const image = user.attributes.avatar;
     const [selected, setSelected] = useState<File | null>(null);
-    const [preview, setPreview] = useState(image);
-
-    useEffect(() => {
-        if (!selected) {
-            setPreview(image);
-
-            return;
+    const picked = useObjectUrl(selected);
+    const preview = selected ? picked : image;
+    const save = () => {
+        if (selected) {
+            update.mutate(
+                { path: { user_id: user.attributes.id }, body: { avatar: selected } },
+                { onSuccess: () => setSelected(null) }
+            );
         }
-
-        const url = URL.createObjectURL(selected);
-
-        setPreview(url);
-
-        return () => URL.revokeObjectURL(url);
-    }, [image, selected]);
-
-    const save = async () => {
-        if (!selected) {
-            return;
-        }
-
-        await update.mutateAsync({ path: { user_id: user.attributes.id }, body: { avatar: selected } });
-        setSelected(null);
     };
 
     return (
@@ -40,7 +28,7 @@ export default function UserAvatarCard({ user }: { user: AdminUser }) {
             <div className='flex flex-col gap-4'>
                 <div className='flex items-start gap-4'>
                     <div className='h-[72px] w-[72px] shrink-0'>
-                        <Avatar name={user.attributes.username} image={preview} size='100%' />
+                        <Avatar name={user.attributes.uuid} image={preview} size='100%' />
                     </div>
                     <p className='m-0 text-sm text-muted-foreground'>
                         将显示在用户个人账户中的头像。支持 PNG、JPEG、SVG、WebP、AVIF 与 ICO 格式。
@@ -49,7 +37,7 @@ export default function UserAvatarCard({ user }: { user: AdminUser }) {
                 <input
                     ref={input}
                     type='file'
-                    accept='.png,.jpg,.jpeg,.svg,.webp,.avif,.ico,image/png,image/jpeg,image/svg+xml,image/webp,image/avif,image/x-icon'
+                    accept={imageUploadAccept}
                     className='hidden'
                     onChange={(event) => {
                         const file = event.target.files?.[0];
@@ -61,7 +49,7 @@ export default function UserAvatarCard({ user }: { user: AdminUser }) {
                     <Button
                         type='button'
                         isLoading={update.isPending}
-                        onClick={() => (selected ? void save() : input.current?.click())}
+                        onClick={() => (selected ? save() : input.current?.click())}
                     >
                         {selected ? '保存更改' : '更新头像'}
                     </Button>
@@ -69,11 +57,7 @@ export default function UserAvatarCard({ user }: { user: AdminUser }) {
                         type='button'
                         disabled={!image || !!selected}
                         isLoading={remove.isPending}
-                        onClick={() =>
-                            void remove
-                                .mutateAsync({ path: { user_id: user.attributes.id } })
-                                .then(() => setSelected(null))
-                        }
+                        onClick={() => remove.mutate({ path: { user_id: user.attributes.id } })}
                     >
                         移除头像
                     </Button.Danger>
