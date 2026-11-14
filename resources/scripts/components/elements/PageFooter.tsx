@@ -12,7 +12,7 @@ function CorePageFooter({ className }: PageFooterProps) {
         <div {...ui('root', className)}>
             <p {...ui('text')}>
                 <a rel='noopener nofollow noreferrer' href='https://pterodactyl.io' target='_blank' {...ui('link')}>
-                    Pterodactyl Software
+                    Pterodactyl&reg;
                 </a>
                 &nbsp;&copy; 2015 - <span suppressHydrationWarning>{new Date().getFullYear()}</span>
                 &nbsp;| Sinicizated by&nbsp;

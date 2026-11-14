@@ -16,7 +16,7 @@ export default function OverviewVersionCard({ version }: { version: AdminVersion
                 <>
                     您正在运行版本 <code className='font-mono'>{version.current}</code>；最新可用版本为{' '}
                     <a
-                        href={`https://github.com/pterodactyl-china/panel/releases/tag/v${version.latest}`}
+                        href={`https://github.com/pterodactyl-china/panel/releases/v${version.latest}`}
                         target='_blank'
                         rel='noreferrer'
                         className='font-mono underline transition-colors hover:text-accent'

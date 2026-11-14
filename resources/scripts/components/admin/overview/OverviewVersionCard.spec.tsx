@@ -30,7 +30,7 @@ describe('OverviewVersionCard', () => {
         expect(screen.getByRole('alert')).toHaveTextContent('面板有可用更新。');
         expect(screen.getByRole('link', { name: '1.12.0' })).toHaveAttribute(
             'href',
-            'https://github.com/pterodactyl-china/panel/releases/tag/v1.12.0'
+            'https://github.com/pterodactyl-china/panel/releases/v1.12.0'
         );
         expect(screen.getByRole('link', { name: 'update guide' })).toHaveAttribute(
             'href',
