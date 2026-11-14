@@ -40,6 +40,6 @@ test('error is returned when server is offline', function () {
     $response = $this->actingAs($user)->postJson("/api/client/servers/{$server->uuid}/command", ['command' => 'say Test']);
     $response->assertStatus(Response::HTTP_BAD_GATEWAY);
     $response->assertJsonPath('errors.0.code', 'HttpException');
-    $response->assertJsonPath('errors.0.detail', 'Server must be online in order to send commands.');
+    $response->assertJsonPath('errors.0.detail', '服务器必须处于在线状态才能发送命令。');
     $fake->assertSent('say Test');
 });

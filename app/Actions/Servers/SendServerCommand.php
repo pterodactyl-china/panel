@@ -19,7 +19,7 @@ final readonly class SendServerCommand implements SendsServerCommands
         try {
             Daemon::server($server)->commands($command);
         } catch (DaemonConnectionException $daemonConnectionException) {
-            throw_if($daemonConnectionException->getStatusCode() === Response::HTTP_BAD_GATEWAY, HttpException::class, Response::HTTP_BAD_GATEWAY, 'Server must be online in order to send commands.', $daemonConnectionException);
+            throw_if($daemonConnectionException->getStatusCode() === Response::HTTP_BAD_GATEWAY, HttpException::class, Response::HTTP_BAD_GATEWAY, '服务器必须处于在线状态才能发送命令。', $daemonConnectionException);
 
             throw $daemonConnectionException;
         }

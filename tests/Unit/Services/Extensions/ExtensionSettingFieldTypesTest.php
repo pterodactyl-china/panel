@@ -53,7 +53,7 @@ test('fields can be grouped into tabs on the settings form', function (): void {
     expect(fn () => ExtensionSettingDefinition::make('a', 'a', '')->tab(str_repeat('a', 65)))->toThrow(InvalidArgumentException::class, '1 到 64 个字符');
 });
 
-test('rich field types 不能设为机密', function (string $field): void {
+test('rich field types cannot be secret', function (string $field): void {
     $default = in_array($field, ['multiselect', 'list'], true) ? [] : ($field === 'textarea' ? '' : null);
     $options = [['value' => 'a', 'label' => 'A']];
     expect(fn () => ExtensionSettingDefinition::make('x', 'x', $default)->field($field, $options)->secret())->toThrow(InvalidArgumentException::class, '不能设为机密');

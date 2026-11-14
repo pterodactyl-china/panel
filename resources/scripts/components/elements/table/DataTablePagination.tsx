@@ -26,7 +26,13 @@ const PageButton = ({ label, children, ...props }: React.ComponentProps<typeof B
     </Button.Text>
 );
 
-export default function DataTablePagination<TData extends RowData>({ table, total, count, className }: Props<TData>) {
+export default function DataTablePagination<TData extends RowData>({
+    table,
+    total,
+    count,
+    itemLabel = '条目',
+    className,
+}: Props<TData>) {
     const { pageIndex, pageSize } = table.getState().pagination;
     const pageCount = table.getPageCount();
     const start = total === 0 ? 0 : pageIndex * pageSize + 1;
@@ -39,10 +45,13 @@ export default function DataTablePagination<TData extends RowData>({ table, tota
 
     return (
         <div className={cn('mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between', className)}>
-            <p aria-label={`显示第 ${start} 至 ${end} 条，共 ${total} 条`} className='text-xs text-muted-foreground'>
+            <p
+                aria-label={`显示第 ${start} 至 ${end} 项，共 ${total} 个${itemLabel}`}
+                className='text-xs text-muted-foreground'
+            >
                 显示 <span className='font-medium text-foreground'>{start}</span>–
                 <span className='font-medium text-foreground'>{end}</span>，共{' '}
-                <span className='font-medium text-foreground'>{total}</span> 条
+                <span className='font-medium text-foreground'>{total}</span> 个{itemLabel}
             </p>
             {showPager ? (
                 <div className='flex items-center gap-1'>

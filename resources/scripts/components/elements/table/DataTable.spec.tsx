@@ -26,7 +26,7 @@ const rows: TestRow[] = [
 
 const noRows: TestRow[] = [];
 
-const columns = [{ accessorKey: 'name', header: 'Name' }] satisfies ColumnDef<TestRow>[];
+const columns = [{ accessorKey: 'name', header: '名称' }] satisfies ColumnDef<TestRow>[];
 
 const TestTable = ({ total = 3 }: { total?: number }) => {
     const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 2 });
@@ -43,15 +43,15 @@ const TestTable = ({ total = 3 }: { total?: number }) => {
 
     return (
         <>
-            <DataTable table={table} emptyState='No rows' />
-            <DataTablePagination table={table} total={total} count={2} itemLabel='servers' />
+            <DataTable table={table} emptyState='没有数据' />
+            <DataTablePagination table={table} total={total} count={2} itemLabel='服务器' />
         </>
     );
 };
 
 const mergedColumns = [
-    { accessorKey: 'name', header: 'Name' },
-    { id: 'size', header: 'Size', cell: () => null, meta: { sortColumnIds: ['id'] } },
+    { accessorKey: 'name', header: '名称' },
+    { id: 'size', header: '大小', cell: () => null, meta: { sortColumnIds: ['id'] } },
     { accessorKey: 'id', header: 'ID', enableSorting: true },
 ] satisfies ColumnDef<TestRow>[];
 
@@ -64,7 +64,7 @@ const MergedSortTable = ({ sorting }: { sorting: SortingState }) => {
         state: { sorting, columnVisibility: { id: false } },
     });
 
-    return <DataTable table={table} emptyState='No rows' />;
+    return <DataTable table={table} emptyState='没有数据' />;
 };
 
 afterEach(cleanup);
@@ -73,7 +73,7 @@ describe('DataTable', () => {
     it('renders semantic headers and rows through the TanStack row model', () => {
         render(<TestTable />);
 
-        expect(screen.getByRole('columnheader', { name: 'Name' })).toBeInTheDocument();
+        expect(screen.getByRole('columnheader', { name: '名称' })).toBeInTheDocument();
         expect(screen.getByRole('cell', { name: 'Alpha' })).toBeInTheDocument();
         expect(screen.getByRole('cell', { name: 'Bravo' })).toBeInTheDocument();
     });
@@ -86,13 +86,13 @@ describe('DataTable', () => {
         await user.click(screen.getByRole('button', { name: '下一页' }));
 
         expect(screen.getByLabelText('第 2 页，共 2 页')).toBeInTheDocument();
-        expect(screen.getByLabelText('显示第 3 至 3 条，共 3 条')).toBeInTheDocument();
+        expect(screen.getByLabelText('显示第 3 至 3 项，共 3 个服务器')).toBeInTheDocument();
     });
 
     it('only shows the range summary when every row fits on one page', () => {
         render(<TestTable total={2} />);
 
-        expect(screen.getByLabelText('显示第 1 至 2 条，共 2 条')).toBeInTheDocument();
+        expect(screen.getByLabelText('显示第 1 至 2 项，共 2 个服务器')).toBeInTheDocument();
         expect(screen.queryByLabelText('第 1 页，共 1 页')).not.toBeInTheDocument();
         expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });
@@ -104,7 +104,7 @@ describe('DataTable', () => {
             return (
                 <>
                     <DataTable table={table} isFetching={isFetching} emptyState={<p>暂无服务器</p>} />
-                    <DataTablePagination table={table} total={0} count={0} itemLabel='servers' />
+                    <DataTablePagination table={table} total={0} count={0} itemLabel='服务器' />
                 </>
             );
         };
@@ -114,7 +114,7 @@ describe('DataTable', () => {
         expect(screen.getByText('暂无服务器')).toBeInTheDocument();
         expect(screen.queryByRole('table')).not.toBeInTheDocument();
         expect(screen.queryByRole('columnheader')).not.toBeInTheDocument();
-        expect(screen.queryByLabelText(/^Showing/)).not.toBeInTheDocument();
+        expect(screen.queryByLabelText(/^显示第/)).not.toBeInTheDocument();
         expect(container.firstElementChild).toHaveAttribute('aria-busy', 'false');
 
         rerender(<EmptyTable isFetching />);
@@ -126,12 +126,12 @@ describe('DataTable', () => {
         const StringTable = () => {
             const table = useReactTable({ data: noRows, columns, getCoreRowModel: getCoreRowModel() });
 
-            return <DataTable table={table} emptyState='No rows' />;
+            return <DataTable table={table} emptyState='没有数据' />;
         };
 
         render(<StringTable />);
 
-        const description = screen.getByText('No rows');
+        const description = screen.getByText('没有数据');
 
         expect(description).toHaveAttribute('data-ui', 'empty');
         expect(description).toHaveAttribute('data-part', 'description');
@@ -141,11 +141,11 @@ describe('DataTable', () => {
     it('reports the sort state of hidden sort columns on the header that controls them', () => {
         const { rerender } = render(<MergedSortTable sorting={[{ id: 'id', desc: true }]} />);
 
-        expect(screen.getByRole('columnheader', { name: 'Size' })).toHaveAttribute('aria-sort', 'descending');
+        expect(screen.getByRole('columnheader', { name: '大小' })).toHaveAttribute('aria-sort', 'descending');
         expect(screen.queryByRole('columnheader', { name: 'ID' })).not.toBeInTheDocument();
 
         rerender(<MergedSortTable sorting={[]} />);
 
-        expect(screen.getByRole('columnheader', { name: 'Size' })).not.toHaveAttribute('aria-sort');
+        expect(screen.getByRole('columnheader', { name: '大小' })).not.toHaveAttribute('aria-sort');
     });
 });
