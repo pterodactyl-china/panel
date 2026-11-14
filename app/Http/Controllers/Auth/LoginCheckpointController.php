@@ -30,7 +30,7 @@ use UnexpectedValueException;
 #[Group('Authentication', 'Browser session authentication endpoints used by the panel frontend.', authenticated: false)]
 class LoginCheckpointController extends AbstractLoginController
 {
-    private const string TOKEN_EXPIRED_MESSAGE = 'The authentication token provided has expired, please refresh the page and try again.';
+    private const string TOKEN_EXPIRED_MESSAGE = '提供的动态口令已过期，请刷新页面后重试。';
 
     private const array LOGIN_COMPLETE_EXAMPLE = [
         'data' => [
@@ -136,7 +136,7 @@ class LoginCheckpointController extends AbstractLoginController
             }
         }
 
-        $this->sendFailedLoginResponse($request, $user, ! empty($recoveryToken) ? 'The recovery token provided is not valid.' : null);
+        $this->sendFailedLoginResponse($request, $user, ! empty($recoveryToken) ? '提供的恢复码无效。' : null);
     }
 
     /**

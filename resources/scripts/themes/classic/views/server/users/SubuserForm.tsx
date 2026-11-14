@@ -174,7 +174,7 @@ function FormContent({
                     enabled: model.canEdit && !submitting && !model.saving,
                 };
                 const title = model.subuser
-                    ? `${model.canEdit ? 'Modify' : 'View'} permissions for ${model.subuser.email}`
+                    ? `${model.canEdit ? '修改' : '查看'} ${model.subuser.email} 的权限`
                     : '创建新子用户';
 
                 return (

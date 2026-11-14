@@ -145,7 +145,7 @@ test('invalid archive roots leave no extracted files', function (bool $ambiguous
 
     $zip->close();
 
-    expect(fn () => $this->app->make(ExtensionPackageLocator::class)->locate($path))->toThrow(InvalidExtensionException::class, 'Could not locate a single');
+    expect(fn () => $this->app->make(ExtensionPackageLocator::class)->locate($path))->toThrow(InvalidExtensionException::class, '中找到唯一的');
 
     expect(glob(storage_path('app/extensions-tmp/*')))->toBeEmpty();
 })->with([false, true]);
@@ -162,7 +162,7 @@ test('archives with too many entries are rejected before extraction', function (
 
     $zip->close();
 
-    expect(fn () => $this->app->make(ExtensionPackageLocator::class)->locate($path))->toThrow(InvalidExtensionException::class, 'more than the allowed '.ExtensionPackageLocator::MAX_ARCHIVE_ENTRIES);
+    expect(fn () => $this->app->make(ExtensionPackageLocator::class)->locate($path))->toThrow(InvalidExtensionException::class, '超过允许的 '.ExtensionPackageLocator::MAX_ARCHIVE_ENTRIES.' 个');
 
     expect(glob(storage_path('app/extensions-tmp/*')))->toBeEmpty();
 });
@@ -182,7 +182,7 @@ test('archives that expand beyond the size limit are rejected before extraction'
     unlink($sparse);
 
     expect(filesize($path))->toBeLessThan(ExtensionPackageLocator::MAX_ARCHIVE_UNCOMPRESSED_BYTES / 100);
-    expect(fn () => $this->app->make(ExtensionPackageLocator::class)->locate($path))->toThrow(InvalidExtensionException::class, 'expands to more than the allowed');
+    expect(fn () => $this->app->make(ExtensionPackageLocator::class)->locate($path))->toThrow(InvalidExtensionException::class, '解压后超过允许的');
 
     expect(glob(storage_path('app/extensions-tmp/*')))->toBeEmpty();
 });
@@ -439,13 +439,13 @@ test('migration failure leaves a new extension inactive and restores an enabled 
     File::ensureDirectoryExists($source.'/database/migrations');
     Artisan::shouldReceive('call')->with('migrate', Mockery::type('array'))->twice()->andReturn(1);
 
-    expect(fn () => $installer->install($source, replace: true))->toThrow(InvalidExtensionException::class, 'migrations failed');
+    expect(fn () => $installer->install($source, replace: true))->toThrow(InvalidExtensionException::class, '的数据库迁移失败');
     $this->assertDatabaseHas('extensions', ['identifier' => 'eventful', 'version' => '1.0.0', 'enabled' => true]);
     expect((new ExtensionManifestValidator)->fromDirectory($this->installDirectory.'/eventful')->version)->toBe('1.0.0');
     Extension::query()->where('identifier', 'eventful')->delete();
     File::deleteDirectory($this->installDirectory.'/eventful');
     $this->app->make(ExtensionRepository::class)->flushDiscovery();
-    expect(fn () => $installer->install($source, enable: true))->toThrow(InvalidExtensionException::class, 'migrations failed');
+    expect(fn () => $installer->install($source, enable: true))->toThrow(InvalidExtensionException::class, '的数据库迁移失败');
     $this->assertDatabaseMissing('extensions', ['identifier' => 'eventful']);
     expect($this->installDirectory.'/eventful')->not->toBeDirectory();
 });
@@ -457,7 +457,7 @@ test('enabling refuses a migration Laravel would treat as already run', function
     File::put($source.'/database/migrations/'.$core, '<?php');
     Artisan::shouldReceive('call')->never();
 
-    expect(fn () => $this->app->make(InstallsExtensions::class)->install($source, enable: true))->toThrow(InvalidExtensionException::class, 'the panel has a migration with the same name');
+    expect(fn () => $this->app->make(InstallsExtensions::class)->install($source, enable: true))->toThrow(InvalidExtensionException::class, 'the panel 存在同名迁移');
     $this->assertDatabaseMissing('extensions', ['identifier' => 'eventful']);
 });
 
@@ -691,7 +691,7 @@ test('archives are limited by the bytes they really expand to, not the sizes the
     expect($zip->statIndex(1)['size'])->toBe(1);
     $zip->close();
 
-    expect(fn () => $this->app->make(ExtensionPackageLocator::class)->locate($path))->toThrow(InvalidExtensionException::class, 'expands to more than the allowed');
+    expect(fn () => $this->app->make(ExtensionPackageLocator::class)->locate($path))->toThrow(InvalidExtensionException::class, '解压后超过允许的');
 
     expect(glob(storage_path('app/extensions-tmp/*')))->toBeEmpty();
 });
@@ -705,7 +705,7 @@ test('archive entries that would land outside the package are refused', function
     $zip->addFromString($name, 'escaped');
     $zip->close();
 
-    expect(fn () => $this->app->make(ExtensionPackageLocator::class)->locate($path))->toThrow(InvalidExtensionException::class, 'contains an entry outside the package');
+    expect(fn () => $this->app->make(ExtensionPackageLocator::class)->locate($path))->toThrow(InvalidExtensionException::class, '包含超出安装包范围的文件');
 
     expect(glob(storage_path('app/extensions-tmp/*')))->toBeEmpty();
     expect(storage_path('app/escaped.txt'))->not->toBeFile();

@@ -366,7 +366,7 @@ const permissionCatalogue: readonly (readonly [string, string, Readonly<Record<s
         {
             create: '允许用户为此服务器创建新备份。',
             read: '允许用户查看此服务器的所有备份。',
-            delete: 'Allows a user to remove backups from the system.',
+            delete: '允许用户从服务器删除备份。',
         },
     ],
 ];

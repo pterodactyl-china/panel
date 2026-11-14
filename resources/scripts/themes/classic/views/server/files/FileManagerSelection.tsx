@@ -44,8 +44,8 @@ function MassActions({ model, className }: { model: FileManagerModel; className?
                             >
                                 <p className='mb-2'>
                                     确定要删除&nbsp;
-                                    <span className='font-semibold text-foreground'>{selection.length} files</span>?
-                                    This is a permanent action and the files cannot be recovered.
+                                    <span className='font-semibold text-foreground'>{selection.length} 个文件</span>？
+                                    此操作不可撤销，删除后将无法恢复。
                                 </p>
                                 <ul className='mt-2 mb-0 pl-6 list-disc list-outside'>
                                     {selection.slice(0, 15).map((file) => (

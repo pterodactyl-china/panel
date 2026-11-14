@@ -133,7 +133,7 @@ function open(permissions?: string[], directory = '/config') {
 
 const state = () => JSON.parse(screen.getByRole('status').textContent ?? '{}');
 const deletes = () => requests.filter((request) => request.path.endsWith('/files/delete'));
-const checkboxOf = (name: string) => screen.findByRole('checkbox', { name: `Select ${name}` });
+const checkboxOf = (name: string) => screen.findByRole('checkbox', { name: `选择 ${name}` });
 
 it('gives a replacement the listing and runs selection, navigation and deletion through core', async () => {
     override('server.files.manager', Custom);

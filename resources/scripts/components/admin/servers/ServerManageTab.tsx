@@ -105,7 +105,7 @@ function ServerManageContent({ server }: Props) {
                 action={
                     <Dialog.ConfirmTrigger
                         title='重装服务器'
-                        confirm='Reinstall'
+                        confirm='重装'
                         pending={reinstallServer.isPending}
                         trigger={({ onClick }) => (
                             <ActionTrigger reason={reinstallBlockedReason}>
@@ -134,7 +134,7 @@ function ServerManageContent({ server }: Props) {
                 action={
                     <Dialog.ConfirmTrigger
                         title='切换安装状态'
-                        confirm='Toggle'
+                        confirm='切换'
                         pending={toggleInstallState.isPending}
                         trigger={({ onClick }) => (
                             <Button className={actionButtonClass} disabled={loading} onClick={onClick}>

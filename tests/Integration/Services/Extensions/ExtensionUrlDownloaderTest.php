@@ -72,11 +72,11 @@ test('a valid token is refused when disabled', function (): void {
 
 test('a token signed with another key is refused', function (): void {
     $this->downloader->verifiedUrl(signed(sodium_crypto_sign_keypair(), $this->base, ['url' => $this->base]));
-})->throws(InvalidExtensionException::class, 'not a signed install URL');
+})->throws(InvalidExtensionException::class, '这不是已签名的安装链接');
 
 test('a source that carries no token is refused', function (): void {
     $this->downloader->verifiedUrl($this->other.'extension.pteroext');
-})->throws(InvalidExtensionException::class, 'not a signed install URL');
+})->throws(InvalidExtensionException::class, '这不是已签名的安装链接');
 
 test('a tampered token is refused', function (): void {
     $source = signed($this->keypair, $this->base, ['url' => $this->base]);
@@ -86,15 +86,15 @@ test('a tampered token is refused', function (): void {
     $claims = mb_rtrim(strtr(base64_encode((string) json_encode($forged)), '+/', '-_'), '=');
 
     $this->downloader->verifiedUrl($this->base."{$header}.{$claims}.{$signature}");
-})->throws(InvalidExtensionException::class, 'not a signed install URL');
+})->throws(InvalidExtensionException::class, '这不是已签名的安装链接');
 
 test('an expired token is refused', function (): void {
     $this->downloader->verifiedUrl(signed($this->keypair, $this->base, ['url' => $this->base, 'exp' => CarbonImmutable::now()->subSecond()]));
-})->throws(InvalidExtensionException::class, 'expired');
+})->throws(InvalidExtensionException::class, '已过期');
 
 test('a token without an expiry is refused', function (): void {
     $this->downloader->verifiedUrl(signed($this->keypair, $this->base, ['url' => $this->base, 'exp' => null]));
-})->throws(InvalidExtensionException::class, 'expired');
+})->throws(InvalidExtensionException::class, '已过期');
 
 test('a signed token for another purpose is refused', function (): void {
     $this->downloader->verifiedUrl(signed($this->keypair, $this->base, ['url' => $this->base, 'aud' => 'something-else']));

@@ -171,7 +171,7 @@ describe('themes page', () => {
         const card = (await screen.findByRole('heading', { name: 'Aurora' })).closest('article')!;
 
         await user.click(within(card).getByRole('button', { name: '设置' }));
-        const dialog = await screen.findByRole('dialog', { name: 'Aurora settings' });
+        const dialog = await screen.findByRole('dialog', { name: 'Aurora 设置' });
         const accent = await within(dialog).findByLabelText('Accent');
 
         await user.clear(accent);
@@ -224,7 +224,7 @@ describe('themes page', () => {
         const card = (await screen.findByRole('heading', { name: 'Aurora' })).closest('article')!;
 
         await user.click(within(card).getByRole('button', { name: '设置' }));
-        const dialog = await screen.findByRole('dialog', { name: 'Aurora settings' });
+        const dialog = await screen.findByRole('dialog', { name: 'Aurora 设置' });
 
         expect(await within(dialog).findByText('区块')).toBeInTheDocument();
         expect(within(dialog).getByText('Compact spacing')).toBeInTheDocument();

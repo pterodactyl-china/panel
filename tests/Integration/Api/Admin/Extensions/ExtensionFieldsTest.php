@@ -542,7 +542,7 @@ test('an extension that throws while its values are validated refuses the save a
     $this->putJson(route('api.admin.users.update', ['user' => $user->id]), userPayload($user, ['username' => 'renamed', 'extensions' => ['broken' => ['token' => '********']]]))
         ->assertUnprocessable()
         ->assertJsonPath('errors.0.meta.source_field', 'extensions.broken')
-        ->assertJsonPath('errors.0.detail', 'The broken fields could not be read, so they were not saved.');
+        ->assertJsonPath('errors.0.detail', 'broken 的字段无法读取，因此未保存。');
 
     expect($user->refresh()->username)->not->toBe('renamed');
     expect(Extension::query()->where('identifier', 'broken')->value('error'))->toBe('Validating its User fields failed with RuntimeException; the log has the details.');

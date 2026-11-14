@@ -49,7 +49,7 @@ final readonly class RemoveExtension implements RemovesExtensions
     private function removePackage(string $identifier): void
     {
         $manifest = $this->extensions->discovered()->get($identifier);
-        throw_if($manifest === null, InvalidExtensionException::class, "Extension \"{$identifier}\" is not installed.");
+        throw_if($manifest === null, InvalidExtensionException::class, "扩展 \"{$identifier}\" 未安装。");
         $this->themes->assertNotActive($identifier);
         $this->compatibility->assertCanDisable($identifier, $this->extensions->enabled());
         Event::dispatch(new ExtensionRemoving($manifest));

@@ -243,7 +243,7 @@ export default function EggCatalogContainer() {
 
             <Dialog
                 open={selected !== null}
-                title={selected ? `Import ${selected.name}` : '导入预设'}
+                title={selected ? `导入 ${selected.name}` : '导入预设'}
                 description='将此预设的配置、变量与安装脚本添加到面板。'
                 preventExternalClose={importEgg.isPending}
                 hideCloseIcon={importEgg.isPending}

@@ -90,7 +90,7 @@ test('rejects non official catalog downloads with 502', function (string $url): 
 
     $this->postJson(route('api.admin.eggs.catalog.import'), ['catalog_id' => 'games-paper'])
         ->assertStatus(502)
-        ->assertJsonPath('errors.0.detail', 'The catalog egg does not have an official Pterodactyl download URL.');
+        ->assertJsonPath('errors.0.detail', '该预设没有官方 Pterodactyl 下载地址。');
 
     Http::assertSentCount(1);
 })->with([
@@ -116,7 +116,7 @@ test('reports a catalog connection failure with 502 and permits retry', function
     Http::fake([EggCatalogService::INDEX_URL => Http::sequence()->pushFailedConnection()->push([catalogEntry()])]);
 
     $this->getJson(route('api.admin.eggs.catalog'))->assertStatus(502)
-        ->assertJsonPath('errors.0.detail', 'Could not reach the Pterodactyl egg catalog. Please try again.');
+        ->assertJsonPath('errors.0.detail', '无法连接 Pterodactyl 预设目录，请重试。');
 
     $this->getJson(route('api.admin.eggs.catalog'))->assertOk()->assertJsonCount(1, 'data');
     Http::assertSentCount(2);
@@ -152,7 +152,7 @@ test('does not create an egg from an invalid remote definition', function (): vo
     ]);
 
     $this->postJson(route('api.admin.eggs.catalog.import'), ['catalog_id' => 'games-paper'])->assertStatus(502)
-        ->assertJsonPath('errors.0.detail', 'The selected catalog egg contains an invalid definition.');
+        ->assertJsonPath('errors.0.detail', '所选预设的定义无效。');
 
     expect(Egg::query()->count())->toBe($before);
     Http::assertSentCount(2);

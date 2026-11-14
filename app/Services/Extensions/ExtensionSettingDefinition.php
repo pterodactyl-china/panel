@@ -185,7 +185,7 @@ class ExtensionSettingDefinition
     public function multiselect(array $options): self
     {
         throw_unless(ExtensionSettingValueGuard::strings($this->default) !== null, InvalidArgumentException::class, '多选设置的默认值必须是列表。');
-        throw_if($options === [] || array_any($options, fn (array $option): bool => $option['value'] === true || $option['value'] === false), InvalidArgumentException::class, 'A multiselect setting needs string or integer choices.');
+        throw_if($options === [] || array_any($options, fn (array $option): bool => $option['value'] === true || $option['value'] === false), InvalidArgumentException::class, '多选设置需要字符串或整数选项。');
 
         return $this->useField('multiselect', $options);
     }
@@ -418,9 +418,9 @@ class ExtensionSettingDefinition
     private function scalarField(string $field, array $options): self
     {
         throw_unless(ExtensionSettingValueGuard::fitsField($field, $this->default, array_column($options, 'value')), InvalidArgumentException::class, match ($field) {
-            'number' => 'A number setting defaults to a number or null.',
-            'toggle' => 'A toggle setting defaults to true, false or null.',
-            default => 'A select setting defaults to one of its options or null.',
+            'number' => '数值设置的默认值必须是数字或 null。',
+            'toggle' => '开关设置的默认值必须是 true、false 或 null。',
+            default => '下拉设置的默认值必须是某个选项或 null。',
         });
 
         return $this->useField($field, $options);

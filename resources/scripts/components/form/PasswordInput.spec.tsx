@@ -20,17 +20,17 @@ it('fills, reveals and offers to copy a generated password', () => {
     const input = screen.getByLabelText<HTMLInputElement>('Password');
 
     expect(input.type).toBe('password');
-    expect(screen.queryByLabelText('Copy password')).toBeNull();
+    expect(screen.queryByLabelText('复制密码')).toBeNull();
 
-    fireEvent.click(screen.getByLabelText('Generate secure password'));
+    fireEvent.click(screen.getByLabelText('生成安全密码'));
 
     expect(input.value).toHaveLength(17);
     expect(input.type).toBe('text');
     expect(onGenerate).toHaveBeenCalledWith(input.value);
-    expect(screen.getByLabelText('Copy password')).not.toBeNull();
+    expect(screen.getByLabelText('复制密码')).not.toBeNull();
 
     fireEvent.change(input, { target: { value: 'typed' } });
 
     expect(input.value).toBe('typed');
-    expect(screen.queryByLabelText('Copy password')).toBeNull();
+    expect(screen.queryByLabelText('复制密码')).toBeNull();
 });

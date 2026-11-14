@@ -62,7 +62,7 @@ defineView('dashboard.serverCard', {
     context: 'app',
     placeholder: createElement('div', {
         className: 'h-12 animate-pulse rounded-sm bg-muted',
-        'aria-label': 'Loading server card',
+        'aria-label': '正在加载服务器卡片',
     }),
     ...dashboard,
 });
@@ -138,7 +138,7 @@ defineView('server.files.details', {
     context: 'server',
     placeholder: createElement('div', {
         className: 'h-5 w-full animate-pulse rounded-sm bg-muted',
-        'aria-label': 'Loading file details',
+        'aria-label': '正在加载文件详情',
     }),
     ...files,
 });

@@ -21,30 +21,25 @@ export default function LogoSettingsCard({ settings }: { settings: AdminSettings
     };
 
     return (
-        <TitledGreyBox title='Logo' className='mt-6'>
+        <TitledGreyBox title='Logo 图片' className='mt-6'>
             <div className='flex flex-col gap-4'>
                 <div className='flex items-start gap-4'>
                     <div className='flex h-20 w-20 shrink-0 items-center justify-center rounded-sm border border-border bg-background p-2'>
                         {preview ? (
-                            <img src={preview} alt='Panel logo' className='h-full w-full object-contain' />
+                            <img src={preview} alt='面板 Logo' className='h-full w-full object-contain' />
                         ) : (
-                            <img
-                                src='/favicons/favicon.svg'
-                                alt='Default logo'
-                                className='h-full w-full object-contain'
-                            />
+                            <img src='/favicons/favicon.svg' alt='默认 Logo' className='h-full w-full object-contain' />
                         )}
                     </div>
                     <p className='m-0 text-sm text-muted-foreground'>
-                        Shown as the favicon, on the login page and in place of the company name in the navigation bar.
-                        A theme with a logo of its own shows that instead. PNG, JPEG, SVG, WebP, AVIF, and ICO files are
-                        supported.
+                        此 Logo 会作为网站图标，同时显示在登录页，并在导航栏中替代公司名称。若主题自带
+                        Logo，则显示主题的 Logo。支持 PNG、JPEG、SVG、WebP、AVIF 和 ICO 格式。
                     </p>
                 </div>
                 <input
                     ref={input}
                     type='file'
-                    aria-label='Logo file'
+                    aria-label='Logo 图片文件'
                     accept={imageUploadAccept}
                     className='hidden'
                     onChange={(event) => setSelected(event.target.files?.[0] ?? null)}
@@ -56,7 +51,7 @@ export default function LogoSettingsCard({ settings }: { settings: AdminSettings
                         isLoading={upload.isPending}
                         onClick={() => (selected ? save() : input.current?.click())}
                     >
-                        {selected ? 'Save Logo' : 'Upload Logo'}
+                        {selected ? '保存 Logo' : '上传 Logo'}
                     </Button>
                     <Button.Danger
                         type='button'
@@ -64,7 +59,7 @@ export default function LogoSettingsCard({ settings }: { settings: AdminSettings
                         isLoading={remove.isPending}
                         onClick={() => remove.mutate({})}
                     >
-                        Remove Logo
+                        移除 Logo
                     </Button.Danger>
                 </div>
             </div>

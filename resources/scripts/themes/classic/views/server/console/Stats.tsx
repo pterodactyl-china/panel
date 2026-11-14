@@ -12,7 +12,7 @@ function uptimeTone(state: ServerRunState | null): UiTone {
     return state === 'offline' ? 'danger' : 'warning';
 }
 
-/** "1d 2h 3m", or "2h 3m 4s" under a day. */
+/** "1天 2小时 3分钟"，不足一天时显示 "2小时 3分钟 4秒"。 */
 function UptimeDuration({ seconds }: { seconds: number }) {
     const days = Math.floor(seconds / (24 * 60 * 60));
     const hours = Math.floor((Math.floor(seconds) / 60 / 60) % 24);
@@ -22,17 +22,24 @@ function UptimeDuration({ seconds }: { seconds: number }) {
     if (days > 0) {
         return (
             <>
-                {days}d {hours}h {minutes}m
+                {days} 天 {hours} 小时 {minutes} 分钟
             </>
         );
     }
 
     return (
         <>
-            {hours}h {minutes}m {remainder % 60}s
+            {hours} 小时 {minutes} 分钟 {remainder % 60} 秒
         </>
     );
 }
+
+const runStates = {
+    offline: '离线',
+    starting: '启动中',
+    running: '运行中',
+    stopping: '停止中',
+} satisfies Record<ServerRunState, string>;
 
 function Uptime({ state, uptime }: { state: ServerRunState | null; uptime: number }) {
     if (state === null) {
@@ -43,7 +50,8 @@ function Uptime({ state, uptime }: { state: ServerRunState | null; uptime: numbe
         return <UptimeDuration seconds={uptime / 1000} />;
     }
 
-    return state.charAt(0).toUpperCase() + state.slice(1);
+    // 未知状态（上游新增）时退回原始值，避免界面空白。
+    return runStates[state] ?? state;
 }
 
 const limitText = (limit: string | null) => <>/ {limit || <>&infin;</>}</>;
@@ -54,7 +62,7 @@ const tone = (metric: ServerStatMetric): UiTone => metric.alarm ?? 'neutral';
 
 export default function Stats({ model, className }: ViewProps<'server.stats'>) {
     const offline = model.state === 'offline';
-    const address = model.address ?? 'n/a';
+    const address = model.address ?? '暂无';
     const { cpu, memory, disk } = model;
 
     return (
@@ -72,7 +80,7 @@ export default function Stats({ model, className }: ViewProps<'server.stats'>) {
             <Stat
                 icon={Cpu}
                 label='CPU 负载'
-                value={offline ? 'Offline' : `${cpu.value.toFixed(2)}%`}
+                value={offline ? '离线' : `${cpu.value.toFixed(2)}%`}
                 limit={offline ? undefined : limitText(cpu.limit ? `${cpu.limit}%` : null)}
                 tone={tone(cpu)}
                 unavailable={offline}
@@ -81,7 +89,7 @@ export default function Stats({ model, className }: ViewProps<'server.stats'>) {
             <Stat
                 icon={MemoryStick}
                 label='内存'
-                value={offline ? 'Offline' : bytesToString(memory.value)}
+                value={offline ? '离线' : bytesToString(memory.value)}
                 limit={offline ? undefined : limitText(bytesLimit(memory.limit))}
                 tone={tone(memory)}
                 unavailable={offline}
@@ -98,14 +106,14 @@ export default function Stats({ model, className }: ViewProps<'server.stats'>) {
             <Stat
                 icon={CloudDownload}
                 label='网络（入站）'
-                value={offline ? 'Offline' : bytesToString(model.network.rx)}
+                value={offline ? '离线' : bytesToString(model.network.rx)}
                 unavailable={offline}
                 className={tile}
             />
             <Stat
                 icon={CloudUpload}
                 label='网络（出站）'
-                value={offline ? 'Offline' : bytesToString(model.network.tx)}
+                value={offline ? '离线' : bytesToString(model.network.tx)}
                 unavailable={offline}
                 className={tile}
             />

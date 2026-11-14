@@ -86,7 +86,7 @@ test('lists the built-in theme and every installed theme', function (): void {
     expect(array_keys($themes))->toBe(['classic', 'aurora', 'nebula']);
     expect($themes['classic'])->toMatchArray(['builtin' => true, 'active' => true, 'enabled' => true, 'extends' => null, 'problem' => null, 'settings_count' => 0]);
     expect($themes['aurora'])->toMatchArray(['builtin' => false, 'active' => false, 'extends' => 'classic', 'settings_count' => 6, 'problem' => null]);
-    expect($themes['nebula'])->toMatchArray(['enabled' => false, 'problem' => 'Theme "nebula" is not enabled or failed to load.']);
+    expect($themes['nebula'])->toMatchArray(['enabled' => false, 'problem' => '主题 "nebula" 未启用或加载失败。']);
 });
 
 test('activates a usable theme, and classic to reset', function (): void {
@@ -97,7 +97,7 @@ test('activates a usable theme, and classic to reset', function (): void {
     $this->assertDatabaseHas('activity_logs', ['event' => 'admin:theme.activate']);
 
     $this->postJson(route('api.admin.themes.activate', ['theme' => 'nebula']))->assertUnprocessable()
-        ->assertJsonPath('errors.0.detail', 'Theme "nebula" is not enabled or failed to load.');
+        ->assertJsonPath('errors.0.detail', '主题 "nebula" 未启用或加载失败。');
     $this->postJson(route('api.admin.themes.activate', ['theme' => 'missing']))->assertNotFound();
     expect(Setting::fetch(ThemeRepository::SETTING))->toBe('aurora');
 

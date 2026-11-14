@@ -83,7 +83,7 @@ final readonly class CreateAllocations implements CreatesAllocations
         } catch (Exception $exception) {
             report($exception);
 
-            throw new DisplayException("Could not parse provided allocation IP address ({$underlying}): {$exception->getMessage()}", $exception);
+            throw new DisplayException("无法解析提供的分配 IP 地址（{$underlying}）：{$exception->getMessage()}", $exception);
         }
 
         DB::transaction(function () use ($node, $ports, $alias, $parsed): void {

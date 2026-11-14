@@ -65,7 +65,7 @@ async function renderDatabases(databases: ServerDatabase[], options: { limit?: n
 it('lists the databases with their usage and creates another', async () => {
     await renderDatabases([database('survival', 'survival')]);
 
-    expect(screen.getByText('1 of 2 databases have been allocated to this server.')).toBeVisible();
+    expect(screen.getByText('已为此服务器分配 1 / 2 个数据库。')).toBeVisible();
     fireEvent.click(screen.getByRole('button', { name: '新建数据库' }));
     const dialog = await screen.findByRole('dialog');
 
@@ -114,7 +114,7 @@ it('deletes a database once its name is typed', async () => {
 it('hides what the user may not do', async () => {
     await renderDatabases([database('survival', 'survival')], { permissions: ['database.read'] });
 
-    expect(screen.queryByText(/databases have been allocated/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/已为此服务器分配/)).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: '删除 s1_survival' })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: '查看 s1_survival 的连接详情' }));
 

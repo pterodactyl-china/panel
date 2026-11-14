@@ -21,9 +21,9 @@ test('package operations exclude competing writers and nested activation retains
     try {
         $first->acquire('first');
         $first->acquire('nested');
-        expect(fn () => $second->acquire('second'))->toThrow(InvalidExtensionException::class, 'Another operation');
+        expect(fn () => $second->acquire('second'))->toThrow(InvalidExtensionException::class, '另一项操作正在更新扩展');
         $first->release();
-        expect(fn () => $second->acquire('second'))->toThrow(InvalidExtensionException::class, 'Another operation');
+        expect(fn () => $second->acquire('second'))->toThrow(InvalidExtensionException::class, '另一项操作正在更新扩展');
         $first->release();
         $second->acquire('second');
         $second->release();

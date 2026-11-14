@@ -29,7 +29,7 @@ export default function FileNameModal({ directory, onFileNamed, onClose, ...prop
             <Form form={form}>
                 <form.AppField
                     name='fileName'
-                    validators={{ onChange: ({ value }) => (value.length >= 1 ? undefined : 'Required') }}
+                    validators={{ onChange: ({ value }) => (value.length >= 1 ? undefined : '必填') }}
                 >
                     {(field) => (
                         <field.TextField

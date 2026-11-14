@@ -98,7 +98,7 @@ test('create database host connection failure', function (): void {
     $response = $this->postJson(route('api.admin.database-hosts.store'), ['name' => 'Broken Host', 'host' => '127.0.0.1', 'port' => 3306, 'username' => 'someuser', 'password' => 'somepassword']);
     $response->assertStatus(Response::HTTP_BAD_REQUEST);
     $response->assertJsonPath('errors.0.code', 'DisplayException');
-    $response->assertJsonFragment(['detail' => 'There was an error while trying to connect to the host or while executing a query: "connection refused"']);
+    $response->assertJsonFragment(['detail' => '连接主机或执行查询时出错："connection refused"']);
 });
 test('database host connection failures are logged', function (): void {
     Exceptions::fake();

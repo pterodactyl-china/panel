@@ -89,7 +89,7 @@ const UserIdentityCell = ({ user }: { user: AdminUser }) => {
             <img
                 className='hidden h-9 w-9 shrink-0 rounded-full border border-border bg-background sm:block'
                 src={`${attributes.image}?s=100`}
-                alt={`${attributes.email} avatar`}
+                alt={`${attributes.email} 的头像`}
             />
             <div className='min-w-0'>
                 {attributes.id === undefined ? (

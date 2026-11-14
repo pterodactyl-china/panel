@@ -58,7 +58,7 @@ const failureNotificationId = (extensionId: string, context: string) => `extensi
 function showFailureNotice(notificationId: string, extensionId: string, mounts: Set<FailedMount>) {
     const retryable = [...mounts].some((mount) => mount.retry);
 
-    toast.error(`The "${extensionId}" extension could not display this content.`, {
+    toast.error(`扩展 "${extensionId}" 无法显示此内容。`, {
         id: notificationId,
         duration: Infinity,
         action: retryable
@@ -119,7 +119,7 @@ export function ExtensionFailure({
 
     return (
         <div role='alert'>
-            <p>The "{extensionId}" extension could not display this content.</p>
+            <p>扩展 "{extensionId}" 无法显示此内容。</p>
             {retry && (
                 <Button type='button' onClick={retry}>
                     重试扩展

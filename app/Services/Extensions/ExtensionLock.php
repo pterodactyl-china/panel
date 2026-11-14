@@ -43,10 +43,10 @@ final class ExtensionLock
         $directory = mb_rtrim(config()->string('extensions.directory'), '/\\').DIRECTORY_SEPARATOR.'.locks';
         File::ensureDirectoryExists($directory);
         $lock = fopen($directory.DIRECTORY_SEPARATOR.'packages', 'c');
-        throw_if($lock === false, InvalidExtensionException::class, 'Unable to lock extension package.');
+        throw_if($lock === false, InvalidExtensionException::class, '无法锁定扩展安装包。');
         if (! flock($lock, LOCK_EX | LOCK_NB)) {
             fclose($lock);
-            throw new InvalidExtensionException("Another operation is updating extensions; cannot update \"{$identifier}\" yet.");
+            throw new InvalidExtensionException("另一项操作正在更新扩展，暂时无法更新 \"{$identifier}\"。");
         }
 
         $this->locks['packages'] = $lock;

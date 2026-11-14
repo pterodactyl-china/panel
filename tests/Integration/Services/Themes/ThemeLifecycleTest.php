@@ -83,8 +83,8 @@ test('the active theme cannot be disabled or removed', function (): void {
     app(InstallsExtensions::class)->install(themePackage('aurora'), enable: true);
     app(ActivatesThemes::class)->activate('aurora');
 
-    expect(fn () => app(SetsExtensionEnabled::class)->setEnabled('aurora', false))->toThrow(InvalidExtensionException::class, 'Theme "aurora" is active');
-    expect(fn () => app(RemovesExtensions::class)->remove('aurora'))->toThrow(InvalidExtensionException::class, 'Theme "aurora" is active');
+    expect(fn () => app(SetsExtensionEnabled::class)->setEnabled('aurora', false))->toThrow(InvalidExtensionException::class, '主题 "aurora" 正在使用中');
+    expect(fn () => app(RemovesExtensions::class)->remove('aurora'))->toThrow(InvalidExtensionException::class, '主题 "aurora" 正在使用中');
 
     app(ActivatesThemes::class)->activate('classic');
     app(SetsExtensionEnabled::class)->setEnabled('aurora', false);
@@ -106,7 +106,7 @@ test('a child theme needs its parent enabled, and the chain resolves parent firs
     expect($themes->schemes($themes->chain('child')))->toBe(['light']);
     // Without a declaration anywhere in the chain, a theme offers classic's dark scheme only.
     expect($themes->schemes($themes->chain('base')))->toBe(['dark']);
-    expect(fn () => app(SetsExtensionEnabled::class)->setEnabled('base', false))->toThrow(InvalidExtensionException::class, 'Disable dependent extension "child" before "base".');
+    expect(fn () => app(SetsExtensionEnabled::class)->setEnabled('base', false))->toThrow(InvalidExtensionException::class, '请先禁用依赖它的扩展 "child"，再操作 "base"。');
     expect($themes->activationProblem('base'))->toBeNull();
 });
 
@@ -157,7 +157,7 @@ test('an incompatible active theme is reported and renders as classic', function
     ], JSON_THROW_ON_ERROR));
     app(ExtensionRepository::class)->flushDiscovery();
 
-    expect(app(ThemeRepository::class)->activationProblem('aurora'))->toBe('Theme "aurora" is not enabled or failed to load.');
+    expect(app(ThemeRepository::class)->activationProblem('aurora'))->toBe('主题 "aurora" 未启用或加载失败。');
     $this->assertDatabaseHas('extensions', ['identifier' => 'aurora', 'error_phase' => 'compatibility']);
     $this->get('/auth/login')->assertOk()->assertSee('data-theme="classic"', false);
 });

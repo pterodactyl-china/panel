@@ -54,7 +54,7 @@ final readonly class CreateScheduleTask implements CreatesScheduleTasks
         $task = DB::transaction(function () use ($schedule, $attributes, $requested): Task {
             $schedule = $schedule->newQuery()->whereKey($schedule->getKey())->lockForUpdate()->firstOrFail();
             $limit = config('pterodactyl.client_features.schedules.per_schedule_task_limit');
-            throw_if($schedule->tasks()->count() >= $limit, ServiceLimitExceededException::class, "Schedules may not have more than $limit tasks associated with them. Creating this task would put this schedule over the limit.");
+            throw_if($schedule->tasks()->count() >= $limit, ServiceLimitExceededException::class, "计划任务最多只能包含 $limit 个任务，创建此任务将超出该上限。");
 
             $next = ($schedule->tasks()->orderByDesc('sequence_id')->first()->sequence_id ?? 0) + 1;
             $requested ??= $next;

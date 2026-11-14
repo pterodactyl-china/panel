@@ -18,7 +18,7 @@ final class ExtensionJobProgress
     public function begin(string $extension, User $user, ?Server $server = null, ?string $permission = null): ExtensionJobSnapshot
     {
         throw_unless(preg_match(ExtensionManifest::ID_REGEX, $extension), InvalidArgumentException::class, '无效的扩展标识符。');
-        throw_if($permission !== null && (! $server instanceof Server || ! preg_match('/'.ExtensionPermissionRegistry::PERMISSION_PATTERN.'/D', $permission) || ! str_starts_with($permission, 'ext.'.$extension.'.')), InvalidArgumentException::class, 'Progress permissions must belong to the extension and require a server.');
+        throw_if($permission !== null && (! $server instanceof Server || ! preg_match('/'.ExtensionPermissionRegistry::PERMISSION_PATTERN.'/D', $permission) || ! str_starts_with($permission, 'ext.'.$extension.'.')), InvalidArgumentException::class, '进度权限必须属于该扩展，且需要指定服务器。');
         $snapshot = new ExtensionJobSnapshot(Str::uuid()->toString(), $extension, $user->uuid, $server?->uuid, $permission, 'running', 0, '', 1, now()->toIso8601String());
         $this->store($snapshot);
 
@@ -28,15 +28,15 @@ final class ExtensionJobProgress
     /** @param 'running'|'completed'|'failed' $status */
     public function update(string $extension, string $id, int $percent, string $message = '', string $status = 'running'): ExtensionJobSnapshot
     {
-        throw_if($percent < 0 || $percent > 100 || mb_strlen($message) > 1000, InvalidArgumentException::class, 'Invalid progress update.');
+        throw_if($percent < 0 || $percent > 100 || mb_strlen($message) > 1000, InvalidArgumentException::class, '进度更新无效。');
 
         $lock = Cache::lock($this->key($extension, $id).':lock', 10);
         $lock->block(5);
         try {
             $previous = $this->find($extension, $id);
-            throw_if(! $previous instanceof ExtensionJobSnapshot, InvalidArgumentException::class, 'Progress has expired or does not exist.');
-            throw_if($previous->status !== 'running', InvalidArgumentException::class, 'Completed progress cannot be updated.');
-            throw_if($percent < $previous->percent, InvalidArgumentException::class, 'Progress cannot move backwards.');
+            throw_if(! $previous instanceof ExtensionJobSnapshot, InvalidArgumentException::class, '进度已过期或不存在。');
+            throw_if($previous->status !== 'running', InvalidArgumentException::class, '已完成的进度不能更新。');
+            throw_if($percent < $previous->percent, InvalidArgumentException::class, '进度不能回退。');
             $snapshot = new ExtensionJobSnapshot($id, $extension, $previous->userUuid, $previous->serverUuid, $previous->permission, $status, $status === 'completed' ? 100 : $percent, $message, $previous->sequence + 1, now()->toIso8601String());
             $this->store($snapshot);
 

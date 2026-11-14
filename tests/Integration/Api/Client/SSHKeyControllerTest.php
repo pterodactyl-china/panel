@@ -48,21 +48,21 @@ test('ssh key can be deleted', function (): void {
 test('dsa key is rejected', function (): void {
     $user = User::factory()->create();
     $key = UserSSHKey::factory()->dsa()->make();
-    $this->actingAs($user)->postJson('/api/client/account/ssh-keys', ['name' => 'Name', 'public_key' => $key->public_key])->assertUnprocessable()->assertJsonPath('errors.0.detail', 'DSA keys are not supported.');
+    $this->actingAs($user)->postJson('/api/client/account/ssh-keys', ['name' => 'Name', 'public_key' => $key->public_key])->assertUnprocessable()->assertJsonPath('errors.0.detail', '不支持 DSA 密钥。');
     expect($user->sshKeys()->count())->toEqual(0);
 });
 test('weak rsa key is rejected', function (): void {
     $user = User::factory()->create();
     $key = UserSSHKey::factory()->rsa(true)->make();
-    $this->actingAs($user)->postJson('/api/client/account/ssh-keys', ['name' => 'Name', 'public_key' => $key->public_key])->assertUnprocessable()->assertJsonPath('errors.0.detail', 'RSA keys must be at least 2048 bytes in length.');
+    $this->actingAs($user)->postJson('/api/client/account/ssh-keys', ['name' => 'Name', 'public_key' => $key->public_key])->assertUnprocessable()->assertJsonPath('errors.0.detail', 'RSA 密钥长度至少为 2048 字节。');
     expect($user->sshKeys()->count())->toEqual(0);
 });
 test('invalid or private key is rejected', function (): void {
     $user = User::factory()->create();
-    $this->actingAs($user)->postJson('/api/client/account/ssh-keys', ['name' => 'Name', 'public_key' => 'invalid'])->assertUnprocessable()->assertJsonPath('errors.0.detail', 'The public key provided is not valid.');
+    $this->actingAs($user)->postJson('/api/client/account/ssh-keys', ['name' => 'Name', 'public_key' => 'invalid'])->assertUnprocessable()->assertJsonPath('errors.0.detail', '提供的公钥无效。');
     expect($user->sshKeys()->count())->toEqual(0);
     $key = EC::createKey('Ed25519');
-    $this->actingAs($user)->postJson('/api/client/account/ssh-keys', ['name' => 'Name', 'public_key' => $key->toString('PKCS8')])->assertUnprocessable()->assertJsonPath('errors.0.detail', 'The public key provided is not valid.');
+    $this->actingAs($user)->postJson('/api/client/account/ssh-keys', ['name' => 'Name', 'public_key' => $key->toString('PKCS8')])->assertUnprocessable()->assertJsonPath('errors.0.detail', '提供的公钥无效。');
 });
 test('only supported public key material can be stored', function (string $publicKey): void {
     $user = User::factory()->create();
@@ -94,7 +94,7 @@ test('public key can be stored', function (): void {
 test('public key that already exists cannot be added a second time', function (): void {
     $user = User::factory()->create();
     $key = UserSSHKey::factory()->for($user)->create();
-    $this->actingAs($user)->postJson('/api/client/account/ssh-keys', ['name' => 'Name', 'public_key' => $key->public_key])->assertUnprocessable()->assertJsonPath('errors.0.detail', 'The public key provided already exists on your account.');
+    $this->actingAs($user)->postJson('/api/client/account/ssh-keys', ['name' => 'Name', 'public_key' => $key->public_key])->assertUnprocessable()->assertJsonPath('errors.0.detail', '该公钥已存在于您的账户中。');
     expect($user->sshKeys()->count())->toEqual(1);
 });
 test('account key changes go through the contracts extensions can wrap', function (): void {

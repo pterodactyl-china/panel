@@ -26,7 +26,7 @@ export const settingField = (setting: AdminThemeSetting): AdminExtensionSettingF
     input: setting.key,
     label: setting.label,
     help:
-        [setting.help, setting.type === 'number' && setting.unit ? `In ${setting.unit}.` : null]
+        [setting.help, setting.type === 'number' && setting.unit ? `单位为 ${setting.unit}。` : null]
             .filter(Boolean)
             .join(' ') || null,
     tab: setting.tab,
@@ -119,7 +119,7 @@ export default function ThemeSettingsDialog({
     return (
         <Dialog
             open={open}
-            title={`${theme.name} settings`}
+            title={`${theme.name} 设置`}
             preventExternalClose={update.isPending}
             hideCloseIcon={update.isPending}
             onClose={cancel}

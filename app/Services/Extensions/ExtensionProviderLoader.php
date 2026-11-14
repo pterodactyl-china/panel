@@ -119,7 +119,7 @@ class ExtensionProviderLoader
         throw_if($suffix !== null && ExtensionComposerInspector::autoloaderLoaded($suffix), InvalidExtensionException::class, sprintf('Extension vendor/autoload.php declares the Composer autoloader ComposerAutoloaderInit%s, which another package already loaded. Set "config.autoloader-suffix" in the extension\'s composer.json and run composer dump-autoload.', $suffix));
 
         $loader = require $path;
-        throw_unless($loader instanceof ClassLoader, InvalidExtensionException::class, 'Extension vendor/autoload.php must return a Composer ClassLoader.');
+        throw_unless($loader instanceof ClassLoader, InvalidExtensionException::class, '扩展的 vendor/autoload.php 必须返回 Composer 的 ClassLoader。');
         // Composer registers its loader in front of every other one. Behind the panel's, a
         // package the extension bundles can never replace the copy the panel loads.
         $loader->unregister();

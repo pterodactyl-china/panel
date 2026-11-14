@@ -214,7 +214,7 @@ it('renders a fixture of a view that takes inputs with the inputs it declares', 
     const { container, unmount } = renderView('dashboard.serverCard', { fixture: 'suspended' });
 
     expect(container).toHaveTextContent('测试服务器');
-    expect(container).toHaveTextContent('Suspended');
+    expect(container).toHaveTextContent('已冻结');
     unmount();
 });
 
@@ -377,7 +377,7 @@ it('renders nested views from their fixtures, each from the inputs it is placed 
     expect(creative).toHaveTextContent('Creative');
     expect(creative).toHaveAttribute('data-status', 'danger');
     expect(container.querySelector('a[aria-label="Survival"]')).toHaveTextContent('Survival');
-    expect(container.querySelector('a[aria-label="Lobby"]')).toHaveTextContent('Suspended');
+    expect(container.querySelector('a[aria-label="Lobby"]')).toHaveTextContent('已冻结');
     expect(container.querySelectorAll('[data-ui="list-row"][data-part="status"]')).toHaveLength(3);
 });
 

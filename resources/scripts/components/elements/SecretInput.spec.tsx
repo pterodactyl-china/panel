@@ -23,22 +23,22 @@ beforeEach(() => {
 
 describe('SecretInput', () => {
     it('masks the value until revealed', () => {
-        const { container } = render(<SecretInput value='hunter2' label='Password' />);
+        const { container } = render(<SecretInput value='hunter2' label='密码' />);
         const input = container.querySelector('input')!;
 
         expect(input).toHaveAttribute('type', 'password');
 
-        fireEvent.click(screen.getByRole('button', { name: 'Show password' }));
+        fireEvent.click(screen.getByRole('button', { name: '显示密码' }));
         expect(input).toHaveAttribute('type', 'text');
 
-        fireEvent.click(screen.getByRole('button', { name: 'Hide password' }));
+        fireEvent.click(screen.getByRole('button', { name: '隐藏密码' }));
         expect(input).toHaveAttribute('type', 'password');
     });
 
     it('copies the value without revealing it', async () => {
-        const { container } = render(<SecretInput value='hunter2' label='Password' />);
+        const { container } = render(<SecretInput value='hunter2' label='密码' />);
 
-        await act(async () => fireEvent.click(screen.getByRole('button', { name: 'Copy password' })));
+        await act(async () => fireEvent.click(screen.getByRole('button', { name: '复制密码' })));
 
         expect(clipboard.copy).toHaveBeenCalledTimes(1);
         expect(clipboard.copy).toHaveBeenCalledWith('hunter2');
@@ -47,9 +47,9 @@ describe('SecretInput', () => {
     });
 
     it('disables both actions when there is no value', () => {
-        render(<SecretInput value={undefined} label='Password' />);
+        render(<SecretInput value={undefined} label='密码' />);
 
-        expect(screen.getByRole('button', { name: 'Show password' })).toBeDisabled();
-        expect(screen.getByRole('button', { name: 'Copy password' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: '显示密码' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: '复制密码' })).toBeDisabled();
     });
 });

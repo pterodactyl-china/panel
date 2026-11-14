@@ -63,11 +63,11 @@ it('refuses a file over the node upload limit before sending anything', async ()
 
     await act(async () => {
         await expect(result.current([file('small.zip', mebibyte), file('world.zip', mebibyte + 1)])).rejects.toThrow(
-            'world.zip is larger than the 1 MiB upload limit.'
+            'world.zip 超过了 1 MiB 的上传上限。'
         );
     });
 
-    expect(error).toHaveBeenCalledExactlyOnceWith('world.zip is larger than the 1 MiB upload limit.');
+    expect(error).toHaveBeenCalledExactlyOnceWith('world.zip 超过了 1 MiB 的上传上限。');
     expect(upload).not.toHaveBeenCalled();
 });
 
@@ -78,10 +78,10 @@ it('counts every file over the limit', async () => {
     await act(async () => {
         await expect(
             result.current([file('a.zip', 2 * mebibyte), file('b.zip', 10), file('c.zip', 3 * mebibyte)])
-        ).rejects.toThrow('2 files are larger than the 1 MiB upload limit.');
+        ).rejects.toThrow('2 个文件超过了 1 MiB 的上传上限。');
     });
 
-    expect(error).toHaveBeenCalledExactlyOnceWith('2 files are larger than the 1 MiB upload limit.');
+    expect(error).toHaveBeenCalledExactlyOnceWith('2 个文件超过了 1 MiB 的上传上限。');
     expect(upload).not.toHaveBeenCalled();
 });
 

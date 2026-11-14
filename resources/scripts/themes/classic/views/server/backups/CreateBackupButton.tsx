@@ -4,7 +4,7 @@ const ignoredDescription = [
     '请输入生成此备份时要忽略的文件或文件夹。',
     '留空则使用服务器根目录下 .pteroignore 文件的内容（如存在）。',
     '除支持通过路径前缀取反规则外，也支持对文件和文件夹使用通配符匹配。',
-    'with an exclamation point.',
+    '也可以在规则前加感叹号表示排除。',
 ].join(' ');
 
 function CreateBackupDialog({ model, onClose }: { model: BackupListModel; onClose: () => void }) {

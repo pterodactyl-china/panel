@@ -106,7 +106,7 @@ final readonly class ExtensionFields
             } catch (Throwable $exception) {
                 // The message can carry query bindings or credentials, so only the log gets it.
                 $this->extensions->recordFailure($extension, sprintf('Validating its %s fields failed with %s; the log has the details.', class_basename($this->modelClass($model)), class_basename($exception)), $exception, 'fields');
-                $validator->errors()->add('extensions.'.$extension, sprintf('The %s fields could not be read, so they were not saved.', $extension));
+                $validator->errors()->add('extensions.'.$extension, sprintf('%s 的字段无法读取，因此未保存。', $extension));
 
                 continue;
             }

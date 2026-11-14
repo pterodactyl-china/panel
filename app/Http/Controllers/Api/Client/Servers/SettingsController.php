@@ -84,7 +84,7 @@ class SettingsController extends ClientApiController
     public function dockerImage(SetDockerImageRequest $request, UpdatesServerDockerImage $dockerImage, Server $server): JsonResponse
     {
         $egg = $server->egg ?? throw new UnexpectedValueException('该服务器没有关联预设。');
-        throw_unless(in_array($server->image, $egg->docker_images, true), BadRequestHttpException::class, "This server's Docker image has been manually set by an administrator and cannot be updated.");
+        throw_unless(in_array($server->image, $egg->docker_images, true), BadRequestHttpException::class, '此服务器的 Docker 镜像已由管理员手动设置，无法更新。');
 
         $dockerImage->update($server, $request->string('docker_image')->toString());
 

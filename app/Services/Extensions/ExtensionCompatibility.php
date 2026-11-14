@@ -74,7 +74,7 @@ final class ExtensionCompatibility
     public function assertCanDisable(string $identifier, Collection $enabled): void
     {
         foreach ($enabled as $manifest) {
-            throw_if(isset($manifest->dependencies()[$identifier]), InvalidExtensionException::class, "Disable dependent extension \"{$manifest->id}\" before \"{$identifier}\".");
+            throw_if(isset($manifest->dependencies()[$identifier]), InvalidExtensionException::class, "请先禁用依赖它的扩展 \"{$manifest->id}\"，再操作 \"{$identifier}\"。");
         }
     }
 
@@ -100,7 +100,7 @@ final class ExtensionCompatibility
 
         foreach ($owners as $owner => $taken) {
             $shared = array_intersect($names, $taken);
-            throw_if($shared !== [], InvalidExtensionException::class, sprintf('Extension "%s" cannot run migration "%s": %s has a migration with the same name, which Laravel would treat as already run. Rename the migration file.', $manifest->id, reset($shared), $owner));
+            throw_if($shared !== [], InvalidExtensionException::class, sprintf('扩展 "%s" 无法执行迁移 "%s"：%s 存在同名迁移，Laravel 会认为它已执行。请重命名迁移文件。', $manifest->id, reset($shared), $owner));
         }
     }
 
@@ -131,7 +131,7 @@ final class ExtensionCompatibility
             default => null,
         };
 
-        throw_if($claimant !== null, InvalidExtensionException::class, sprintf('Extension "%s" cannot load its vendor/autoload.php: %s uses the same Composer autoloader (ComposerAutoloaderInit%s). Set "config.autoloader-suffix" in its composer.json and run composer dump-autoload.', $manifest->id, $claimant, $suffix));
+        throw_if($claimant !== null, InvalidExtensionException::class, sprintf('扩展 "%s" 无法加载其 vendor/autoload.php：%s 使用了相同的 Composer 自动加载器（ComposerAutoloaderInit%s）。请在其 composer.json 中设置 "config.autoloader-suffix" 并运行 composer dump-autoload。', $manifest->id, $claimant, $suffix));
     }
 
     /** @param Collection<string, ExtensionManifest> $enabled */

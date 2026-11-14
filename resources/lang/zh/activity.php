@@ -38,14 +38,16 @@ return [
         'account' => [
             'email-changed' => '已将电子邮箱从 :old 更改为 :new',
             'password-changed' => '已更改密码',
+            'avatar-changed' => '已更改头像',
+            'avatar-deleted' => '已移除头像',
         ],
         'api-key' => [
             'create' => '创建新的 API 密钥 :identifier',
             'delete' => '已删除 API 密钥 :identifier',
         ],
         'ssh-key' => [
-            'create' => '将 SSH 私钥 :fingerprint 添加到帐户',
-            'delete' => '从帐户中删除了 SSH 私钥 :fingerprint',
+            'create' => '已为账户添加 SSH 公钥 :fingerprint',
+            'delete' => '已从账户移除 SSH 公钥 :fingerprint',
         ],
         'two-factor' => [
             'create' => '启用动态口令认证',
@@ -247,6 +249,8 @@ return [
             'update' => '更新了用户 :email',
             'delete' => '删除了用户 :email',
             'disable-2fa' => '为 :email 禁用了动态口令认证',
+            'avatar-changed' => '已更改 :email 的头像',
+            'avatar-deleted' => '已移除 :email 的头像',
         ],
     ],
 ];

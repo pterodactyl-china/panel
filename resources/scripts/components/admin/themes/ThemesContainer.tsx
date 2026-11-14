@@ -79,7 +79,7 @@ function ThemeCard({ theme }: { theme: AdminTheme }) {
                         ))}
                     </div>
                     <p className='mt-0.5 truncate text-xs text-muted-foreground'>
-                        {[theme.version && `v${theme.version}`, theme.author && `by ${theme.author}`, theme.id]
+                        {[theme.version && `v${theme.version}`, theme.author && `作者 ${theme.author}`, theme.id]
                             .filter(Boolean)
                             .join(' · ')}
                     </p>

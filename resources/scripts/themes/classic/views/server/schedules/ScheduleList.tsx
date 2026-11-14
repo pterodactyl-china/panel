@@ -70,7 +70,7 @@ function columns(model: ScheduleListModel): TableColumn<ScheduleSummary>[] {
                         {schedule.name}
                     </PanelLink>
                     <p className='mt-0.5 text-xs text-muted-foreground md:hidden'>
-                        Last run {schedule.lastRunAt ? fromNow(schedule.lastRunAt) : 'never'}
+                        上次运行 {schedule.lastRunAt ? fromNow(schedule.lastRunAt) : '从未运行'}
                     </p>
                 </div>
             ),

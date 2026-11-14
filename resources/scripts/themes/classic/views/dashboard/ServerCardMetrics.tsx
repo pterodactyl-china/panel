@@ -3,10 +3,10 @@ import { Badge, bytesToString, cn, Spinner, Stat } from '@/sdk';
 import type { ServerCardState, ServerStatMetric, ServerUnavailableReason, UiTone, ViewProps } from '@/sdk/theme';
 
 const unavailableLabels = {
-    suspended: 'Suspended',
+    suspended: '已冻结',
     'connection-error': '连接错误',
     maintenance: '维护中',
-    transferring: 'Transferring',
+    transferring: '传输中',
     installing: '安装中',
     'restoring-backup': '正在恢复备份',
     unavailable: '不可用',

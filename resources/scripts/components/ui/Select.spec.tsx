@@ -37,11 +37,11 @@ describe('Select', () => {
         const props = { multiple: true as const, value: [1, 2], onChange: vi.fn() };
         const { rerender } = render(<Select {...props} options={[alpha, beta]} />);
 
-        expect(screen.getByText('2 selected')).toBeInTheDocument();
+        expect(screen.getByText('已选 2 项')).toBeInTheDocument();
 
         rerender(<Select {...props} options={[gamma]} />);
 
-        expect(screen.getByText('2 selected')).toBeInTheDocument();
+        expect(screen.getByText('已选 2 项')).toBeInTheDocument();
     });
 
     it('offers typed text that matches no option to a creatable multi-select', async () => {
@@ -51,11 +51,11 @@ describe('Select', () => {
         render(<Select {...props} options={[alpha, beta]} />);
         await user.type(screen.getByRole('combobox'), 'alpha');
 
-        expect(screen.queryByRole('option', { name: 'Create "alpha"' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('option', { name: '创建 "alpha"' })).not.toBeInTheDocument();
 
         await user.clear(screen.getByRole('combobox'));
         await user.type(screen.getByRole('combobox'), ' Delta ');
-        await user.click(await screen.findByRole('option', { name: 'Create "Delta"' }));
+        await user.click(await screen.findByRole('option', { name: '创建 "Delta"' }));
 
         expect(props.onCreate).toHaveBeenCalledWith('Delta');
         expect(props.onChange).not.toHaveBeenCalled();

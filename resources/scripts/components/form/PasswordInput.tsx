@@ -13,7 +13,7 @@ export type PasswordInputProps = Omit<TextInputProps, 'type' | 'value' | 'onValu
     onValueChange: (value: string) => void;
     /** Called with a generated password after it is set, e.g. to fill a confirmation field. */
     onGenerate?: (value: string) => void;
-    /** What the show and hide button names, e.g. "new password". */
+    /** 显示/隐藏按钮所指的对象，例如「新密码」。 */
     noun?: string;
 };
 
@@ -22,13 +22,13 @@ export function PasswordInput({
     value,
     onValueChange,
     onGenerate,
-    noun = 'password',
+    noun = '密码',
     className,
     ...props
 }: PasswordInputProps) {
     const [visible, setVisible] = useState(false);
     const [generated, setGenerated] = useState(false);
-    const toggleLabel = `${visible ? 'Hide' : 'Show'} ${noun}`;
+    const toggleLabel = `${visible ? '隐藏' : '显示'}${noun}`;
 
     const generate = () => {
         const password = generateSecurePassword();
@@ -52,13 +52,13 @@ export function PasswordInput({
                 className={cn('pr-24', className)}
             />
             <div className='absolute inset-y-0 right-2 flex items-center gap-1'>
-                <Tooltip content='Generate secure password'>
+                <Tooltip content='生成安全密码'>
                     <span className='inline-flex'>
                         <Button.Text
                             type='button'
                             size='xsmall'
                             isSecondary
-                            aria-label='Generate secure password'
+                            aria-label='生成安全密码'
                             onClick={generate}
                         >
                             <Icon icon={RotateCcwKey} className='h-3.5 w-3.5' />
@@ -81,10 +81,10 @@ export function PasswordInput({
                     </span>
                 </Tooltip>
                 {generated && (
-                    <Tooltip content='Copy password'>
+                    <Tooltip content='复制密码'>
                         <span className='inline-flex'>
                             <CopyOnClick text={value} showInNotification={false}>
-                                <Button.Text type='button' size='xsmall' isSecondary aria-label='Copy password'>
+                                <Button.Text type='button' size='xsmall' isSecondary aria-label='复制密码'>
                                     <Icon icon={Clipboard} className='h-3.5 w-3.5' />
                                 </Button.Text>
                             </CopyOnClick>

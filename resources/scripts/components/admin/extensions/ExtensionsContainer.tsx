@@ -529,7 +529,7 @@ const isPendingFor = (mutation: ExtensionMutationState, extension: AdminExtensio
     mutation.isPending && mutation.variables?.path.extension === extension.id;
 
 const extensionSubtitle = (extension: AdminExtension): string =>
-    [extension.version ? `v${extension.version}` : null, extension.author && `by ${extension.author}`]
+    [extension.version ? `v${extension.version}` : null, extension.author && `作者 ${extension.author}`]
         .filter(Boolean)
         .join(' · ');
 
@@ -609,7 +609,7 @@ function ExtensionToggle({ extension, name }: { extension: AdminExtension; name:
 
     return (
         <Switch
-            aria-label={`Enable ${name}`}
+            aria-label={`启用 ${name}`}
             className='mr-auto'
             checked={extension.enabled === true}
             disabled={pending || !allowed}

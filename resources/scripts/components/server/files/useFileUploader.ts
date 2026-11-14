@@ -55,8 +55,8 @@ export default function useFileUploader(): (source: UploadSource) => Promise<voi
             if (oversized.length > 0) {
                 const message =
                     oversized.length === 1
-                        ? `${oversized[0].name} is larger than the ${uploadSize} MiB upload limit.`
-                        : `${oversized.length} files are larger than the ${uploadSize} MiB upload limit.`;
+                        ? `${oversized[0].name} 超过了 ${uploadSize} MiB 的上传上限。`
+                        : `${oversized.length} 个文件超过了 ${uploadSize} MiB 的上传上限。`;
 
                 toast.error(message);
                 throw new Error(message);

@@ -197,7 +197,7 @@ export function actionsColumn<TRow>(
 
     return {
         id: 'actions',
-        label: <span className='sr-only'>Actions</span>,
+        label: <span className='sr-only'>操作</span>,
         cell,
         headerClassName: className,
         cellClassName: className,

@@ -144,7 +144,7 @@ describe('server.stats', () => {
 
         expect(header.getByText('42.50%')).toBeVisible();
         expect(screen.getAllByText('512 MiB')).toHaveLength(2);
-        expect(header.getByText('1h 2m 3s')).toBeVisible();
+        expect(header.getByText('1 小时 2 分钟 3 秒')).toBeVisible();
         expect(header.getByText('/ 100%')).toBeVisible();
     });
 

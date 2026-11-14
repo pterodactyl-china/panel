@@ -108,7 +108,7 @@ test('error is returned if too many tasks exist for schedule', function (): void
     /** @var Schedule $schedule */
     $schedule = Schedule::factory()->create(['server_id' => $server->id]);
     Task::factory()->times(2)->create(['schedule_id' => $schedule->id]);
-    $this->actingAs($user)->postJson($this->link($schedule, '/tasks'), ['action' => 'command', 'payload' => 'say test', 'time_offset' => 0])->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.code', 'ServiceLimitExceededException')->assertJsonPath('errors.0.detail', 'Schedules may not have more than 2 tasks associated with them. Creating this task would put this schedule over the limit.');
+    $this->actingAs($user)->postJson($this->link($schedule, '/tasks'), ['action' => 'command', 'payload' => 'say test', 'time_offset' => 0])->assertStatus(Response::HTTP_BAD_REQUEST)->assertJsonPath('errors.0.code', 'ServiceLimitExceededException')->assertJsonPath('errors.0.detail', '计划任务最多只能包含 2 个任务，创建此任务将超出该上限。');
 });
 test('error is returned if schedule does not belong to server', function (): void {
     [$user, $server] = $this->generateTestAccount();

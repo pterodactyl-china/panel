@@ -32,7 +32,7 @@ function StatusBadge({ schedule }: { schedule: ScheduleSummary }) {
 }
 
 const RunTime = ({ at }: { at: string | null }) =>
-    at ? formatDate(at, 'YYYY-MM-DD HH:mm') : <span className='text-muted-foreground'>n/a</span>;
+    at ? formatDate(at, 'YYYY-MM-DD HH:mm') : <span className='text-muted-foreground'>暂无</span>;
 
 /** The schedule's header, cron and actions; `children` (its tasks) render inside the box below the cron. */
 export default function ScheduleDetails({ model, className, children }: ViewProps<'server.schedule'>) {

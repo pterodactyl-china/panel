@@ -12,10 +12,8 @@ export default function JavaVersionPrompt({ model }: ViewProps<'server.feature.j
         >
             <SpinnerOverlay visible={model.pending} />
             <p className='mt-4'>
-                This server is currently running an unsupported version of Java and cannot be started.
-                {model.canChangeImage && (
-                    <>&nbsp;Please select a supported version from the list below to continue starting the server.</>
-                )}
+                此服务器当前运行的 Java 版本不受支持，无法启动。
+                {model.canChangeImage && <>&nbsp;请从下方列表中选择一个受支持的版本，以继续启动服务器。</>}
             </p>
             {model.canChangeImage && (
                 <div className='mt-4'>

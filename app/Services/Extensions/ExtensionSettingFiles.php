@@ -79,11 +79,11 @@ class ExtensionSettingFiles
         $this->assertExtension($extension);
         $bytes = $upload->isValid() ? $upload->getContent() : '';
         if ($bytes === '') {
-            $this->reject('The uploaded file is empty or could not be read.');
+            $this->reject('上传的文件为空或无法读取。');
         }
 
         if (mb_strlen($bytes, '8bit') > min($maxKilobytes, self::MAX_KILOBYTES) * 1024) {
-            $this->reject(sprintf('The file is larger than the allowed %d KB.', min($maxKilobytes, self::MAX_KILOBYTES)));
+            $this->reject(sprintf('文件大小超过允许的 %d KB。', min($maxKilobytes, self::MAX_KILOBYTES)));
         }
 
         $mime = $this->detect($bytes);
@@ -99,7 +99,7 @@ class ExtensionSettingFiles
         } while ($disk->exists($this->path($extension, $name)));
 
         if (! $disk->put($this->path($extension, $name), $bytes)) {
-            $this->reject('The file could not be saved.');
+            $this->reject('文件保存失败。');
         }
 
         return $name;
@@ -237,11 +237,11 @@ class ExtensionSettingFiles
 
         $size = @getimagesizefromstring($bytes);
         if ($size === false || $size['mime'] !== $mime) {
-            $this->reject('The image is corrupt or unreadable.');
+            $this->reject('图片已损坏或无法读取。');
         }
 
         if ($size[0] < 1 || $size[1] < 1 || $size[0] > self::MAX_DIMENSION || $size[1] > self::MAX_DIMENSION) {
-            $this->reject(sprintf('The image has unreasonable dimensions (max %d px per side).', self::MAX_DIMENSION));
+            $this->reject(sprintf('图片尺寸超出限制（每边最多 %d 像素）。', self::MAX_DIMENSION));
         }
     }
 
@@ -257,7 +257,7 @@ class ExtensionSettingFiles
     private function assertSafeSvg(string $bytes): void
     {
         if (preg_match('/<!DOCTYPE|<!ENTITY|<script|<foreignObject|<iframe|<embed|<object|<animate|<set\b|\son[a-z]+\s*=|javascript\s*:|data\s*:\s*text\/html|&#/i', $bytes) === 1) {
-            $this->reject('The SVG contains active or external content and was rejected.');
+            $this->reject('SVG 包含活动内容或外部内容，已被拒绝。');
         }
 
         $previous = libxml_use_internal_errors(true);
@@ -266,7 +266,7 @@ class ExtensionSettingFiles
         try {
             $root = @$document->loadXML($bytes, LIBXML_NONET) ? $document->documentElement : null;
             if (! $root instanceof DOMElement || $root->localName !== 'svg') {
-                $this->reject('The SVG is not valid XML.');
+                $this->reject('SVG 不是有效的 XML。');
             }
         } finally {
             libxml_clear_errors();
@@ -292,7 +292,7 @@ class ExtensionSettingFiles
                 array_push($pending, ...iterator_to_array($node->childNodes, false));
             } elseif (! $node instanceof DOMText && ! $node instanceof DOMComment) {
                 // Processing instructions (an xml-stylesheet one can pull in XSLT), doctypes and entities.
-                $this->reject('The SVG contains active or external content and was rejected.');
+                $this->reject('SVG 包含活动内容或外部内容，已被拒绝。');
             }
         }
     }
@@ -300,22 +300,22 @@ class ExtensionSettingFiles
     private function assertInertSvgElement(DOMElement $element): void
     {
         if ($element->namespaceURI !== self::SVG_NAMESPACE) {
-            $this->reject('The SVG contains elements or attributes from outside the SVG namespace and was rejected. Save it as plain SVG.');
+            $this->reject('SVG 含有 SVG 命名空间之外的元素或属性，已被拒绝。请另存为普通 SVG 后重试。');
         }
 
         $name = mb_strtolower($element->localName ?? '');
         if (in_array($name, self::ACTIVE_ELEMENTS, true) || str_starts_with($name, 'animate')) {
-            $this->reject('The SVG contains active or external content and was rejected.');
+            $this->reject('SVG 包含活动内容或外部内容，已被拒绝。');
         }
 
         foreach ($element->attributes as $attribute) {
             if (! in_array($attribute->namespaceURI, [null, self::XLINK_NAMESPACE, self::XML_NAMESPACE], true)) {
-                $this->reject('The SVG contains elements or attributes from outside the SVG namespace and was rejected. Save it as plain SVG.');
+                $this->reject('SVG 含有 SVG 命名空间之外的元素或属性，已被拒绝。请另存为普通 SVG 后重试。');
             }
 
             $attributeName = mb_strtolower($attribute->localName ?? '');
             if (str_starts_with($attributeName, 'on') || $this->isActiveReference($attributeName, $attribute->value)) {
-                $this->reject('The SVG contains active or external content and was rejected.');
+                $this->reject('SVG 包含活动内容或外部内容，已被拒绝。');
             }
         }
     }

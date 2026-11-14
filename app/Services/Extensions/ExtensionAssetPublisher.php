@@ -138,10 +138,10 @@ class ExtensionAssetPublisher
                 // Copy exactly the files that were checked, never the directory itself.
                 foreach ($files as $relative => $path) {
                     File::ensureDirectoryExists(dirname($staged.DIRECTORY_SEPARATOR.$relative));
-                    throw_unless(File::copy($path, $staged.DIRECTORY_SEPARATOR.$relative), InvalidExtensionException::class, 'Unable to stage extension assets.');
+                    throw_unless(File::copy($path, $staged.DIRECTORY_SEPARATOR.$relative), InvalidExtensionException::class, '无法暂存扩展资源。');
                 }
 
-                throw_unless(File::moveDirectory($staged, $target), InvalidExtensionException::class, 'Unable to publish extension assets.');
+                throw_unless(File::moveDirectory($staged, $target), InvalidExtensionException::class, '无法发布扩展资源。');
             } finally {
                 File::deleteDirectory($staged);
             }
@@ -213,7 +213,7 @@ class ExtensionAssetPublisher
     public function watchDevelopment(string $identifier): void
     {
         $version = $this->currentVersion($identifier);
-        throw_if($version === null, InvalidExtensionException::class, 'Publish a frontend build before watching it.');
+        throw_if($version === null, InvalidExtensionException::class, '请先发布前端构建，再对其开启监听。');
         $this->writeDevelopment($identifier, $version);
     }
 

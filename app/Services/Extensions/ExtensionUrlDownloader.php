@@ -87,7 +87,7 @@ class ExtensionUrlDownloader
     public function verifiedUrl(string $link): string
     {
         throw_unless(config('extensions.signed_urls.enabled'), InvalidExtensionException::class, '此面板已禁用通过 URL 安装扩展。');
-        throw_unless(extension_loaded('sodium'), InvalidExtensionException::class, 'The PHP sodium extension is required to verify signed install URLs.');
+        throw_unless(extension_loaded('sodium'), InvalidExtensionException::class, '验证签名安装链接需要 PHP sodium 扩展。');
 
         $jwt = Str::afterLast(Str::before(Str::before(mb_trim($link), '?'), '#'), '/');
         $token = null;
@@ -97,7 +97,7 @@ class ExtensionUrlDownloader
             try {
                 $token = (new Parser(new JoseEncoder))->parse($jwt);
                 $publicKey = config()->string('extensions.signed_urls.public_key');
-                throw_if($publicKey === '', UnexpectedValueException::class, 'Signed install URLs need a public key.');
+                throw_if($publicKey === '', UnexpectedValueException::class, '签名安装链接缺少公钥。');
                 $key = InMemory::base64Encoded($publicKey);
                 $signed = $token instanceof UnencryptedToken && (new Validator)->validate($token, new SignedWith(new Eddsa, $key));
             } catch (Throwable) {
@@ -109,13 +109,13 @@ class ExtensionUrlDownloader
         throw_unless(
             $signed && $token instanceof UnencryptedToken,
             InvalidExtensionException::class,
-            'This is not a signed install URL. Extensions can only be installed from a URL that Pterodactyl has signed.',
+            '这不是已签名的安装链接。扩展只能通过 Pterodactyl 签名的链接安装。',
         );
 
         $claims = $token->claims();
         $issuer = config()->string('extensions.signed_urls.issuer');
         $audience = config()->string('extensions.signed_urls.audience');
-        throw_if($issuer === '' || $audience === '', UnexpectedValueException::class, 'Signed install URLs need an issuer and an audience.');
+        throw_if($issuer === '' || $audience === '', UnexpectedValueException::class, '签名安装链接缺少签发方或受众信息。');
         throw_unless(
             $token->hasBeenIssuedBy($issuer) && $token->isPermittedFor($audience),
             InvalidExtensionException::class,
@@ -125,7 +125,7 @@ class ExtensionUrlDownloader
         throw_if(
             ! $claims->has('exp') || $token->isExpired(CarbonImmutable::now()),
             InvalidExtensionException::class,
-            'This install URL has expired. Copy a new install command.',
+            '此安装链接已过期，请复制新的安装命令。',
         );
 
         $base = rescue(fn (): string => Arr::string($claims->all(), 'url'), report: false);
@@ -151,7 +151,7 @@ class ExtensionUrlDownloader
         $message = rescue(fn (): string => Arr::string(File::json($path), 'error.message'), report: false);
 
         return $message !== null
-            ? "The download was refused: {$message}"
-            : "The download was refused (HTTP {$status}).";
+            ? "下载被拒绝：{$message}"
+            : "下载被拒绝（HTTP {$status}）。";
     }
 }

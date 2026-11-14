@@ -313,7 +313,7 @@ test('head tag callbacks are resolved when rendered, cached, and never break the
     $tags->restore($tags->snapshot());
     expect($tags->toHtml())->toBe('<meta name="apple-mobile-web-app-title" content="Panel 1">');
     expect($calls)->toBe(1);
-    expect($this->failures)->toBe([['broken', 'Head tags must set "tag" to "meta" or "link".', 'head']]);
+    expect($this->failures)->toBe([['broken', 'head 标签的 "tag" 必须是 "meta" 或 "link"。', 'head']]);
 
     $tags->forget('pwa');
     expect($tags->toHtml())->toBe('<meta name="apple-mobile-web-app-title" content="Panel 2">');

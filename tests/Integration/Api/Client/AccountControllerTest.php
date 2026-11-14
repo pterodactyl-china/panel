@@ -105,7 +105,7 @@ test('email is not updated when not valid', function (): void {
     $response = $this->actingAs($user)->putJson('/api/client/account/email', ['email' => 'invalid', 'password' => 'password']);
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     $response->assertJsonPath('errors.0.meta.rule', 'email');
-    $response->assertJsonPath('errors.0.detail', 'email 不是一个合法的邮箱。');
+    $response->assertJsonPath('errors.0.detail', 'email 必须是有效的电子邮箱地址。');
 });
 test('email must be a strict address that does not start with a dash', function (string $email): void {
     $user = User::factory()->create();

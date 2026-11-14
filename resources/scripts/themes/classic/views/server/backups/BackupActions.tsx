@@ -40,7 +40,7 @@ export default function BackupActions({ model, backup }: { model: BackupListMode
             <Dialog.Confirm
                 open={confirming === 'unlock'}
                 onClose={close}
-                title={`Unlock "${backup.name}"`}
+                title={`解锁 "${backup.name}"`}
                 pending={pending.lock}
                 onConfirmed={onLockToggle}
             >
@@ -50,7 +50,7 @@ export default function BackupActions({ model, backup }: { model: BackupListMode
                 open={confirming === 'restore'}
                 onClose={close}
                 confirm='恢复'
-                title={`Restore "${backup.name}"`}
+                title={`恢复 "${backup.name}"`}
                 pending={pending.restore}
                 onConfirmed={() => void actions.restore(backup.uuid, truncate).then(closeOnSuccess)}
             >
@@ -69,7 +69,7 @@ export default function BackupActions({ model, backup }: { model: BackupListMode
                 </p>
             </Dialog.Confirm>
             <Dialog.Confirm
-                title={`Delete "${backup.name}"`}
+                title={`删除 "${backup.name}"`}
                 confirm='继续'
                 open={confirming === 'delete'}
                 pending={pending.remove}

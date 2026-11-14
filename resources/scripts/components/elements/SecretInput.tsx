@@ -14,8 +14,8 @@ interface SecretInputProps {
 
 const SecretInput = ({ id, value, label }: SecretInputProps) => {
     const [visible, setVisible] = useState(false);
-    const toggleLabel = `${visible ? 'Hide' : 'Show'} ${label.toLowerCase()}`;
-    const copyLabel = `Copy ${label.toLowerCase()}`;
+    const toggleLabel = `${visible ? '隐藏' : '显示'}${label.toLowerCase()}`;
+    const copyLabel = `复制${label.toLowerCase()}`;
 
     return (
         <div className='relative'>

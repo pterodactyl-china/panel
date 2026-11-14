@@ -99,7 +99,7 @@ final class ExtensionHeadTags implements Htmlable
 
         $parsed = [];
         foreach ($tags as $tag) {
-            throw_unless(is_array($tag), UnexpectedValueException::class, 'Each head tag must be an array of attributes.');
+            throw_unless(is_array($tag), UnexpectedValueException::class, '每个 head 标签必须是属性数组。');
             $parsed[] = ExtensionHeadTag::fromArray($tag);
         }
 
@@ -154,7 +154,7 @@ final class ExtensionHeadTags implements Htmlable
 
         try {
             $resolved = $tags();
-            throw_unless(is_array($resolved), UnexpectedValueException::class, 'Head tag callbacks must return a list of tags.');
+            throw_unless(is_array($resolved), UnexpectedValueException::class, 'head 标签回调必须返回标签列表。');
             $parsed = $this->parse($resolved);
         } catch (Throwable $throwable) {
             // Remember the failure too, or a broken callback would run on every page load.

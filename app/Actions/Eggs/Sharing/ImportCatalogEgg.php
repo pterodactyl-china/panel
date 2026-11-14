@@ -30,7 +30,7 @@ final readonly class ImportCatalogEgg implements ImportsCatalogEggs
             try {
                 $parsed = EggImportData::fromJson($contents);
             } catch (JsonException|UnexpectedValueException|InvalidFileUploadException $exception) {
-                throw new HttpException(502, 'The selected catalog egg contains an invalid definition.', $exception);
+                throw new HttpException(502, '所选预设的定义无效。', $exception);
             }
 
             return $this->importer->importParsed($parsed);

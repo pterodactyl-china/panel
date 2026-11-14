@@ -20,10 +20,10 @@ test('snapshots are namespaced monotonic terminal and available to a new worker'
     expect((new ExtensionJobProgress)->find('probe', $started->id))->toEqual($updated);
     expect($updated->sequence)->toBe(2);
     expect($progress->find('other', $started->id))->toBeNull();
-    expect(fn () => $progress->update('probe', $started->id, 20))->toThrow(InvalidArgumentException::class, 'backwards');
+    expect(fn () => $progress->update('probe', $started->id, 20))->toThrow(InvalidArgumentException::class, '回退');
     $finished = $progress->update('probe', $started->id, 40, 'Done', 'completed');
     expect($finished->percent)->toBe(100);
-    expect(fn () => $progress->update('probe', $started->id, 100))->toThrow(InvalidArgumentException::class, 'cannot be updated');
+    expect(fn () => $progress->update('probe', $started->id, 100))->toThrow(InvalidArgumentException::class, '不能更新');
     $this->travel(61)->minutes();
     expect($progress->find('probe', $started->id))->toBeNull();
 });

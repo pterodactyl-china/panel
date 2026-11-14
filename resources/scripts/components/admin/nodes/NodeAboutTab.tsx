@@ -63,7 +63,7 @@ const UsageBox = ({ title, metric }: { title: string; metric: NodeUtilization['m
                     <Spinner size='small' />
                 )}
             </p>
-            <ProgressBar value={percent} tone={usageTone(metric)} label={`${title} usage`} className='mt-2' />
+            <ProgressBar value={percent} tone={usageTone(metric)} label={`${title} 使用量`} className='mt-2' />
         </TitledGreyBox>
     );
 };

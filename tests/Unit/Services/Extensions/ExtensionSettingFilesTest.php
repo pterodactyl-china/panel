@@ -50,13 +50,13 @@ test('rejects uploads whose content is not an allowed type', function (string $b
     'html' => ['<html><script>alert(1)</script></html>', ExtensionSettingFiles::IMAGES, 'Unsupported file type'],
     'svg when not listed' => [SVG, ExtensionSettingFiles::IMAGES, 'Unsupported file type'],
     'type outside the allow-list' => [fn (): string => base64_decode(PNG, true), ['image/jpeg'], 'Unsupported file type'],
-    'truncated image' => ["\x89PNG\r\n\x1a\nnot really", ExtensionSettingFiles::IMAGES, 'corrupt or unreadable'],
-    'svg with script' => ['<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>', ['image/svg+xml'], 'active or external content'],
-    'svg with handler' => ['<svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)"></svg>', ['image/svg+xml'], 'active or external content'],
-    'svg with script link' => ['<svg xmlns="http://www.w3.org/2000/svg"><a href="javascript:alert(1)"><rect/></a></svg>', ['image/svg+xml'], 'active or external content'],
+    'truncated image' => ["\x89PNG\r\n\x1a\nnot really", ExtensionSettingFiles::IMAGES, '图片已损坏或无法读取'],
+    'svg with script' => ['<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>', ['image/svg+xml'], '包含活动内容或外部内容'],
+    'svg with handler' => ['<svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)"></svg>', ['image/svg+xml'], '包含活动内容或外部内容'],
+    'svg with script link' => ['<svg xmlns="http://www.w3.org/2000/svg"><a href="javascript:alert(1)"><rect/></a></svg>', ['image/svg+xml'], '包含活动内容或外部内容'],
     'svg with doctype entity' => ['<?xml version="1.0"?><!DOCTYPE svg [<!ENTITY x SYSTEM "file:///etc/passwd">]><svg>&x;</svg>', ['image/svg+xml'], 'Unsupported file type'],
-    'malformed svg' => ['<svg xmlns="http://www.w3.org/2000/svg"><g></svg>', ['image/svg+xml'], 'not valid XML'],
-    'empty' => ['', ExtensionSettingFiles::IMAGES, 'empty'],
+    'malformed svg' => ['<svg xmlns="http://www.w3.org/2000/svg"><g></svg>', ['image/svg+xml'], '不是有效的 XML'],
+    'empty' => ['', ExtensionSettingFiles::IMAGES, '上传的文件为空或无法读取'],
 ]);
 
 test('svg elements and attributes are judged by namespace, not by prefix', function (string $svg, string $message): void {
@@ -64,16 +64,16 @@ test('svg elements and attributes are judged by namespace, not by prefix', funct
         ->toThrow(ValidationException::class, $message);
     expect(Storage::disk('local')->allFiles())->toBe([]);
 })->with([
-    'prefixed script' => ['<svg xmlns="http://www.w3.org/2000/svg" xmlns:x="http://www.w3.org/2000/svg"><x:script>alert(1)</x:script></svg>', 'active or external content'],
-    'prefixed foreign object' => ['<svg xmlns="http://www.w3.org/2000/svg" xmlns:x="http://www.w3.org/2000/svg"><x:foreignObject>hi</x:foreignObject></svg>', 'active or external content'],
-    'prefixed animation' => ['<svg xmlns="http://www.w3.org/2000/svg" xmlns:x="http://www.w3.org/2000/svg"><rect><x:animate attributeName="fill" values="red"/></rect></svg>', 'active or external content'],
-    'prefixed set' => ['<svg xmlns="http://www.w3.org/2000/svg" xmlns:x="http://www.w3.org/2000/svg"><a><x:set attributeName="href" to="#x"/></a></svg>', 'active or external content'],
-    'xhtml script' => ['<svg xmlns="http://www.w3.org/2000/svg"><h:script xmlns:h="http://www.w3.org/1999/xhtml">alert(1)</h:script></svg>', 'outside the SVG namespace'],
-    'svg element without the svg namespace' => ['<svg><rect/></svg>', 'outside the SVG namespace'],
-    'prefixed handler attribute' => ['<svg xmlns="http://www.w3.org/2000/svg" xmlns:e="urn:x"><rect e:onclick="alert(1)"/></svg>', 'outside the SVG namespace'],
-    'data link' => ['<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="data:image/svg+xml;base64,PHN2Zy8+"/></svg>', 'active or external content'],
-    'script link split by whitespace' => ["<svg xmlns=\"http://www.w3.org/2000/svg\"><a href=\"java\tscript:alert(1)\"><rect/></a></svg>", 'active or external content'],
-    'stylesheet processing instruction' => ['<?xml-stylesheet type="text/xsl" href="#x"?><svg xmlns="http://www.w3.org/2000/svg"/>', 'active or external content'],
+    'prefixed script' => ['<svg xmlns="http://www.w3.org/2000/svg" xmlns:x="http://www.w3.org/2000/svg"><x:script>alert(1)</x:script></svg>', '包含活动内容或外部内容'],
+    'prefixed foreign object' => ['<svg xmlns="http://www.w3.org/2000/svg" xmlns:x="http://www.w3.org/2000/svg"><x:foreignObject>hi</x:foreignObject></svg>', '包含活动内容或外部内容'],
+    'prefixed animation' => ['<svg xmlns="http://www.w3.org/2000/svg" xmlns:x="http://www.w3.org/2000/svg"><rect><x:animate attributeName="fill" values="red"/></rect></svg>', '包含活动内容或外部内容'],
+    'prefixed set' => ['<svg xmlns="http://www.w3.org/2000/svg" xmlns:x="http://www.w3.org/2000/svg"><a><x:set attributeName="href" to="#x"/></a></svg>', '包含活动内容或外部内容'],
+    'xhtml script' => ['<svg xmlns="http://www.w3.org/2000/svg"><h:script xmlns:h="http://www.w3.org/1999/xhtml">alert(1)</h:script></svg>', 'SVG 命名空间之外'],
+    'svg element without the svg namespace' => ['<svg><rect/></svg>', 'SVG 命名空间之外'],
+    'prefixed handler attribute' => ['<svg xmlns="http://www.w3.org/2000/svg" xmlns:e="urn:x"><rect e:onclick="alert(1)"/></svg>', 'SVG 命名空间之外'],
+    'data link' => ['<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="data:image/svg+xml;base64,PHN2Zy8+"/></svg>', '包含活动内容或外部内容'],
+    'script link split by whitespace' => ["<svg xmlns=\"http://www.w3.org/2000/svg\"><a href=\"java\tscript:alert(1)\"><rect/></a></svg>", '包含活动内容或外部内容'],
+    'stylesheet processing instruction' => ['<?xml-stylesheet type="text/xsl" href="#x"?><svg xmlns="http://www.w3.org/2000/svg"/>', '包含活动内容或外部内容'],
 ]);
 
 test('plain svg with links, xml attributes and embedded raster images is stored', function (): void {
@@ -105,7 +105,7 @@ test('the stock public disk is refused', function (): void {
 test('enforces the size limit of the definition', function (): void {
     $bytes = base64_decode(PNG, true).str_repeat("\0", 2048);
     expect(fn () => (new ExtensionSettingFiles)->store('probe', upload($bytes), ExtensionSettingFiles::IMAGES, 1))
-        ->toThrow(ValidationException::class, 'larger than the allowed 1 KB');
+        ->toThrow(ValidationException::class, '文件大小超过允许的 1 KB');
 });
 
 test('svg is stored only when the definition lists it', function (): void {

@@ -115,7 +115,7 @@ test('a theme needs the theme it extends enabled, and a chain cannot loop', func
     expect($result['errors']['orphan'])->toBe('Theme "orphan" extends "gone", which is not an enabled theme.');
     expect($result['errors']['impostor'])->toBe('Theme "impostor" extends "plain", which is not an enabled theme.');
     expect($result['errors']['loop-a'])->toContain('circular');
-    expect(fn () => $compatibility->assertCanDisable('base', $enabled))->toThrow(InvalidExtensionException::class, 'Disable dependent extension "child" before "base".');
+    expect(fn () => $compatibility->assertCanDisable('base', $enabled))->toThrow(InvalidExtensionException::class, '请先禁用依赖它的扩展 "child"，再操作 "base"。');
     expect(fn () => $compatibility->assertCompatible(themed('next', 'gone'), $enabled))->toThrow(InvalidExtensionException::class, 'extends "gone"');
 });
 
@@ -186,8 +186,8 @@ test('rejects a bundled vendor autoloader whose Composer suffix the panel or an 
         $first = $bundle('first', 'Shared');
         $enabled = collect(['first' => $first]);
 
-        expect(fn () => $compatibility->assertCompatible($bundle('second', 'Shared'), $enabled))->toThrow(InvalidExtensionException::class, 'Extension "second" cannot load its vendor/autoload.php: enabled extension "first" uses the same Composer autoloader (ComposerAutoloaderInitShared).');
-        expect(fn () => $compatibility->assertCompatible($bundle('copy', $panel[1]), collect()))->toThrow(InvalidExtensionException::class, 'the panel uses the same Composer autoloader');
+        expect(fn () => $compatibility->assertCompatible($bundle('second', 'Shared'), $enabled))->toThrow(InvalidExtensionException::class, '扩展 "second" 无法加载其 vendor/autoload.php：enabled extension "first" 使用了相同的 Composer 自动加载器（ComposerAutoloaderInitShared）。');
+        expect(fn () => $compatibility->assertCompatible($bundle('copy', $panel[1]), collect()))->toThrow(InvalidExtensionException::class, 'the panel 使用了相同的 Composer 自动加载器');
         // An upgrade keeps its own suffix, and a distinct suffix loads beside it.
         $compatibility->assertCompatible($first, $enabled);
         $compatibility->assertCompatible($bundle('third', 'Distinct'), $enabled);
@@ -213,8 +213,8 @@ test('rejects a migration named like one the panel or another installed extensio
         $ledger = $package('ledger', '2026_01_01_000000_create_ledger_entries_table');
         $installed = collect(['ledger' => $ledger]);
 
-        expect(fn () => $compatibility->assertMigrationsAreUnique($package('copy', $core), $installed))->toThrow(InvalidExtensionException::class, "Extension \"copy\" cannot run migration \"{$core}\": the panel has a migration with the same name");
-        expect(fn () => $compatibility->assertMigrationsAreUnique($package('rival', '2026_01_01_000000_create_ledger_entries_table'), $installed))->toThrow(InvalidExtensionException::class, 'extension "ledger" has a migration with the same name');
+        expect(fn () => $compatibility->assertMigrationsAreUnique($package('copy', $core), $installed))->toThrow(InvalidExtensionException::class, "扩展 \"copy\" 无法执行迁移 \"{$core}\"：the panel 存在同名迁移");
+        expect(fn () => $compatibility->assertMigrationsAreUnique($package('rival', '2026_01_01_000000_create_ledger_entries_table'), $installed))->toThrow(InvalidExtensionException::class, 'extension "ledger" 存在同名迁移');
         // An upgrade keeps its own migrations, and distinct names never clash.
         $compatibility->assertMigrationsAreUnique($ledger, $installed);
         $compatibility->assertMigrationsAreUnique($package('audit', '2026_01_01_000000_create_audit_ledger_entries_table'), $installed);

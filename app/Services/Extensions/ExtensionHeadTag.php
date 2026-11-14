@@ -72,7 +72,7 @@ final readonly class ExtensionHeadTag
     public static function fromArray(array $entry): self
     {
         $tag = $entry['tag'] ?? null;
-        throw_unless($tag === 'meta' || $tag === 'link', InvalidArgumentException::class, 'Head tags must set "tag" to "meta" or "link".');
+        throw_unless($tag === 'meta' || $tag === 'link', InvalidArgumentException::class, 'head 标签的 "tag" 必须是 "meta" 或 "link"。');
 
         $text = ['string', 'max:2048', 'regex:'.self::TEXT_REGEX];
         $validator = Validator::make($entry, $tag === 'meta' ? [

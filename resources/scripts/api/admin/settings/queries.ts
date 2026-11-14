@@ -160,7 +160,7 @@ export const useUploadAdminLogo = () => {
             await setAdminLogo(queryClient, logo ?? null);
             toast.success('Logo updated');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to upload logo'),
+        onError: (error) => notifyHttpError(error, '无法上传 Logo'),
     });
 };
 
@@ -173,7 +173,7 @@ export const useDeleteAdminLogo = () => {
             await setAdminLogo(queryClient, null);
             toast.success('Logo removed');
         },
-        onError: (error) => notifyHttpError(error, 'Unable to remove logo'),
+        onError: (error) => notifyHttpError(error, '无法移除 Logo'),
     });
 };
 

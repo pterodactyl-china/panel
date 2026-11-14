@@ -186,7 +186,7 @@ function LocationDetailForm({ location }: { location: AdminLocation }) {
                     <div className='flex items-center justify-between gap-3'>
                         <h2 className={cardTitleClass}>节点</h2>
                         <span className='text-xs text-muted-foreground'>
-                            {attributes.nodes_count} nodes · {attributes.servers_count} servers
+                            {attributes.nodes_count} 个节点 · {attributes.servers_count} 台服务器
                         </span>
                     </div>
                 }

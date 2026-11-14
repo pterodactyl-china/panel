@@ -81,7 +81,7 @@ test('subuser with excessively long email cannot be created', function (): void 
     $this->actingAs($user)->postJson($this->link($server).'/users', ['email' => $email, 'permissions' => [Permissions::UserCreate->value]])->assertOk();
     $response = $this->actingAs($user)->postJson($this->link($server).'/users', ['email' => "{$local}@{$label}.{$label}.com", 'permissions' => [Permissions::UserCreate->value]]);
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
-    $response->assertJsonPath('errors.0.detail', 'email 必须介于 1 - 191 个字符之间。');
+    $response->assertJsonPath('errors.0.detail', 'email 长度必须在 1 到 191 个字符之间。');
     $response->assertJsonPath('errors.0.meta.source_field', 'email');
 });
 test('subuser email must be a strict address that does not start with a dash', function (string $email): void {

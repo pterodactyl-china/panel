@@ -333,7 +333,7 @@ export default function Databases({ model, className }: ViewProps<'server.databa
     const count = model.databases.length;
     const usage =
         model.permissions.create && model.limit > 0 && count > 0
-            ? `${count} of ${model.limit} databases have been allocated to this server.`
+            ? `已为此服务器分配 ${count} / ${model.limit} 个数据库。`
             : null;
 
     if (model.loading) {

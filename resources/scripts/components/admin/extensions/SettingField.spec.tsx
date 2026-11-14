@@ -26,8 +26,8 @@ describe('color field', () => {
 
         render(<SettingField field={field({ field: 'color' })} value='#1F2933' onChange={onChange} />);
 
-        expect(screen.getByLabelText('Probe picker')).toHaveValue('#1f2933');
-        fireEvent.change(screen.getByLabelText('Probe picker'), { target: { value: '#abcdef' } });
+        expect(screen.getByLabelText('Probe 选择器')).toHaveValue('#1f2933');
+        fireEvent.change(screen.getByLabelText('Probe 选择器'), { target: { value: '#abcdef' } });
         expect(onChange).toHaveBeenLastCalledWith('#abcdef');
 
         fireEvent.change(screen.getByRole('textbox', { name: 'Probe' }), {
@@ -80,7 +80,7 @@ describe('list field', () => {
 
         render(<SettingField field={list} value={['a', 'b']} onChange={onChange} />);
 
-        fireEvent.change(screen.getByRole('textbox', { name: 'Probe item 2' }), { target: { value: 'c' } });
+        fireEvent.change(screen.getByRole('textbox', { name: 'Probe 第 2 项' }), { target: { value: 'c' } });
         expect(onChange).toHaveBeenLastCalledWith(['a', 'c']);
         fireEvent.click(screen.getByRole('button', { name: '上移第 2 项' }));
         expect(onChange).toHaveBeenLastCalledWith(['b', 'a']);

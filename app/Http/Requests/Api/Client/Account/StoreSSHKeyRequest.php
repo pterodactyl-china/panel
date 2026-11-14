@@ -52,7 +52,7 @@ class StoreSSHKeyRequest extends ClientApiRequest
 
             $publicKey = mb_trim($this->string('public_key')->toString());
             if (! CreateSshKey::isSupportedPublicKey($publicKey)) {
-                $validator->errors()->add('public_key', 'The public key provided is not valid.');
+                $validator->errors()->add('public_key', '提供的公钥无效。');
 
                 return;
             }
@@ -60,22 +60,22 @@ class StoreSSHKeyRequest extends ClientApiRequest
             try {
                 $this->key = PublicKeyLoader::loadPublicKey($publicKey);
             } catch (NoKeyLoadedException) {
-                $validator->errors()->add('public_key', 'The public key provided is not valid.');
+                $validator->errors()->add('public_key', '提供的公钥无效。');
 
                 return;
             }
 
             if ($this->key instanceof DSA) {
-                $validator->errors()->add('public_key', 'DSA keys are not supported.');
+                $validator->errors()->add('public_key', '不支持 DSA 密钥。');
             }
 
             if ($this->key instanceof RSA && $this->key->getLength() < 2048) {
-                $validator->errors()->add('public_key', 'RSA keys must be at least 2048 bytes in length.');
+                $validator->errors()->add('public_key', 'RSA 密钥长度至少为 2048 字节。');
             }
 
             $fingerprint = $this->key->getFingerprint('sha256');
             if ($this->user()->sshKeys()->where('fingerprint', $fingerprint)->exists()) {
-                $validator->errors()->add('public_key', 'The public key provided already exists on your account.');
+                $validator->errors()->add('public_key', '该公钥已存在于您的账户中。');
             }
         }];
     }

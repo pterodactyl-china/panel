@@ -48,7 +48,7 @@ test('totp token cannot be reused', function (int $seconds) {
 ]);
 test('endpoint returns error if session missing', function () {
     $this->postJson(route('auth.login-checkpoint'))->assertUnprocessable()->assertJsonPath('errors.0.meta.source_field', 'confirmation_token')->assertJsonPath('errors.1.meta.source_field', 'authentication_code')->assertJsonPath('errors.2.meta.source_field', 'recovery_token');
-    $this->postJson(route('auth.login-checkpoint', ['confirmation_token' => 'token', 'authentication_code' => '123456']))->assertBadRequest()->assertJsonPath('errors.0.detail', 'The authentication token provided has expired, please refresh the page and try again.');
+    $this->postJson(route('auth.login-checkpoint', ['confirmation_token' => 'token', 'authentication_code' => '123456']))->assertBadRequest()->assertJsonPath('errors.0.detail', '提供的动态口令已过期，请刷新页面后重试。');
     $this->assertGuest();
     Event::assertDispatched(fn (Failed $event) => $event->guard === 'auth');
 });
@@ -67,13 +67,13 @@ test('endpoint blocks session data mismatch', function () {
 });
 test('endpoint returns error if user does not exist', function () {
     Session::put('auth_confirmation_token', new LoginCheckpoint(0, 'token', now()->addMinutes(5)));
-    $this->postJson(route('auth.login-checkpoint', ['confirmation_token' => 'token', 'authentication_code' => '123456']))->assertBadRequest()->assertJsonPath('errors.0.detail', 'The authentication token provided has expired, please refresh the page and try again.');
+    $this->postJson(route('auth.login-checkpoint', ['confirmation_token' => 'token', 'authentication_code' => '123456']))->assertBadRequest()->assertJsonPath('errors.0.detail', '提供的动态口令已过期，请刷新页面后重试。');
 });
 test('endpoint allows recovery token', function () {
     $user = User::factory()->create();
     $token = $user->recoveryTokens()->forceCreate(['token' => password_hash('recovery', PASSWORD_DEFAULT)]);
     Session::put('auth_confirmation_token', new LoginCheckpoint($user->id, 'token', now()->addMinutes(5)));
-    $this->postJson(route('auth.login-checkpoint', ['confirmation_token' => 'token', 'recovery_token' => 'invalid']))->assertBadRequest()->assertJsonPath('errors.0.detail', 'The recovery token provided is not valid.');
+    $this->postJson(route('auth.login-checkpoint', ['confirmation_token' => 'token', 'recovery_token' => 'invalid']))->assertBadRequest()->assertJsonPath('errors.0.detail', '提供的恢复码无效。');
     $this->assertGuest();
     $this->postJson(route('auth.login-checkpoint', ['confirmation_token' => 'token', 'recovery_token' => 'recovery']))->assertOk()->assertSessionMissing('auth_confirmation_token');
     Event::assertDispatched(ProvidedAuthenticationToken::class);
@@ -83,7 +83,7 @@ test('endpoint rejects an expired checkpoint', function () {
     $user = User::factory()->create(['use_totp' => true, 'totp_secret' => encrypt(str_repeat('a', 16))]);
     Session::put('auth_confirmation_token', new LoginCheckpoint($user->id, 'token', now()->subSecond()));
     $totp = $this->app->make(Google2FA::class)->getCurrentOtp(str_repeat('a', 16));
-    $this->postJson(route('auth.login-checkpoint', ['confirmation_token' => 'token', 'authentication_code' => $totp]))->assertBadRequest()->assertJsonPath('errors.0.detail', 'The authentication token provided has expired, please refresh the page and try again.');
+    $this->postJson(route('auth.login-checkpoint', ['confirmation_token' => 'token', 'authentication_code' => $totp]))->assertBadRequest()->assertJsonPath('errors.0.detail', '提供的动态口令已过期，请刷新页面后重试。');
     $this->assertGuest();
     Event::assertNotDispatched(DirectLogin::class);
 });
@@ -91,6 +91,6 @@ test('endpoint rejects a checkpoint payload it did not issue', function () {
     $user = User::factory()->create(['use_totp' => true, 'totp_secret' => encrypt(str_repeat('a', 16))]);
     Session::put('auth_confirmation_token', ['user_id' => $user->id, 'token_value' => 'token', 'expires_at' => now()->addMinutes(5)]);
     $totp = $this->app->make(Google2FA::class)->getCurrentOtp(str_repeat('a', 16));
-    $this->postJson(route('auth.login-checkpoint', ['confirmation_token' => 'token', 'authentication_code' => $totp]))->assertBadRequest()->assertJsonPath('errors.0.detail', 'The authentication token provided has expired, please refresh the page and try again.');
+    $this->postJson(route('auth.login-checkpoint', ['confirmation_token' => 'token', 'authentication_code' => $totp]))->assertBadRequest()->assertJsonPath('errors.0.detail', '提供的动态口令已过期，请刷新页面后重试。');
     $this->assertGuest();
 });

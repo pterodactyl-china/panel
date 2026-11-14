@@ -127,7 +127,7 @@ test('invalid values reject the request before the core change', function (strin
 
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     $response->assertJsonPath('errors.0.meta.source_field', 'extensions.fields.note');
-    $response->assertJsonPath('errors.0.detail', 'note 不能大于 32 个字符。');
+    $response->assertJsonPath('errors.0.detail', 'note 长度不能超过 32 个字符。');
 
     expect($case['find']())->toBeNull();
 })->with('formEndpoints');

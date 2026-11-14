@@ -86,7 +86,7 @@ const createOption = (text: string, options: SelectOption[]): SelectOption | nul
         return null;
     }
 
-    return { value: createValue, label: `Create "${query}"`, textLabel: query };
+    return { value: createValue, label: `创建 "${query}"`, textLabel: query };
 };
 
 const sameValue = (left: SelectValue, right: SelectValue): boolean => Object.is(left, right);
@@ -343,7 +343,7 @@ function MultiSelectCombobox({
                 <Combobox.Value>
                     {(value: SelectOption[]) => (
                         <>
-                            {value.length > 0 && <span {...ui('summary')}>{`${value.length} selected`}</span>}
+                            {value.length > 0 && <span {...ui('summary')}>{`已选 ${value.length} 项`}</span>}
                             <Combobox.Input
                                 {...ui('input')}
                                 {...inputAria}

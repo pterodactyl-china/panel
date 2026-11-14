@@ -68,15 +68,15 @@ class ThemeRepository
     {
         $chain = [];
         $child = null;
-        throw_if($id !== self::CLASSIC && ! config('extensions.enabled'), InvalidExtensionException::class, 'Extensions are turned off on this panel.');
+        throw_if($id !== self::CLASSIC && ! config('extensions.enabled'), InvalidExtensionException::class, '此面板已关闭扩展功能。');
         while ($id !== self::CLASSIC) {
-            throw_if(isset($chain[$id]), InvalidExtensionException::class, sprintf('Theme "%s" extends itself through "%s".', $id, $child));
+            throw_if(isset($chain[$id]), InvalidExtensionException::class, sprintf('主题 "%s" 经由 "%s" 形成了继承循环。', $id, $child));
 
             $manifest = $this->extensions->discovered()->get($id);
             throw_unless($manifest?->isTheme(), InvalidExtensionException::class, $child === null
                 ? sprintf('"%s" is not an installed theme.', $id)
                 : sprintf('Theme "%s" extends "%s", which is not an installed theme.', $child, $id));
-            throw_unless($this->extensions->enabled()->has($id), InvalidExtensionException::class, sprintf('Theme "%s" is not enabled or failed to load.', $id));
+            throw_unless($this->extensions->enabled()->has($id), InvalidExtensionException::class, sprintf('主题 "%s" 未启用或加载失败。', $id));
 
             $chain[$id] = $manifest;
             $child = $id;
@@ -143,7 +143,7 @@ class ThemeRepository
     /** @throws InvalidExtensionException while the theme is the active one */
     public function assertNotActive(string $id): void
     {
-        throw_if($id === $this->active(), InvalidExtensionException::class, sprintf('Theme "%s" is active; activate another theme or reset to classic first.', $id));
+        throw_if($id === $this->active(), InvalidExtensionException::class, sprintf('主题 "%s" 正在使用中，请先激活其他主题或重置为经典主题。', $id));
     }
 
     /** Why the theme cannot be activated, or null when it can. */

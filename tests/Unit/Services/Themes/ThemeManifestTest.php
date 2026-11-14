@@ -82,40 +82,40 @@ test('a theme needs no bundle, and classic is no parent to depend on', function 
 test('rejects theme manifests that break the theme rules', function (array $overrides, string $message): void {
     expect(fn () => theme($overrides))->toThrow(InvalidExtensionException::class, $message);
 })->with([
-    'a theme section on an extension' => [['type' => 'extension', 'theme' => ['extends' => 'base']], 'Only a package with "type": "theme"'],    'an unknown type' => [['type' => 'skin'], 'type'],
-    'a tailwind prefix' => [['ui' => ['entry' => 'dist/client.js', 'prefix' => 'au']], 'cannot declare "ui.prefix"'],
-    'view overrides' => [['requires' => ['sdk' => '*'], 'ui' => ['entry' => 'dist/client.js', 'views' => ['server.power']]], 'cannot declare "ui.views"'],
-    'another stylesheet path' => [['theme' => ['stylesheet' => 'dist/style.css']], 'must be "dist/theme.css"'],
+    'a theme section on an extension' => [['type' => 'extension', 'theme' => ['extends' => 'base']], '只有 "type" 为 "theme" 的包'],    'an unknown type' => [['type' => 'skin'], 'type'],
+    'a tailwind prefix' => [['ui' => ['entry' => 'dist/client.js', 'prefix' => 'au']], '主题不能声明 "ui.prefix"'],
+    'view overrides' => [['requires' => ['sdk' => '*'], 'ui' => ['entry' => 'dist/client.js', 'views' => ['server.power']]], '主题不能声明 "ui.views"'],
+    'another stylesheet path' => [['theme' => ['stylesheet' => 'dist/style.css']], '必须为 "dist/theme.css"'],
     'an unknown scheme' => [['theme' => ['schemes' => ['sepia']]], 'theme.schemes.0'],
     'no schemes' => [['theme' => ['schemes' => []]], 'theme.schemes'],
-    'extending itself' => [['theme' => ['extends' => 'aurora']], 'cannot extend itself'],
+    'extending itself' => [['theme' => ['extends' => 'aurora']], '不能继承自身'],
     'a malformed parent' => [['theme' => ['extends' => 'Base']], 'theme.extends'],
     'an unknown key' => [['theme' => ['layout' => 'top']], 'theme'],
-    'the built-in id' => [['id' => 'classic'], 'reserved'],
+    'the built-in id' => [['id' => 'classic'], '为面板保留'],
 ]);
 
 test('rejects settings that could not be stored or rendered safely', function (array $setting, string $message): void {
     expect(fn () => withSetting($setting))->toThrow(InvalidExtensionException::class, $message);
 })->with([
     'an unknown type' => [['type' => 'font'], 'theme.settings.probe.type'],
-    'a colour default that is not a colour' => [['type' => 'color', 'default' => 'red'], 'Theme setting "probe": 颜色设置的默认值必须是十六进制或 oklch() 颜色'],
-    'a token that is not a custom property' => [['type' => 'color', 'token' => 'color'], 'custom property names'],
-    'a token with css in it' => [['type' => 'color', 'token' => '--a;}body{x:y'], 'custom property names'],
-    'an attribute outside data-*' => [['type' => 'toggle', 'attribute' => 'onclick'], 'data attributes'],
-    'the theme attribute' => [['type' => 'toggle', 'attribute' => 'data-theme'], 'cannot use "data-theme"'],
+    'a colour default that is not a colour' => [['type' => 'color', 'default' => 'red'], '主题设置 "probe"：颜色设置的默认值必须是十六进制或 oklch() 颜色'],
+    'a token that is not a custom property' => [['type' => 'color', 'token' => 'color'], '自定义属性名'],
+    'a token with css in it' => [['type' => 'color', 'token' => '--a;}body{x:y'], '自定义属性名'],
+    'an attribute outside data-*' => [['type' => 'toggle', 'attribute' => 'onclick'], 'data 属性'],
+    'the theme attribute' => [['type' => 'toggle', 'attribute' => 'data-theme'], '不能使用 "data-theme"'],
     'a select without options' => [['type' => 'select'], 'theme.settings.probe.options'],
     'options outside a select' => [['type' => 'toggle', 'options' => ['a' => 'A']], 'theme.settings.probe.options'],
-    'an option key with markup' => [['type' => 'select', 'options' => ['"><b' => 'Bad']], 'keyed by identifiers'],
-    'a select default outside its options' => [['type' => 'select', 'options' => ['side' => 'Sidebar'], 'default' => 'top'], 'A select setting defaults to one of its options'],
-    'a toggle default that is not a boolean' => [['type' => 'toggle', 'default' => 'yes'], 'A toggle setting defaults to true, false or null'],
+    'an option key with markup' => [['type' => 'select', 'options' => ['"><b' => 'Bad']], '必须以标识符为键'],
+    'a select default outside its options' => [['type' => 'select', 'options' => ['side' => 'Sidebar'], 'default' => 'top'], '下拉设置的默认值必须是某个选项'],
+    'a toggle default that is not a boolean' => [['type' => 'toggle', 'default' => 'yes'], '开关设置的默认值必须是 true'],
     'number limits on a colour' => [['type' => 'color', 'min' => 1], 'theme.settings.probe.min'],
-    'a number limit given as text' => [['type' => 'number', 'min' => '1'], 'must give "min" as a number'],
-    'a min above the max' => [['type' => 'number', 'min' => 2, 'max' => 1], 'has a "min" above its "max"'],
-    'a default outside the range' => [['type' => 'number', 'max' => 1, 'default' => 2], 'default outside its "min" and "max"'],
+    'a number limit given as text' => [['type' => 'number', 'min' => '1'], '的 "min" 必须是数字'],
+    'a min above the max' => [['type' => 'number', 'min' => 2, 'max' => 1], '的 "min" 大于 "max"'],
+    'a default outside the range' => [['type' => 'number', 'max' => 1, 'default' => 2], '的默认值超出了 "min" 与 "max" 的范围'],
     'a zero step' => [['type' => 'number', 'step' => 0], 'theme.settings.probe.step'],
     'a unit with css in it' => [['type' => 'number', 'unit' => 'px;'], 'theme.settings.probe.unit'],
-    'a text default too long' => [['type' => 'text', 'maxLength' => 3, 'default' => 'four'], 'defaults to text of at most 3 characters'],
-    'an image default' => [['type' => 'image', 'default' => '/logo.png'], 'cannot have a default'],
+    'a text default too long' => [['type' => 'text', 'maxLength' => 3, 'default' => 'four'], '的默认值超过 3 个字符'],
+    'an image default' => [['type' => 'image', 'default' => '/logo.png'], '不能设置默认值'],
 ]);
 
 test('rejects setting names that are not identifiers and two settings writing the same target', function (): void {
@@ -124,7 +124,7 @@ test('rejects setting names that are not identifiers and two settings writing th
     expect(fn () => theme(['theme' => ['settings' => [
         'one' => ['type' => 'color', 'label' => 'One', 'token' => '--accent'],
         'two' => ['type' => 'color', 'label' => 'Two', 'token' => '--accent'],
-    ]]]))->toThrow(InvalidExtensionException::class, 'Theme settings "one" and "two" both write "--accent".');
+    ]]]))->toThrow(InvalidExtensionException::class, '主题设置 "one" 与 "two" 都写入了 "--accent"。');
 });
 
 test('a setting declares its type and label, in a child theme too', function (): void {

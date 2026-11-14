@@ -74,7 +74,7 @@ function ColorControl({ field, value, onChange }: ControlProps) {
             >
                 <input
                     type='color'
-                    aria-label={`${field.label} picker`}
+                    aria-label={`${field.label} 选择器`}
                     className='absolute inset-0 h-full w-full cursor-pointer opacity-0'
                     value={pickerColor(color) ?? pickerFallback}
                     onChange={(event) => onChange(event.currentTarget.value)}
@@ -180,7 +180,7 @@ function ListControl({ field, value, onChange }: ControlProps) {
             {items.map((item, index) => (
                 <div key={rowKeys[index]} className='flex items-center gap-2'>
                     <TextInput
-                        aria-label={`${field.label} item ${index + 1}`}
+                        aria-label={`${field.label} 第 ${index + 1} 项`}
                         value={item}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                             replace(index, event.currentTarget.value)

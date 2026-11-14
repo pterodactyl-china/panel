@@ -112,7 +112,7 @@ describe('egg catalog', () => {
             meta: { pagination: { total: 0, count: 0, per_page: 100, current_page: 1, total_pages: 1 } },
         });
         await user.click(await screen.findByRole('button', { name: '导入' }));
-        const dialog = await screen.findByRole('dialog', { name: 'Import Paper' });
+        const dialog = await screen.findByRole('dialog', { name: '导入 Paper' });
         const submit = within(dialog).getByRole('button', { name: '导入预设' });
 
         await user.click(submit);

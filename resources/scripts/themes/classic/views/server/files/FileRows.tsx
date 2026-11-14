@@ -234,7 +234,7 @@ export const FileRow = memo(({ entry, selected }: { entry: FileManagerEntry; sel
                 <Checkbox
                     name='selectedFiles'
                     value={entry.name}
-                    aria-label={`Select ${entry.name}`}
+                    aria-label={`选择 ${entry.name}`}
                     checked={selected}
                     onChange={(checked) => toggle(entry.name, checked)}
                 />

@@ -20,7 +20,7 @@ class ServerInstallService
     {
         $server = $this->resolveForNode($request, $uuid);
         $egg = $server->egg;
-        throw_unless($egg instanceof Egg, NotFoundHttpException::class, 'The requested server does not have an egg assigned.');
+        throw_unless($egg instanceof Egg, NotFoundHttpException::class, '请求的服务器未分配预设。');
 
         return [
             'container_image' => $egg->copy_script_container,

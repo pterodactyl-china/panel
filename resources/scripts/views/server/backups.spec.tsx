@@ -145,7 +145,7 @@ describe('server.backups', () => {
         fireEvent.click(screen.getByRole('button', { name: /更多操作/ }));
         fireEvent.click(await screen.findByRole('menuitem', { name: 'Unlock' }));
 
-        expect(within(await screen.findByRole('dialog')).getByText('Unlock "World"')).toBeVisible();
+        expect(within(await screen.findByRole('dialog')).getByText('解锁 "World"')).toBeVisible();
         expect(requests).toEqual([]);
     });
 });

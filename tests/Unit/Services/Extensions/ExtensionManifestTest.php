@@ -28,7 +28,7 @@ beforeEach(function (): void {
 afterEach(function (): void {
     File::deleteDirectory($this->directory);
 });
-dataset('invalidManifestProvider', fn (): array => ['missing name' => [['name' => ''], 'field "name"'], 'uppercase id' => [['id' => 'BadId'], '必须匹配'], 'reserved id' => [['id' => 'pterodactyl'], 'reserved'], 'ui without entry' => [['ui' => ['mode' => 'native']], '"entry"'], 'absolute ui entry' => [['ui' => ['entry' => '/etc/passwd']], 'relative path'], 'traversal ui entry' => [['ui' => ['entry' => '../../owned.js']], 'relative path'], 'unsupported ui entry' => [['ui' => ['entry' => 'dist/main.js']], 'must be "dist/client.js"'], 'unknown ui mode' => [['ui' => ['entry' => 'dist/client.js', 'mode' => 'sandboxed']], 'Unsupported ui.mode'], 'autoload traversal' => [['autoload' => ['X\\' => '../src']], 'relative paths'], 'autoload bad prefix' => [['autoload' => ['NoTrailingSlash' => 'src']], 'autoload']]);
+dataset('invalidManifestProvider', fn (): array => ['missing name' => [['name' => ''], '"name" 必填'], 'uppercase id' => [['id' => 'BadId'], '必须匹配'], 'reserved id' => [['id' => 'pterodactyl'], '为面板保留'], 'ui without entry' => [['ui' => ['mode' => 'native']], '"entry"'], 'absolute ui entry' => [['ui' => ['entry' => '/etc/passwd']], '相对路径'], 'traversal ui entry' => [['ui' => ['entry' => '../../owned.js']], '相对路径'], 'unsupported ui entry' => [['ui' => ['entry' => 'dist/main.js']], '必须为 "dist/client.js"'], 'unknown ui mode' => [['ui' => ['entry' => 'dist/client.js', 'mode' => 'sandboxed']], '不支持的 ui.mode'], 'autoload traversal' => [['autoload' => ['X\\' => '../src']], '相对路径'], 'autoload bad prefix' => [['autoload' => ['NoTrailingSlash' => 'src']], 'autoload']]);
 test('parses a complete manifest', function (): void {
     writeManifest(['id' => 'example-extension', 'name' => 'Example Extension', 'version' => '1.2.3', 'description' => 'Example', 'author' => 'Pterodactyl', 'provider' => 'ExampleExtension\Provider', 'autoload' => ['ExampleExtension\\' => 'src'], 'ui' => ['entry' => 'dist/client.js', 'mode' => 'native']]);
     $manifest = (new ExtensionManifestValidator)->fromDirectory($this->directory);
@@ -59,17 +59,17 @@ test('identifiers and slugs with a trailing newline are rejected', function (arr
     expect(fn (): ExtensionManifest => (new ExtensionManifestValidator)->fromDirectory($this->directory))->toThrow(InvalidExtensionException::class, $message);
 })->with([
     'extension id' => [['id' => "my-ext\n"], '扩展 ID "my-ext'],
-    'dependency id' => [['requires' => ['extensions' => ["base\n" => '*']]], 'Extension dependencies must be valid identifiers'],
+    'dependency id' => [['requires' => ['extensions' => ["base\n" => '*']]], '扩展依赖必须是有效的标识符'],
     'root path prefix' => [['routes' => ['root' => ["go\n"]]], 'Manifest "routes.root" 的前缀必须匹配'],
     'screen id' => [['ui' => ['entry' => 'dist/client.js', 'screens' => [['id' => "main\n", 'area' => 'account', 'path' => 'probe']]]], 'ui.screens.0.id'],
     'screen path' => [['ui' => ['entry' => 'dist/client.js', 'screens' => [['id' => 'main', 'area' => 'account', 'path' => "probe\n"]]]], 'ui.screens.0.path'],
-    'navigation icon' => [['ui' => ['entry' => 'dist/client.js', 'screens' => [['id' => 'main', 'area' => 'account', 'path' => 'probe', 'nav' => ['label' => 'Probe', 'icon' => "life-buoy\n"]]]]], 'Navigation "icon" must be a lucide icon name'],
+    'navigation icon' => [['ui' => ['entry' => 'dist/client.js', 'screens' => [['id' => 'main', 'area' => 'account', 'path' => 'probe', 'nav' => ['label' => 'Probe', 'icon' => "life-buoy\n"]]]]], '导航 "icon" 必须是 lucide 图标名'],
 ]);
 
 test('rejects autoload namespaces that are not PSR-4 prefixes', function (string $prefix): void {
     writeManifest(['id' => 'valid-id', 'name' => 'Valid', 'version' => '1.0.0', 'autoload' => [$prefix => 'src']]);
 
-    expect(fn (): ExtensionManifest => (new ExtensionManifestValidator)->fromDirectory($this->directory))->toThrow(InvalidExtensionException::class, 'Manifest "autoload" must map');
+    expect(fn (): ExtensionManifest => (new ExtensionManifestValidator)->fromDirectory($this->directory))->toThrow(InvalidExtensionException::class, '必须把 "Vendor');
 })->with([
     'a lone separator' => ['\\'],
     'a leading separator' => ['\\Acme\\'],
@@ -84,16 +84,16 @@ test('rejects autoload namespaces the panel or its Composer packages already loa
 
     // A parent namespace is reported against whichever of its packages is compared first.
     expect(fn (): ExtensionManifest => (new ExtensionManifestValidator)->fromDirectory($this->directory))
-        ->toThrow(InvalidExtensionException::class, "Manifest \"autoload\" namespace \"{$prefix}\" overlaps \"{$owner}");
+        ->toThrow(InvalidExtensionException::class, "Manifest \"autoload\" 中的命名空间 \"{$prefix}\" 与面板已自动加载的 \"{$owner}");
 })->with([
-    'the panel namespace' => ['Pterodactyl\\', 'Pterodactyl\\", which'],
-    'inside the panel namespace' => ['Pterodactyl\\Extensions\\Billing\\', 'Pterodactyl\\", which'],
-    'the panel namespace in another case' => ['pterodactyl\\Models\\', 'Pterodactyl\\", which'],
-    'inside the framework' => ['Illuminate\\Support\\', 'Illuminate\\", which'],
-    'a framework vendor' => ['Laravel\\Billing\\', 'Laravel\\", which'],
-    'symfony' => ['Symfony\\Component\\Console\\', 'Symfony\\", which'],
+    'the panel namespace' => ['Pterodactyl\\', 'Pterodactyl\\'],
+    'inside the panel namespace' => ['Pterodactyl\\Extensions\\Billing\\', 'Pterodactyl\\'],
+    'the panel namespace in another case' => ['pterodactyl\\Models\\', 'Pterodactyl\\'],
+    'inside the framework' => ['Illuminate\\Support\\', 'Illuminate\\'],
+    'a framework vendor' => ['Laravel\\Billing\\', 'Laravel\\'],
+    'symfony' => ['Symfony\\Component\\Console\\', 'Symfony\\'],
     'a Composer package' => ['GuzzleHttp\\', 'GuzzleHttp\\'],
-    'inside a Composer package' => ['Carbon\\Billing\\', 'Carbon\\", which'],
+    'inside a Composer package' => ['Carbon\\Billing\\', 'Carbon\\'],
     'a parent of Composer packages' => ['League\\', 'League\\'],
     'a parent of the panel database namespaces' => ['Database\\', 'Database\\'],
 ]);
@@ -121,12 +121,12 @@ test('holds the composer.json PSR-4 map to the manifest rules', function (string
 
     expect(fn (): ExtensionManifest => (new ExtensionManifestValidator)->fromDirectory($this->directory))->toThrow(InvalidExtensionException::class, $message);
 })->with([
-    'the panel namespace' => ['{"autoload": {"psr-4": {"Pterodactyl\\\\Billing\\\\": "src/"}}}', 'composer.json "autoload.psr-4" namespace "Pterodactyl\\Billing\\" overlaps "Pterodactyl\\"'],
-    'a fallback directory' => ['{"autoload": {"psr-4": {"": "src/"}}}', 'composer.json "autoload.psr-4" must map'],
-    'several directories' => ['{"autoload": {"psr-4": {"Acme\\\\": ["src/", "lib/"]}}}', 'composer.json "autoload.psr-4" must map'],
-    'a directory outside the package' => ['{"autoload": {"psr-4": {"Acme\\\\": "../src/"}}}', 'composer.json "autoload.psr-4" directories must be relative paths'],
-    'not a map' => ['{"autoload": {"psr-4": "src/"}}', 'composer.json "autoload.psr-4" must map'],
-    'invalid JSON' => ['{"autoload":', 'composer.json is not valid JSON'],
+    'the panel namespace' => ['{"autoload": {"psr-4": {"Pterodactyl\\\\Billing\\\\": "src/"}}}', '中的命名空间 "Pterodactyl\\Billing\\" 与面板已自动加载的'],
+    'a fallback directory' => ['{"autoload": {"psr-4": {"": "src/"}}}', '必须把 "Vendor'],
+    'several directories' => ['{"autoload": {"psr-4": {"Acme\\\\": ["src/", "lib/"]}}}', '必须把 "Vendor'],
+    'a directory outside the package' => ['{"autoload": {"psr-4": {"Acme\\\\": "../src/"}}}', '的目录必须是安装包内的相对路径'],
+    'not a map' => ['{"autoload": {"psr-4": "src/"}}', '必须把 "Vendor'],
+    'invalid JSON' => ['{"autoload":', 'composer.json 不是有效的 JSON'],
 ]);
 
 test('missing and malformed files', function (string $subdirectory, ?string $contents): void {
@@ -197,19 +197,19 @@ test('rejects malformed screen conditions', function (string $area, mixed $when,
     expect(fn (): ExtensionManifest => (new ExtensionManifestValidator)->fromDirectory($this->directory))
         ->toThrow(InvalidExtensionException::class, $message);
 })->with([
-    'empty rule' => ['server', [], 'must declare an egg rule'],
-    'disabled predicate only' => ['account', ['runtime' => false], 'must declare an egg rule'],
-    'empty matcher' => ['server', ['eggTags' => []], 'must list "any" or "all" values'],
+    'empty rule' => ['server', [], '必须声明预设规则'],
+    'disabled predicate only' => ['account', ['runtime' => false], '必须声明预设规则'],
+    'empty matcher' => ['server', ['eggTags' => []], '必须列出 "any" 或 "all" 的值'],
     'empty value list' => ['server', ['eggTags' => ['any' => []]], 'eggTags.any'],
     'matcher as a list' => ['server', ['eggFeatures' => ['eula']], 'eggFeatures'],
     'unknown matcher key' => ['server', ['eggFeatures' => ['none' => ['eula']]], 'eggFeatures'],
     'non string value' => ['server', ['eggTags' => ['all' => [42]]], 'eggTags.all.0'],
     'unknown combinator' => ['server', ['eggFeatures' => ['any' => ['eula']], 'eggTags' => ['any' => ['minecraft']], 'match' => 'either'], 'match'],
-    'combinator with one rule' => ['server', ['eggFeatures' => ['any' => ['eula']], 'match' => 'any'], 'requires both'],
+    'combinator with one rule' => ['server', ['eggFeatures' => ['any' => ['eula']], 'match' => 'any'], '两者都必须提供'],
     'non boolean predicate flag' => ['server', ['runtime' => 'yes'], 'runtime'],
     'unknown key' => ['server', ['eggs' => [1]], 'when'],
-    'egg features outside the server area' => ['account', ['eggFeatures' => ['any' => ['eula']]], 'only supported on server screens'],
-    'egg tags outside the server area' => ['admin', ['eggTags' => ['any' => ['minecraft']]], 'only supported on server screens'],
+    'egg features outside the server area' => ['account', ['eggFeatures' => ['any' => ['eula']]], '仅支持服务器页面'],
+    'egg tags outside the server area' => ['admin', ['eggTags' => ['any' => ['minecraft']]], '仅支持服务器页面'],
 ]);
 
 test('accepts the icon names the SDK publishes', function (): void {
@@ -225,7 +225,7 @@ test('only server screens accept a permission list', function (string $area): vo
     ]]]);
 
     expect(fn (): ExtensionManifest => (new ExtensionManifestValidator)->fromDirectory($this->directory))
-        ->toThrow(InvalidExtensionException::class, 'Screen "permission" is only supported on server screens.');
+        ->toThrow(InvalidExtensionException::class, '页面 "permission" 仅支持服务器页面。');
 })->with(['account', 'admin']);
 
 test('serializes screen descriptors into bootstrap without evaluating an extension bundle', function (): void {
@@ -400,7 +400,7 @@ test('a tailwind prefix is optional until the build ships tailwind layers', func
 test('rejects malformed and reserved tailwind prefixes', function (mixed $prefix, string $message): void {
     writeManifest(['id' => 'styled', 'name' => 'Styled', 'version' => '1.0.0', 'ui' => ['entry' => 'dist/client.js', 'prefix' => $prefix]]);
 
-    expect(fn (): ExtensionManifest => (new ExtensionManifestValidator)->fromDirectory($this->directory))->toThrow(InvalidExtensionException::class, 'Manifest "ui.prefix" '.$message);
+    expect(fn (): ExtensionManifest => (new ExtensionManifestValidator)->fromDirectory($this->directory))->toThrow(InvalidExtensionException::class, 'Manifest 的 "ui.prefix" '.$message);
 })->with([
     'null' => [null, '必须匹配 /^[a-z]{2,12}$/D.'],
     'not a string' => [12, '必须匹配 /^[a-z]{2,12}$/D.'],
@@ -412,14 +412,14 @@ test('rejects malformed and reserved tailwind prefixes', function (mixed $prefix
     'hyphen' => ['hello-world', '必须匹配 /^[a-z]{2,12}$/D.'],
     'trailing colon' => ['hw:', '必须匹配 /^[a-z]{2,12}$/D.'],
     'trailing newline' => ["hw\n", '必须匹配 /^[a-z]{2,12}$/D.'],
-    'breakpoint' => ['sm', 'is a Tailwind variant, theme namespace or panel name'],
-    'state variant' => ['hover', 'is a Tailwind variant, theme namespace or panel name'],
-    'dark variant' => ['dark', 'is a Tailwind variant, theme namespace or panel name'],
-    'group marker' => ['group', 'is a Tailwind variant, theme namespace or panel name'],
-    'theme namespace' => ['color', 'is a Tailwind variant, theme namespace or panel name'],
-    'panel token' => ['terminal', 'is a Tailwind variant, theme namespace or panel name'],
-    'tailwind internals' => ['tw', 'is a Tailwind variant, theme namespace or panel name'],
-    'panel name' => ['panel', 'is a Tailwind variant, theme namespace or panel name'],
+    'breakpoint' => ['sm', '不能使用 Tailwind 变量名、主题命名空间或面板名称'],
+    'state variant' => ['hover', '不能使用 Tailwind 变量名、主题命名空间或面板名称'],
+    'dark variant' => ['dark', '不能使用 Tailwind 变量名、主题命名空间或面板名称'],
+    'group marker' => ['group', '不能使用 Tailwind 变量名、主题命名空间或面板名称'],
+    'theme namespace' => ['color', '不能使用 Tailwind 变量名、主题命名空间或面板名称'],
+    'panel token' => ['terminal', '不能使用 Tailwind 变量名、主题命名空间或面板名称'],
+    'tailwind internals' => ['tw', '不能使用 Tailwind 变量名、主题命名空间或面板名称'],
+    'panel name' => ['panel', '不能使用 Tailwind 变量名、主题命名空间或面板名称'],
 ]);
 
 test('the reserved tailwind prefixes match the SDK manifest schema', function (): void {
@@ -457,14 +457,14 @@ test('rejects malformed, reserved and core root path prefixes', function (mixed 
     'uppercase' => [['root' => ['Go']], '必须匹配'],
     'nested path' => [['root' => ['go/links']], '必须匹配'],
     'parameter' => [['root' => ['{slug}']], '必须匹配'],
-    'duplicate' => [['root' => ['go', 'go']], 'must be unique'],
+    'duplicate' => [['root' => ['go', 'go']], '前缀不能重复'],
     'too many' => [['root' => ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']], 'routes.root'],
-    'spa route' => [['root' => ['server']], '"/server" is reserved'],
-    'spa admin area' => [['root' => ['panel']], '"/panel" is reserved'],
-    'api prefix' => [['root' => ['api']], '"/api" is reserved'],
-    'extension prefix' => [['root' => ['extensions']], '"/extensions" is reserved'],
-    'registered core route' => [['root' => ['health-probe']], '"/health-probe" is reserved'],
-    'public directory' => [['root' => ['favicons']], '"/favicons" is reserved'],
+    'spa route' => [['root' => ['server']], '"/server" 为面板保留'],
+    'spa admin area' => [['root' => ['panel']], '"/panel" 为面板保留'],
+    'api prefix' => [['root' => ['api']], '"/api" 为面板保留'],
+    'extension prefix' => [['root' => ['extensions']], '"/extensions" 为面板保留'],
+    'registered core route' => [['root' => ['health-probe']], '"/health-probe" 为面板保留'],
+    'public directory' => [['root' => ['favicons']], '"/favicons" 为面板保留'],
 ]);
 
 test('root path prefixes of other extensions are left to the enable-time comparison', function (): void {
@@ -508,7 +508,7 @@ test('accepts a lucide icon name or an image path as the icon', function (?strin
 test('rejects icons that are neither a lucide name nor an image inside the package', function (mixed $icon): void {
     writeManifest(['id' => 'icon-test', 'name' => 'Icons', 'version' => '1.0.0', 'icon' => $icon]);
 
-    expect(fn () => (new ExtensionManifestValidator)->fromDirectory($this->directory))->toThrow(InvalidExtensionException::class, 'Manifest "icon"');
+    expect(fn () => (new ExtensionManifestValidator)->fromDirectory($this->directory))->toThrow(InvalidExtensionException::class, 'Manifest 的 "icon"');
 })->with([
     'uppercase name' => ['LifeBuoy'],
     'trailing newline' => ["life-buoy\n"],

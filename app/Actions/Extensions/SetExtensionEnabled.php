@@ -46,7 +46,7 @@ final readonly class SetExtensionEnabled implements SetsExtensionEnabled
     private function changeState(string $identifier, bool $enabled, ?ExtensionManifest $manifest): void
     {
         $manifest ??= $this->extensions->discovered()->get($identifier);
-        throw_if($manifest === null, InvalidExtensionException::class, "Extension \"{$identifier}\" is not installed.");
+        throw_if($manifest === null, InvalidExtensionException::class, "扩展 \"{$identifier}\" 未安装。");
         $this->checkStateChange($manifest, $enabled);
         Event::dispatch($enabled ? new ExtensionEnabling($manifest) : new ExtensionDisabling($manifest));
 
@@ -103,6 +103,6 @@ final readonly class SetExtensionEnabled implements SetsExtensionEnabled
 
         $this->migrator->path($migrations);
         $exitCode = Artisan::call('migrate', ['--force' => true, '--path' => $migrations, '--realpath' => true]);
-        throw_if($exitCode !== 0, InvalidExtensionException::class, "Extension \"{$manifest->id}\" migrations failed. Completed database changes may require manual recovery.");
+        throw_if($exitCode !== 0, InvalidExtensionException::class, "扩展 \"{$manifest->id}\" 的数据库迁移失败，已完成的更改可能需要手动恢复。");
     }
 }

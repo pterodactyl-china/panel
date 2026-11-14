@@ -68,7 +68,7 @@ final readonly class ExtensionPackageFiles
             }
 
             File::ensureDirectoryExists(dirname($path));
-            throw_unless(File::copy($file->getPathname(), $path), InvalidExtensionException::class, 'Unable to stage extension package.');
+            throw_unless(File::copy($file->getPathname(), $path), InvalidExtensionException::class, '无法暂存扩展安装包。');
         }
     }
 }

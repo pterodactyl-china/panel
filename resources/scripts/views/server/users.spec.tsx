@@ -131,7 +131,7 @@ describe('server.subusers', () => {
         fireEvent.click(screen.getByRole('button', { name: '编辑 sam@example.test' }));
         const dialog = await screen.findByRole('dialog');
 
-        expect(within(dialog).getByRole('heading', { name: 'Modify permissions for sam@example.test' })).toBeVisible();
+        expect(within(dialog).getByRole('heading', { name: '修改 sam@example.test 的权限' })).toBeVisible();
         fireEvent.click(within(dialog).getByRole('checkbox', { name: /^stop/ }));
         await act(async () => {
             fireEvent.click(within(dialog).getAllByRole('button', { name: '保存' })[0]);

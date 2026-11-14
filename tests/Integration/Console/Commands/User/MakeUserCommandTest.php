@@ -16,7 +16,7 @@ beforeEach(function (): void {
 });
 test('rejects a password shorter than eight characters', function (): void {
     $this->artisan('p:user:make', userOptions('abc'))
-        ->expectsOutputToContain('password 至少为 8 个字符。')
+        ->expectsOutputToContain('password 长度至少为 8 个字符。')
         ->assertExitCode(1);
 
     $this->assertDatabaseMissing('users', ['username' => 'cli-user']);
