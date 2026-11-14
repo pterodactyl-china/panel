@@ -13,7 +13,7 @@ export type PasswordInputProps = Omit<TextInputProps, 'type' | 'value' | 'onValu
     onValueChange: (value: string) => void;
     /** Called with a generated password after it is set, e.g. to fill a confirmation field. */
     onGenerate?: (value: string) => void;
-    /** 显示/隐藏按钮所指的对象，例如「新密码」。 */
+    /** What the show and hide button names, e.g. "new password". */
     noun?: string;
 };
 
