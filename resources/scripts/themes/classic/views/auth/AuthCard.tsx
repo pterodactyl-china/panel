@@ -42,7 +42,7 @@ export default function AuthCard({ title, submit, className, children }: Props) 
                     target='_blank'
                     className='no-underline text-muted-foreground hover:text-muted-foreground'
                 >
-                    Pterodactyl Software
+                    Pterodactyl&reg;
                 </a>
                 &nbsp;| Sinicizated by&nbsp;
                 <a
