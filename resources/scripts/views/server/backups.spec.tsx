@@ -173,7 +173,7 @@ describe('classic server.backups', () => {
 
         await renderFixture({ ...paged, actions: { ...paged.actions, setPage } });
 
-        expect(screen.getByLabelText('显示第 5 至 8 条，共 9 条')).toBeVisible();
+        expect(screen.getByLabelText('显示第 5 至 8 项，共 9 个备份')).toBeVisible();
         fireEvent.click(screen.getByRole('button', { name: '下一页' }));
         expect(setPage).toHaveBeenCalledWith(3);
     });
