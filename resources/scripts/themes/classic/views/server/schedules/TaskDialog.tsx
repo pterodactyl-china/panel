@@ -86,12 +86,14 @@ function TaskForm({ form: config, task, onSubmit, onClose }: Omit<Props, 'open'>
                         <>
                             {action === 'command' && (
                                 <form.AppField name='payload' validators={payloadValidators}>
-                                    {(field) => <field.TextAreaField label='载荷' rows={6} />}
+                                    {(field) => <field.TextAreaField label='任务内容' rows={6} />}
                                 </form.AppField>
                             )}
                             {action === 'power' && (
                                 <form.AppField name='payload' validators={payloadValidators}>
-                                    {(field) => <field.SelectField label='载荷' options={[...config.powerSignals]} />}
+                                    {(field) => (
+                                        <field.SelectField label='任务内容' options={[...config.powerSignals]} />
+                                    )}
                                 </form.AppField>
                             )}
                             {action === 'backup' && (
