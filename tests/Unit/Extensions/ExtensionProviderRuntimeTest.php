@@ -257,7 +257,7 @@ test('scheduled tasks run only while the extension is available and failures are
     expect($event->description)->toBe('probe task');
     expect($event->filtersPass($this->app))->toBeTrue();
     expect(fn () => $event->run($this->app))->toThrow(RuntimeException::class, 'task failed');
-    expect($this->failures)->toBe([['probe', 'Scheduled task "probe task" failed.', 'schedule']]);
+    expect($this->failures)->toBe([['probe', '计划任务 "probe task" 执行失败。', 'schedule']]);
 
     extensions();
     expect($event->filtersPass($this->app))->toBeFalse();

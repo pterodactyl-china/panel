@@ -108,7 +108,7 @@ test('a backup keeps its ignored files without empty entries, and a blank name i
     $fake->assertBackedUp($backup->uuid);
     expect($backup->ignored_files)->toBe(['logs/', '0', 'cache/'])
         ->and($backup->is_locked)->toBeTrue()
-        ->and($backup->name)->toStartWith('Backup at ');
+        ->and($backup->name)->toStartWith('备份于 ');
 
     $named = $this->app->make(InitiatesBackups::class)->initiate($server, 'Named');
     expect($named->name)->toBe('Named')

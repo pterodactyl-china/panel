@@ -41,7 +41,7 @@ test('backup can be created without a name', function (): void {
     $server = $this->createServerModel(['owner_id' => $user->id, 'backup_limit' => 3]);
     $fake = new FakeDaemonBackup;
     $response = $this->actingAs($user)->postJson($this->link($server, '/backups'))->assertOk()->assertJsonPath('object', 'backup');
-    expect($response->json('attributes.name'))->toStartWith('Backup at ');
+    expect($response->json('attributes.name'))->toStartWith('备份于 ');
     $fake->assertBackedUp($response->json('attributes.uuid'));
 });
 test('backup lock accepts null and every value the boolean rule allows', function (bool|int|string|null $locked, bool $expected): void {

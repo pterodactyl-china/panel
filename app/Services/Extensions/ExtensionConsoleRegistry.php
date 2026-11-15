@@ -130,7 +130,7 @@ final class ExtensionConsoleRegistry
                     $event->skip($failure instanceof Throwable)
                         ->when(fn (): bool => $this->extensions->isAvailable($identifier))
                         ->onFailure(function () use ($identifier, $event): void {
-                            $this->extensions->recordFailure($identifier, sprintf('Scheduled task "%s" failed.', $event->getSummaryForDisplay()), phase: 'schedule');
+                            $this->extensions->recordFailure($identifier, sprintf('计划任务 "%s" 执行失败。', $event->getSummaryForDisplay()), phase: 'schedule');
                         });
                 }
             }

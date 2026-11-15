@@ -111,7 +111,7 @@ final class InitiateBackup implements InitiatesBackups
 
             $backup = $server->backups()->create([
                 'uuid' => Uuid::uuid4()->toString(),
-                'name' => mb_trim($name ?? '') ?: sprintf('Backup at %s', CarbonImmutable::now()->toDateTimeString()),
+                'name' => mb_trim($name ?? '') ?: sprintf('备份于 %s', CarbonImmutable::now()->toDateTimeString()),
                 // Don't use the PHP empty function here in case anything that is "empty" by default
                 // (0, false, etc.) was passed as a file or folder name.
                 'ignored_files' => array_values(array_filter($this->ignoredFiles, fn (string $file): bool => $file !== '')),
